@@ -3,12 +3,14 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
-description:
-author: John Doe
-language:
+title: w4lle 
+subtitle: Eeeee... va?
+description: 别为我忧伤，我有我的美丽。它正要开放。
+author: w4lle
+language: zh-Hans
 timezone:
+keywords: [android]
+avatar: uploads/walle.jpg
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -62,8 +64,8 @@ pagination_dir: page
 
 # Extensions
 ## Plugins: http://hexo.io/plugins/
-## Themes: http://hexo.io/themes/
-theme: landscape
+## Themes: http://hexo.io/themes
+theme: next
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
