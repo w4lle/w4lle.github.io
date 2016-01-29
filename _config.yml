@@ -74,3 +74,6 @@ deploy:
   repo: git@github.com:w4lle/w4lle.github.io.git
   branch: master
   message: 
+
+#Duoshuo
+duoshuo_shortname: w4lle
