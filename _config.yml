@@ -71,5 +71,6 @@ theme: next
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo:
-    github: https://github.com/w4lle/w4lle.github.io.git,master
+  repo: git@github.com:w4lle/w4lle.github.io.git
+  branch: master
+  message: 
