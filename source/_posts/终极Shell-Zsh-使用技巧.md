@@ -1,7 +1,8 @@
 ---
 title: 终极Shell--Zsh 使用技巧
 date: 2016-02-01 01:51:36
-tags:
+tags: [工具,Zsh]
+
 ---
 ## 为什么要用Zsh
 请参考这篇文章[终极 Shell](http://macshuo.com/?p=676)
