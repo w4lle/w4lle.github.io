@@ -2,7 +2,8 @@
 title: guestbook
 date: 2016-01-29 15:50:47
 ---
-<blockquote class="blockquote-center">念念不忘，必有回响</blockquote>
+<blockquote class="blockquote-center">也要楚天阔，也要大江流；
+也要望不见前后，才能对月下酒。</blockquote>
 <br/>
 >最近访客
 
