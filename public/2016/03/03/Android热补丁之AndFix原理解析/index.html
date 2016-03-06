@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="AndFix,源码分析,热补丁," />
 
 
 
@@ -57,15 +57,19 @@
 
 
 
-<meta name="description" content="生活不止眼前的苟且，还有诗，和远方。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="w4lle">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="背景2015年下半年开源了很多Android热更新的项目，其中大部分是以QQ空间技术团队写的那篇文章为依据写出的基于multidex的热更新框架，包括Nuwa、HotFix、DroidFix等；还有这篇文章的主角，阿里开源的AndFix。
+在这之前，热补丁框架并没有那么火，原因无非就是要么用起来太重，要么不支持ART。比如携程出品的DynamicAPK,这种框架是为了解决平台级的产品相关业务开发之">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android热补丁之AndFix原理解析">
+<meta property="og:url" content="http://yoursite.com/2016/03/03/Android热补丁之AndFix原理解析/index.html">
 <meta property="og:site_name" content="w4lle">
-<meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
+<meta property="og:description" content="背景2015年下半年开源了很多Android热更新的项目，其中大部分是以QQ空间技术团队写的那篇文章为依据写出的基于multidex的热更新框架，包括Nuwa、HotFix、DroidFix等；还有这篇文章的主角，阿里开源的AndFix。
+在这之前，热补丁框架并没有那么火，原因无非就是要么用起来太重，要么不支持ART。比如携程出品的DynamicAPK,这种框架是为了解决平台级的产品相关业务开发之">
+<meta property="og:updated_time" content="2016-03-06T13:59:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="w4lle">
-<meta name="twitter:description" content="生活不止眼前的苟且，还有诗，和远方。">
+<meta name="twitter:title" content="Android热补丁之AndFix原理解析">
+<meta name="twitter:description" content="背景2015年下半年开源了很多Android热更新的项目，其中大部分是以QQ空间技术团队写的那篇文章为依据写出的基于multidex的热更新框架，包括Nuwa、HotFix、DroidFix等；还有这篇文章的主角，阿里开源的AndFix。
+在这之前，热补丁框架并没有那么火，原因无非就是要么用起来太重，要么不支持ART。比如携程出品的DynamicAPK,这种框架是为了解决平台级的产品相关业务开发之">
 
 
 
@@ -83,7 +87,7 @@
   };
 </script>
 
-  <title> w4lle - 生活不止眼前的苟且，还有诗，和远方。 </title>
+  <title> Android热补丁之AndFix原理解析 | w4lle </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -100,9 +104,7 @@
   
   
 
-  <div class="container one-collumn  
-   page-home 
- ">
+  <div class="container one-collumn  page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -191,24 +193,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
 
+  <div id="posts" class="posts-expand">
     
-
-    
-    
-      
-      
-        
-        
-        
-      
-
-      
-    
-
-    
-      
 
   
   
@@ -228,10 +215,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/03/03/Android热补丁之AndFix原理解析/" itemprop="url">
-                  Android热补丁之AndFix原理解析
-                </a>
+                Android热补丁之AndFix原理解析
               
             
           </h1>
@@ -276,9 +260,7 @@
       
 
       
-        
-          
-            <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p>2015年下半年开源了很多Android热更新的项目，其中大部分是以QQ空间技术团队写的那篇<a href="https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;mid=400118620&amp;idx=1&amp;sn=b4fdd5055731290eef12ad0d17f39d4a&amp;scene=1&amp;srcid=1106Imu9ZgwybID13e7y2nEi#wechat_redirect" target="_blank" rel="external">文章</a>为依据写出的基于<code>multidex</code>的热更新框架，包括<a href="https://github.com/jasonross/Nuwa" target="_blank" rel="external">Nuwa</a>、<a href="https://github.com/dodola/HotFix" target="_blank" rel="external">HotFix</a>、<a href="https://github.com/bunnyblue/DroidFix" target="_blank" rel="external">DroidFix</a>等；还有这篇文章的主角，阿里开源的<a href="https://github.com/alibaba/AndFix" target="_blank" rel="external">AndFix</a>。</p>
+        <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p>2015年下半年开源了很多Android热更新的项目，其中大部分是以QQ空间技术团队写的那篇<a href="https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;mid=400118620&amp;idx=1&amp;sn=b4fdd5055731290eef12ad0d17f39d4a&amp;scene=1&amp;srcid=1106Imu9ZgwybID13e7y2nEi#wechat_redirect" target="_blank" rel="external">文章</a>为依据写出的基于<code>multidex</code>的热更新框架，包括<a href="https://github.com/jasonross/Nuwa" target="_blank" rel="external">Nuwa</a>、<a href="https://github.com/dodola/HotFix" target="_blank" rel="external">HotFix</a>、<a href="https://github.com/bunnyblue/DroidFix" target="_blank" rel="external">DroidFix</a>等；还有这篇文章的主角，阿里开源的<a href="https://github.com/alibaba/AndFix" target="_blank" rel="external">AndFix</a>。</p>
 <p>在这之前，热补丁框架并没有那么火，原因无非就是要么用起来太重，要么不支持ART。比如携程出品的<a href="https://github.com/CtripMobile/DynamicAPK" target="_blank" rel="external">DynamicAPK</a>,这种框架是为了解决平台级的产品相关业务开发之间的解耦，热补丁只是其附属功能，对于量级没有那么大的项目，没有必要采用这种很重的框架。另外就是基于阿里出品的基于<a href="https://github.com/rovo89/Xposed" target="_blank" rel="external">Xposed</a>的AOP框架<a href="https://github.com/alibaba/dexposed" target="_blank" rel="external">dexposed</a>，剥离掉<code>Xposed</code>的root部分功能，主要应该与AOP编程、插桩 (如测试、性能监控等)、在线热补丁、SDK hooking等，用起来比较重并且不支持<code>ART</code>。<br>众多的热补丁框架为开发者带来了福利，不用发版本就可以紧急修复线上版本的bug。</p>
 <p>这篇文章主要是分析AndFix的实现原理。</p>
 <h1 id="AndFix"><a href="#AndFix" class="headerlink" title="AndFix"></a>AndFix</h1><h2 id="u4F7F_u7528_u65B9_u6CD5"><a href="#u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="使用方法"></a>使用方法</h2><p>引用</p>
@@ -362,29 +344,49 @@
 <li><a href="http://blog.zhaiyifan.cn/2015/11/20/HotPatchCompare/" target="_blank" rel="external">各大热补丁方案分析和比较</a></li>
 </ul>
 
-          
-        
       
     </div>
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/AndFix/" rel="tag">#AndFix</a>
+          
+            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
+          
+            <a href="/tags/热补丁/" rel="tag">#热补丁</a>
+          
+        </div>
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/15/ClassyShark——分析apk利器/" rel="next" title="ClassyShark——apk分析利器">
+                <i class="fa fa-chevron-left"></i> ClassyShark——apk分析利器
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </article>
 
 
-    
 
-  </section>
-
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -392,6 +394,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/03/Android热补丁之AndFix原理解析/"
+           data-title="Android热补丁之AndFix原理解析" data-url="http://yoursite.com/2016/03/03/Android热补丁之AndFix原理解析/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -411,8 +421,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/walle.jpg"
@@ -483,6 +502,23 @@
       </section>
 
       
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u80CC_u666F"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AndFix"><span class="nav-number">2.</span> <span class="nav-text">AndFix</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4F7F_u7528_u65B9_u6CD5"><span class="nav-number">2.1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apkPatch_u5DE5_u5177_u89E3_u6790"><span class="nav-number">2.2.</span> <span class="nav-text">apkPatch工具解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5BF9_u6BD4apk_u6587_u4EF6"><span class="nav-number">2.2.1.</span> <span class="nav-text">对比apk文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5C06_u5BF9_u6BD4_u7ED3_u679C_u6253_u5305"><span class="nav-number">2.2.2.</span> <span class="nav-text">将对比结果打包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u6253_u8865_u4E01_u539F_u7406"><span class="nav-number">2.3.</span> <span class="nav-text">打补丁原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java_u5C42"><span class="nav-number">2.3.1.</span> <span class="nav-text">Java层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Native_u5C42"><span class="nav-number">2.3.2.</span> <span class="nav-text">Native层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u603B_u7ED3"><span class="nav-number">2.4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F18_u70B9"><span class="nav-number">2.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u7F3A_u70B9"><span class="nav-number">2.4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">2.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
 
     </div>
   </aside>
@@ -551,6 +587,167 @@
   
 
   
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
 
   
 
