@@ -502,3 +502,6 @@ AndFix热补丁原理就是在``native``动态替换方法``java``层的代码�
 * [Hook Java的的一个改进版本](http://blog.csdn.net/l173864930/article/details/39667355)
 * [关于Android APP在线热修复bug方案的调研(一)(AndFix)](http://blog.csdn.net/xxooyc/article/details/50317455)
 * [各大热补丁方案分析和比较](http://blog.zhaiyifan.cn/2015/11/20/HotPatchCompare/)
+
+
+项目地址：[AndFix](https://github.com/alibaba/AndFix)，本文分析版本：[AndFix:0.3.1](https://github.com/alibaba/AndFix/tree/c68d9811bd756ee418fce761ca113376ec9c4e66)
