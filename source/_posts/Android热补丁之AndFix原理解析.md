@@ -125,14 +125,15 @@ public DiffInfo diff(final File newFile, final File oldFile) throws IOException 
                 if (newClazz.equals(oldClazz)) {
                 	 //对比class文件的变量
                     this.compareField(newClazz, oldClazz, info);
-                    //对比class文件的方法
+                    //对比class文件的方法，如果同一个类中没有相同的方法
+                    //则判定为新增方法
                     this.compareMethod(newClazz, oldClazz, info);
                     contains = true;
                     break;
                 }
             }
             if (!contains) {
-            	 //否则是新增的方法
+            	 //否则是新增的类
                 info.addAddedClasses(newClazz);
             }
         }
