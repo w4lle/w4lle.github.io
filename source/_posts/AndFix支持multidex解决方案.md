@@ -178,7 +178,7 @@ java -Xms512m -Xmx1024m -jar $PRGDIR/main.jar "$@"
 
 使用方法
 
-```
+```java
 	//Classpool负责用Javassist来控制字节码的修改
 	ClassPool cp = ClassPool.getDefault();
 	//获得类文件名
