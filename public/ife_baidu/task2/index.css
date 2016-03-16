@@ -1,0 +1,13 @@
+body {
+	background: #EAEAEA;
+}
+div {
+	border-style: solid solid solid solid;
+	border-width: 1px 1px 1px 1px;
+	border-color: #E3E3E3;
+	background: white;
+}
+
+.first_title{
+	font-size: 16px;
+}
