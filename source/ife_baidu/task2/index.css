@@ -2,15 +2,13 @@
 
 body {
     background: #eee;
-    width: 1024px;
     color: #333;
-    margin: 8px;
     font-size: medium;
-    margin: 8px auto 8px 8px;
 }
 
-img {
-    width: 150px;
+.content{
+    width: 1024px;
+    margin: 0 auto;
 }
 
 
@@ -20,24 +18,20 @@ img {
 {
     background: blue;
     padding: 10px 0;
-    height: 80px;
+    height: 50px;
     width: 1024px;
 }
 
 .logo {
-    position: absolute;
-    left: 50px;
+    line-height: 100%;
+    float: left;
 }
 
 nav {
-    position: relative;
-    right: 20px;
+    float: right;
 }
 
 .nav-list {
-    position: absolute;
-    right: 0px;
-    top: 50%;
 }
 
 .nav-list li {
