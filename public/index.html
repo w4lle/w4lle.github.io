@@ -229,6 +229,112 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/" itemprop="url">
+                  Android关闭通知消息权限无法弹出Toast的解决方案
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-27T19:47:28+08:00" content="2016-03-27">
+              2016-03-27
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p>在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。</p>
+<h1 id="u539F_u56E0"><a href="#u539F_u56E0" class="headerlink" title="原因"></a>原因</h1><p>跟踪Toast的源代码，<code>make</code>方法省略，做了一些初始化的工作，<code>show</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">　　<span class="keyword">if</span> (mNextView == <span class="keyword">null</span>) &#123;</span><br><span class="line">　　　　<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"setView must have been called"</span>);</span><br><span class="line">　　&#125;</span><br><span class="line"></span><br><span class="line">　　INotificationManager service = getService();</span><br><span class="line">　　String pkg = mContext.getPackageName();</span><br><span class="line">　　TN tn = mTN;</span><br><span class="line">　　tn.mNextView = mNextView;</span><br><span class="line"></span><br><span class="line">　　<span class="keyword">try</span> &#123;</span><br><span class="line">　　　　service.enqueueToast(pkg, tn, mDuration);</span><br><span class="line">　　&#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">　　　　<span class="comment">// Empty</span></span><br><span class="line">　　&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">private</span> INotificationManager <span class="title">getService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sService != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> sService;</span><br><span class="line">    &#125;</span><br><span class="line">    sService = INotificationManager.Stub.asInterface(ServiceManager.getService(<span class="string">"notification"</span>));</span><br><span class="line">     <span class="keyword">return</span> sService;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>熟悉<code>binder</code>通讯的同学应该都知道，其实调用了<code>NotificationManagerService.service.enqueueToast</code>方法进入toast队列，进行相应的逻辑处理后回调给Toast中的<code>TN</code>，<code>TN</code>其实就是一个<code>aidl</code>的<code>stub</code>实现，相当于<code>Client</code>端，用来接收<code>Service</code>端发来的消息。看下<code>TN</code>中的show方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleShow</span><span class="params">()</span> </span>&#123; </span><br><span class="line">			... </span><br><span class="line">            mWM = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);  </span><br><span class="line">            mWM.removeView(mView);  </span><br><span class="line">            mWM.addView(mView, mParams);  </span><br><span class="line">            trySendAccessibilityEvent();  </span><br><span class="line">            ...</span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>通过<code>WinwodManager</code>添加一个<code>view</code>显示提示消息。<br>总结来说就是toast的显示过程通过IPC通讯由<code>NotificationManagerService</code>维护一个toast队列，然后通知给Toast中的客户端<code>TN</code>调用<code>WindowManager</code>添加view。<br>那么，如果关闭通知栏消息权限，会影响<code>NotificationManagerService</code>队列的逻辑处理过程，导致不能通知<code>TN</code>显示出视图。</p>
+<h1 id="u89E3_u51B3"><a href="#u89E3_u51B3" class="headerlink" title="解决"></a>解决</h1><p>通过上面的分析，我们可以绕过<code>NotificationManagerService</code>，我们自己维护一个toast队列，处理相关的逻辑，进行显示，定时取消。关键代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">activeQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    BooheeToast toast = mQueue.peek();</span><br><span class="line">    <span class="keyword">if</span> (toast == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mAtomicInteger.decrementAndGet();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mHanlder.post(toast.mShow);</span><br><span class="line">        mHanlder.postDelayed(toast.mHide, toast.mDuration);</span><br><span class="line">        mHanlder.postDelayed(mActivite, toast.mDuration);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>mQueue</code>维护了<code>Toast</code>的队列，队列采用<code>FIFO</code>调度，每次调用<code>show()</code>方法触发<code>activeQueue()</code>方法，从队列中取出toast进行显示，然后定时取消。</p>
+<h1 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h1><p>Google把Toast视为系统级别的消息通知，其实是不合理的，在app前台可见的情况下，有些关键信息需要提供给用户，如果关闭了消息通知权限，那么用户就会看不到这些关键的提示就会很困惑，直接影响用户体验，并且在Android5.0之后在设置中就可以关闭app的消息权限，Toast作为一个系统级别的消息提示设计者真的挺缺心眼的。虽然MD中有SnackBar作为消息提示，其原理就是在当前界面找到根视图，在根视图<code>addView()</code>，达到弹出提示的目的，但是请原谅我的审美不够高，SnackBar真的很丑，并且最近Google又支持BottomSheet，两个叠加到一起，我的天，画面太美，我不敢看。还有就是必须要拿到当前的content，对于用Application的context弹出toast的方案来说适配起来修改比较麻烦。很明显，Toast就应该是app级的消息提示，我们的解决方案也正是这么做的。</p>
+<h1 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>《Android开发艺术探索》第八章 理解Window和WindowManager</li>
+<li><a href="http://caizhitao.com/2016/02/09/android-toast-compat/" target="_blank" rel="external">解决小米MIUI系统上后台应用没法弹Toast的问题</a></li>
+<li><a href="http://androidxref.com/6.0.1_r10/xref/frameworks/base/core/java/android/widget/Toast.java" target="_blank" rel="external">Toast</a></li>
+<li><a href="http://androidxref.com/6.0.1_r10/xref/frameworks/base/services/core/java/com/android/server/notification/NotificationManagerService.java" target="_blank" rel="external">NotificationManagerService</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/19/前端基础-零-CSS基础/" itemprop="url">
                   前端基础(零)--CSS基础
                 </a>
@@ -1040,7 +1146,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1050,7 +1156,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
