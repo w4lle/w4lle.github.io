@@ -194,5 +194,66 @@ java -Xms512m -Xmx1024m -jar $PRGDIR/main.jar "$@"
     method.invoke(o, new Object[]{});  
 
 ```
+
 生成``.class``文件，然后替换``apkpatch.jar``包中的``.class``文件。
 这种方法只用一个jar包就可以完成生成补丁的操作。
+
+# 最后一步
+
+先看代码，``AndFixaManager``
+
+```java
+ public synchronized void fix(File file, ClassLoader classLoader,
+                                 List<String> classes) {
+        final DexFile dexFile = DexFile.loadDex(file.getAbsolutePath(),
+                    optfile.getAbsolutePath(), Context.MODE_PRIVATE);
+
+            if (saveFingerprint) {
+                mSecurityChecker.saveOptSig(optfile);
+            }
+
+            ClassLoader patchClassLoader = new ClassLoader(classLoader) {
+                @Override
+                protected Class<?> findClass(String className)
+                        throws ClassNotFoundException {
+                        // 代码1
+                    Class<?> clazz = dexFile.loadClass(className, this);
+                    if (clazz == null
+                            && className.startsWith("com.alipay.euler.andfix")) {
+                        return Class.forName(className);// annotation’s class
+                        // not found
+                    }
+                    
+                    //代码2
+                    //add fix w4lle for multidex surpport
+                    if (clazz == null) {
+                        return Class.forName(className);
+                    }
+                    //add end
+                    
+                    if (clazz == null) {
+                        throw new ClassNotFoundException(className);
+                    }
+                    return clazz;
+                }
+            };
+  }
+ ```
+
+代码1处通过``classLoader``去加载目标类，但是有一点要明确，一个运行的Android应用至少有2个``ClassLoader``，一个是``BootClassLoader``（系统启动的时候创建的），另外一个或多个是``PathClassLoader``用于加载dex，每个dex文件由一个独立的``PathClassLoader``去加载。也就是说如果目标类在dex2中，代码1是加载不了目标类的，所以会抛出``ClassNotFoundException``。就像这样
+
+```java
+Caused by: java.lang.ClassNotFoundException: Didn't find class "com.boohee.status.MsgCategoryActivity$2_CF" on path: DexPathList[[zip file "/data/app/com.boohee.one-1.apk", zip file "/data/data/com.boohee.one/code_cache/secondary-dexes/com.boohee.one-1.apk.classes2.zip"],nativeLibraryDirectories=[/data/app-lib/com.boohee.one-1, /vendor/lib, /system/lib]]
+	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:511)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:469)
+```
+
+所以我们在代码2处添加了保护代码，保证目标类可以被加载。由于andfix官方并没有做这个支持，所以就不能通过gradle依赖，就需要我们把andfix的源码放到项目中然后修改。
+
+
+# 参考
+
+* [Android动态加载基础 ClassLoader工作机制](https://segmentfault.com/a/1190000004062880)
+
+项目地址：[AndFix](https://github.com/alibaba/AndFix)，本文分析版本：[AndFix:0.3.1](https://github.com/alibaba/AndFix/tree/c68d9811bd756ee418fce761ca113376ec9c4e66)
