@@ -6,7 +6,7 @@ tags: [CSS, 前端]
 
 # 盒模型
 
-CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padding的顺序是left、top、right、bottom，比如[10, 20, 30, 20];但是在CSS中的顺序是top、right、bottom、left。
+CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padding的顺序是left、top、right、bottom，比如``setMargin(10, 20, 30, 20)``分别代表左上右下的间距分别为10px,20px,30px,20px;但是在CSS中的顺序是top、right、bottom、left，比如``margin: [10px, 20px, 30px, 20px]``分别代表左上右下间距分别为20px,10px,20px,30px。
 概述图如下
 
 ![image](https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/box-model.png)
@@ -52,7 +52,8 @@ CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框�
 
 ![image](https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/absolute.png)
 
-* fixed 固定定位，相对于视窗来定位，这意味着即便页面滚动，它还是会停留在相同的位置。
+* fixed 固定定位，相对于视窗来定位，这意味着即便页面滚动，它还是会停留在相同的位置。相当于在Android开发中``FrameLayout``中的某个元素指定``layout_gravity``使其固定在根布局的某个固定的位置。
+例子
 
 ```css
 .fixed {
@@ -84,6 +85,8 @@ clear 属性定义了元素的哪边上不允许出现浮动元素。
 # 三栏式布局
 
 ife其中的一个任务[三栏式布局](http://ife.baidu.com/task/detail?taskId=3)
+就是通过CSS的布局基础知识来写的。包括position和float。
+
 代码在这里[三栏式布局](https://github.com/w4lle/ife_baidu/tree/master/task3)
 demo [demo](http://w4lle.github.io/ife_baidu/task3/task3.html)
 

@@ -68,7 +68,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float3.png">
-<meta property="og:updated_time" content="2016-04-17T15:28:38.000Z">
+<meta property="og:updated_time" content="2016-04-17T15:38:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端基础(一)--CSS布局基础">
 <meta name="twitter:description" content="盒模型CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padd">
@@ -262,7 +262,7 @@
       
 
       
-        <h1 id="u76D2_u6A21_u578B"><a href="#u76D2_u6A21_u578B" class="headerlink" title="盒模型"></a>盒模型</h1><p>CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padding的顺序是left、top、right、bottom，比如[10, 20, 30, 20];但是在CSS中的顺序是top、right、bottom、left。<br>概述图如下</p>
+        <h1 id="u76D2_u6A21_u578B"><a href="#u76D2_u6A21_u578B" class="headerlink" title="盒模型"></a>盒模型</h1><p>CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padding的顺序是left、top、right、bottom，比如<code>setMargin(10, 20, 30, 20)</code>分别代表左上右下的间距分别为10px,20px,30px,20px;但是在CSS中的顺序是top、right、bottom、left，比如<code>margin: [10px, 20px, 30px, 20px]</code>分别代表左上右下间距分别为20px,10px,20px,30px。<br>概述图如下</p>
 <p><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/box-model.png" alt="image"></p>
 <h1 id="u5B9A_u4F4D_u57FA_u7840"><a href="#u5B9A_u4F4D_u57FA_u7840" class="headerlink" title="定位基础"></a>定位基础</h1><h2 id="position_u5B9A_u4F4D"><a href="#position_u5B9A_u4F4D" class="headerlink" title="position定位"></a><code>position</code>定位</h2><p><code>position</code>包括以下几种类型的定位</p>
 <ul>
@@ -279,7 +279,7 @@
 <p>如图</p>
 <p><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/absolute.png" alt="image"></p>
 <ul>
-<li>fixed 固定定位，相对于视窗来定位，这意味着即便页面滚动，它还是会停留在相同的位置。</li>
+<li>fixed 固定定位，相对于视窗来定位，这意味着即便页面滚动，它还是会停留在相同的位置。相当于在Android开发中<code>FrameLayout</code>中的某个元素指定<code>layout_gravity</code>使其固定在根布局的某个固定的位置。<br>例子</li>
 </ul>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.fixed</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> fixed</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">bottom</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">right</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">200px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">background-color</span>:<span class="value"> white</span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
 <p>该元素的位置始终在右下角保持不变。</p>
@@ -289,7 +289,8 @@
 <p>可以这样理解，比如<code>float: left</code>就是向左移动，直到坐边缘碰到根元素或者另外一个佛洞的边框的边缘。也就是说，如果好好几个向左浮动的元素，那么它们是从左到右依次排列的。<br>如下面的图</p>
 <p><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float1.png" alt="image"><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float2.png" alt="image"><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float3.png" alt="image"></p>
 <h2 id="clear_u6E05_u9664_u6D6E_u52A8"><a href="#clear_u6E05_u9664_u6D6E_u52A8" class="headerlink" title="clear清除浮动"></a><code>clear</code>清除浮动</h2><p>clear 属性定义了元素的哪边上不允许出现浮动元素。<br>具体的例子参考<a href="http://zh.learnlayout.com/clear.html" target="_blank" rel="external">这里</a></p>
-<h1 id="u4E09_u680F_u5F0F_u5E03_u5C40"><a href="#u4E09_u680F_u5F0F_u5E03_u5C40" class="headerlink" title="三栏式布局"></a>三栏式布局</h1><p>ife其中的一个任务<a href="http://ife.baidu.com/task/detail?taskId=3" target="_blank" rel="external">三栏式布局</a><br>代码在这里<a href="https://github.com/w4lle/ife_baidu/tree/master/task3" target="_blank" rel="external">三栏式布局</a><br>demo <a href="http://w4lle.github.io/ife_baidu/task3/task3.html" target="_blank" rel="external">demo</a></p>
+<h1 id="u4E09_u680F_u5F0F_u5E03_u5C40"><a href="#u4E09_u680F_u5F0F_u5E03_u5C40" class="headerlink" title="三栏式布局"></a>三栏式布局</h1><p>ife其中的一个任务<a href="http://ife.baidu.com/task/detail?taskId=3" target="_blank" rel="external">三栏式布局</a><br>就是通过CSS的布局基础知识来写的。包括position和float。</p>
+<p>代码在这里<a href="https://github.com/w4lle/ife_baidu/tree/master/task3" target="_blank" rel="external">三栏式布局</a><br>demo <a href="http://w4lle.github.io/ife_baidu/task3/task3.html" target="_blank" rel="external">demo</a></p>
 <h1 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h1><ul>
 <li><a href="http://zh.learnlayout.com/" target="_blank" rel="external">learnlayout</a></li>
 <li><a href="http://www.w3school.com.cn/css/css_positioning.asp" target="_blank" rel="external">w3school</a></li>
