@@ -383,7 +383,7 @@ baseContext.mPackageInfo.mActivityThread.mAllApplications 代码1处
 
 这些工作做完之后调用``MyApplication``的``onCreate``方法``BootstrapApplication``就将控制权交给了``MyApplication``，这样在整个运行环境中，``MyApplication``就是正牌``Application``了，完成``Application``的替换。
 
-总结一下，刚才我们说了已经有两个动态加载的方案，激进方案和保守方案,而``Instant run``的重启更新机制更像后者--保守方案即单``ClassLoader``方案，首先，该种方案只有一个``ClassLoader``，只不过是通过替换``Application``达到的替换``mLoadedApk`进而替换```ClassLoader``的目的，并没有涉及到缓存``mPackage``然后dexList也是它自己维护的。
+总结一下，刚才我们说了已经有两个动态加载的方案，激进方案和保守方案,而``Instant run``的重启更新机制更像后者--保守方案即单``ClassLoader``方案，首先，该种方案只有一个``ClassLoader``，只不过是通过替换``Application``达到的替换``mLoadedApk``进而替换``ClassLoader``的目的，并没有涉及到缓存``mPackage``然后dexList也是它自己维护的。
 
 ## Instant run 热更新机制
 
