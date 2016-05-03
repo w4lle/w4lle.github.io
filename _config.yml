@@ -14,7 +14,7 @@ avatar: https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uplo
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://w4lle.github.io/
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -77,3 +77,9 @@ deploy:
 
 #Duoshuo
 duoshuo_shortname: w4lle
+
+#SiteMap
+sitemap:
+    path: sitemap.xml
+
+

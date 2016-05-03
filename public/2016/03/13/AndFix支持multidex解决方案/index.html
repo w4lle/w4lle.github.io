@@ -61,7 +61,7 @@
 1234public static DexBackedDexFile loadDexFile(File dexFile, int a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AndFix支持Multidex的解决方案">
-<meta property="og:url" content="http://yoursite.com/2016/03/13/AndFix支持multidex解决方案/index.html">
+<meta property="og:url" content="http://w4lle.github.io/2016/03/13/AndFix支持multidex解决方案/index.html">
 <meta property="og:site_name" content="w4lle">
 <meta property="og:description" content="背景在上一篇文章Android热补丁之AndFix原理解析中我们提到，AndFix的补丁文件是补丁生成工具apkPatch生成的，补丁文件.apatch基于dex diff的原理生成，简单来说就是对比两个apk包中的dex文件，代码在DexFileFactory类中
 1234public static DexBackedDexFile loadDexFile(File dexFile, int a">
@@ -260,7 +260,7 @@
       
 
       
-        <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p>在上一篇文章<a href="http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" target="_blank" rel="external">Android热补丁之AndFix原理解析</a>中我们提到，AndFix的补丁文件是补丁生成工具apkPatch生成的，补丁文件<code>.apatch</code>基于<code>dex diff</code>的原理生成，简单来说就是对比两个apk包中的dex文件，代码在<code>DexFileFactory</code>类中</p>
+        <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p>在上一篇文章<a href="http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/">Android热补丁之AndFix原理解析</a>中我们提到，AndFix的补丁文件是补丁生成工具apkPatch生成的，补丁文件<code>.apatch</code>基于<code>dex diff</code>的原理生成，简单来说就是对比两个apk包中的dex文件，代码在<code>DexFileFactory</code>类中</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DexBackedDexFile <span class="title">loadDexFile</span><span class="params">(File dexFile, <span class="keyword">int</span> api, <span class="keyword">boolean</span> experimental)</span> <span class="keyword">throws</span> IOException</span><br><span class="line">  </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> loadDexFile(dexFile, <span class="string">"classes.dex"</span>, <span class="keyword">new</span> Opcodes(api, experimental));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <p>上面可以看到，只提取了apk包中的classes.dex文件，对于支持现阶段基本上所有的项目都是基于multidex方案的，那么如果apk包中有多个dex文件的话，AndFix的补丁工具就不会生效了。</p>
 <h1 id="u89E3_u51B3_u65B9_u6848"><a href="#u89E3_u51B3_u65B9_u6848" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="u81EA_u5DF1_u91CD_u65B0_u5199_u4E00_u4E2A_u5DE5_u5177"><a href="#u81EA_u5DF1_u91CD_u65B0_u5199_u4E00_u4E2A_u5DE5_u5177" class="headerlink" title="自己重新写一个工具"></a>自己重新写一个工具</h2><p>补丁生成工具apkPatch是一个jar文件，但是阿里团队并没有开源它的具体实现，我们也只能通过反编译来分析它，所以如果要重新写一个的话，要根据反编译全部重新敲一遍代码，只在关键的部分修改代码来达到支持multidex的目的。但是这种方式很低级，效率太低。</p>
@@ -351,7 +351,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/03/13/AndFix支持multidex解决方案/"
-           data-title="AndFix支持Multidex的解决方案" data-url="http://yoursite.com/2016/03/13/AndFix支持multidex解决方案/">
+           data-title="AndFix支持Multidex的解决方案" data-url="http://w4lle.github.io/2016/03/13/AndFix支持multidex解决方案/">
       </div>
     
   </div>
