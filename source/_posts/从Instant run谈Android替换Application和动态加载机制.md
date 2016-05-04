@@ -479,3 +479,4 @@ load方法中会去加载全部补丁类，并赋值给对应原类的``$change`
 * [Android的Proxy/Delegate Application框架](http://blogs.360.cn/blog/proxydelegate-application/)
 * [Android 插件化原理解析——插件加载机制](http://weishu.me/2016/04/05/understand-plugin-framework-classloader/)
 * [Instant Run 浅析](http://jiajixin.cn/2015/11/25/instant-run/)
+* [Instant Run原理解析](http://www.jianshu.com/p/0400fb58d086)
