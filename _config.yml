@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: w4lle 
+title: w4lle's Notes
 subtitle: Eeeee... va?
 description: 生活不止眼前的苟且，还有诗，和远方。
 author: w4lle
@@ -64,6 +64,15 @@ pagination_dir: page
 
 # Extensions
 ## Plugins: http://hexo.io/plugins/
+#RSS订阅
+plugin:
+- hexo-generator-feed
+#Feed Atom
+feed:
+type: atom
+path: atom.xml
+limit: 20
+
 ## Themes: http://hexo.io/themes
 theme: next
 
@@ -81,5 +90,3 @@ duoshuo_shortname: w4lle
 #SiteMap
 sitemap:
     path: sitemap.xml
-
-
