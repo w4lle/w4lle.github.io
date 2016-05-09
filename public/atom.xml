@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-05-04T06:44:49.000Z</updated>
+  <updated>2016-05-08T15:35:11.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -14,6 +14,128 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>前端基础(二)--快速布局神器Flexbox布局</title>
+    <link href="http://w4lle.github.io/2016/05/08/Flexbox/"/>
+    <id>http://w4lle.github.io/2016/05/08/Flexbox/</id>
+    <published>2016-05-08T12:38:35.000Z</published>
+    <updated>2016-05-08T15:35:11.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;u4EC0_u4E48_u662FFlexbox&quot;&gt;&lt;a href=&quot;#u4EC0_u4E48_u662FFlexbox&quot; class=&quot;headerlink&quot; title=&quot;什么是Flexbox&quot;&gt;&lt;/a&gt;什么是Flexbox&lt;/h1&gt;&lt;p&gt;在&lt;a href=&quot;http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/&quot;&gt;上一篇文章&lt;/a&gt;中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。&lt;br&gt;2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的布局计算依赖于块和内联的流方向。&lt;br&gt;并且React Native也是使用的Flex布局，对于客户端开发来说学习Flex大有裨益。&lt;/p&gt;
+&lt;h1 id=&quot;u57FA_u672C_u6982_u5FF5_u548C_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#u57FA_u672C_u6982_u5FF5_u548C_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;基本概念和属性&quot;&gt;&lt;/a&gt;基本概念和属性&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Flexbox&lt;/code&gt;布局依赖于&lt;code&gt;flex directions&lt;/code&gt;，简单的说：&lt;code&gt;Flexbox&lt;/code&gt;是布局模块，而不是一个简单的属性。采用Flex布局的元素，称为&lt;code&gt;Flex容器&lt;/code&gt;（flex container），它的所有&lt;code&gt;子元素&lt;/code&gt;（flex item）自动成为容器成员。&lt;br&gt;&lt;code&gt;Flexbox&lt;/code&gt;布局很像&lt;code&gt;Android&lt;/code&gt;开发中的&lt;code&gt;LinearLayout&lt;/code&gt;布局，但是要比&lt;code&gt;LinearLayout&lt;/code&gt;要强大。跟&lt;code&gt;LinearLayout&lt;/code&gt;类似，&lt;code&gt;Flexbox&lt;/code&gt;也存在两个方向的布局–主轴（main axis）和副轴（cross axis），可以简单的理解为&lt;code&gt;LinearLayout&lt;/code&gt;的水平布局和垂直布局。主轴的开始位置（与边框的交叉点）叫做&lt;code&gt;main start&lt;/code&gt;，结束位置叫做&lt;code&gt;main end&lt;/code&gt;；交叉轴的开始位置叫做&lt;code&gt;cross start&lt;/code&gt;，结束位置叫做&lt;code&gt;cross end&lt;/code&gt;。项目默认沿主轴排列。单个项目占据的主轴空间叫做&lt;code&gt;main size&lt;/code&gt;，占据的交叉轴空间叫做&lt;code&gt;cross size&lt;/code&gt;。&lt;br&gt;&lt;img src=&quot;http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;u5C5E_u6027&quot;&gt;&lt;a href=&quot;#u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;属性&quot;&gt;&lt;/a&gt;属性&lt;/h1&gt;&lt;p&gt;属性分为&lt;code&gt;flex container&lt;/code&gt;属性和&lt;code&gt;flex item&lt;/code&gt;属性。对应父容器和子元素。&lt;/p&gt;
+&lt;h2 id=&quot;flex_container_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#flex_container_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;flex container属性&quot;&gt;&lt;/a&gt;flex container属性&lt;/h2&gt;&lt;p&gt;以下几个属于&lt;code&gt;flex container&lt;/code&gt;属性&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;flex container 属性&lt;/li&gt;
+&lt;li&gt;order&lt;/li&gt;
+&lt;li&gt;flex-wrap&lt;/li&gt;
+&lt;li&gt;flex-flow&lt;/li&gt;
+&lt;li&gt;justify-content&lt;/li&gt;
+&lt;li&gt;align-content&lt;/li&gt;
+&lt;li&gt;align-items&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;flex-direction_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#flex-direction_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;flex-direction属性&quot;&gt;&lt;/a&gt;flex-direction属性&lt;/h3&gt;&lt;p&gt;flex-direction属性决定主轴的方向（即项目的排列方向）。类似&lt;code&gt;LinearLayout&lt;/code&gt;的&lt;code&gt;vertical&lt;/code&gt;or&lt;code&gt;Horizontal&lt;/code&gt;。&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;flex-direction: row | row-reverse | column | column-reverse&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;有四个值可以选择：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;row（默认值）：主轴为水平方向，起点在左端。&lt;/li&gt;
+&lt;li&gt;row-reverse：主轴为水平方向，起点在右端。&lt;/li&gt;
+&lt;li&gt;column：主轴为垂直方向，起点在上沿。&lt;/li&gt;
+&lt;li&gt;column-reverse：主轴为垂直方向，起点在下沿。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;order_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#order_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;order属性&quot;&gt;&lt;/a&gt;order属性&lt;/h3&gt;&lt;p&gt;默认情况下子元素的排列方式按照文档流的顺序依次排序，而&lt;code&gt;order&lt;/code&gt;属性可以控制排列的顺序，负值在前，正值灾后，按照从小到大的顺序依次排列。我们说之所以&lt;code&gt;flex box&lt;/code&gt;相对&lt;code&gt;LinearLayout&lt;/code&gt;强就是因为一些属性比较给力，&lt;code&gt;order&lt;/code&gt;就是其中之一。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://sfault-image.b0.upaiyun.com/318/287/3182877863-56fde345ba339_articlex&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;flex-wrap_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#flex-wrap_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;flex-wrap属性&quot;&gt;&lt;/a&gt;flex-wrap属性&lt;/h3&gt;&lt;p&gt;默认情况下&lt;code&gt;Flex&lt;/code&gt;跟&lt;code&gt;LinearLayout&lt;/code&gt;一样，都是不带换行排列的，但是&lt;code&gt;flex-wrap&lt;/code&gt;属性可以支持换行排列。这个也比&lt;code&gt;LinearLayout&lt;/code&gt;吊啊有三个值：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;flex-wrap: nowrap | wrap | wrap-reverse;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;img src=&quot;https://sfault-image.b0.upaiyun.com/159/596/15959628-56fde3489ff74_articlex&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;nowrap ：不换行&lt;/li&gt;
+&lt;li&gt;wrap：按正常方向换行&lt;/li&gt;
+&lt;li&gt;wrap-reverse：按反方向换行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;flex-flow_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#flex-flow_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;flex-flow属性&quot;&gt;&lt;/a&gt;flex-flow属性&lt;/h3&gt;&lt;p&gt;&lt;code&gt;flex-flow&lt;/code&gt;属性是&lt;code&gt;flex-direction&lt;/code&gt;属性和&lt;code&gt;flex-wrap&lt;/code&gt;属性的简写形式，默认值为&lt;code&gt;row nowrap&lt;/code&gt;。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;flex-flow: &amp;#60;flex-direction&amp;#62; || &amp;#60;flex-wrap&amp;#62;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;justify-content_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#justify-content_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;justify-content属性&quot;&gt;&lt;/a&gt;justify-content属性&lt;/h3&gt;&lt;p&gt;&lt;code&gt;justify-content&lt;/code&gt;属性定义了项目在主轴上的对齐方式。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;justify-content: flex-start | flex-end | center | space-between | space-around;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;flex-start（默认值）：左对齐&lt;/li&gt;
+&lt;li&gt;flex-end：右对齐&lt;/li&gt;
+&lt;li&gt;center： 居中&lt;/li&gt;
+&lt;li&gt;space-between：两端对齐，项目之间的间隔都相等。&lt;/li&gt;
+&lt;li&gt;space-around：每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://sfault-image.b0.upaiyun.com/421/275/4212753174-56fde6083157c_articlex&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;align-items_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#align-items_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;align-items属性&quot;&gt;&lt;/a&gt;align-items属性&lt;/h3&gt;&lt;p&gt;&lt;code&gt;align-items&lt;/code&gt;属性定义项目在副轴轴上如何对齐。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;align-items: flex-start | flex-end | center | baseline | stretch;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;flex-start：交叉轴的起点对齐。&lt;/li&gt;
+&lt;li&gt;flex-end：交叉轴的终点对齐。&lt;/li&gt;
+&lt;li&gt;center：交叉轴的中点对齐。&lt;/li&gt;
+&lt;li&gt;baseline: 项目的第一行文字的基线对齐。&lt;/li&gt;
+&lt;li&gt;stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;http://img.blog.csdn.net/20150616152600533&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;align-content_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#align-content_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;align-content属性&quot;&gt;&lt;/a&gt;align-content属性&lt;/h3&gt;&lt;p&gt;&lt;code&gt;align-content&lt;/code&gt;属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;align-content: flex-start | flex-end | center | space-between | space-around | stretch;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;flex-start：与交叉轴的起点对齐。&lt;/li&gt;
+&lt;li&gt;flex-end：与交叉轴的终点对齐。&lt;/li&gt;
+&lt;li&gt;center：与交叉轴的中点对齐。&lt;/li&gt;
+&lt;li&gt;space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。&lt;/li&gt;
+&lt;li&gt;space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。&lt;/li&gt;
+&lt;li&gt;stretch（默认值）：轴线占满整个交叉轴。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;u5B50_u5143_u7D20_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#u5B50_u5143_u7D20_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;子元素属性&quot;&gt;&lt;/a&gt;子元素属性&lt;/h2&gt;&lt;p&gt;以下几个属性设置在子元素上。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;flex-grow&lt;/li&gt;
+&lt;li&gt;flex-shrink&lt;/li&gt;
+&lt;li&gt;flex-basis&lt;/li&gt;
+&lt;li&gt;flex&lt;/li&gt;
+&lt;li&gt;align-self&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;flex-grow_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#flex-grow_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;flex-grow属性&quot;&gt;&lt;/a&gt;flex-grow属性&lt;/h3&gt;&lt;p&gt;&lt;code&gt;flex-grow&lt;/code&gt;属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。一张图看懂。跟&lt;code&gt;LinearLayout&lt;/code&gt;中的&lt;code&gt;weight&lt;/code&gt;属性一样。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;.item &amp;#123;&amp;#10;  flex-grow: &amp;#60;number&amp;#62;; /* default 0 */&amp;#10;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;img src=&quot;https://sfault-image.b0.upaiyun.com/271/846/2718468848-56fde60740335_articlex&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;p&gt;如果所有项目的&lt;code&gt;flex-grow&lt;/code&gt;属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的&lt;code&gt;flex-grow&lt;/code&gt;属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍。&lt;/p&gt;
+&lt;h3 id=&quot;flex-shrink_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#flex-shrink_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;flex-shrink属性&quot;&gt;&lt;/a&gt;flex-shrink属性&lt;/h3&gt;&lt;p&gt;&lt;code&gt;flex-shrink&lt;/code&gt;属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;.item &amp;#123;&amp;#10;  flex-shrink: &amp;#60;number&amp;#62;; /* default 1 */&amp;#10;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;如果所有项目的&lt;code&gt;flex-shrink&lt;/code&gt;属性都为1，当空间不足时，都将等比例缩小。如果一个项目的&lt;code&gt;flex-shrink&lt;/code&gt;属性为0，其他项目都为1，则空间不足时，前者不缩小。&lt;br&gt;负值对该属性无效。&lt;/p&gt;
+&lt;h3 id=&quot;flex-basis_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#flex-basis_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;flex-basis属性&quot;&gt;&lt;/a&gt;flex-basis属性&lt;/h3&gt;&lt;p&gt;&lt;code&gt;flex-basis&lt;/code&gt;属性定义了在分配多余空间之前，子元素占据的&lt;code&gt;main size&lt;/code&gt;主轴空间，浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为&lt;code&gt;auto&lt;/code&gt;，即子元素的本来大小。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;.item &amp;#123;&amp;#10;  flex-basis: &amp;#60;length&amp;#62; | auto; /* default auto */&amp;#10;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;flex_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#flex_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;flex属性&quot;&gt;&lt;/a&gt;flex属性&lt;/h3&gt;&lt;p&gt;&lt;code&gt;flex&lt;/code&gt;属性是&lt;code&gt;flex-grow&lt;/code&gt;, &lt;code&gt;flex-shrink&lt;/code&gt; 和 &lt;code&gt;flex-basis&lt;/code&gt;的简写，默认值为0 1 auto。后两个属性可选。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;.item &amp;#123;&amp;#10;  flex: none | [ &amp;#60;&amp;#39;flex-grow&amp;#39;&amp;#62; &amp;#60;&amp;#39;flex-shrink&amp;#39;&amp;#62;? || &amp;#60;&amp;#39;flex-basis&amp;#39;&amp;#62; ]&amp;#10;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。&lt;/p&gt;
+&lt;h3 id=&quot;align-self_u5C5E_u6027&quot;&gt;&lt;a href=&quot;#align-self_u5C5E_u6027&quot; class=&quot;headerlink&quot; title=&quot;align-self属性&quot;&gt;&lt;/a&gt;align-self属性&lt;/h3&gt;&lt;p&gt;&lt;code&gt;align-self&lt;/code&gt;属性允许单个子元素有与其他子元素不一样的对齐方式，可覆盖&lt;code&gt;align-items&lt;/code&gt;属性。默认值为&lt;code&gt;auto&lt;/code&gt;，表示继承父元素的&lt;code&gt;align-items&lt;/code&gt;属性，如果没有父元素，则等同于&lt;code&gt;stretch&lt;/code&gt;。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;.item &amp;#123;&amp;#10;  align-self: auto | flex-start | flex-end | center | baseline | stretch;&amp;#10;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;该属性可能取6个值，除了&lt;code&gt;auto&lt;/code&gt;，其他都与&lt;code&gt;align-items&lt;/code&gt;属性完全一致。&lt;/p&gt;
+&lt;h1 id=&quot;u5B9E_u4F8B&quot;&gt;&lt;a href=&quot;#u5B9E_u4F8B&quot; class=&quot;headerlink&quot; title=&quot;实例&quot;&gt;&lt;/a&gt;实例&lt;/h1&gt;&lt;p&gt;属性基本都讲完了，下面进入实战。&lt;br&gt;百度前端学院的其中一个任务：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;学习如何flex进行布局，学习如何根据屏幕宽度调整布局策略。&lt;/li&gt;
+&lt;li&gt;屏幕宽度小于 640px 时，调整 Flexbox 的属性以实现第四个元素移动到最前面的效果，而不要改动第一个元素的边框颜色与高度实现效果图。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;http://7xrp04.com1.z0.glb.clouddn.com/task_1_10_1.png&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;效果图&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;分析：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;屏幕宽度小于640px时，调整主轴对齐方式justify-content属性为space-between，在副轴对齐方式align-items为center&lt;/li&gt;
+&lt;li&gt;屏幕宽度大于640px，要有换行，并且动态调整&lt;code&gt;order&lt;/code&gt;属性，调整第四个子元素的排列位置。并且调整align-items为flex-start;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&quot;http://w4lle.github.io/ife_baidu/task10/index.html&quot;&gt;效果图&lt;/a&gt;和&lt;a href=&quot;https://github.com/w4lle/ife_baidu/tree/master/task10&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;代码&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;u603B_u7ED3&quot;&gt;&lt;a href=&quot;#u603B_u7ED3&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h1&gt;&lt;p&gt;可以看到，&lt;code&gt;Flex box&lt;/code&gt;布局方式相比传统的盒模型布局方式要快速很多，对于一些复杂的页面也可以很快速的开发。而且由于&lt;code&gt;React Native&lt;/code&gt;的支持并使用，相信会有跟多开发者使用这种布局方式进行开发。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;u4EC0_u4E48_u662FFlexbox&quot;&gt;&lt;a href=&quot;#u4EC0_u4E48_u662FFlexbox&quot; class=&quot;headerlink&quot; title=&quot;什么是Flexbox&quot;&gt;&lt;/a&gt;什么是Flexbox&lt;/h1&gt;&lt;p&gt;在&lt;a href=&quot;
+    
+    </summary>
+    
+    
+      <category term="Flexbox" scheme="http://w4lle.github.io/tags/Flexbox/"/>
+    
+      <category term="前端" scheme="http://w4lle.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>从Instant run谈Android替换Application和动态加载机制</title>

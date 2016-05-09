@@ -199,6 +199,205 @@
 
     
     
+      
+      
+        
+        
+        
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/08/Flexbox/" itemprop="url">
+                  前端基础(二)--快速布局神器Flexbox布局
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-08T20:38:35+08:00" content="2016-05-08">
+              2016-05-08
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/08/Flexbox/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/08/Flexbox/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="u4EC0_u4E48_u662FFlexbox"><a href="#u4EC0_u4E48_u662FFlexbox" class="headerlink" title="什么是Flexbox"></a>什么是Flexbox</h1><p>在<a href="http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/">上一篇文章</a>中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。<br>2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的布局计算依赖于块和内联的流方向。<br>并且React Native也是使用的Flex布局，对于客户端开发来说学习Flex大有裨益。</p>
+<h1 id="u57FA_u672C_u6982_u5FF5_u548C_u5C5E_u6027"><a href="#u57FA_u672C_u6982_u5FF5_u548C_u5C5E_u6027" class="headerlink" title="基本概念和属性"></a>基本概念和属性</h1><p><code>Flexbox</code>布局依赖于<code>flex directions</code>，简单的说：<code>Flexbox</code>是布局模块，而不是一个简单的属性。采用Flex布局的元素，称为<code>Flex容器</code>（flex container），它的所有<code>子元素</code>（flex item）自动成为容器成员。<br><code>Flexbox</code>布局很像<code>Android</code>开发中的<code>LinearLayout</code>布局，但是要比<code>LinearLayout</code>要强大。跟<code>LinearLayout</code>类似，<code>Flexbox</code>也存在两个方向的布局–主轴（main axis）和副轴（cross axis），可以简单的理解为<code>LinearLayout</code>的水平布局和垂直布局。主轴的开始位置（与边框的交叉点）叫做<code>main start</code>，结束位置叫做<code>main end</code>；交叉轴的开始位置叫做<code>cross start</code>，结束位置叫做<code>cross end</code>。项目默认沿主轴排列。单个项目占据的主轴空间叫做<code>main size</code>，占据的交叉轴空间叫做<code>cross size</code>。<br><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png" alt="image"></p>
+<h1 id="u5C5E_u6027"><a href="#u5C5E_u6027" class="headerlink" title="属性"></a>属性</h1><p>属性分为<code>flex container</code>属性和<code>flex item</code>属性。对应父容器和子元素。</p>
+<h2 id="flex_container_u5C5E_u6027"><a href="#flex_container_u5C5E_u6027" class="headerlink" title="flex container属性"></a>flex container属性</h2><p>以下几个属于<code>flex container</code>属性</p>
+<ul>
+<li>flex container 属性</li>
+<li>order</li>
+<li>flex-wrap</li>
+<li>flex-flow</li>
+<li>justify-content</li>
+<li>align-content</li>
+<li>align-items</li>
+</ul>
+<h3 id="flex-direction_u5C5E_u6027"><a href="#flex-direction_u5C5E_u6027" class="headerlink" title="flex-direction属性"></a>flex-direction属性</h3><p>flex-direction属性决定主轴的方向（即项目的排列方向）。类似<code>LinearLayout</code>的<code>vertical</code>or<code>Horizontal</code>。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flex-direction: row | row-reverse | column | column-reverse</span><br></pre></td></tr></table></figure>
+<p>有四个值可以选择：</p>
+<ul>
+<li>row（默认值）：主轴为水平方向，起点在左端。</li>
+<li>row-reverse：主轴为水平方向，起点在右端。</li>
+<li>column：主轴为垂直方向，起点在上沿。</li>
+<li>column-reverse：主轴为垂直方向，起点在下沿。</li>
+</ul>
+<h3 id="order_u5C5E_u6027"><a href="#order_u5C5E_u6027" class="headerlink" title="order属性"></a>order属性</h3><p>默认情况下子元素的排列方式按照文档流的顺序依次排序，而<code>order</code>属性可以控制排列的顺序，负值在前，正值灾后，按照从小到大的顺序依次排列。我们说之所以<code>flex box</code>相对<code>LinearLayout</code>强就是因为一些属性比较给力，<code>order</code>就是其中之一。</p>
+<p><img src="https://sfault-image.b0.upaiyun.com/318/287/3182877863-56fde345ba339_articlex" alt="image"></p>
+<h3 id="flex-wrap_u5C5E_u6027"><a href="#flex-wrap_u5C5E_u6027" class="headerlink" title="flex-wrap属性"></a>flex-wrap属性</h3><p>默认情况下<code>Flex</code>跟<code>LinearLayout</code>一样，都是不带换行排列的，但是<code>flex-wrap</code>属性可以支持换行排列。这个也比<code>LinearLayout</code>吊啊有三个值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flex-wrap: nowrap | wrap | wrap-reverse;</span><br></pre></td></tr></table></figure>
+<p><img src="https://sfault-image.b0.upaiyun.com/159/596/15959628-56fde3489ff74_articlex" alt="image"></p>
+<ul>
+<li>nowrap ：不换行</li>
+<li>wrap：按正常方向换行</li>
+<li>wrap-reverse：按反方向换行</li>
+</ul>
+<h3 id="flex-flow_u5C5E_u6027"><a href="#flex-flow_u5C5E_u6027" class="headerlink" title="flex-flow属性"></a>flex-flow属性</h3><p><code>flex-flow</code>属性是<code>flex-direction</code>属性和<code>flex-wrap</code>属性的简写形式，默认值为<code>row nowrap</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flex-flow: &#60;flex-direction&#62; || &#60;flex-wrap&#62;;</span><br></pre></td></tr></table></figure>
+<h3 id="justify-content_u5C5E_u6027"><a href="#justify-content_u5C5E_u6027" class="headerlink" title="justify-content属性"></a>justify-content属性</h3><p><code>justify-content</code>属性定义了项目在主轴上的对齐方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">justify-content: flex-start | flex-end | center | space-between | space-around;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>flex-start（默认值）：左对齐</li>
+<li>flex-end：右对齐</li>
+<li>center： 居中</li>
+<li>space-between：两端对齐，项目之间的间隔都相等。</li>
+<li>space-around：每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。</li>
+</ul>
+<p><img src="https://sfault-image.b0.upaiyun.com/421/275/4212753174-56fde6083157c_articlex" alt="image"></p>
+<h3 id="align-items_u5C5E_u6027"><a href="#align-items_u5C5E_u6027" class="headerlink" title="align-items属性"></a>align-items属性</h3><p><code>align-items</code>属性定义项目在副轴轴上如何对齐。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">align-items: flex-start | flex-end | center | baseline | stretch;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>flex-start：交叉轴的起点对齐。</li>
+<li>flex-end：交叉轴的终点对齐。</li>
+<li>center：交叉轴的中点对齐。</li>
+<li>baseline: 项目的第一行文字的基线对齐。</li>
+<li>stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。</li>
+</ul>
+<p><img src="http://img.blog.csdn.net/20150616152600533" alt="image"></p>
+<h3 id="align-content_u5C5E_u6027"><a href="#align-content_u5C5E_u6027" class="headerlink" title="align-content属性"></a>align-content属性</h3><p><code>align-content</code>属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">align-content: flex-start | flex-end | center | space-between | space-around | stretch;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>flex-start：与交叉轴的起点对齐。</li>
+<li>flex-end：与交叉轴的终点对齐。</li>
+<li>center：与交叉轴的中点对齐。</li>
+<li>space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。</li>
+<li>space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。</li>
+<li>stretch（默认值）：轴线占满整个交叉轴。</li>
+</ul>
+<h2 id="u5B50_u5143_u7D20_u5C5E_u6027"><a href="#u5B50_u5143_u7D20_u5C5E_u6027" class="headerlink" title="子元素属性"></a>子元素属性</h2><p>以下几个属性设置在子元素上。</p>
+<ul>
+<li>flex-grow</li>
+<li>flex-shrink</li>
+<li>flex-basis</li>
+<li>flex</li>
+<li>align-self</li>
+</ul>
+<h3 id="flex-grow_u5C5E_u6027"><a href="#flex-grow_u5C5E_u6027" class="headerlink" title="flex-grow属性"></a>flex-grow属性</h3><p><code>flex-grow</code>属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。一张图看懂。跟<code>LinearLayout</code>中的<code>weight</code>属性一样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  flex-grow: &#60;number&#62;; /* default 0 */&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://sfault-image.b0.upaiyun.com/271/846/2718468848-56fde60740335_articlex" alt="image"></p>
+<p>如果所有项目的<code>flex-grow</code>属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的<code>flex-grow</code>属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍。</p>
+<h3 id="flex-shrink_u5C5E_u6027"><a href="#flex-shrink_u5C5E_u6027" class="headerlink" title="flex-shrink属性"></a>flex-shrink属性</h3><p><code>flex-shrink</code>属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  flex-shrink: &#60;number&#62;; /* default 1 */&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>如果所有项目的<code>flex-shrink</code>属性都为1，当空间不足时，都将等比例缩小。如果一个项目的<code>flex-shrink</code>属性为0，其他项目都为1，则空间不足时，前者不缩小。<br>负值对该属性无效。</p>
+<h3 id="flex-basis_u5C5E_u6027"><a href="#flex-basis_u5C5E_u6027" class="headerlink" title="flex-basis属性"></a>flex-basis属性</h3><p><code>flex-basis</code>属性定义了在分配多余空间之前，子元素占据的<code>main size</code>主轴空间，浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为<code>auto</code>，即子元素的本来大小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  flex-basis: &#60;length&#62; | auto; /* default auto */&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="flex_u5C5E_u6027"><a href="#flex_u5C5E_u6027" class="headerlink" title="flex属性"></a>flex属性</h3><p><code>flex</code>属性是<code>flex-grow</code>, <code>flex-shrink</code> 和 <code>flex-basis</code>的简写，默认值为0 1 auto。后两个属性可选。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  flex: none | [ &#60;&#39;flex-grow&#39;&#62; &#60;&#39;flex-shrink&#39;&#62;? || &#60;&#39;flex-basis&#39;&#62; ]&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。</p>
+<h3 id="align-self_u5C5E_u6027"><a href="#align-self_u5C5E_u6027" class="headerlink" title="align-self属性"></a>align-self属性</h3><p><code>align-self</code>属性允许单个子元素有与其他子元素不一样的对齐方式，可覆盖<code>align-items</code>属性。默认值为<code>auto</code>，表示继承父元素的<code>align-items</code>属性，如果没有父元素，则等同于<code>stretch</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  align-self: auto | flex-start | flex-end | center | baseline | stretch;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>该属性可能取6个值，除了<code>auto</code>，其他都与<code>align-items</code>属性完全一致。</p>
+<h1 id="u5B9E_u4F8B"><a href="#u5B9E_u4F8B" class="headerlink" title="实例"></a>实例</h1><p>属性基本都讲完了，下面进入实战。<br>百度前端学院的其中一个任务：</p>
+<ul>
+<li>学习如何flex进行布局，学习如何根据屏幕宽度调整布局策略。</li>
+<li>屏幕宽度小于 640px 时，调整 Flexbox 的属性以实现第四个元素移动到最前面的效果，而不要改动第一个元素的边框颜色与高度实现效果图。</li>
+</ul>
+<p><a href="http://7xrp04.com1.z0.glb.clouddn.com/task_1_10_1.png" target="_blank" rel="external">效果图</a></p>
+<p>分析：</p>
+<ol>
+<li>屏幕宽度小于640px时，调整主轴对齐方式justify-content属性为space-between，在副轴对齐方式align-items为center</li>
+<li>屏幕宽度大于640px，要有换行，并且动态调整<code>order</code>属性，调整第四个子元素的排列位置。并且调整align-items为flex-start;</li>
+</ol>
+<p><a href="http://w4lle.github.io/ife_baidu/task10/index.html">效果图</a>和<a href="https://github.com/w4lle/ife_baidu/tree/master/task10" target="_blank" rel="external">代码</a></p>
+<h1 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h1><p>可以看到，<code>Flex box</code>布局方式相比传统的盒模型布局方式要快速很多，对于一些复杂的页面也可以很快速的开发。而且由于<code>React Native</code>的支持并使用，相信会有跟多开发者使用这种布局方式进行开发。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1403,109 +1602,14 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/28/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-28T14:38:14+08:00" content="2016-01-28">
-              2016-01-28
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/01/28/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/28/hello-world/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1544,7 +1648,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1554,7 +1658,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
