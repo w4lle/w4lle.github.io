@@ -208,7 +208,61 @@ align-content: flex-start | flex-end | center | space-between | space-around | s
 
 [效果图](http://w4lle.github.io/ife_baidu/task10/index.html)和[代码](https://github.com/w4lle/ife_baidu/tree/master/task10)
 
+# Android开发者的福音
+
+
+大概在一个月前，Google开源了[flexbox-layout](https://github.com/google/flexbox-layout)项目，用以支持``Flexbox``布局在Android开发中使用，支持源生的``Flexbox``属性。
+官方例子，在xml布局文件中使用
+
+```xml
+<com.google.android.flexbox.FlexboxLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:flexWrap="wrap"
+    app:alignItems="stretch"
+    app:alignContent="stretch" >
+
+    <TextView
+        android:id="@+id/textview1"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        app:layout_flexBasisPercent="50%"
+        />
+
+    <TextView
+        android:id="@+id/textview2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_alignSelf="center"
+        />
+
+    <TextView
+        android:id="@+id/textview3"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        app:layout_alignSelf="flex_end"
+        />
+</com.google.android.flexbox.FlexboxLayout>
+```
+
+在java代码中使用
+
+```java
+FlexboxLayout flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout);
+flexboxLayout.setFlexDirection(FlexboxLayout.FLEX_DIRECTION_COLUMN);
+
+View view = flexboxLayout.getChildAt(0);
+FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) view.getLayoutParams();
+lp.order = -1;
+lp.flexGrow = 2;
+view.setLayoutParams(lp);
+```
+
+可以看到使用非常方便，对于熟悉``Flexbox``的开发者来说对于``Android``app也可以快速上手。
+Google开发这个开源库我猜想可能一方面看到``React Native``使用``Flexbox``对于前端工程师开发Android app布局的无缝切换；另一方面，``Flexbox``也确实要比Android开发中经常使用的``LinearLayout``和``RelativeLayout``要方便很多，灵活性较两者有大幅提高，特别在动态变化这一块。
 
 # 总结
 
-可以看到，``Flex box``布局方式相比传统的盒模型布局方式要快速很多，对于一些复杂的页面也可以很快速的开发。而且由于``React Native``的支持并使用，相信会有跟多开发者使用这种布局方式进行开发。
+``Flexbox``布局方式相比传统的盒模型布局方式要快速很多，对于一些复杂的页面也可以很快速的开发。而且由于Google和Facebook的支持和使用，相信会有越来越多的开发者使用这种布局方式进行开发，在跨平台开发框架越来越成熟的现在，``Flexbox``赶紧学起来！
