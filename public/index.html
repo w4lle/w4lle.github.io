@@ -199,6 +199,134 @@
 
     
     
+      
+      
+        
+        
+        
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/15/Android自定义View之刻度尺/" itemprop="url">
+                  Android自定义View之刻度尺
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-15T16:23:43+08:00" content="2016-05-15">
+              2016-05-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/15/Android自定义View之刻度尺/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/15/Android自定义View之刻度尺/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p>项目中之前用的纵向滚轮用于选择身高体重之类的需求，新版设计要求用横向刻度尺控件来实现，效果图，上面的字不在刻度尺范围内，是一个<code>TextView</code>。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ruler" alt="刻度尺"></p>
+<p>自定义控件对于Android开发者来说是必备技能，这篇文章就不讲自定义View的基础知识了，主要谈谈绘制逻辑。</p>
+<h1 id="u5B9E_u73B0"><a href="#u5B9E_u73B0" class="headerlink" title="实现"></a>实现</h1><p>遵循自定义View的开发流程，<code>onMeasure()</code> –&gt; <code>onSizeChanged()</code> –&gt; <code>onLayout()</code> –&gt; <code>onDraw()</code>。由于我们要自定义的是View而不是ViewGroup，所以onLayout()就不用实现了。</p>
+<h2 id="onMeasure_28_29__u6D4B_u91CF"><a href="#onMeasure_28_29__u6D4B_u91CF" class="headerlink" title="onMeasure() 测量"></a>onMeasure() 测量</h2><p><code>onMeasure()</code>用于测量<code>View</code>的大小，<code>View</code>的大小不仅由自身决定，同时也受父控件的影响，为了我们的控件能更好的适应各种情况，一般会自己进行测量。刻度尺<code>View</code>左右是满屏的，偷个懒宽度就不适配了，只做高度测试就好了。高度包括长刻度的高度，加上字和底部间距</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">measureHeight</span><span class="params">(<span class="keyword">int</span> heightMeasure)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> measureMode = View.MeasureSpec.getMode(heightMeasure);</span><br><span class="line">    <span class="keyword">int</span> measureSize = View.MeasureSpec.getSize(heightMeasure);</span><br><span class="line">    <span class="keyword">int</span> result = (<span class="keyword">int</span>) (bottomPadding + longLineHeight * <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">switch</span> (measureMode) &#123;</span><br><span class="line">        <span class="keyword">case</span> View.MeasureSpec.EXACTLY:</span><br><span class="line">            result = Math.max(result, measureSize);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> View.MeasureSpec.AT_MOST:</span><br><span class="line">            result = Math.min(result, measureSize);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    height = result;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="onDraw_28_29__u7ED8_u5236"><a href="#onDraw_28_29__u7ED8_u5236" class="headerlink" title="onDraw() 绘制"></a>onDraw() 绘制</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line">    canvas.setDrawFilter(pfdf);</span><br><span class="line">    drawBg(canvas);</span><br><span class="line">    drawIndicator(canvas);</span><br><span class="line">    drawRuler(canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>绘制做了三件事情：</p>
+<ol>
+<li>绘制背景色</li>
+<li>绘制指示器</li>
+<li>绘制刻度</li>
+</ol>
+<p>只看下怎么画刻度，难点在于怎么确定刻度的坐标。首先高度的坐标是一样的，刻度指示器是在屏幕正中，指示某个值，那么该刻度值的x坐标就是确定的。根据这个值去画其他坐标，包括长刻度和短刻度。</p>
+<p>首先要确定每个长刻度（和短刻度，如果有的话）的坐标宽度和单位，确定基础单位和基础单位宽度（如果有短刻度以短刻度为基础单位）。那么</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#31532;i&#20010;&#21051;&#24230;x&#22352;&#26631; = &#20013;&#38388;&#21051;&#24230;x&#22352;&#26631; + i * &#22522;&#30784;&#21333;&#20301;&#23485;&#24230;</span><br></pre></td></tr></table></figure>
+<p>其中i的取值范围在正负屏幕可绘制多少个基础单位，第0位就是屏幕正中的刻度值。以该值为基础一次画出可以在屏幕中显示的剩余刻度，如果是长刻度单位的整数倍就画长刻度，刻度值只在长刻度下画。<br>这样就有一个问题，正中刻度值必须是可以整除基础单位，比如，长刻度 = 1，中间两个短刻度，这样基础单位值就是0.5，currentValue = 0.3，那么下一个值就是0.8，但是这样显示并不是我们想要的，我们想要0、0.5、1、1.5这样的值。所以就是在初始化的时候格式化这些值，使得所有可显示的值都可以整除基础单位值，也就是余数为0。<br>由于使用float计算，所以要用到float精确计算，否则取余操作会出现不等于0的误差导致画不出长刻度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//精度支持2位小数</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">float</span> <span class="title">format</span><span class="params">(<span class="keyword">float</span> vallue)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">float</span> result = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">if</span> (getBaseUnit() &lt; <span class="number">0.1</span>) &#123;</span><br><span class="line">           <span class="comment">//0.01</span></span><br><span class="line">           result = ArithmeticUtil.round(vallue, <span class="number">2</span>);</span><br><span class="line">           <span class="comment">//float精确计算 取余</span></span><br><span class="line">           <span class="keyword">if</span> (ArithmeticUtil.remainder(result, getBaseUnit(), <span class="number">2</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">               result += <span class="number">0.01</span>;</span><br><span class="line">               result = format(result);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getBaseUnit() &lt; <span class="number">1</span>) &#123;</span><br><span class="line">           <span class="comment">//0.1</span></span><br><span class="line">           result = ArithmeticUtil.round(vallue, <span class="number">1</span>);</span><br><span class="line">           <span class="keyword">if</span> (ArithmeticUtil.remainder(result, getBaseUnit(), <span class="number">1</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">               result += <span class="number">0.1</span>;</span><br><span class="line">               result = format(result);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getBaseUnit() &lt; <span class="number">10</span>) &#123;</span><br><span class="line">           <span class="comment">//1</span></span><br><span class="line">           result = ArithmeticUtil.round(vallue, <span class="number">0</span>);</span><br><span class="line">           <span class="keyword">if</span> (ArithmeticUtil.remainder(result, getBaseUnit(), <span class="number">0</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">               result += <span class="number">1</span>;</span><br><span class="line">               result = format(result);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> result;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="u5904_u7406_u6ED1_u52A8_u64CD_u4F5C"><a href="#u5904_u7406_u6ED1_u52A8_u64CD_u4F5C" class="headerlink" title="处理滑动操作"></a>处理滑动操作</h2><p>滑动处理比较简单，以初始化为基础，每次move操作累加x坐标，以此值绘制偏移量，停止滑动时以基础单位宽度为基准四舍五入，开始动画滑动到相应的刻度值上。<br>主要方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">drawRuler</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (moveX &lt; maxRightOffset) &#123;</span><br><span class="line">            moveX = maxRightOffset;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (moveX &gt; maxLeftOffset) &#123;</span><br><span class="line">            moveX = maxLeftOffset;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> halfCount = (<span class="keyword">int</span>) (width / <span class="number">2</span> / getBaseUnitWidth());</span><br><span class="line">        <span class="keyword">float</span> moveValue = (<span class="keyword">int</span>) (moveX / getBaseUnitWidth()) * getBaseUnit();</span><br><span class="line">        currentValue = originValue - moveValue;</span><br><span class="line">        <span class="comment">//剩余偏移量</span></span><br><span class="line">        offset = moveX - (<span class="keyword">int</span>) (moveX / getBaseUnitWidth()) * getBaseUnitWidth();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = -halfCount - <span class="number">1</span>; i &lt;= halfCount + <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">float</span> value = ArithmeticUtil.addWithScale(currentValue, ArithmeticUtil.mulWithScale(i, getBaseUnit(), <span class="number">2</span>), <span class="number">2</span>);</span><br><span class="line">            <span class="comment">//只绘出范围内的图形</span></span><br><span class="line">            <span class="keyword">if</span> (value &gt;= startValue &amp;&amp; value &lt;= endValue) &#123;</span><br><span class="line">                <span class="comment">//画长的刻度</span></span><br><span class="line">                <span class="keyword">float</span> startx = width / <span class="number">2</span> + offset + i * getBaseUnitWidth();</span><br><span class="line">                <span class="keyword">if</span> (startx &gt; <span class="number">0</span> &amp;&amp; startx &lt; width) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (microUnitCount != <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (ArithmeticUtil.remainder(value, unit, <span class="number">2</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">                            drawLongLine(canvas, i, value);</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="comment">//画短线</span></span><br><span class="line">                            drawShortLine(canvas, i);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="comment">//画长线</span></span><br><span class="line">                        drawLongLine(canvas, i, value);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">//通知结果</span></span><br><span class="line">        notifyValueChange();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>关于刻度的单位，需要给出长刻度单位和中间的短刻度个数，这样中间的短刻度单位就确定了，所以理论上不管中间有几个短刻度计算都是一样的。我在里面封装了三个常用的，2、5、10三种。<br>支持的<code>styleable</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;declare-styleable name="BooheeRulerView"&gt;</span><br><span class="line">    &lt;attr name="ruler_bg_color" format="color|reference"/&gt;</span><br><span class="line">    &lt;attr name="ruler_line_color" format="color|reference"/&gt;</span><br><span class="line">    &lt;attr name="ruler_text_size" format="dimension"/&gt;</span><br><span class="line">    &lt;attr name="ruler_text_color" format="color|reference"/&gt;</span><br><span class="line">    &lt;attr name="ruler_width_per_unit" format="dimension"/&gt;</span><br><span class="line">&lt;/declare-styleable&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ruler_gif.gif" alt="效果图"></p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ruler1.gif" alt="image"></p>
+<p><a href="https://gist.github.com/w4lle/2f676f0f2005f6a24ca6c122b7e214b4" target="_blank" rel="external">代码在这里</a></p>
+<h1 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h1><p>实现的效果比较单一，没有做太多的扩展，有时间再完善下。</p>
+<blockquote>
+<p>转载请注明地址 w4lle.github.io</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1500,104 +1628,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/01/终极Shell-Zsh-使用技巧/" itemprop="url">
-                  终极Shell--Zsh 使用技巧
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-01T01:51:36+08:00" content="2016-02-01">
-              2016-02-01
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/02/01/终极Shell-Zsh-使用技巧/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/01/终极Shell-Zsh-使用技巧/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="u4E3A_u4EC0_u4E48_u8981_u7528Zsh"><a href="#u4E3A_u4EC0_u4E48_u8981_u7528Zsh" class="headerlink" title="为什么要用Zsh"></a>为什么要用Zsh</h2><p>请参考这篇文章<a href="http://macshuo.com/?p=676" target="_blank" rel="external">终极 Shell</a></p>
-<h2 id="Zsh_u4F7F_u7528_u6280_u5DE7"><a href="#Zsh_u4F7F_u7528_u6280_u5DE7" class="headerlink" title="Zsh使用技巧"></a>Zsh使用技巧</h2><h3 id="u5DE7_u7528tab"><a href="#u5DE7_u7528tab" class="headerlink" title="巧用tab"></a>巧用<code>tab</code></h3><h4 id="u81EA_u52A8_u5B8C_u6210"><a href="#u81EA_u52A8_u5B8C_u6210" class="headerlink" title="自动完成"></a>自动完成</h4><p><code>tab</code>用到最多的就是自动完成,比如<code>cd</code>进入某个目录，可以输入该目录的中的几个字母，然后<code>tab</code>自动补全。<br>你不必输入整个目录名称，只需输入初始几个可以唯一区别与其他目录的字母，Zsh会自动匹配出剩余部分。<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/QQ20160131-1%402x.png" alt="此处输入图片的描述"><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/tab.png" alt=""></p>
-<h4 id="u73AF_u5883_u53D8_u91CF_u5C55_u5F00"><a href="#u73AF_u5883_u53D8_u91CF_u5C55_u5F00" class="headerlink" title="环境变量展开"></a>环境变量展开</h4><p>在Zsh中，你可以按下<tab>键来展开shell中的环境变量值<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/PWD-tab.png" alt=""><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/PWD-tab-done.png" alt=""></tab></p>
-<h4 id="kill_u547D_u4EE4_u8865_u5168"><a href="#kill_u547D_u4EE4_u8865_u5168" class="headerlink" title="kill命令补全"></a>kill命令补全</h4><p>通常我们想要杀死某个进程，一般都要先<code>ps</code>下查看进程，然后<code>kill</code>杀掉。使用<code>zsh</code>可以这样<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/kill_tab.png" alt=""></p>
-<h4 id="help_u547D_u4EE4"><a href="#help_u547D_u4EE4" class="headerlink" title="help命令"></a>help命令</h4><p>对于我们不熟悉的命令行，一般都会<code>--help</code>查看帮助文档，而zsh可以直接敲你想要的命令，比如这样<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/git-tab.png" alt=""></p>
-<h3 id="u5F3A_u5927_u7684_u5386_u53F2_u8BB0_u5F55"><a href="#u5F3A_u5927_u7684_u5386_u53F2_u8BB0_u5F55" class="headerlink" title="强大的历史记录"></a>强大的历史记录</h3><p>类UNIX系统通常都习惯于<code>ctrl+r</code>的方式查找命令行的历史记录，挺好用的。但是<code>zsh</code>有更强大的历史搜索，比如<code>UP</code><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/UP1.png" alt=""><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/UP2.png" alt=""><br>意思是上方向键能帮你找到最近使用的以<code>./gradlew</code>开头的命令，<code>UP</code> <code>DOWN</code>可以循环查找</p>
-<h3 id="u5F3A_u5927_u7684alias_u522B_u540D"><a href="#u5F3A_u5927_u7684alias_u522B_u540D" class="headerlink" title="强大的alias别名"></a>强大的<code>alias</code>别名</h3><p>平时工作基本都用<code>git</code>管理项目代码，每个人都有习惯使用的<code>git</code>别名，<code>zsh</code>为我们提供了一套通用的<code>alias</code>,即使换了工作环境，只要有<code>zsh</code>那么一套<code>alias</code>全部搞定。在该文件下可以看到<code>~/.oh-my-zsh/plugins/git/git.plugin.zsh</code><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/alias_git.png" alt=""><br>除了<code>git</code>别名，还有好多有用的别名，<code>alias</code>命令可以列出全部的别名<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/alias.png" alt=""></p>
-<h3 id="u667A_u80FD_u8DF3_u8F6C"><a href="#u667A_u80FD_u8DF3_u8F6C" class="headerlink" title="智能跳转"></a>智能跳转</h3><p>首先需要安装插件<code>aotojump</code>，zsh会自动记录你访问过的目录，通过 <code>j + 目录名</code>可以直接进行目录跳转，而且目录名支持模糊匹配和自动补全，例如你访问过<code>Develop</code>目录，输入<code>j develo</code> 即可正确跳转。</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1644,7 +1674,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1654,7 +1684,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
