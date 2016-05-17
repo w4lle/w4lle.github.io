@@ -1,5 +1,5 @@
 ---
-title: guestbook
+title: 留言
 date: 2016-01-29 15:50:47
 ---
 <blockquote class="blockquote-center">也要楚天阔，也要大江流；
