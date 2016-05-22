@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-05-22T11:55:43.000Z</updated>
+  <updated>2016-05-22T11:59:49.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://w4lle.github.io/2016/05/22/Android-Color/"/>
     <id>http://w4lle.github.io/2016/05/22/Android-Color/</id>
     <published>2016-05-22T09:53:01.000Z</published>
-    <updated>2016-05-22T11:55:43.000Z</updated>
+    <updated>2016-05-22T11:59:49.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;u80CC_u666F&quot;&gt;&lt;a href=&quot;#u80CC_u666F&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;之前项目中有个改变颜色的透明度的需求，大概的意思是滑动动态的改变透明度，但是不可以改变&lt;code&gt;View&lt;/code&gt;的透明度，必须改变颜色值得透明度，功能虽然是实现了，但是代码太ugly，所以重新写了一下，复习了下&lt;code&gt;Color&lt;/code&gt;的相关知识和位移的操作。&lt;/p&gt;
 &lt;h1 id=&quot;Color_u7B80_u4ECB&quot;&gt;&lt;a href=&quot;#Color_u7B80_u4ECB&quot; class=&quot;headerlink&quot; title=&quot;Color简介&quot;&gt;&lt;/a&gt;Color简介&lt;/h1&gt;&lt;p&gt;我们知道&lt;code&gt;Color&lt;/code&gt;的每个颜色通道（&lt;code&gt;channel&lt;/code&gt;）的组成由8位（&lt;code&gt;bit&lt;/code&gt;）为一个单位，即1个字节（&lt;code&gt;byte&lt;/code&gt;），10进制的取值范围0~255，我们一般用16进制表示，以&lt;code&gt;0x&lt;/code&gt;开头，取值范围在0x00~0xFF。&lt;/p&gt;
@@ -44,7 +44,7 @@
 &lt;h1 id=&quot;Color_u7EC4_u6210&quot;&gt;&lt;a href=&quot;#Color_u7EC4_u6210&quot; class=&quot;headerlink&quot; title=&quot;Color组成&quot;&gt;&lt;/a&gt;Color组成&lt;/h1&gt;&lt;p&gt;先看&lt;code&gt;color&lt;/code&gt;的组成代码：&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;argb&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; alpha, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; red, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; green, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; blue)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (alpha &amp;lt;&amp;lt; &lt;span class=&quot;number&quot;&gt;24&lt;/span&gt;) | (red &amp;lt;&amp;lt; &lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;) | (green &amp;lt;&amp;lt; &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;) | blue;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;什么意思呢？一张图看懂&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://static.oschina.net/uploads/space/2013/0123/185018_b2lZ_865151.png&quot; alt=&quot;color&quot;&gt;&lt;br&gt;r的二进制向左移动16位，r &amp;lt;&amp;lt; 16，g的二进制向左移动8位，而b的二进制则不需要移位操作。如果需要&lt;code&gt;alpha&lt;/code&gt;通道，那么a的二进制向左移动24位。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://images.cnitblog.com/blog/325852/201308/12233846-b676cad0e08e4e98a5cc5c85eb78155f.png&quot; alt=&quot;color&quot;&gt;&lt;br&gt;r的二进制向左移动16位，r &amp;lt;&amp;lt; 16，g的二进制向左移动8位，而b的二进制则不需要移位操作。如果需要&lt;code&gt;alpha&lt;/code&gt;通道，那么a的二进制向左移动24位。&lt;/p&gt;
 &lt;h1 id=&quot;u63D0_u53D6_u989C_u8272&quot;&gt;&lt;a href=&quot;#u63D0_u53D6_u989C_u8272&quot; class=&quot;headerlink&quot; title=&quot;提取颜色&quot;&gt;&lt;/a&gt;提取颜色&lt;/h1&gt;&lt;p&gt;知道了怎么组成也就好容易理解提取颜色通道&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;code&gt;blue&lt;/code&gt;：不需要移位，color&amp;amp;0xFF，由于高位还有其余通道值，所以高位要取0 &amp;amp;0xFF，剩余取blue。&lt;/li&gt;

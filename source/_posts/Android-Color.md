@@ -76,7 +76,7 @@ public static int argb(int alpha, int red, int green, int blue) {
 
 什么意思呢？一张图看懂
 
-![color](http://static.oschina.net/uploads/space/2013/0123/185018_b2lZ_865151.png)
+![color](http://images.cnitblog.com/blog/325852/201308/12233846-b676cad0e08e4e98a5cc5c85eb78155f.png)
 r的二进制向左移动16位，r << 16，g的二进制向左移动8位，而b的二进制则不需要移位操作。如果需要``alpha``通道，那么a的二进制向左移动24位。
 
 # 提取颜色

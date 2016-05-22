@@ -67,8 +67,8 @@ Color简介我们知道Color的每个颜色通道（channel）的组成由8位�
 <meta property="og:site_name" content="w4lle's Notes">
 <meta property="og:description" content="背景之前项目中有个改变颜色的透明度的需求，大概的意思是滑动动态的改变透明度，但是不可以改变View的透明度，必须改变颜色值得透明度，功能虽然是实现了，但是代码太ugly，所以重新写了一下，复习了下Color的相关知识和位移的操作。
 Color简介我们知道Color的每个颜色通道（channel）的组成由8位（bit）为一个单位，即1个字节（byte），10进制的取值范围0~255，我们一般用16进">
-<meta property="og:image" content="http://static.oschina.net/uploads/space/2013/0123/185018_b2lZ_865151.png">
-<meta property="og:updated_time" content="2016-05-22T11:55:43.000Z">
+<meta property="og:image" content="http://images.cnitblog.com/blog/325852/201308/12233846-b676cad0e08e4e98a5cc5c85eb78155f.png">
+<meta property="og:updated_time" content="2016-05-22T11:59:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Color位移操作">
 <meta name="twitter:description" content="背景之前项目中有个改变颜色的透明度的需求，大概的意思是滑动动态的改变透明度，但是不可以改变View的透明度，必须改变颜色值得透明度，功能虽然是实现了，但是代码太ugly，所以重新写了一下，复习了下Color的相关知识和位移的操作。
@@ -285,7 +285,7 @@ Color简介我们知道Color的每个颜色通道（channel）的组成由8位�
 <h1 id="Color_u7EC4_u6210"><a href="#Color_u7EC4_u6210" class="headerlink" title="Color组成"></a>Color组成</h1><p>先看<code>color</code>的组成代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">argb</span><span class="params">(<span class="keyword">int</span> alpha, <span class="keyword">int</span> red, <span class="keyword">int</span> green, <span class="keyword">int</span> blue)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (alpha &lt;&lt; <span class="number">24</span>) | (red &lt;&lt; <span class="number">16</span>) | (green &lt;&lt; <span class="number">8</span>) | blue;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>什么意思呢？一张图看懂</p>
-<p><img src="http://static.oschina.net/uploads/space/2013/0123/185018_b2lZ_865151.png" alt="color"><br>r的二进制向左移动16位，r &lt;&lt; 16，g的二进制向左移动8位，而b的二进制则不需要移位操作。如果需要<code>alpha</code>通道，那么a的二进制向左移动24位。</p>
+<p><img src="http://images.cnitblog.com/blog/325852/201308/12233846-b676cad0e08e4e98a5cc5c85eb78155f.png" alt="color"><br>r的二进制向左移动16位，r &lt;&lt; 16，g的二进制向左移动8位，而b的二进制则不需要移位操作。如果需要<code>alpha</code>通道，那么a的二进制向左移动24位。</p>
 <h1 id="u63D0_u53D6_u989C_u8272"><a href="#u63D0_u53D6_u989C_u8272" class="headerlink" title="提取颜色"></a>提取颜色</h1><p>知道了怎么组成也就好容易理解提取颜色通道</p>
 <ol>
 <li><code>blue</code>：不需要移位，color&amp;0xFF，由于高位还有其余通道值，所以高位要取0 &amp;0xFF，剩余取blue。</li>
