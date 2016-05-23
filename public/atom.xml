@@ -60,6 +60,7 @@
 &lt;li&gt;&lt;a href=&quot;http://m.oschina.net/blog/104123&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;位操作也疯狂&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://developer.android.com/reference/android/graphics/Color.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Color&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/05/22/Android-Color/&quot;&gt;http://w4lle.github.io/2016/05/22/Android-Color/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -109,6 +110,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;转载请注明地址 w4lle.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/&quot;&gt;http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -234,6 +236,7 @@
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;FlexboxLayout flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;flexboxLayout.setFlexDirection(FlexboxLayout.FLEX_DIRECTION_COLUMN);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;View view = flexboxLayout.getChildAt(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) view.getLayoutParams();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;lp.order = -&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;lp.flexGrow = &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;view.setLayoutParams(lp);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;可以看到使用非常方便，对于熟悉&lt;code&gt;Flexbox&lt;/code&gt;的开发者来说对于&lt;code&gt;Android&lt;/code&gt;app也可以快速上手。&lt;br&gt;Google开发这个开源库我猜想可能一方面看到&lt;code&gt;React Native&lt;/code&gt;使用&lt;code&gt;Flexbox&lt;/code&gt;对于前端工程师开发Android app布局的无缝切换；另一方面，&lt;code&gt;Flexbox&lt;/code&gt;也确实要比Android开发中经常使用的&lt;code&gt;LinearLayout&lt;/code&gt;和&lt;code&gt;RelativeLayout&lt;/code&gt;要方便很多，灵活性较两者有大幅提高，特别在动态变化这一块。&lt;/p&gt;
 &lt;h1 id=&quot;u603B_u7ED3&quot;&gt;&lt;a href=&quot;#u603B_u7ED3&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Flexbox&lt;/code&gt;布局方式相比传统的盒模型布局方式要快速很多，对于一些复杂的页面也可以很快速的开发。而且由于Google和Facebook的支持和使用，相信会有越来越多的开发者使用这种布局方式进行开发，在跨平台开发框架越来越成熟的现在，&lt;code&gt;Flexbox&lt;/code&gt;赶紧学起来！&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/05/08/Flexbox/&quot;&gt;http://w4lle.github.io/2016/05/08/Flexbox/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -318,6 +321,7 @@
 &lt;li&gt;&lt;a href=&quot;http://jiajixin.cn/2015/11/25/instant-run/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Instant Run 浅析&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/0400fb58d086&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Instant Run原理解析&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/05/02/从Instant run谈Android替换Application和动态加载机制/&quot;&gt;http://w4lle.github.io/2016/05/02/从Instant run谈Android替换Application和动态加载机制/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -377,6 +381,7 @@
 &lt;li&gt;&lt;a href=&quot;http://zh.learnlayout.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;learnlayout&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.w3school.com.cn/css/css_positioning.asp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;w3school&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/04/17/前端基础-一-CSS布局基础/&quot;&gt;http://w4lle.github.io/2016/04/17/前端基础-一-CSS布局基础/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -426,6 +431,7 @@
 &lt;li&gt;&lt;a href=&quot;http://www.jayfeng.com/2015/12/29/APK%E7%98%A6%E8%BA%AB%E5%AE%9E%E8%B7%B5/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;APK瘦身实践&lt;/a&gt;]&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/UsherFor/article/details/46827587&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;如何将apk大小减少6M的&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/&quot;&gt;http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -464,6 +470,7 @@
 &lt;li&gt;&lt;a href=&quot;http://androidxref.com/6.0.1_r10/xref/frameworks/base/core/java/android/widget/Toast.java&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Toast&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://androidxref.com/6.0.1_r10/xref/frameworks/base/services/core/java/com/android/server/notification/NotificationManagerService.java&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;NotificationManagerService&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/&quot;&gt;http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -560,6 +567,7 @@
 &lt;p&gt;上面所讲到的任意选择器，都可以通过组合的方式表达更复杂的元素间的关系，产生复杂的显示效果。&lt;/p&gt;
 &lt;h1 id=&quot;u603B_u7ED3&quot;&gt;&lt;a href=&quot;#u603B_u7ED3&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h1&gt;&lt;p&gt;css是前端的基础，对于界面显示和布局来说至关重要，特别是css的选择器，相互组合可以产生非常复杂的效果。&lt;/p&gt;
 &lt;p&gt;最后附上ife的提交任务二&lt;br&gt;&lt;a href=&quot;https://github.com/w4lle/ife_baidu/blob/master/task2%2Findex.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;代码地址&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://w4lle.github.io/ife_baidu/task2/index.html&quot;&gt;demo&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/&quot;&gt;http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -615,6 +623,7 @@
 &lt;li&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000004062880&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android动态加载基础 ClassLoader工作机制&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;项目地址：&lt;a href=&quot;https://github.com/alibaba/AndFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndFix&lt;/a&gt;，本文分析版本：&lt;a href=&quot;https://github.com/alibaba/AndFix/tree/c68d9811bd756ee418fce761ca113376ec9c4e66&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndFix:0.3.1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/03/13/AndFix支持multidex解决方案/&quot;&gt;http://w4lle.github.io/2016/03/13/AndFix支持multidex解决方案/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -723,6 +732,7 @@
 &lt;li&gt;&lt;a href=&quot;http://blog.zhaiyifan.cn/2015/11/20/HotPatchCompare/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;各大热补丁方案分析和比较&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;项目地址：&lt;a href=&quot;https://github.com/alibaba/AndFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndFix&lt;/a&gt;，本文分析版本：&lt;a href=&quot;https://github.com/alibaba/AndFix/tree/c68d9811bd756ee418fce761ca113376ec9c4e66&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndFix:0.3.1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/03/03/Android热补丁之AndFix原理解析/&quot;&gt;http://w4lle.github.io/2016/03/03/Android热补丁之AndFix原理解析/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -804,6 +814,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/8e8b88ea2197&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;分析应用使用的技术框架和开源库&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/02/15/ClassyShark——分析apk利器/&quot;&gt;http://w4lle.github.io/2016/02/15/ClassyShark——分析apk利器/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -837,6 +848,7 @@
 &lt;h3 id=&quot;u5F3A_u5927_u7684_u5386_u53F2_u8BB0_u5F55&quot;&gt;&lt;a href=&quot;#u5F3A_u5927_u7684_u5386_u53F2_u8BB0_u5F55&quot; class=&quot;headerlink&quot; title=&quot;强大的历史记录&quot;&gt;&lt;/a&gt;强大的历史记录&lt;/h3&gt;&lt;p&gt;类UNIX系统通常都习惯于&lt;code&gt;ctrl+r&lt;/code&gt;的方式查找命令行的历史记录，挺好用的。但是&lt;code&gt;zsh&lt;/code&gt;有更强大的历史搜索，比如&lt;code&gt;UP&lt;/code&gt;&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/UP1.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/UP2.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;意思是上方向键能帮你找到最近使用的以&lt;code&gt;./gradlew&lt;/code&gt;开头的命令，&lt;code&gt;UP&lt;/code&gt; &lt;code&gt;DOWN&lt;/code&gt;可以循环查找&lt;/p&gt;
 &lt;h3 id=&quot;u5F3A_u5927_u7684alias_u522B_u540D&quot;&gt;&lt;a href=&quot;#u5F3A_u5927_u7684alias_u522B_u540D&quot; class=&quot;headerlink&quot; title=&quot;强大的alias别名&quot;&gt;&lt;/a&gt;强大的&lt;code&gt;alias&lt;/code&gt;别名&lt;/h3&gt;&lt;p&gt;平时工作基本都用&lt;code&gt;git&lt;/code&gt;管理项目代码，每个人都有习惯使用的&lt;code&gt;git&lt;/code&gt;别名，&lt;code&gt;zsh&lt;/code&gt;为我们提供了一套通用的&lt;code&gt;alias&lt;/code&gt;,即使换了工作环境，只要有&lt;code&gt;zsh&lt;/code&gt;那么一套&lt;code&gt;alias&lt;/code&gt;全部搞定。在该文件下可以看到&lt;code&gt;~/.oh-my-zsh/plugins/git/git.plugin.zsh&lt;/code&gt;&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/alias_git.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;除了&lt;code&gt;git&lt;/code&gt;别名，还有好多有用的别名，&lt;code&gt;alias&lt;/code&gt;命令可以列出全部的别名&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/alias.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;u667A_u80FD_u8DF3_u8F6C&quot;&gt;&lt;a href=&quot;#u667A_u80FD_u8DF3_u8F6C&quot; class=&quot;headerlink&quot; title=&quot;智能跳转&quot;&gt;&lt;/a&gt;智能跳转&lt;/h3&gt;&lt;p&gt;首先需要安装插件&lt;code&gt;aotojump&lt;/code&gt;，zsh会自动记录你访问过的目录，通过 &lt;code&gt;j + 目录名&lt;/code&gt;可以直接进行目录跳转，而且目录名支持模糊匹配和自动补全，例如你访问过&lt;code&gt;Develop&lt;/code&gt;目录，输入&lt;code&gt;j develo&lt;/code&gt; 即可正确跳转。&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/02/01/终极Shell-Zsh-使用技巧/&quot;&gt;http://w4lle.github.io/2016/02/01/终极Shell-Zsh-使用技巧/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -868,6 +880,7 @@
 &lt;p&gt;More info: &lt;a href=&quot;http://hexo.io/docs/generating.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Generating&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;Deploy_to_remote_sites&quot;&gt;&lt;a href=&quot;#Deploy_to_remote_sites&quot; class=&quot;headerlink&quot; title=&quot;Deploy to remote sites&quot;&gt;&lt;/a&gt;Deploy to remote sites&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;More info: &lt;a href=&quot;http://hexo.io/docs/deployment.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/01/28/hello-world/&quot;&gt;http://w4lle.github.io/2016/01/28/hello-world/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">

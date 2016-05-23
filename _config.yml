@@ -90,3 +90,11 @@ duoshuo_shortname: w4lle
 #SiteMap
 sitemap:
     path: sitemap.xml
+
+#Addlink
+addlink:
+  domain: w4lle.github.io # the domain of your site
+  before_text: 本文地址   # text before the post link
+  #after_text: # text after the post link
+
+
