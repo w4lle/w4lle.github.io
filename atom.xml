@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-06-06T10:48:22.000Z</updated>
+  <updated>2016-06-06T12:41:08.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -16,22 +16,49 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hexo-themes</title>
+    <title>Hexo主题同步</title>
     <link href="http://w4lle.github.io/2016/06/06/Hexo-themes/"/>
     <id>http://w4lle.github.io/2016/06/06/Hexo-themes/</id>
     <published>2016-06-06T10:48:22.000Z</published>
-    <updated>2016-06-06T10:48:22.000Z</updated>
+    <updated>2016-06-06T12:41:08.000Z</updated>
     
-    <content type="html">&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/06/06/Hexo-themes/&quot;&gt;http://w4lle.github.io/2016/06/06/Hexo-themes/&lt;/a&gt; &lt;/p&gt;
+    <content type="html">&lt;h1 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;&lt;p&gt;由于升级&lt;code&gt;Node.js&lt;/code&gt;导致要重新安装&lt;code&gt;Hexo&lt;/code&gt;，安装完新版的&lt;code&gt;Hexo&lt;/code&gt;发现有些东西不能用，搞来搞去把本地仓库搞乱了，就想着把本地的仓库删掉吧，在从远程&lt;code&gt;clone&lt;/code&gt;一份下来。&lt;br&gt;博客用的是&lt;a href=&quot;https://github.com/iissnan/hexo-theme-next&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Next主题&lt;/a&gt;，结果之前的主题配置&lt;code&gt;themes/next/&lt;/code&gt;目录根本就没有上传到远程分支，导致主题所有的定制化修改全部丢失。此问题已经提交到&lt;a href=&quot;https://github.com/iissnan/hexo-theme-next&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Next主题&lt;/a&gt;的&lt;a href=&quot;https://github.com/iissnan/hexo-theme-next/issues/932&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Issues&lt;/a&gt;中。&lt;/p&gt;
+&lt;h1 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h1&gt;&lt;p&gt;先看下&lt;a href=&quot;https://github.com/iissnan/hexo-theme-next&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Next主题&lt;/a&gt;的使用方法&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;git clone https://github.com/iissnan/hexo-theme-next themes/next&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;这样配置完其实&lt;code&gt;thems/next/&lt;/code&gt;就是一个包含&lt;code&gt;.git/&lt;/code&gt;的子项目仓库。所以在&lt;code&gt;push&lt;/code&gt;主项目的时候不会上传子项目，子项目的文件夹是灰的，并且里面是空的。如图&lt;br&gt;&lt;img src=&quot;https://cloud.githubusercontent.com/assets/7310246/15810485/b86f642a-2bd1-11e6-9bea-c8c603e9ba35.png&quot; alt=&quot;此处输入图片的描述&quot;&gt;&lt;/p&gt;
+&lt;p&gt;所以从远程仓库拉取的项目中是没有&lt;a href=&quot;https://github.com/iissnan/hexo-theme-next&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Next主题&lt;/a&gt;的。&lt;/p&gt;
+&lt;h1 id=&quot;解决&quot;&gt;&lt;a href=&quot;#解决&quot; class=&quot;headerlink&quot; title=&quot;解决&quot;&gt;&lt;/a&gt;解决&lt;/h1&gt;&lt;p&gt;解决方法在&lt;a href=&quot;https://github.com/iissnan/hexo-theme-next/issues/932&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Issues&lt;/a&gt;里也说了，用&lt;code&gt;fork + subtree&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;首先要&lt;code&gt;fork&lt;/code&gt; &lt;code&gt;Next&lt;/code&gt;，然后拉取到本地做修改，修改好后&lt;code&gt;push&lt;/code&gt;到远程仓库。&lt;br&gt;然后用&lt;code&gt;git subtree&lt;/code&gt;把&lt;code&gt;themes/next/&lt;/code&gt;当做子项目来统一管理。&lt;code&gt;subtree&lt;/code&gt;的用法可以看&lt;a href=&quot;http://aoxuis.me/post/2013-08-06-git-subtree&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用GIT SUBTREE集成项目到子目录&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;具体步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;删除&lt;code&gt;themes/next/&lt;/code&gt;并&lt;code&gt;push&lt;/code&gt;到远程&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;rm -rf themes/next&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;gst&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ga .&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;git add --all&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;gcmsg &lt;span class=&quot;string&quot;&gt;&quot;delete next&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ggpush&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;绑定子项目&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;git remote add -f next git&lt;span class=&quot;annotation&quot;&gt;@github&lt;/span&gt;.com:w4lle/hexo-theme-next.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;git subtree add --prefix=themes/next next master --squash&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;更新子项目&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;git fetch next master&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;git subtree pull --prefix=themes/next next master --squash&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;从子目录push到远程仓库&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;git subtree push --prefix=themes/next next master&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;现在再去远程仓库看&lt;code&gt;themes/next/&lt;/code&gt;就有内容了，并且跟子项目的远程仓库可以保持更新，在主项目中修改也可以&lt;code&gt;push&lt;/code&gt;到子项目的远程。再也不用担心主题配置丢失了。&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://aoxuis.me/post/2013-08-06-git-subtree&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用GIT SUBTREE集成项目到子目录&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://tidus.xyz/2016/01/29/hexo%E7%94%A8subtree%E5%90%8C%E6%AD%A5%E4%B8%BB%E9%A2%98/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo用subtree同步主题&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/06/06/Hexo-themes/&quot;&gt;http://w4lle.github.io/2016/06/06/Hexo-themes/&lt;/a&gt; &lt;/p&gt;
 </content>
     
     <summary type="html">
     
-      &lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/06/06/Hexo-themes/&quot;&gt;http://w4lle.github.io/2016/06/06/Hexo-themes/&lt;/a&gt; &lt;/p&gt;
-
+      &lt;h1 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;&lt;p&gt;由于升级&lt;code&gt;Node.js&lt;/code&gt;导致要重新安装&lt;code&gt;Hexo&lt;/code&gt;，安装完新版的&lt;code&gt;Hexo&lt;/cod
     
     </summary>
     
+    
+      <category term="Hexo" scheme="http://w4lle.github.io/tags/Hexo/"/>
     
   </entry>
   

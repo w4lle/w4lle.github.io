@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="瓦力" />
+  <meta name="keywords" content="Hexo," />
 
 
 
@@ -86,16 +86,20 @@
 
 
 
-<meta name="description" content="本文地址 http://w4lle.github.io/2016/06/06/Hexo-themes/">
+<meta name="description" content="问题由于升级Node.js导致要重新安装Hexo，安装完新版的Hexo发现有些东西不能用，搞来搞去把本地仓库搞乱了，就想着把本地的仓库删掉吧，在从远程clone一份下来。博客用的是Next主题，结果之前的主题配置themes/next/目录根本就没有上传到远程分支，导致主题所有的定制化修改全部丢失。此问题已经提交到Next主题的Issues中。
+原因先看下Next主题的使用方法1git clone">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo-themes">
+<meta property="og:title" content="Hexo主题同步">
 <meta property="og:url" content="http://w4lle.github.io/2016/06/06/Hexo-themes/index.html">
 <meta property="og:site_name" content="w4lle's Notes">
-<meta property="og:description" content="本文地址 http://w4lle.github.io/2016/06/06/Hexo-themes/">
-<meta property="og:updated_time" content="2016-06-06T10:48:22.000Z">
+<meta property="og:description" content="问题由于升级Node.js导致要重新安装Hexo，安装完新版的Hexo发现有些东西不能用，搞来搞去把本地仓库搞乱了，就想着把本地的仓库删掉吧，在从远程clone一份下来。博客用的是Next主题，结果之前的主题配置themes/next/目录根本就没有上传到远程分支，导致主题所有的定制化修改全部丢失。此问题已经提交到Next主题的Issues中。
+原因先看下Next主题的使用方法1git clone">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/7310246/15810485/b86f642a-2bd1-11e6-9bea-c8c603e9ba35.png">
+<meta property="og:updated_time" content="2016-06-06T12:41:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo-themes">
-<meta name="twitter:description" content="本文地址 http://w4lle.github.io/2016/06/06/Hexo-themes/">
+<meta name="twitter:title" content="Hexo主题同步">
+<meta name="twitter:description" content="问题由于升级Node.js导致要重新安装Hexo，安装完新版的Hexo发现有些东西不能用，搞来搞去把本地仓库搞乱了，就想着把本地的仓库删掉吧，在从远程clone一份下来。博客用的是Next主题，结果之前的主题配置themes/next/目录根本就没有上传到远程分支，导致主题所有的定制化修改全部丢失。此问题已经提交到Next主题的Issues中。
+原因先看下Next主题的使用方法1git clone">
 
 
 
@@ -117,7 +121,7 @@
 
 
 
-  <title> Hexo-themes | w4lle's Notes </title>
+  <title> Hexo主题同步 | w4lle's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -239,7 +243,7 @@
             
             
               
-                Hexo-themes
+                Hexo主题同步
               
             
           </h1>
@@ -289,7 +293,33 @@
       
 
       
-        <p>本文地址 <a href="http://w4lle.github.io/2016/06/06/Hexo-themes/">http://w4lle.github.io/2016/06/06/Hexo-themes/</a> </p>
+        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>由于升级<code>Node.js</code>导致要重新安装<code>Hexo</code>，安装完新版的<code>Hexo</code>发现有些东西不能用，搞来搞去把本地仓库搞乱了，就想着把本地的仓库删掉吧，在从远程<code>clone</code>一份下来。<br>博客用的是<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next主题</a>，结果之前的主题配置<code>themes/next/</code>目录根本就没有上传到远程分支，导致主题所有的定制化修改全部丢失。此问题已经提交到<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next主题</a>的<a href="https://github.com/iissnan/hexo-theme-next/issues/932" target="_blank" rel="external">Issues</a>中。</p>
+<h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>先看下<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next主题</a>的使用方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p>
+<p>这样配置完其实<code>thems/next/</code>就是一个包含<code>.git/</code>的子项目仓库。所以在<code>push</code>主项目的时候不会上传子项目，子项目的文件夹是灰的，并且里面是空的。如图<br><img src="https://cloud.githubusercontent.com/assets/7310246/15810485/b86f642a-2bd1-11e6-9bea-c8c603e9ba35.png" alt="此处输入图片的描述"></p>
+<p>所以从远程仓库拉取的项目中是没有<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next主题</a>的。</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>解决方法在<a href="https://github.com/iissnan/hexo-theme-next/issues/932" target="_blank" rel="external">Issues</a>里也说了，用<code>fork + subtree</code>。</p>
+<p>首先要<code>fork</code> <code>Next</code>，然后拉取到本地做修改，修改好后<code>push</code>到远程仓库。<br>然后用<code>git subtree</code>把<code>themes/next/</code>当做子项目来统一管理。<code>subtree</code>的用法可以看<a href="http://aoxuis.me/post/2013-08-06-git-subtree" target="_blank" rel="external">使用GIT SUBTREE集成项目到子目录</a>。</p>
+<p>具体步骤：</p>
+<ol>
+<li><p>删除<code>themes/next/</code>并<code>push</code>到远程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rm -rf themes/next</span><br><span class="line">gst</span><br><span class="line">ga .</span><br><span class="line">git add --all</span><br><span class="line">gcmsg <span class="string">"delete next"</span></span><br><span class="line">ggpush</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>绑定子项目</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote add -f next git<span class="annotation">@github</span>.com:w4lle/hexo-theme-next.git</span><br><span class="line">git subtree add --prefix=themes/next next master --squash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更新子项目</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch next master</span><br><span class="line">git subtree pull --prefix=themes/next next master --squash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从子目录push到远程仓库</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git subtree push --prefix=themes/next next master</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>现在再去远程仓库看<code>themes/next/</code>就有内容了，并且跟子项目的远程仓库可以保持更新，在主项目中修改也可以<code>push</code>到子项目的远程。再也不用担心主题配置丢失了。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://aoxuis.me/post/2013-08-06-git-subtree" target="_blank" rel="external">使用GIT SUBTREE集成项目到子目录</a></li>
+<li><a href="http://tidus.xyz/2016/01/29/hexo%E7%94%A8subtree%E5%90%8C%E6%AD%A5%E4%B8%BB%E9%A2%98/" target="_blank" rel="external">hexo用subtree同步主题</a></li>
+</ul>
+<p>本文地址 <a href="http://w4lle.github.io/2016/06/06/Hexo-themes/">http://w4lle.github.io/2016/06/06/Hexo-themes/</a> </p>
 
       
     </div>
@@ -330,6 +360,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Hexo/" rel="tag">#Hexo</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -368,7 +404,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/06/06/Hexo-themes/"
-           data-title="Hexo-themes" data-url="http://w4lle.github.io/2016/06/06/Hexo-themes/">
+           data-title="Hexo主题同步" data-url="http://w4lle.github.io/2016/06/06/Hexo-themes/">
       </div>
     
   </div>
@@ -423,7 +459,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -482,7 +518,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原因"><span class="nav-number">2.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
         </section>
