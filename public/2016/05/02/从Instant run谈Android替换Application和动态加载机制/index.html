@@ -27,18 +27,45 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
 
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Android,Install run,动态加载,热更新," />
@@ -52,7 +79,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.png?v=0.5.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
 
 
 
@@ -67,7 +94,7 @@ Instant runInstan">
 <meta property="og:site_name" content="w4lle's Notes">
 <meta property="og:description" content="背景Android studio 2.0 Stable版本中集成了Install run即时编译技术，官方描述可以大幅加速编译速度，我们团队在第一时间更新并使用，总体用下来感觉，恩…也就那样吧，还不如不用的快。所以就去看了下Install run的实现方式，其中有一个整体框架的基础，也就是今天的文章的主题，Android替换Application和动态加载机制。
 Instant runInstan">
-<meta property="og:updated_time" content="2016-05-04T06:44:49.000Z">
+<meta property="og:updated_time" content="2016-06-05T11:19:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从Instant run谈Android替换Application和动态加载机制">
 <meta name="twitter:description" content="背景Android studio 2.0 Stable版本中集成了Install run即时编译技术，官方描述可以大幅加速编译速度，我们团队在第一时间更新并使用，总体用下来感觉，恩…也就那样吧，还不如不用的快。所以就去看了下Install run的实现方式，其中有一个整体框架的基础，也就是今天的文章的主题，Android替换Application和动态加载机制。
@@ -79,7 +106,7 @@ Instant runInstan">
   var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: "always",
+    sidebar: {"position":"right","display":"always"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -103,10 +130,14 @@ Instant runInstan">
 
 
 
+
+
   
+  
+    
   
 
-  <div class="container one-collumn  page-post-detail ">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -135,13 +166,11 @@ Instant runInstan">
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             首页
           </a>
@@ -151,8 +180,6 @@ Instant runInstan">
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
           </a>
         </li>
@@ -160,8 +187,6 @@ Instant runInstan">
         
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
             标签
           </a>
@@ -171,15 +196,11 @@ Instant runInstan">
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-question-circle fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
-      
-      
       
     </ul>
   
@@ -251,6 +272,11 @@ Instant runInstan">
 
           
           
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
         </div>
       </header>
     
@@ -262,10 +288,10 @@ Instant runInstan">
       
 
       
-        <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p><code>Android studio 2.0 Stable</code>版本中集成了<code>Install run</code>即时编译技术，官方描述可以大幅加速编译速度，我们团队在第一时间更新并使用，总体用下来感觉，恩…也就那样吧，还不如不用的快。所以就去看了下<code>Install run</code>的实现方式，其中有一个整体框架的基础，也就是今天的文章的主题，Android替换Application和动态加载机制。</p>
-<h1 id="Instant_run"><a href="#Instant_run" class="headerlink" title="Instant run"></a>Instant run</h1><p><code>Instant run</code>的大概实现原理可以看下这篇<a href="http://jiajixin.cn/2015/11/25/instant-run/" target="_blank" rel="external">Instant Run 浅析</a>，我们需要知道<code>Instant run</code>使用的<code>gradle plugin2.0.0</code>，源码在<a href="https://bintray.com/android/android-tools/com.android.tools.build.gradle/view" target="_blank" rel="external">这里</a>，文中大概讲了下<code>Instant run</code>的实现原理，但是并没有深入细节，特别是替换Application和动态加载机制。</p>
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p><code>Android studio 2.0 Stable</code>版本中集成了<code>Install run</code>即时编译技术，官方描述可以大幅加速编译速度，我们团队在第一时间更新并使用，总体用下来感觉，恩…也就那样吧，还不如不用的快。所以就去看了下<code>Install run</code>的实现方式，其中有一个整体框架的基础，也就是今天的文章的主题，Android替换Application和动态加载机制。</p>
+<h1 id="Instant-run"><a href="#Instant-run" class="headerlink" title="Instant run"></a>Instant run</h1><p><code>Instant run</code>的大概实现原理可以看下这篇<a href="http://jiajixin.cn/2015/11/25/instant-run/" target="_blank" rel="external">Instant Run 浅析</a>，我们需要知道<code>Instant run</code>使用的<code>gradle plugin2.0.0</code>，源码在<a href="https://bintray.com/android/android-tools/com.android.tools.build.gradle/view" target="_blank" rel="external">这里</a>，文中大概讲了下<code>Instant run</code>的实现原理，但是并没有深入细节，特别是替换Application和动态加载机制。</p>
 <p>关于动态加载，实际上<code>Instant run</code>提供了两种动态加载的机制：<br>1.修改java代码需要重启应用加载补丁dex，而在Application初始化时替换了Application，新建了一个自定义的ClassLoader去加载所有的dex文件。我们称为<strong>重启更新机制</strong><br>2.修改代码不需要重启，新建一个<code>ClassLoader</code>去加载修改部分。我们称为<strong>热更新机制</strong></p>
-<h2 id="Application_u5165_u53E3"><a href="#Application_u5165_u53E3" class="headerlink" title="Application入口"></a>Application入口</h2><p>在编译时<code>Instant run</code>用到了<code>Transform API</code>修改字节码文件。其中<code>AndroidManifest.xml</code>文件也被修改，如下：<br><code>/app/build/intermediates/bundles/production/instant-run/AndroidManifest.xml</code>，其中的<code>Application</code>标签<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">application</span></span><br><span class="line">        <span class="attribute">name</span>=<span class="value">"com.aa.bb.MyApplication"</span></span><br><span class="line">        <span class="attribute">android:name</span>=<span class="value">"com.android.tools.fd.runtime.BootstrapApplication"</span></span><br><span class="line">		<span class="attribute">...</span> /&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Application入口"><a href="#Application入口" class="headerlink" title="Application入口"></a>Application入口</h2><p>在编译时<code>Instant run</code>用到了<code>Transform API</code>修改字节码文件。其中<code>AndroidManifest.xml</code>文件也被修改，如下：<br><code>/app/build/intermediates/bundles/production/instant-run/AndroidManifest.xml</code>，其中的<code>Application</code>标签<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">application</span></span><br><span class="line">        <span class="attribute">name</span>=<span class="value">"com.aa.bb.MyApplication"</span></span><br><span class="line">        <span class="attribute">android:name</span>=<span class="value">"com.android.tools.fd.runtime.BootstrapApplication"</span></span><br><span class="line">		<span class="attribute">...</span> /&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>多了一个<code>com.android.tools.fd.runtime.BootstrapApplication</code>，在刚刚提到的<code>gradle plugin</code>中的<code>instant-run-server</code>目录下找到该文件。</p>
 <p>实际上<code>BootstrapApplication</code>是我们app的实际入口，我们自己的<code>Application</code>即<code>MyApplication</code>采用反射机制调用。<br>我们知道<code>Application</code>是<code>ContextWrapper</code>的子类</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// android.app.Application</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> <span class="keyword">extends</span> <span class="title">ContextWrapper</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">application</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// android.content.ContextWrapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextWrapper</span> <span class="keyword">extends</span> <span class="title">Context</span> </span>&#123;</span><br><span class="line">    Context mBase;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ContextWrapper</span><span class="params">(Context base)</span> </span>&#123;</span><br><span class="line">        mBase = base;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">attachBaseContext</span><span class="params">(Context base)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mBase != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Base context already set"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        mBase = base;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> AssetManager <span class="title">getAssets</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mBase.getAssets();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Resources <span class="title">getResources</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mBase.getResources();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -273,7 +299,7 @@ Instant runInstan">
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">attachBaseContext</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!AppInfo.usingApkSplits) &#123;</span><br><span class="line">            createResources(apkModified);</span><br><span class="line">            <span class="comment">//新建一个ClassLoader并设置为原ClassLoader的parent</span></span><br><span class="line">            setupClassLoaders(context, context.getCacheDir().getPath(), apkModified);</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">//通过Manifest中我们的实际Application即MyApplication名反射生成对象</span></span><br><span class="line">        createRealApplication();</span><br><span class="line">		<span class="comment">//调用attachBaseContext完成初始化</span></span><br><span class="line">        <span class="keyword">super</span>.attachBaseContext(context);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (realApplication != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">//反射调用实际Application的attachBaseContext方法</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Method attachBaseContext =</span><br><span class="line">                        ContextWrapper.class.getDeclaredMethod(<span class="string">"attachBaseContext"</span>, Context.class);</span><br><span class="line">                attachBaseContext.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                attachBaseContext.invoke(realApplication, context);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>初始化ClassLoader</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//BootstrapApplication.setupClassLoaders</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setupClassLoaders</span><span class="params">(Context context, String codeCacheDir, <span class="keyword">long</span> apkModified)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// /data/data/package_name/files/instant-run/dex/目录下的dex列表</span></span><br><span class="line">        List&lt;String&gt; dexList = FileManager.getDexList(context, apkModified);</span><br><span class="line">            ClassLoader classLoader = BootstrapApplication.class.getClassLoader();</span><br><span class="line">            String nativeLibraryPath = (String) classLoader.getClass().getMethod(<span class="string">"getLdLibraryPath"</span>)</span><br><span class="line">                                .invoke(classLoader);</span><br><span class="line">            IncrementalClassLoader.inject(</span><br><span class="line">                    classLoader,</span><br><span class="line">                    nativeLibraryPath,</span><br><span class="line">                    codeCacheDir,</span><br><span class="line">                    dexList);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//IncrementalClassLoader.inject</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ClassLoader <span class="title">inject</span><span class="params">(</span><br><span class="line">            ClassLoader classLoader, String nativeLibraryPath, String codeCacheDir,</span><br><span class="line">            List&lt;String&gt; dexes)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//新建一个自定义ClassLoader，dexPath为参数中的dexList</span></span><br><span class="line">        IncrementalClassLoader incrementalClassLoader =</span><br><span class="line">                <span class="keyword">new</span> IncrementalClassLoader(classLoader, nativeLibraryPath, codeCacheDir, dexes);</span><br><span class="line">        <span class="comment">//设置为原ClassLoader的parent</span></span><br><span class="line">        setParent(classLoader, incrementalClassLoader);</span><br><span class="line">		<span class="keyword">return</span> incrementalClassLoader;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="u52A8_u6001_u52A0_u8F7D"><a href="#u52A8_u6001_u52A0_u8F7D" class="headerlink" title="动态加载"></a>动态加载</h2><p>新建一个自定义的<code>ClassLoader</code>名为IncrementalClassLoader，该<code>ClassLoader</code>很简单，就是<code>BaseDexClassLoader</code>的一个子类，并且将<code>IncrementalClassLoader</code>设置为原ClassLoader的parent，熟悉JVM加载机制的同学应该都知道，由于ClassLoader采用双亲委托模式，即委托父类加载类，父类找不到再自己去找。这样<code>IncrementalClassLoader</code>就变成了整个App的所有类的加载的ClassLoader，并且dexPath是<code>/data/data/package_name/files/instant-run/dex</code>目录下的dex列表，这意味着什么呢？</p>
+<h2 id="动态加载"><a href="#动态加载" class="headerlink" title="动态加载"></a>动态加载</h2><p>新建一个自定义的<code>ClassLoader</code>名为IncrementalClassLoader，该<code>ClassLoader</code>很简单，就是<code>BaseDexClassLoader</code>的一个子类，并且将<code>IncrementalClassLoader</code>设置为原ClassLoader的parent，熟悉JVM加载机制的同学应该都知道，由于ClassLoader采用双亲委托模式，即委托父类加载类，父类找不到再自己去找。这样<code>IncrementalClassLoader</code>就变成了整个App的所有类的加载的ClassLoader，并且dexPath是<code>/data/data/package_name/files/instant-run/dex</code>目录下的dex列表，这意味着什么呢？</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//``BaseDexClassLoader``的``findClass``</span></span><br><span class="line"><span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">    List&lt;Throwable&gt; suppressedExceptions = <span class="keyword">new</span> ArrayList&lt;Throwable&gt;();</span><br><span class="line">    Class c = pathList.findClass(name, suppressedExceptions);</span><br><span class="line">    <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">        ClassNotFoundException cnfe = <span class="keyword">new</span> ClassNotFoundException(<span class="string">"Didn't find class \""</span> + name + <span class="string">"\" on path: "</span> + pathList);</span><br><span class="line">        <span class="keyword">for</span> (Throwable t : suppressedExceptions) &#123;</span><br><span class="line">            cnfe.addSuppressed(t);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> cnfe;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到，查找Class的任务通过pathList完成；这个pathList是一个DexPathList类的对象，它的findClass方法如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Class <span class="title">findClass</span><span class="params">(String name, List&lt;Throwable&gt; suppressed)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">for</span> (Element element : dexElements) &#123;</span><br><span class="line">       DexFile dex = element.dexFile;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (dex != <span class="keyword">null</span>) &#123;</span><br><span class="line">           Class clazz = dex.loadClassBinaryName(name, definingContext, suppressed);</span><br><span class="line">           <span class="keyword">if</span> (clazz != <span class="keyword">null</span>) &#123;</span><br><span class="line">               <span class="keyword">return</span> clazz;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> (dexElementsSuppressedExceptions != <span class="keyword">null</span>) &#123;</span><br><span class="line">       suppressed.addAll(Arrays.asList(dexElementsSuppressedExceptions));</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -283,7 +309,7 @@ Instant runInstan">
 <blockquote>
 <p>解决这个问题有两个思路，要么全盘接管这个类加载的过程；要么告知系统我们使用的插件存在于哪里，让系统帮忙加载；这两种方式或多或少都需要干预这个类加载的过程。<br>引用自 – <a href="http://weishu.me/2016/04/05/understand-plugin-framework-classloader/" target="_blank" rel="external">Android 插件化原理解析——插件加载机制</a></p>
 </blockquote>
-<h2 id="u52A8_u6001_u52A0_u8F7D_u7684_u4E24_u79CD_u65B9_u6848"><a href="#u52A8_u6001_u52A0_u8F7D_u7684_u4E24_u79CD_u65B9_u6848" class="headerlink" title="动态加载的两种方案"></a>动态加载的两种方案</h2><p>先来看下系统如何完成类的加载过程。<br><code>Activity</code>的创建过程</p>
+<h2 id="动态加载的两种方案"><a href="#动态加载的两种方案" class="headerlink" title="动态加载的两种方案"></a>动态加载的两种方案</h2><p>先来看下系统如何完成类的加载过程。<br><code>Activity</code>的创建过程</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">java.lang.ClassLoader cl = r.packageInfo.getClassLoader();</span><br><span class="line">activity = mInstrumentation.newActivity(cl, component.getClassName(), r.intent);</span><br><span class="line">StrictMode.incrementExpectedActivityCount(activity.getClass());</span><br><span class="line">r.intent.setExtrasClassLoader(cl);</span><br></pre></td></tr></table></figure>
 <p>通过<code>ClassLoader</code>和类名加载，反射调用生成<code>Activity</code>对象，其中的<code>ClassLoader</code>从<code>LoadedApk</code>的一个对象<code>r.packageInfo</code>中获得的。<code>LoadedApk</code>对象是APK文件在内存中的表示。 Apk文件的相关信息，诸如Apk文件的代码和资源，甚至代码里面的<code>Activity</code>，<code>Service</code>等组件的信息我们都可以通过此对象获取。<br>r.packageInfo的来源：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> LoadedApk <span class="title">getPackageInfo</span><span class="params">(ApplicationInfo aInfo, CompatibilityInfo compatInfo,</span><br><span class="line">        ClassLoader baseLoader, <span class="keyword">boolean</span> securityViolation, <span class="keyword">boolean</span> includeCode,</span><br><span class="line">        <span class="keyword">boolean</span> registerPackage)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 获取userid信息</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">boolean</span> differentUser = (UserHandle.myUserId() != UserHandle.getUserId(aInfo.uid));</span><br><span class="line">    <span class="keyword">synchronized</span> (mResourcesManager) &#123;</span><br><span class="line">    <span class="comment">// 尝试获取缓存信息</span></span><br><span class="line">        WeakReference&lt;LoadedApk&gt; ref;</span><br><span class="line">        <span class="keyword">if</span> (differentUser) &#123;</span><br><span class="line">            <span class="comment">// Caching not supported across users</span></span><br><span class="line">            ref = <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (includeCode) &#123;</span><br><span class="line">            ref = mPackages.get(aInfo.packageName);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ref = mResourcePackages.get(aInfo.packageName);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        LoadedApk packageInfo = ref != <span class="keyword">null</span> ? ref.get() : <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (packageInfo == <span class="keyword">null</span> || (packageInfo.mResources != <span class="keyword">null</span></span><br><span class="line">                &amp;&amp; !packageInfo.mResources.getAssets().isUpToDate())) &#123;</span><br><span class="line">                <span class="comment">// 缓存没有命中，直接new</span></span><br><span class="line">            packageInfo =</span><br><span class="line">                <span class="keyword">new</span> LoadedApk(<span class="keyword">this</span>, aInfo, compatInfo, baseLoader,</span><br><span class="line">                        securityViolation, includeCode &amp;&amp;</span><br><span class="line">                        (aInfo.flags&amp;ApplicationInfo.FLAG_HAS_CODE) != <span class="number">0</span>, registerPackage);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 省略。。更新缓存</span></span><br><span class="line">        <span class="keyword">return</span> packageInfo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -294,7 +320,7 @@ Instant runInstan">
 <p>『保守方案』中我们深入探究了系统使用ClassLoader findClass的过程，发现应用程序使用的非系统类都是通过同一个PathClassLoader加载的；而这个类的最终父类BaseDexClassLoader通过DexPathList完成类的查找过程；我们hack了这个查找过程，从而完成了插件类的加载。</p>
 </blockquote>
 <p>激进方案由于是一个插件一个<code>Classloader</code>也叫多<code>ClassLoader</code>方案，代表作<a href="https://github.com/Qihoo360/DroidPlugin" target="_blank" rel="external">DroidPlugin</a>；保守方案也叫做单<code>ClassLoader</code>方案，代表作，Small、众多热更新框架如<a href="https://github.com/jasonross/Nuwa" target="_blank" rel="external">nuwa</a>等。</p>
-<h2 id="Instant_run_u7684_u91CD_u542F_u66F4_u65B0_u673A_u5236"><a href="#Instant_run_u7684_u91CD_u542F_u66F4_u65B0_u673A_u5236" class="headerlink" title="Instant run的重启更新机制"></a>Instant run的重启更新机制</h2><p>绕了一大圈，终于能接着往下看了。接上面，我们继续看<code>BootstrapApplication</code>的<code>onCreate</code>方法</p>
+<h2 id="Instant-run的重启更新机制"><a href="#Instant-run的重启更新机制" class="headerlink" title="Instant run的重启更新机制"></a>Instant run的重启更新机制</h2><p>绕了一大圈，终于能接着往下看了。接上面，我们继续看<code>BootstrapApplication</code>的<code>onCreate</code>方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        MonkeyPatcher.monkeyPatchApplication(</span><br><span class="line">                    BootstrapApplication.<span class="keyword">this</span>, BootstrapApplication.<span class="keyword">this</span>,</span><br><span class="line">                    realApplication, externalResourcePath);</span><br><span class="line">            MonkeyPatcher.monkeyPatchExistingResources(BootstrapApplication.<span class="keyword">this</span>,</span><br><span class="line">                    externalResourcePath, <span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">        ...</span><br><span class="line">		<span class="comment">//手机客户端app和Android Studio建立Socket通信，AS是客户端发消息，app		//是服务端接收消息作出相应操作。Instant run的通信方式。不在本文范围内</span></span><br><span class="line">        Server.create(AppInfo.applicationId, BootstrapApplication.<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (realApplication != <span class="keyword">null</span>) &#123;</span><br><span class="line">        	<span class="comment">//还记得这个realApplication吗，我们app中实际的Application</span></span><br><span class="line">            realApplication.onCreate();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>上面代码，手机客户端app和Android Studio建立Socket通信，AS是客户端发消息，app是服务端接收消息作出相应操作，这是Instant run的通信方式，不在本文范围内。然后反射调用实际<code>Application</code>的<code>onCreate</code>方法。<br>那么前面的两个<code>MonkeyPatcher</code>的方法是干嘛的呢</p>
 <p>先看<code>MonkeyPatcher.monkeyPatchApplication</code></p>
@@ -308,7 +334,7 @@ Instant runInstan">
 <p><code>MonkeyPatcher.monkeyPatchExistingResources</code>更新资源补丁，不在本文范围内就不讲了。</p>
 <p>这些工作做完之后调用<code>MyApplication</code>的<code>onCreate</code>方法<code>BootstrapApplication</code>就将控制权交给了<code>MyApplication</code>，这样在整个运行环境中，<code>MyApplication</code>就是正牌<code>Application</code>了，完成<code>Application</code>的替换。</p>
 <p>总结一下，刚才我们说了已经有两个动态加载的方案，激进方案和保守方案,而<code>Instant run</code>的重启更新机制更像后者–保守方案即单<code>ClassLoader</code>方案，首先，该种方案只有一个<code>ClassLoader</code>，只不过是通过替换<code>Application</code>达到的替换<code>mLoadedApk</code>进而替换<code>ClassLoader</code>的目的，并没有涉及到缓存<code>mPackage</code>然后dexList也是它自己维护的。</p>
-<h2 id="Instant_run__u70ED_u66F4_u65B0_u673A_u5236"><a href="#Instant_run__u70ED_u66F4_u65B0_u673A_u5236" class="headerlink" title="Instant run 热更新机制"></a>Instant run 热更新机制</h2><p>Instant run哪里用到的热更新机制呢？还记得刚才我们提到的Socket通信吗，其中S端也就是手机客户端，接收到热更新的消息会执行下面的方法：</p>
+<h2 id="Instant-run-热更新机制"><a href="#Instant-run-热更新机制" class="headerlink" title="Instant run 热更新机制"></a>Instant run 热更新机制</h2><p>Instant run哪里用到的热更新机制呢？还记得刚才我们提到的Socket通信吗，其中S端也就是手机客户端，接收到热更新的消息会执行下面的方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">handleHotSwapPatch</span><span class="params">(<span class="keyword">int</span> updateMode, @NonNull ApplicationPatch patch)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           String dexFile = FileManager.writeTempDexFile(patch.getBytes());</span><br><span class="line">           String nativeLibraryPath = FileManager.getNativeLibraryFolder().getPath();</span><br><span class="line">           <span class="comment">//新建一个ClassLoader，dexFile是刚更新的插件</span></span><br><span class="line">           DexClassLoader dexClassLoader = <span class="keyword">new</span> DexClassLoader(dexFile,</span><br><span class="line">                   mApplication.getCacheDir().getPath(), nativeLibraryPath,</span><br><span class="line">                   getClass().getClassLoader());</span><br><span class="line"></span><br><span class="line">           <span class="comment">// we should transform this process with an interface/impl</span></span><br><span class="line">           Class&lt;?&gt; aClass = Class.forName(</span><br><span class="line">                   <span class="string">"com.android.tools.fd.runtime.AppPatchesLoaderImpl"</span>, <span class="keyword">true</span>, dexClassLoader);</span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">               PatchesLoader loader = (PatchesLoader) aClass.newInstance();</span><br><span class="line">               String[] getPatchedClasses = (String[]) aClass</span><br><span class="line">                       .getDeclaredMethod(<span class="string">"getPatchedClasses"</span>).invoke(loader);</span><br><span class="line">               <span class="comment">//loader是PatchesLoader的一个实例，调用load方法加载插件</span></span><br><span class="line">               <span class="keyword">if</span> (!loader.load()) &#123;</span><br><span class="line">                   updateMode = UPDATE_MODE_COLD_SWAP;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">               updateMode = UPDATE_MODE_COLD_SWAP;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">           updateMode = UPDATE_MODE_COLD_SWAP;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> updateMode;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到根据单个dexFile新建了一个<code>ClassLoader</code>，然后调用<code>loader.load()</code>方法，<code>loader</code>是<code>PatchesLoader</code>接口的实例，<code>PatchesLoader</code>接口的一个实现类<code>AppPatchesLoaderImpl</code>，该类中记录了哪些修改的类。看一下<code>load</code>方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">load</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//遍历已记录的所有修改的类</span></span><br><span class="line">            <span class="keyword">for</span> (String className : getPatchedClasses()) &#123;</span><br><span class="line">                ClassLoader cl = getClass().getClassLoader();</span><br><span class="line">                <span class="comment">//我们刚才说的修改的类名后面都有$override</span></span><br><span class="line">                Class&lt;?&gt; aClass = cl.loadClass(className + <span class="string">"$override"</span>);</span><br><span class="line">                Object o = aClass.newInstance();</span><br><span class="line">                <span class="comment">//1.**反射修改原类中的$change字段为修改后的值**</span></span><br><span class="line">                Class&lt;?&gt; originalClass = cl.loadClass(className);</span><br><span class="line">                Field changeField = originalClass.getDeclaredField(<span class="string">"$change"</span>);</span><br><span class="line">                <span class="comment">// force the field accessibility as the class might not be "visible"</span></span><br><span class="line">                <span class="comment">// from this package.</span></span><br><span class="line">                changeField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                <span class="comment">// If there was a previous change set, mark it as obsolete:</span></span><br><span class="line">                Object previous = changeField.get(<span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">if</span> (previous != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    Field isObsolete = previous.getClass().getDeclaredField(<span class="string">"$obsolete"</span>);</span><br><span class="line">                    <span class="keyword">if</span> (isObsolete != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        isObsolete.set(<span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                changeField.set(<span class="keyword">null</span>, o);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
@@ -316,15 +342,49 @@ Instant runInstan">
 <p>2.所有修改的类有<code>gradle plugin</code>自动生成，类名在原名后面添加$override，复制修改后类的大部分方法，实现IncrementalChange 接口的access$dispatch方法，该方法会根据传递过来的方法签名，调用本类的同名方法。</p>
 <p>那么也就是说只要把原类的<code>$change</code>字段设置为该类，那就会调用该类的<code>access$dispatch</code>方法，就会使用修改后的方法了。上面代码1处就通过反射修改了原类中的<code>$change</code>为修改后补丁类中的值。<code>AppPatchesLoaderImpl</code>记录了所有被修改的类，也会被打进补丁dex。</p>
 <p>总结一下，可以看到<code>Instant run</code>热更新是多<code>ClassLoader</code>加载方案，每个插件dex都有一个<code>ClassLoader</code>，如果插件需要升级，直接重新创建一个自定的<code>ClassLoader</code>加载新的插件。但是目前来看，<code>Instant run</code>修改java代码大部分情况下都是重启更新机制，可能热更新机制还有bug。资源更新是热更新，重启对应Activity就可以。</p>
-<h1 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h1><p><code>Instant run</code>看下来真的有好多东西，其中就以替换<code>Application</code>和动态加载尤为重要，关于动态加载，完全可以根据<code>Instant run</code>的实现方式完成一个热修复和重启修复相结合的更新框架，用于线上bug的修复和功能更新，并且可以支持资源文件的更新，是无侵入性的更新框架，最重要的一点，这是官方支持的。但是，性能肯定会有所影响，实际开发中使用<code>Instant run</code>编译其实还有很多的问题，而且app初始化时使用的很多反射，这也直接导致app的启动速度降低好多。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>Instant run</code>看下来真的有好多东西，其中就以替换<code>Application</code>和动态加载尤为重要，关于动态加载，完全可以根据<code>Instant run</code>的实现方式完成一个热修复和重启修复相结合的更新框架，用于线上bug的修复和功能更新，并且可以支持资源文件的更新，是无侵入性的更新框架，最重要的一点，这是官方支持的。但是，性能肯定会有所影响，实际开发中使用<code>Instant run</code>编译其实还有很多的问题，而且app初始化时使用的很多反射，这也直接导致app的启动速度降低好多。</p>
 <p>另外一点关于Application的替换是基于<a href="https://github.com/bazelbuild/bazel" target="_blank" rel="external">bazel</a>(一种构建工具，类似于burk)中的<a href="https://github.com/bazelbuild/bazel/blob/master/src/tools/android/java/com/google/devtools/build/android/incrementaldeployment/StubApplication.java" target="_blank" rel="external">StubApplication</a></p>
-<h1 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h1><ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li><a href="http://blogs.360.cn/blog/proxydelegate-application/" target="_blank" rel="external">Android的Proxy/Delegate Application框架</a></li>
 <li><a href="http://weishu.me/2016/04/05/understand-plugin-framework-classloader/" target="_blank" rel="external">Android 插件化原理解析——插件加载机制</a></li>
 <li><a href="http://jiajixin.cn/2015/11/25/instant-run/" target="_blank" rel="external">Instant Run 浅析</a></li>
 <li><a href="http://www.jianshu.com/p/0400fb58d086" target="_blank" rel="external">Instant Run原理解析</a></li>
 </ul>
 <p>本文地址 <a href="http://w4lle.github.io/2016/05/02/从Instant run谈Android替换Application和动态加载机制/">http://w4lle.github.io/2016/05/02/从Instant run谈Android替换Application和动态加载机制/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
 
       
     </div>
@@ -430,17 +490,17 @@ Instant runInstan">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
-          
+
           
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -461,26 +521,29 @@ Instant runInstan">
           
             
               <span class="links-of-author-item">
-                <a href="https://github.com/w4lle" target="_blank">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-fw fa-github"></i>
                   
+                  GitHub
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/2274417881" target="_blank">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-fw fa-weibo"></i>
                   
+                  Weibo
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://blog.csdn.net/hlglinglong" target="_blank">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
                   
-                    <i class="fa fa-csdn"></i> CSDN
+                    <i class="fa fa-fw fa-globe"></i>
                   
+                  CSDN
                 </a>
               </span>
             
@@ -490,27 +553,20 @@ Instant runInstan">
         
         
 
-        <div class="links-of-author motion-element">
-          
-        </div>
+        
+        
 
       </section>
 
       
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator">
-            <i class="fa fa-angle-double-up"></i>
-          </div>
           <div class="post-toc">
             
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u80CC_u666F"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Instant_run"><span class="nav-number">2.</span> <span class="nav-text">Instant run</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Application_u5165_u53E3"><span class="nav-number">2.1.</span> <span class="nav-text">Application入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u52A8_u6001_u52A0_u8F7D"><span class="nav-number">2.2.</span> <span class="nav-text">动态加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u52A8_u6001_u52A0_u8F7D_u7684_u4E24_u79CD_u65B9_u6848"><span class="nav-number">2.3.</span> <span class="nav-text">动态加载的两种方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instant_run_u7684_u91CD_u542F_u66F4_u65B0_u673A_u5236"><span class="nav-number">2.4.</span> <span class="nav-text">Instant run的重启更新机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instant_run__u70ED_u66F4_u65B0_u673A_u5236"><span class="nav-number">2.5.</span> <span class="nav-text">Instant run 热更新机制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u603B_u7ED3"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Instant-run"><span class="nav-number">2.</span> <span class="nav-text">Instant run</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Application入口"><span class="nav-number">2.1.</span> <span class="nav-text">Application入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态加载"><span class="nav-number">2.2.</span> <span class="nav-text">动态加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态加载的两种方案"><span class="nav-number">2.3.</span> <span class="nav-text">动态加载的两种方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instant-run的重启更新机制"><span class="nav-number">2.4.</span> <span class="nav-text">Instant run的重启更新机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instant-run-热更新机制"><span class="nav-number">2.5.</span> <span class="nav-text">Instant run 热更新机制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator">
-            <i class="fa fa-angle-double-down"></i>
           </div>
         </section>
       
@@ -530,224 +586,90 @@ Instant runInstan">
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">w4lle</span>
 </div>
 
+<div>
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
-您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
 
+        
 
-
-
+        
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
   
 
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
 
   
 
 
 
+  
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
+  
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
+  
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
 
 
-
-  
-  
 
   
   
-<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
 
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 1 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
-      var $tocContent = $('.post-toc-content');
-
-      if (CONFIG.sidebar === 'post') {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
-        }
-      }
-    };
-  });
-</script>
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
 
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
 
 
 
@@ -778,12 +700,14 @@ Instant runInstan">
 
 
 
+
+  
   
   
 
   
-  
 
+  
 
 </body>
 </html>

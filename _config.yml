@@ -89,7 +89,9 @@ duoshuo_shortname: w4lle
 
 #SiteMap
 sitemap:
-    path: sitemap.xml
+  path: sitemap.xml
+baidusitemap:
+  path: baidusitemap.xml
 
 #Addlink
 addlink:

@@ -27,18 +27,45 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
 
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="AndFix,multidex,热更新," />
@@ -52,7 +79,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.png?v=0.5.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
 
 
 
@@ -67,7 +94,7 @@
 <meta property="og:site_name" content="w4lle's Notes">
 <meta property="og:description" content="背景在上一篇文章Android热补丁之AndFix原理解析中我们提到，AndFix的补丁文件是补丁生成工具apkPatch生成的，补丁文件.apatch基于dex diff的原理生成，简单来说就是对比两个apk包中的dex文件，代码在DexFileFactory类中
 1234public static DexBackedDexFile loadDexFile(File dexFile, int a">
-<meta property="og:updated_time" content="2016-04-07T02:29:23.000Z">
+<meta property="og:updated_time" content="2016-06-05T11:19:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AndFix支持Multidex的解决方案">
 <meta name="twitter:description" content="背景在上一篇文章Android热补丁之AndFix原理解析中我们提到，AndFix的补丁文件是补丁生成工具apkPatch生成的，补丁文件.apatch基于dex diff的原理生成，简单来说就是对比两个apk包中的dex文件，代码在DexFileFactory类中
@@ -79,7 +106,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: "always",
+    sidebar: {"position":"right","display":"always"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -103,10 +130,14 @@
 
 
 
+
+
   
+  
+    
   
 
-  <div class="container one-collumn  page-post-detail ">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -135,13 +166,11 @@
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             首页
           </a>
@@ -151,8 +180,6 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
           </a>
         </li>
@@ -160,8 +187,6 @@
         
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
             标签
           </a>
@@ -171,15 +196,11 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-question-circle fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
-      
-      
       
     </ul>
   
@@ -251,6 +272,11 @@
 
           
           
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
         </div>
       </header>
     
@@ -262,11 +288,11 @@
       
 
       
-        <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p>在上一篇文章<a href="http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/">Android热补丁之AndFix原理解析</a>中我们提到，AndFix的补丁文件是补丁生成工具apkPatch生成的，补丁文件<code>.apatch</code>基于<code>dex diff</code>的原理生成，简单来说就是对比两个apk包中的dex文件，代码在<code>DexFileFactory</code>类中</p>
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在上一篇文章<a href="http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/">Android热补丁之AndFix原理解析</a>中我们提到，AndFix的补丁文件是补丁生成工具apkPatch生成的，补丁文件<code>.apatch</code>基于<code>dex diff</code>的原理生成，简单来说就是对比两个apk包中的dex文件，代码在<code>DexFileFactory</code>类中</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DexBackedDexFile <span class="title">loadDexFile</span><span class="params">(File dexFile, <span class="keyword">int</span> api, <span class="keyword">boolean</span> experimental)</span> <span class="keyword">throws</span> IOException</span><br><span class="line">  </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> loadDexFile(dexFile, <span class="string">"classes.dex"</span>, <span class="keyword">new</span> Opcodes(api, experimental));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <p>上面可以看到，只提取了apk包中的classes.dex文件，对于支持现阶段基本上所有的项目都是基于multidex方案的，那么如果apk包中有多个dex文件的话，AndFix的补丁工具就不会生效了。</p>
-<h1 id="u89E3_u51B3_u65B9_u6848"><a href="#u89E3_u51B3_u65B9_u6848" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="u81EA_u5DF1_u91CD_u65B0_u5199_u4E00_u4E2A_u5DE5_u5177"><a href="#u81EA_u5DF1_u91CD_u65B0_u5199_u4E00_u4E2A_u5DE5_u5177" class="headerlink" title="自己重新写一个工具"></a>自己重新写一个工具</h2><p>补丁生成工具apkPatch是一个jar文件，但是阿里团队并没有开源它的具体实现，我们也只能通过反编译来分析它，所以如果要重新写一个的话，要根据反编译全部重新敲一遍代码，只在关键的部分修改代码来达到支持multidex的目的。但是这种方式很低级，效率太低。</p>
-<h2 id="u53CD_u5C04"><a href="#u53CD_u5C04" class="headerlink" title="反射"></a>反射</h2><p>大家都知道，Java代码编译完会生成.class文件，就是一堆字节码。JVM会解释执行这些字节码，由于字节码的解释执行是在运行时进行的，那我们能否手工编写字节码，再由JVM执行呢？答案是肯定的。</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="自己重新写一个工具"><a href="#自己重新写一个工具" class="headerlink" title="自己重新写一个工具"></a>自己重新写一个工具</h2><p>补丁生成工具apkPatch是一个jar文件，但是阿里团队并没有开源它的具体实现，我们也只能通过反编译来分析它，所以如果要重新写一个的话，要根据反编译全部重新敲一遍代码，只在关键的部分修改代码来达到支持multidex的目的。但是这种方式很低级，效率太低。</p>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>大家都知道，Java代码编译完会生成.class文件，就是一堆字节码。JVM会解释执行这些字节码，由于字节码的解释执行是在运行时进行的，那我们能否手工编写字节码，再由JVM执行呢？答案是肯定的。</p>
 <p>在<code>com.euler.patch.diff.DexDiffer</code>类中，抽取dex文件并进行对比</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> DiffInfo <span class="title">diff</span><span class="params">(File newFile, File oldFile)</span></span><br><span class="line">    <span class="keyword">throws</span> IOException</span><br><span class="line">  </span>&#123;</span><br><span class="line">    DexBackedDexFile newDexFile = DexFileFactory.loadDexFile(newFile, <span class="number">19</span>, </span><br><span class="line">      <span class="keyword">true</span>);</span><br><span class="line">    DexBackedDexFile oldDexFile = DexFileFactory.loadDexFile(oldFile, <span class="number">19</span>, </span><br><span class="line">      <span class="keyword">true</span>);</span><br><span class="line">      ....</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <p>修改为</p>
@@ -282,20 +308,54 @@
 <p>也就是说<code>OriginLoader</code>在加载的时候如果类是<code>com.euler.patch.diff.DexDiffer</code>，那么就会调用<code>FixLoader</code>去加载我们刚刚生成的<code>dexdiff.jar</code>中的<code>DexDiffer</code>达到替换的目的。<br><code>apkpatch.sh</code></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PRG=<span class="string">"$0"</span></span><br><span class="line"><span class="keyword">while</span> [ -h <span class="string">"$PRG"</span> ] ; do</span><br><span class="line">  ls=`ls -ld <span class="string">"$PRG"</span>`</span><br><span class="line">  link=`expr <span class="string">"$ls"</span> : <span class="string">'.*-&gt; \(.*\)$'</span>`</span><br><span class="line">  <span class="keyword">if</span> expr <span class="string">"$link"</span> : <span class="string">'/.*'</span> &gt; /dev/<span class="keyword">null</span>; then</span><br><span class="line">    PRG=<span class="string">"$link"</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    PRG=`dirname <span class="string">"$PRG"</span>`/<span class="string">"$link"</span></span><br><span class="line">  fi</span><br><span class="line">done</span><br><span class="line">PRGDIR=`dirname <span class="string">"$PRG"</span>`</span><br><span class="line"><span class="comment">//入口改为main.jar</span></span><br><span class="line">java -Xms512m -Xmx1024m -jar $PRGDIR/main.jar <span class="string">"$@"</span></span><br></pre></td></tr></table></figure>
 <p>最后的jar包有4个，main.jar, dexdiffer.jar, apkpatch.jar<br>方法代码参考<a href="https://github.com/w4lle/andfix_apkpatch_support_multidex/blob/master/apkpatch.sh" target="_blank" rel="external">这里</a></p>
-<h2 id="javassist_u4FEE_u6539class_u6587_u4EF6"><a href="#javassist_u4FEE_u6539class_u6587_u4EF6" class="headerlink" title="javassist修改class文件"></a>javassist修改class文件</h2><p><a href="https://github.com/jboss-javassist/javassist" target="_blank" rel="external">javassist</a>其实就是一个二方包，提供了运行时操作Java字节码的方法。Javassist就提供了一些方便的方法，让我们通过这些方法生成字节码。最后也是通过反射调用修改后的方法。</p>
+<h2 id="javassist修改class文件"><a href="#javassist修改class文件" class="headerlink" title="javassist修改class文件"></a>javassist修改class文件</h2><p><a href="https://github.com/jboss-javassist/javassist" target="_blank" rel="external">javassist</a>其实就是一个二方包，提供了运行时操作Java字节码的方法。Javassist就提供了一些方便的方法，让我们通过这些方法生成字节码。最后也是通过反射调用修改后的方法。</p>
 <p>使用方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Classpool负责用Javassist来控制字节码的修改</span></span><br><span class="line">ClassPool cp = ClassPool.getDefault();</span><br><span class="line"><span class="comment">//获得类文件名</span></span><br><span class="line">CtClass cc = cp.get(<span class="string">"com.euler.patch.diff.DexDiffer"</span>);</span><br><span class="line"><span class="comment">//获得要修改的方法名</span></span><br><span class="line">CtMethod m = cc.getDeclaredMethod(<span class="string">"diff"</span>);</span><br><span class="line">CtMethod.setBody(“这里是修改后的代码”); </span><br><span class="line">CtClass.addMethod(ctMethod);  </span><br><span class="line">   Class&lt;?&gt; c=CtClass.toClass();  </span><br><span class="line">   Object o=c.newInstance();  </span><br><span class="line">   Method method=o.getClass().getMethod(<span class="string">"diff"</span>, <span class="keyword">new</span> Class[]&#123;&#125;);  </span><br><span class="line">   <span class="comment">//调用字节码生成类的diff方法  </span></span><br><span class="line">   method.invoke(o, <span class="keyword">new</span> Object[]&#123;&#125;);</span><br></pre></td></tr></table></figure>
 <p>生成<code>.class</code>文件，然后替换<code>apkpatch.jar</code>包中的<code>.class</code>文件。<br>这种方法只用一个jar包就可以完成生成补丁的操作。</p>
-<h1 id="u6700_u540E_u4E00_u6B65"><a href="#u6700_u540E_u4E00_u6B65" class="headerlink" title="最后一步"></a>最后一步</h1><p>先看代码，<code>AndFixaManager</code></p>
+<h1 id="最后一步"><a href="#最后一步" class="headerlink" title="最后一步"></a>最后一步</h1><p>先看代码，<code>AndFixaManager</code></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">fix</span><span class="params">(File file, ClassLoader classLoader,</span><br><span class="line">                                List&lt;String&gt; classes)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">final</span> DexFile dexFile = DexFile.loadDex(file.getAbsolutePath(),</span><br><span class="line">                   optfile.getAbsolutePath(), Context.MODE_PRIVATE);</span><br><span class="line"></span><br><span class="line">           <span class="keyword">if</span> (saveFingerprint) &#123;</span><br><span class="line">               mSecurityChecker.saveOptSig(optfile);</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           ClassLoader patchClassLoader = <span class="keyword">new</span> ClassLoader(classLoader) &#123;</span><br><span class="line">               <span class="annotation">@Override</span></span><br><span class="line">               <span class="keyword">protected</span> Class&lt;?&gt; findClass(String className)</span><br><span class="line">                       <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">                       <span class="comment">// 代码1</span></span><br><span class="line">                   Class&lt;?&gt; clazz = dexFile.loadClass(className, <span class="keyword">this</span>);</span><br><span class="line">                   <span class="keyword">if</span> (clazz == <span class="keyword">null</span></span><br><span class="line">                           &amp;&amp; className.startsWith(<span class="string">"com.alipay.euler.andfix"</span>)) &#123;</span><br><span class="line">                       <span class="keyword">return</span> Class.forName(className);<span class="comment">// annotation’s class</span></span><br><span class="line">                       <span class="comment">// not found</span></span><br><span class="line">                   &#125;</span><br><span class="line">                   </span><br><span class="line">                   <span class="comment">//代码2</span></span><br><span class="line">                   <span class="comment">//add fix w4lle for multidex surpport</span></span><br><span class="line">                   <span class="keyword">if</span> (clazz == <span class="keyword">null</span>) &#123;</span><br><span class="line">                       <span class="keyword">return</span> Class.forName(className);</span><br><span class="line">                   &#125;</span><br><span class="line">                   <span class="comment">//add end</span></span><br><span class="line">                   </span><br><span class="line">                   <span class="keyword">if</span> (clazz == <span class="keyword">null</span>) &#123;</span><br><span class="line">                       <span class="keyword">throw</span> <span class="keyword">new</span> ClassNotFoundException(className);</span><br><span class="line">                   &#125;</span><br><span class="line">                   <span class="keyword">return</span> clazz;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>代码1处通过<code>classLoader</code>去加载目标类，但是有一点要明确，一个运行的Android应用至少有2个<code>ClassLoader</code>，一个是<code>BootClassLoader</code>（系统启动的时候创建的），另外一个或多个是<code>PathClassLoader</code>用于加载dex，每个dex文件由一个独立的<code>PathClassLoader</code>去加载。也就是说如果目标类在dex2中，代码1是加载不了目标类的，所以会抛出<code>ClassNotFoundException</code>。就像这样</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.ClassNotFoundException: Didn't find class "com.boohee.status.MsgCategoryActivity$2_CF" on path: DexPathList[[zip file "/data/app/com.boohee.one-1.apk", zip file "/data/data/com.boohee.one/code_cache/secondary-dexes/com.boohee.one-1.apk.classes2.zip"],nativeLibraryDirectories=[/data/app-lib/com.boohee.one-1, /vendor/lib, /system/lib]]</span><br><span class="line">	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)</span><br><span class="line">	at java.lang.ClassLoader.loadClass(ClassLoader.java:511)</span><br><span class="line">	at java.lang.ClassLoader.loadClass(ClassLoader.java:469)</span><br></pre></td></tr></table></figure>
 <p>所以我们在代码2处添加了保护代码，保证目标类可以被加载。由于andfix官方并没有做这个支持，所以就不能通过gradle依赖，就需要我们把andfix的源码放到项目中然后修改。</p>
-<h1 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h1><ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li><a href="https://segmentfault.com/a/1190000004062880" target="_blank" rel="external">Android动态加载基础 ClassLoader工作机制</a></li>
 </ul>
 <p>项目地址：<a href="https://github.com/alibaba/AndFix" target="_blank" rel="external">AndFix</a>，本文分析版本：<a href="https://github.com/alibaba/AndFix/tree/c68d9811bd756ee418fce761ca113376ec9c4e66" target="_blank" rel="external">AndFix:0.3.1</a></p>
 <p>本文地址 <a href="http://w4lle.github.io/2016/03/13/AndFix支持multidex解决方案/">http://w4lle.github.io/2016/03/13/AndFix支持multidex解决方案/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
 
       
     </div>
@@ -399,17 +459,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
-          
+
           
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -430,26 +490,29 @@
           
             
               <span class="links-of-author-item">
-                <a href="https://github.com/w4lle" target="_blank">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-fw fa-github"></i>
                   
+                  GitHub
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/2274417881" target="_blank">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-fw fa-weibo"></i>
                   
+                  Weibo
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://blog.csdn.net/hlglinglong" target="_blank">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
                   
-                    <i class="fa fa-csdn"></i> CSDN
+                    <i class="fa fa-fw fa-globe"></i>
                   
+                  CSDN
                 </a>
               </span>
             
@@ -459,27 +522,20 @@
         
         
 
-        <div class="links-of-author motion-element">
-          
-        </div>
+        
+        
 
       </section>
 
       
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator">
-            <i class="fa fa-angle-double-up"></i>
-          </div>
           <div class="post-toc">
             
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u80CC_u666F"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u89E3_u51B3_u65B9_u6848"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u81EA_u5DF1_u91CD_u65B0_u5199_u4E00_u4E2A_u5DE5_u5177"><span class="nav-number">2.1.</span> <span class="nav-text">自己重新写一个工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u53CD_u5C04"><span class="nav-number">2.2.</span> <span class="nav-text">反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#javassist_u4FEE_u6539class_u6587_u4EF6"><span class="nav-number">2.3.</span> <span class="nav-text">javassist修改class文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u6700_u540E_u4E00_u6B65"><span class="nav-number">3.</span> <span class="nav-text">最后一步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自己重新写一个工具"><span class="nav-number">2.1.</span> <span class="nav-text">自己重新写一个工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反射"><span class="nav-number">2.2.</span> <span class="nav-text">反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#javassist修改class文件"><span class="nav-number">2.3.</span> <span class="nav-text">javassist修改class文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最后一步"><span class="nav-number">3.</span> <span class="nav-text">最后一步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator">
-            <i class="fa fa-angle-double-down"></i>
           </div>
         </section>
       
@@ -499,224 +555,90 @@
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">w4lle</span>
 </div>
 
+<div>
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
-您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
 
+        
 
-
-
+        
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
   
 
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
 
   
 
 
 
+  
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
+  
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
+  
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
 
 
-
-  
-  
 
   
   
-<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
 
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 1 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
-      var $tocContent = $('.post-toc-content');
-
-      if (CONFIG.sidebar === 'post') {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
-        }
-      }
-    };
-  });
-</script>
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
 
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
 
 
 
@@ -747,12 +669,14 @@
 
 
 
+
+  
   
   
 
   
-  
 
+  
 
 </body>
 </html>

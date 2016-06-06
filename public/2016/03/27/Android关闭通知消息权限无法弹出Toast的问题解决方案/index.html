@@ -27,18 +27,45 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
 
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Android,Toast,通知消息权限," />
@@ -52,7 +79,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.png?v=0.5.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
 
 
 
@@ -69,7 +96,7 @@
 <meta property="og:description" content="背景在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。
 原因跟踪Toast的源代码，make方法省略，做了一些初始化的工作，show方法
 123456789101112131415161718192021222324public void show() &amp;#123;">
-<meta property="og:updated_time" content="2016-03-27T13:09:58.000Z">
+<meta property="og:updated_time" content="2016-06-05T11:19:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android关闭通知消息权限无法弹出Toast的解决方案">
 <meta name="twitter:description" content="背景在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。
@@ -82,7 +109,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: "always",
+    sidebar: {"position":"right","display":"always"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -106,10 +133,14 @@
 
 
 
+
+
   
+  
+    
   
 
-  <div class="container one-collumn  page-post-detail ">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -138,13 +169,11 @@
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             首页
           </a>
@@ -154,8 +183,6 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
           </a>
         </li>
@@ -163,8 +190,6 @@
         
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
             标签
           </a>
@@ -174,15 +199,11 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-question-circle fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
-      
-      
       
     </ul>
   
@@ -254,6 +275,11 @@
 
           
           
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
         </div>
       </header>
     
@@ -265,23 +291,57 @@
       
 
       
-        <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p>在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。</p>
-<h1 id="u539F_u56E0"><a href="#u539F_u56E0" class="headerlink" title="原因"></a>原因</h1><p>跟踪Toast的源代码，<code>make</code>方法省略，做了一些初始化的工作，<code>show</code>方法</p>
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。</p>
+<h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>跟踪Toast的源代码，<code>make</code>方法省略，做了一些初始化的工作，<code>show</code>方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">　　<span class="keyword">if</span> (mNextView == <span class="keyword">null</span>) &#123;</span><br><span class="line">　　　　<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"setView must have been called"</span>);</span><br><span class="line">　　&#125;</span><br><span class="line"></span><br><span class="line">　　INotificationManager service = getService();</span><br><span class="line">　　String pkg = mContext.getPackageName();</span><br><span class="line">　　TN tn = mTN;</span><br><span class="line">　　tn.mNextView = mNextView;</span><br><span class="line"></span><br><span class="line">　　<span class="keyword">try</span> &#123;</span><br><span class="line">　　　　service.enqueueToast(pkg, tn, mDuration);</span><br><span class="line">　　&#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">　　　　<span class="comment">// Empty</span></span><br><span class="line">　　&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">private</span> INotificationManager <span class="title">getService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sService != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> sService;</span><br><span class="line">    &#125;</span><br><span class="line">    sService = INotificationManager.Stub.asInterface(ServiceManager.getService(<span class="string">"notification"</span>));</span><br><span class="line">     <span class="keyword">return</span> sService;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>熟悉<code>binder</code>通讯的同学应该都知道，其实调用了<code>NotificationManagerService.service.enqueueToast</code>方法进入toast队列，进行相应的逻辑处理后回调给Toast中的<code>TN</code>，<code>TN</code>其实就是一个<code>aidl</code>的<code>stub</code>实现，相当于<code>Client</code>端，用来接收<code>Service</code>端发来的消息。看下<code>TN</code>中的show方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleShow</span><span class="params">()</span> </span>&#123; </span><br><span class="line">			... </span><br><span class="line">            mWM = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);  </span><br><span class="line">            mWM.removeView(mView);  </span><br><span class="line">            mWM.addView(mView, mParams);  </span><br><span class="line">            trySendAccessibilityEvent();  </span><br><span class="line">            ...</span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 <p>通过<code>WinwodManager</code>添加一个<code>view</code>显示提示消息。<br>总结来说就是toast的显示过程通过IPC通讯由<code>NotificationManagerService</code>维护一个toast队列，然后通知给Toast中的客户端<code>TN</code>调用<code>WindowManager</code>添加view。<br>那么，如果关闭通知栏消息权限，会影响<code>NotificationManagerService</code>队列的逻辑处理过程，导致不能通知<code>TN</code>显示出视图。</p>
-<h1 id="u89E3_u51B3"><a href="#u89E3_u51B3" class="headerlink" title="解决"></a>解决</h1><p>通过上面的分析，我们可以绕过<code>NotificationManagerService</code>，我们自己维护一个toast队列，处理相关的逻辑，进行显示，定时取消。关键代码</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>通过上面的分析，我们可以绕过<code>NotificationManagerService</code>，我们自己维护一个toast队列，处理相关的逻辑，进行显示，定时取消。关键代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">activeQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    BooheeToast toast = mQueue.peek();</span><br><span class="line">    <span class="keyword">if</span> (toast == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mAtomicInteger.decrementAndGet();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mHanlder.post(toast.mShow);</span><br><span class="line">        mHanlder.postDelayed(toast.mHide, toast.mDuration);</span><br><span class="line">        mHanlder.postDelayed(mActivite, toast.mDuration);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>mQueue</code>维护了<code>Toast</code>的队列，队列采用<code>FIFO</code>调度，每次调用<code>show()</code>方法触发<code>activeQueue()</code>方法，从队列中取出toast进行显示，然后定时取消。</p>
-<h1 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h1><p>Google把Toast视为系统级别的消息通知，其实是不合理的，在app前台可见的情况下，有些关键信息需要提供给用户，如果关闭了消息通知权限，那么用户就会看不到这些关键的提示就会很困惑，直接影响用户体验，并且在Android5.0之后在设置中就可以关闭app的消息权限，Toast作为一个系统级别的消息提示设计者真的挺缺心眼的。虽然MD中有SnackBar作为消息提示，其原理就是在当前界面找到根视图，在根视图<code>addView()</code>，达到弹出提示的目的，但是请原谅我的审美不够高，SnackBar真的很丑，并且最近Google又支持BottomSheet，两个叠加到一起，我的天，画面太美，我不敢看。还有就是必须要拿到当前的content，对于用Application的context弹出toast的方案来说适配起来修改比较麻烦。很明显，Toast就应该是app级的消息提示，我们的解决方案也正是这么做的。</p>
-<h1 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h1><ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Google把Toast视为系统级别的消息通知，其实是不合理的，在app前台可见的情况下，有些关键信息需要提供给用户，如果关闭了消息通知权限，那么用户就会看不到这些关键的提示就会很困惑，直接影响用户体验，并且在Android5.0之后在设置中就可以关闭app的消息权限，Toast作为一个系统级别的消息提示设计者真的挺缺心眼的。虽然MD中有SnackBar作为消息提示，其原理就是在当前界面找到根视图，在根视图<code>addView()</code>，达到弹出提示的目的，但是请原谅我的审美不够高，SnackBar真的很丑，并且最近Google又支持BottomSheet，两个叠加到一起，我的天，画面太美，我不敢看。还有就是必须要拿到当前的content，对于用Application的context弹出toast的方案来说适配起来修改比较麻烦。很明显，Toast就应该是app级的消息提示，我们的解决方案也正是这么做的。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li>《Android开发艺术探索》第八章 理解Window和WindowManager</li>
 <li><a href="http://caizhitao.com/2016/02/09/android-toast-compat/" target="_blank" rel="external">解决小米MIUI系统上后台应用没法弹Toast的问题</a></li>
 <li><a href="http://androidxref.com/6.0.1_r10/xref/frameworks/base/core/java/android/widget/Toast.java" target="_blank" rel="external">Toast</a></li>
 <li><a href="http://androidxref.com/6.0.1_r10/xref/frameworks/base/services/core/java/com/android/server/notification/NotificationManagerService.java" target="_blank" rel="external">NotificationManagerService</a></li>
 </ul>
 <p>本文地址 <a href="http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/">http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
 
       
     </div>
@@ -385,17 +445,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
-          
+
           
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -416,26 +476,29 @@
           
             
               <span class="links-of-author-item">
-                <a href="https://github.com/w4lle" target="_blank">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-fw fa-github"></i>
                   
+                  GitHub
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/2274417881" target="_blank">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-fw fa-weibo"></i>
                   
+                  Weibo
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://blog.csdn.net/hlglinglong" target="_blank">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
                   
-                    <i class="fa fa-csdn"></i> CSDN
+                    <i class="fa fa-fw fa-globe"></i>
                   
+                  CSDN
                 </a>
               </span>
             
@@ -445,27 +508,20 @@
         
         
 
-        <div class="links-of-author motion-element">
-          
-        </div>
+        
+        
 
       </section>
 
       
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator">
-            <i class="fa fa-angle-double-up"></i>
-          </div>
           <div class="post-toc">
             
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u80CC_u666F"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u539F_u56E0"><span class="nav-number">2.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u89E3_u51B3"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u603B_u7ED3"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原因"><span class="nav-number">2.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator">
-            <i class="fa fa-angle-double-down"></i>
           </div>
         </section>
       
@@ -485,224 +541,90 @@
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">w4lle</span>
 </div>
 
+<div>
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
-您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
 
+        
 
-
-
+        
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
   
 
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
 
   
 
 
 
+  
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
+  
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
+  
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
 
 
-
-  
-  
 
   
   
-<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
 
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 1 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
-      var $tocContent = $('.post-toc-content');
-
-      if (CONFIG.sidebar === 'post') {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
-        }
-      }
-    };
-  });
-</script>
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
 
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
 
 
 
@@ -733,12 +655,14 @@
 
 
 
+
+  
   
   
 
   
-  
 
+  
 
 </body>
 </html>

@@ -27,18 +27,45 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
 
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Flexbox,前端," />
@@ -52,7 +79,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.png?v=0.5.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
 
 
 
@@ -71,7 +98,7 @@
 <meta property="og:image" content="https://sfault-image.b0.upaiyun.com/421/275/4212753174-56fde6083157c_articlex">
 <meta property="og:image" content="http://img.blog.csdn.net/20150616152600533">
 <meta property="og:image" content="https://sfault-image.b0.upaiyun.com/271/846/2718468848-56fde60740335_articlex">
-<meta property="og:updated_time" content="2016-05-09T07:00:47.000Z">
+<meta property="og:updated_time" content="2016-06-05T11:19:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端基础(二)--快速布局神器Flexbox布局">
 <meta name="twitter:description" content="什么是Flexbox在上一篇文章中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的">
@@ -82,7 +109,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: "always",
+    sidebar: {"position":"right","display":"always"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -106,10 +133,14 @@
 
 
 
+
+
   
+  
+    
   
 
-  <div class="container one-collumn  page-post-detail ">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -138,13 +169,11 @@
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             首页
           </a>
@@ -154,8 +183,6 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
           </a>
         </li>
@@ -163,8 +190,6 @@
         
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
             标签
           </a>
@@ -174,15 +199,11 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-question-circle fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
-      
-      
       
     </ul>
   
@@ -254,6 +275,11 @@
 
           
           
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
         </div>
       </header>
     
@@ -265,10 +291,10 @@
       
 
       
-        <h1 id="u4EC0_u4E48_u662FFlexbox"><a href="#u4EC0_u4E48_u662FFlexbox" class="headerlink" title="什么是Flexbox"></a>什么是Flexbox</h1><p>在<a href="http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/">上一篇文章</a>中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。<br>2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的布局计算依赖于块和内联的流方向。<br>并且React Native也是使用的Flex布局，对于客户端开发来说学习Flex大有裨益。</p>
-<h1 id="u57FA_u672C_u6982_u5FF5_u548C_u5C5E_u6027"><a href="#u57FA_u672C_u6982_u5FF5_u548C_u5C5E_u6027" class="headerlink" title="基本概念和属性"></a>基本概念和属性</h1><p><code>Flexbox</code>布局依赖于<code>flex directions</code>，简单的说：<code>Flexbox</code>是布局模块，而不是一个简单的属性。采用Flex布局的元素，称为<code>Flex容器</code>（flex container），它的所有<code>子元素</code>（flex item）自动成为容器成员。<br><code>Flexbox</code>布局很像<code>Android</code>开发中的<code>LinearLayout</code>布局，但是要比<code>LinearLayout</code>要强大。跟<code>LinearLayout</code>类似，<code>Flexbox</code>也存在两个方向的布局–主轴（main axis）和副轴（cross axis），可以简单的理解为<code>LinearLayout</code>的水平布局和垂直布局。主轴的开始位置（与边框的交叉点）叫做<code>main start</code>，结束位置叫做<code>main end</code>；交叉轴的开始位置叫做<code>cross start</code>，结束位置叫做<code>cross end</code>。项目默认沿主轴排列。单个项目占据的主轴空间叫做<code>main size</code>，占据的交叉轴空间叫做<code>cross size</code>。<br><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png" alt="image"></p>
-<h1 id="u5C5E_u6027"><a href="#u5C5E_u6027" class="headerlink" title="属性"></a>属性</h1><p>属性分为<code>flex container</code>属性和<code>flex item</code>属性。对应父容器和子元素。</p>
-<h2 id="flex_container_u5C5E_u6027"><a href="#flex_container_u5C5E_u6027" class="headerlink" title="flex container属性"></a>flex container属性</h2><p>以下几个属于<code>flex container</code>属性</p>
+        <h1 id="什么是Flexbox"><a href="#什么是Flexbox" class="headerlink" title="什么是Flexbox"></a>什么是Flexbox</h1><p>在<a href="http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/">上一篇文章</a>中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。<br>2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的布局计算依赖于块和内联的流方向。<br>并且React Native也是使用的Flex布局，对于客户端开发来说学习Flex大有裨益。</p>
+<h1 id="基本概念和属性"><a href="#基本概念和属性" class="headerlink" title="基本概念和属性"></a>基本概念和属性</h1><p><code>Flexbox</code>布局依赖于<code>flex directions</code>，简单的说：<code>Flexbox</code>是布局模块，而不是一个简单的属性。采用Flex布局的元素，称为<code>Flex容器</code>（flex container），它的所有<code>子元素</code>（flex item）自动成为容器成员。<br><code>Flexbox</code>布局很像<code>Android</code>开发中的<code>LinearLayout</code>布局，但是要比<code>LinearLayout</code>要强大。跟<code>LinearLayout</code>类似，<code>Flexbox</code>也存在两个方向的布局–主轴（main axis）和副轴（cross axis），可以简单的理解为<code>LinearLayout</code>的水平布局和垂直布局。主轴的开始位置（与边框的交叉点）叫做<code>main start</code>，结束位置叫做<code>main end</code>；交叉轴的开始位置叫做<code>cross start</code>，结束位置叫做<code>cross end</code>。项目默认沿主轴排列。单个项目占据的主轴空间叫做<code>main size</code>，占据的交叉轴空间叫做<code>cross size</code>。<br><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png" alt="image"></p>
+<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>属性分为<code>flex container</code>属性和<code>flex item</code>属性。对应父容器和子元素。</p>
+<h2 id="flex-container属性"><a href="#flex-container属性" class="headerlink" title="flex container属性"></a>flex container属性</h2><p>以下几个属于<code>flex container</code>属性</p>
 <ul>
 <li>flex container 属性</li>
 <li>order</li>
@@ -278,7 +304,7 @@
 <li>align-content</li>
 <li>align-items</li>
 </ul>
-<h3 id="flex-direction_u5C5E_u6027"><a href="#flex-direction_u5C5E_u6027" class="headerlink" title="flex-direction属性"></a>flex-direction属性</h3><p>flex-direction属性决定主轴的方向（即项目的排列方向）。类似<code>LinearLayout</code>的<code>vertical</code>or<code>Horizontal</code>。</p>
+<h3 id="flex-direction属性"><a href="#flex-direction属性" class="headerlink" title="flex-direction属性"></a>flex-direction属性</h3><p>flex-direction属性决定主轴的方向（即项目的排列方向）。类似<code>LinearLayout</code>的<code>vertical</code>or<code>Horizontal</code>。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flex-direction: row | row-reverse | column | column-reverse</span><br></pre></td></tr></table></figure>
 <p>有四个值可以选择：</p>
 <ul>
@@ -287,9 +313,9 @@
 <li>column：主轴为垂直方向，起点在上沿。</li>
 <li>column-reverse：主轴为垂直方向，起点在下沿。</li>
 </ul>
-<h3 id="order_u5C5E_u6027"><a href="#order_u5C5E_u6027" class="headerlink" title="order属性"></a>order属性</h3><p>默认情况下子元素的排列方式按照文档流的顺序依次排序，而<code>order</code>属性可以控制排列的顺序，负值在前，正值灾后，按照从小到大的顺序依次排列。我们说之所以<code>flex box</code>相对<code>LinearLayout</code>强就是因为一些属性比较给力，<code>order</code>就是其中之一。</p>
+<h3 id="order属性"><a href="#order属性" class="headerlink" title="order属性"></a>order属性</h3><p>默认情况下子元素的排列方式按照文档流的顺序依次排序，而<code>order</code>属性可以控制排列的顺序，负值在前，正值灾后，按照从小到大的顺序依次排列。我们说之所以<code>flex box</code>相对<code>LinearLayout</code>强就是因为一些属性比较给力，<code>order</code>就是其中之一。</p>
 <p><img src="https://sfault-image.b0.upaiyun.com/318/287/3182877863-56fde345ba339_articlex" alt="image"></p>
-<h3 id="flex-wrap_u5C5E_u6027"><a href="#flex-wrap_u5C5E_u6027" class="headerlink" title="flex-wrap属性"></a>flex-wrap属性</h3><p>默认情况下<code>Flex</code>跟<code>LinearLayout</code>一样，都是不带换行排列的，但是<code>flex-wrap</code>属性可以支持换行排列。这个也比<code>LinearLayout</code>吊啊有三个值：</p>
+<h3 id="flex-wrap属性"><a href="#flex-wrap属性" class="headerlink" title="flex-wrap属性"></a>flex-wrap属性</h3><p>默认情况下<code>Flex</code>跟<code>LinearLayout</code>一样，都是不带换行排列的，但是<code>flex-wrap</code>属性可以支持换行排列。这个也比<code>LinearLayout</code>吊啊有三个值：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flex-wrap: nowrap | wrap | wrap-reverse;</span><br></pre></td></tr></table></figure>
 <p><img src="https://sfault-image.b0.upaiyun.com/159/596/15959628-56fde3489ff74_articlex" alt="image"></p>
 <ul>
@@ -297,9 +323,9 @@
 <li>wrap：按正常方向换行</li>
 <li>wrap-reverse：按反方向换行</li>
 </ul>
-<h3 id="flex-flow_u5C5E_u6027"><a href="#flex-flow_u5C5E_u6027" class="headerlink" title="flex-flow属性"></a>flex-flow属性</h3><p><code>flex-flow</code>属性是<code>flex-direction</code>属性和<code>flex-wrap</code>属性的简写形式，默认值为<code>row nowrap</code>。</p>
+<h3 id="flex-flow属性"><a href="#flex-flow属性" class="headerlink" title="flex-flow属性"></a>flex-flow属性</h3><p><code>flex-flow</code>属性是<code>flex-direction</code>属性和<code>flex-wrap</code>属性的简写形式，默认值为<code>row nowrap</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flex-flow: &#60;flex-direction&#62; || &#60;flex-wrap&#62;;</span><br></pre></td></tr></table></figure>
-<h3 id="justify-content_u5C5E_u6027"><a href="#justify-content_u5C5E_u6027" class="headerlink" title="justify-content属性"></a>justify-content属性</h3><p><code>justify-content</code>属性定义了项目在主轴上的对齐方式。</p>
+<h3 id="justify-content属性"><a href="#justify-content属性" class="headerlink" title="justify-content属性"></a>justify-content属性</h3><p><code>justify-content</code>属性定义了项目在主轴上的对齐方式。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">justify-content: flex-start | flex-end | center | space-between | space-around;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>flex-start（默认值）：左对齐</li>
@@ -309,7 +335,7 @@
 <li>space-around：每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。</li>
 </ul>
 <p><img src="https://sfault-image.b0.upaiyun.com/421/275/4212753174-56fde6083157c_articlex" alt="image"></p>
-<h3 id="align-items_u5C5E_u6027"><a href="#align-items_u5C5E_u6027" class="headerlink" title="align-items属性"></a>align-items属性</h3><p><code>align-items</code>属性定义项目在副轴轴上如何对齐。</p>
+<h3 id="align-items属性"><a href="#align-items属性" class="headerlink" title="align-items属性"></a>align-items属性</h3><p><code>align-items</code>属性定义项目在副轴轴上如何对齐。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">align-items: flex-start | flex-end | center | baseline | stretch;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>flex-start：交叉轴的起点对齐。</li>
@@ -319,7 +345,7 @@
 <li>stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。</li>
 </ul>
 <p><img src="http://img.blog.csdn.net/20150616152600533" alt="image"></p>
-<h3 id="align-content_u5C5E_u6027"><a href="#align-content_u5C5E_u6027" class="headerlink" title="align-content属性"></a>align-content属性</h3><p><code>align-content</code>属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。</p>
+<h3 id="align-content属性"><a href="#align-content属性" class="headerlink" title="align-content属性"></a>align-content属性</h3><p><code>align-content</code>属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">align-content: flex-start | flex-end | center | space-between | space-around | stretch;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>flex-start：与交叉轴的起点对齐。</li>
@@ -329,7 +355,7 @@
 <li>space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。</li>
 <li>stretch（默认值）：轴线占满整个交叉轴。</li>
 </ul>
-<h2 id="u5B50_u5143_u7D20_u5C5E_u6027"><a href="#u5B50_u5143_u7D20_u5C5E_u6027" class="headerlink" title="子元素属性"></a>子元素属性</h2><p>以下几个属性设置在子元素上。</p>
+<h2 id="子元素属性"><a href="#子元素属性" class="headerlink" title="子元素属性"></a>子元素属性</h2><p>以下几个属性设置在子元素上。</p>
 <ul>
 <li>flex-grow</li>
 <li>flex-shrink</li>
@@ -337,22 +363,22 @@
 <li>flex</li>
 <li>align-self</li>
 </ul>
-<h3 id="flex-grow_u5C5E_u6027"><a href="#flex-grow_u5C5E_u6027" class="headerlink" title="flex-grow属性"></a>flex-grow属性</h3><p><code>flex-grow</code>属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。一张图看懂。跟<code>LinearLayout</code>中的<code>weight</code>属性一样。</p>
+<h3 id="flex-grow属性"><a href="#flex-grow属性" class="headerlink" title="flex-grow属性"></a>flex-grow属性</h3><p><code>flex-grow</code>属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。一张图看懂。跟<code>LinearLayout</code>中的<code>weight</code>属性一样。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  flex-grow: &#60;number&#62;; /* default 0 */&#10;&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="https://sfault-image.b0.upaiyun.com/271/846/2718468848-56fde60740335_articlex" alt="image"></p>
 <p>如果所有项目的<code>flex-grow</code>属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的<code>flex-grow</code>属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍。</p>
-<h3 id="flex-shrink_u5C5E_u6027"><a href="#flex-shrink_u5C5E_u6027" class="headerlink" title="flex-shrink属性"></a>flex-shrink属性</h3><p><code>flex-shrink</code>属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。</p>
+<h3 id="flex-shrink属性"><a href="#flex-shrink属性" class="headerlink" title="flex-shrink属性"></a>flex-shrink属性</h3><p><code>flex-shrink</code>属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  flex-shrink: &#60;number&#62;; /* default 1 */&#10;&#125;</span><br></pre></td></tr></table></figure>
 <p>如果所有项目的<code>flex-shrink</code>属性都为1，当空间不足时，都将等比例缩小。如果一个项目的<code>flex-shrink</code>属性为0，其他项目都为1，则空间不足时，前者不缩小。<br>负值对该属性无效。</p>
-<h3 id="flex-basis_u5C5E_u6027"><a href="#flex-basis_u5C5E_u6027" class="headerlink" title="flex-basis属性"></a>flex-basis属性</h3><p><code>flex-basis</code>属性定义了在分配多余空间之前，子元素占据的<code>main size</code>主轴空间，浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为<code>auto</code>，即子元素的本来大小。</p>
+<h3 id="flex-basis属性"><a href="#flex-basis属性" class="headerlink" title="flex-basis属性"></a>flex-basis属性</h3><p><code>flex-basis</code>属性定义了在分配多余空间之前，子元素占据的<code>main size</code>主轴空间，浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为<code>auto</code>，即子元素的本来大小。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  flex-basis: &#60;length&#62; | auto; /* default auto */&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="flex_u5C5E_u6027"><a href="#flex_u5C5E_u6027" class="headerlink" title="flex属性"></a>flex属性</h3><p><code>flex</code>属性是<code>flex-grow</code>, <code>flex-shrink</code> 和 <code>flex-basis</code>的简写，默认值为0 1 auto。后两个属性可选。</p>
+<h3 id="flex属性"><a href="#flex属性" class="headerlink" title="flex属性"></a>flex属性</h3><p><code>flex</code>属性是<code>flex-grow</code>, <code>flex-shrink</code> 和 <code>flex-basis</code>的简写，默认值为0 1 auto。后两个属性可选。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  flex: none | [ &#60;&#39;flex-grow&#39;&#62; &#60;&#39;flex-shrink&#39;&#62;? || &#60;&#39;flex-basis&#39;&#62; ]&#10;&#125;</span><br></pre></td></tr></table></figure>
 <p>该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。</p>
-<h3 id="align-self_u5C5E_u6027"><a href="#align-self_u5C5E_u6027" class="headerlink" title="align-self属性"></a>align-self属性</h3><p><code>align-self</code>属性允许单个子元素有与其他子元素不一样的对齐方式，可覆盖<code>align-items</code>属性。默认值为<code>auto</code>，表示继承父元素的<code>align-items</code>属性，如果没有父元素，则等同于<code>stretch</code>。</p>
+<h3 id="align-self属性"><a href="#align-self属性" class="headerlink" title="align-self属性"></a>align-self属性</h3><p><code>align-self</code>属性允许单个子元素有与其他子元素不一样的对齐方式，可覆盖<code>align-items</code>属性。默认值为<code>auto</code>，表示继承父元素的<code>align-items</code>属性，如果没有父元素，则等同于<code>stretch</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;&#10;  align-self: auto | flex-start | flex-end | center | baseline | stretch;&#10;&#125;</span><br></pre></td></tr></table></figure>
 <p>该属性可能取6个值，除了<code>auto</code>，其他都与<code>align-items</code>属性完全一致。</p>
-<h1 id="u5B9E_u4F8B"><a href="#u5B9E_u4F8B" class="headerlink" title="实例"></a>实例</h1><p>属性基本都讲完了，下面进入实战。<br>百度前端学院的其中一个任务：</p>
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><p>属性基本都讲完了，下面进入实战。<br>百度前端学院的其中一个任务：</p>
 <ul>
 <li>学习如何flex进行布局，学习如何根据屏幕宽度调整布局策略。</li>
 <li>屏幕宽度小于 640px 时，调整 Flexbox 的属性以实现第四个元素移动到最前面的效果，而不要改动第一个元素的边框颜色与高度实现效果图。</li>
@@ -364,13 +390,47 @@
 <li>屏幕宽度大于640px，要有换行，并且动态调整<code>order</code>属性，调整第四个子元素的排列位置。并且调整align-items为flex-start;</li>
 </ol>
 <p><a href="http://w4lle.github.io/ife_baidu/task10/index.html">效果图</a>和<a href="https://github.com/w4lle/ife_baidu/tree/master/task10" target="_blank" rel="external">代码</a></p>
-<h1 id="Android_u5F00_u53D1_u8005_u7684_u798F_u97F3"><a href="#Android_u5F00_u53D1_u8005_u7684_u798F_u97F3" class="headerlink" title="Android开发者的福音"></a>Android开发者的福音</h1><p>大概在一个月前，Google开源了<a href="https://github.com/google/flexbox-layout" target="_blank" rel="external">flexbox-layout</a>项目，用以支持<code>Flexbox</code>布局在Android开发中使用，支持源生的<code>Flexbox</code>属性。<br>官方例子，在xml布局文件中使用</p>
+<h1 id="Android开发者的福音"><a href="#Android开发者的福音" class="headerlink" title="Android开发者的福音"></a>Android开发者的福音</h1><p>大概在一个月前，Google开源了<a href="https://github.com/google/flexbox-layout" target="_blank" rel="external">flexbox-layout</a>项目，用以支持<code>Flexbox</code>布局在Android开发中使用，支持源生的<code>Flexbox</code>属性。<br>官方例子，在xml布局文件中使用</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">com.google.android.flexbox.FlexboxLayout</span></span><br><span class="line">    <span class="attribute">xmlns:android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">    <span class="attribute">xmlns:app</span>=<span class="value">"http://schemas.android.com/apk/res-auto"</span></span><br><span class="line">    <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">app:flexWrap</span>=<span class="value">"wrap"</span></span><br><span class="line">    <span class="attribute">app:alignItems</span>=<span class="value">"stretch"</span></span><br><span class="line">    <span class="attribute">app:alignContent</span>=<span class="value">"stretch"</span> &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">TextView</span></span><br><span class="line">        <span class="attribute">android:id</span>=<span class="value">"@+id/textview1"</span></span><br><span class="line">        <span class="attribute">android:layout_width</span>=<span class="value">"120dp"</span></span><br><span class="line">        <span class="attribute">android:layout_height</span>=<span class="value">"80dp"</span></span><br><span class="line">        <span class="attribute">app:layout_flexBasisPercent</span>=<span class="value">"50%"</span></span><br><span class="line">        /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">TextView</span></span><br><span class="line">        <span class="attribute">android:id</span>=<span class="value">"@+id/textview2"</span></span><br><span class="line">        <span class="attribute">android:layout_width</span>=<span class="value">"80dp"</span></span><br><span class="line">        <span class="attribute">android:layout_height</span>=<span class="value">"80dp"</span></span><br><span class="line">        <span class="attribute">app:layout_alignSelf</span>=<span class="value">"center"</span></span><br><span class="line">        /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">TextView</span></span><br><span class="line">        <span class="attribute">android:id</span>=<span class="value">"@+id/textview3"</span></span><br><span class="line">        <span class="attribute">android:layout_width</span>=<span class="value">"160dp"</span></span><br><span class="line">        <span class="attribute">android:layout_height</span>=<span class="value">"80dp"</span></span><br><span class="line">        <span class="attribute">app:layout_alignSelf</span>=<span class="value">"flex_end"</span></span><br><span class="line">        /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">com.google.android.flexbox.FlexboxLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>在java代码中使用</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FlexboxLayout flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout);</span><br><span class="line">flexboxLayout.setFlexDirection(FlexboxLayout.FLEX_DIRECTION_COLUMN);</span><br><span class="line"></span><br><span class="line">View view = flexboxLayout.getChildAt(<span class="number">0</span>);</span><br><span class="line">FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) view.getLayoutParams();</span><br><span class="line">lp.order = -<span class="number">1</span>;</span><br><span class="line">lp.flexGrow = <span class="number">2</span>;</span><br><span class="line">view.setLayoutParams(lp);</span><br></pre></td></tr></table></figure>
 <p>可以看到使用非常方便，对于熟悉<code>Flexbox</code>的开发者来说对于<code>Android</code>app也可以快速上手。<br>Google开发这个开源库我猜想可能一方面看到<code>React Native</code>使用<code>Flexbox</code>对于前端工程师开发Android app布局的无缝切换；另一方面，<code>Flexbox</code>也确实要比Android开发中经常使用的<code>LinearLayout</code>和<code>RelativeLayout</code>要方便很多，灵活性较两者有大幅提高，特别在动态变化这一块。</p>
-<h1 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h1><p><code>Flexbox</code>布局方式相比传统的盒模型布局方式要快速很多，对于一些复杂的页面也可以很快速的开发。而且由于Google和Facebook的支持和使用，相信会有越来越多的开发者使用这种布局方式进行开发，在跨平台开发框架越来越成熟的现在，<code>Flexbox</code>赶紧学起来！</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>Flexbox</code>布局方式相比传统的盒模型布局方式要快速很多，对于一些复杂的页面也可以很快速的开发。而且由于Google和Facebook的支持和使用，相信会有越来越多的开发者使用这种布局方式进行开发，在跨平台开发框架越来越成熟的现在，<code>Flexbox</code>赶紧学起来！</p>
 <p>本文地址 <a href="http://w4lle.github.io/2016/05/08/Flexbox/">http://w4lle.github.io/2016/05/08/Flexbox/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
 
       
     </div>
@@ -472,17 +532,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
-          
+
           
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -503,26 +563,29 @@
           
             
               <span class="links-of-author-item">
-                <a href="https://github.com/w4lle" target="_blank">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-fw fa-github"></i>
                   
+                  GitHub
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/2274417881" target="_blank">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-fw fa-weibo"></i>
                   
+                  Weibo
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://blog.csdn.net/hlglinglong" target="_blank">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
                   
-                    <i class="fa fa-csdn"></i> CSDN
+                    <i class="fa fa-fw fa-globe"></i>
                   
+                  CSDN
                 </a>
               </span>
             
@@ -532,27 +595,20 @@
         
         
 
-        <div class="links-of-author motion-element">
-          
-        </div>
+        
+        
 
       </section>
 
       
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator">
-            <i class="fa fa-angle-double-up"></i>
-          </div>
           <div class="post-toc">
             
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u4EC0_u4E48_u662FFlexbox"><span class="nav-number">1.</span> <span class="nav-text">什么是Flexbox</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u57FA_u672C_u6982_u5FF5_u548C_u5C5E_u6027"><span class="nav-number">2.</span> <span class="nav-text">基本概念和属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u5C5E_u6027"><span class="nav-number">3.</span> <span class="nav-text">属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#flex_container_u5C5E_u6027"><span class="nav-number">3.1.</span> <span class="nav-text">flex container属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-direction_u5C5E_u6027"><span class="nav-number">3.1.1.</span> <span class="nav-text">flex-direction属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#order_u5C5E_u6027"><span class="nav-number">3.1.2.</span> <span class="nav-text">order属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-wrap_u5C5E_u6027"><span class="nav-number">3.1.3.</span> <span class="nav-text">flex-wrap属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-flow_u5C5E_u6027"><span class="nav-number">3.1.4.</span> <span class="nav-text">flex-flow属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#justify-content_u5C5E_u6027"><span class="nav-number">3.1.5.</span> <span class="nav-text">justify-content属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#align-items_u5C5E_u6027"><span class="nav-number">3.1.6.</span> <span class="nav-text">align-items属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#align-content_u5C5E_u6027"><span class="nav-number">3.1.7.</span> <span class="nav-text">align-content属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5B50_u5143_u7D20_u5C5E_u6027"><span class="nav-number">3.2.</span> <span class="nav-text">子元素属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-grow_u5C5E_u6027"><span class="nav-number">3.2.1.</span> <span class="nav-text">flex-grow属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-shrink_u5C5E_u6027"><span class="nav-number">3.2.2.</span> <span class="nav-text">flex-shrink属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-basis_u5C5E_u6027"><span class="nav-number">3.2.3.</span> <span class="nav-text">flex-basis属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex_u5C5E_u6027"><span class="nav-number">3.2.4.</span> <span class="nav-text">flex属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#align-self_u5C5E_u6027"><span class="nav-number">3.2.5.</span> <span class="nav-text">align-self属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u5B9E_u4F8B"><span class="nav-number">4.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android_u5F00_u53D1_u8005_u7684_u798F_u97F3"><span class="nav-number">5.</span> <span class="nav-text">Android开发者的福音</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u603B_u7ED3"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是Flexbox"><span class="nav-number">1.</span> <span class="nav-text">什么是Flexbox</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念和属性"><span class="nav-number">2.</span> <span class="nav-text">基本概念和属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#属性"><span class="nav-number">3.</span> <span class="nav-text">属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#flex-container属性"><span class="nav-number">3.1.</span> <span class="nav-text">flex container属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-direction属性"><span class="nav-number">3.1.1.</span> <span class="nav-text">flex-direction属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#order属性"><span class="nav-number">3.1.2.</span> <span class="nav-text">order属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-wrap属性"><span class="nav-number">3.1.3.</span> <span class="nav-text">flex-wrap属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-flow属性"><span class="nav-number">3.1.4.</span> <span class="nav-text">flex-flow属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#justify-content属性"><span class="nav-number">3.1.5.</span> <span class="nav-text">justify-content属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#align-items属性"><span class="nav-number">3.1.6.</span> <span class="nav-text">align-items属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#align-content属性"><span class="nav-number">3.1.7.</span> <span class="nav-text">align-content属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子元素属性"><span class="nav-number">3.2.</span> <span class="nav-text">子元素属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-grow属性"><span class="nav-number">3.2.1.</span> <span class="nav-text">flex-grow属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-shrink属性"><span class="nav-number">3.2.2.</span> <span class="nav-text">flex-shrink属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-basis属性"><span class="nav-number">3.2.3.</span> <span class="nav-text">flex-basis属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex属性"><span class="nav-number">3.2.4.</span> <span class="nav-text">flex属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#align-self属性"><span class="nav-number">3.2.5.</span> <span class="nav-text">align-self属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例"><span class="nav-number">4.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android开发者的福音"><span class="nav-number">5.</span> <span class="nav-text">Android开发者的福音</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator">
-            <i class="fa fa-angle-double-down"></i>
           </div>
         </section>
       
@@ -572,224 +628,90 @@
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">w4lle</span>
 </div>
 
+<div>
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
-您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
 
+        
 
-
-
+        
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
   
 
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
 
   
 
 
 
+  
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
+  
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
+  
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
 
 
-
-  
-  
 
   
   
-<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
 
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 1 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
-      var $tocContent = $('.post-toc-content');
-
-      if (CONFIG.sidebar === 'post') {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
-        }
-      }
-    };
-  });
-</script>
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
 
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
 
 
 
@@ -820,12 +742,14 @@
 
 
 
+
+  
   
   
 
   
-  
 
+  
 
 </body>
 </html>

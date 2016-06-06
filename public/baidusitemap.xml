@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/05/31/JavaScript/</loc>
+    <lastmod>2016-06-06T06:28:16.000Z</lastmod>
+    <data>
+        <display>
+        <title>前端基础（三）-- JavaScript</title>
+        <pubTime>2016-05-31T07:34:31.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+        <tag>前端</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/01/28/hello-world/</loc>
+    <lastmod>2016-06-06T06:19:33.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2016-01-27T16:00:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/03/27/Android%E5%85%B3%E9%97%AD%E9%80%9A%E7%9F%A5%E6%B6%88%E6%81%AF%E6%9D%83%E9%99%90%E6%97%A0%E6%B3%95%E5%BC%B9%E5%87%BAToast%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android关闭通知消息权限无法弹出Toast的解决方案</title>
+        <pubTime>2016-03-27T11:47:28.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Toast</tag>
+         
+        <tag>通知消息权限</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>前端基础(一)--CSS布局基础</title>
+        <pubTime>2016-04-17T14:26:23.000Z</pubTime>
+        
+        <tag>CSS</tag>
+         
+        <tag>前端</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>从Instant run谈Android替换Application和动态加载机制</title>
+        <pubTime>2016-05-02T11:33:05.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Install run</tag>
+         
+        <tag>动态加载</tag>
+         
+        <tag>热更新</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/03/13/AndFix%E6%94%AF%E6%8C%81multidex%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>AndFix支持Multidex的解决方案</title>
+        <pubTime>2016-03-13T13:42:11.000Z</pubTime>
+        
+        <tag>AndFix</tag>
+         
+        <tag>multidex</tag>
+         
+        <tag>热更新</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/03/19/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E9%9B%B6-CSS%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>前端基础(零)--CSS基础</title>
+        <pubTime>2016-03-19T14:52:40.000Z</pubTime>
+        
+        <tag>CSS</tag>
+         
+        <tag>前端</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/05/08/Flexbox/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>前端基础(二)--快速布局神器Flexbox布局</title>
+        <pubTime>2016-05-08T12:38:35.000Z</pubTime>
+        
+        <tag>Flexbox</tag>
+         
+        <tag>前端</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/02/15/ClassyShark%E2%80%94%E2%80%94%E5%88%86%E6%9E%90apk%E5%88%A9%E5%99%A8/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>ClassyShark——apk分析利器</title>
+        <pubTime>2016-02-15T06:32:15.000Z</pubTime>
+        
+        <tag>apk反编辑</tag>
+         
+        <tag>工具</tag>
+         
+        <tag>逆向</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/04/10/Apk%E5%8C%85%E7%98%A6%E8%BA%AB%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>Apk包瘦身笔记</title>
+        <pubTime>2016-04-10T11:11:51.000Z</pubTime>
+        
+        <tag>apk瘦身</tag>
+         
+        <tag>优化</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/05/15/Android%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E5%88%BB%E5%BA%A6%E5%B0%BA/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android自定义View之刻度尺</title>
+        <pubTime>2016-05-15T08:23:43.000Z</pubTime>
+        
+        <tag>自定义View</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android热补丁之AndFix原理解析</title>
+        <pubTime>2016-03-03T06:43:44.000Z</pubTime>
+        
+        <tag>AndFix</tag>
+         
+        <tag>源码分析</tag>
+         
+        <tag>热补丁</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/02/01/%E7%BB%88%E6%9E%81Shell-Zsh-%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>终极Shell--Zsh 使用技巧</title>
+        <pubTime>2016-01-31T17:51:36.000Z</pubTime>
+        
+        <tag>Zsh</tag>
+         
+        <tag>工具</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.github.io/2016/05/22/Android-Color/</loc>
+    <lastmod>2016-06-05T11:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android Color位移操作</title>
+        <pubTime>2016-05-22T09:53:01.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</urlset>

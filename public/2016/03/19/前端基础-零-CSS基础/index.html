@@ -27,18 +27,45 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
 
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="CSS,前端," />
@@ -52,7 +79,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.png?v=0.5.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
 
 
 
@@ -74,7 +101,7 @@ CSS什么是CSS
 CSS什么是CSS
 层叠样式表 (Cascading Style Sheets)，常缩写为 CSS， 是一种 样式表(stylesheet) 语言，用来描述 HTML、XML（包括各种 XML 语言如 SVG、X">
 <meta property="og:image" content="http://7xs23g.com1.z0.glb.clouddn.com/CSS.png">
-<meta property="og:updated_time" content="2016-03-19T16:49:08.000Z">
+<meta property="og:updated_time" content="2016-06-05T11:19:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端基础(零)--CSS基础">
 <meta name="twitter:description" content="背景最近跟小伙伴们在百度前端技术学院学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。
@@ -89,7 +116,7 @@ CSS什么是CSS
   var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: "always",
+    sidebar: {"position":"right","display":"always"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -113,10 +140,14 @@ CSS什么是CSS
 
 
 
+
+
   
+  
+    
   
 
-  <div class="container one-collumn  page-post-detail ">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -145,13 +176,11 @@ CSS什么是CSS
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             首页
           </a>
@@ -161,8 +190,6 @@ CSS什么是CSS
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
           </a>
         </li>
@@ -170,8 +197,6 @@ CSS什么是CSS
         
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
             标签
           </a>
@@ -181,15 +206,11 @@ CSS什么是CSS
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-question-circle fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
-      
-      
       
     </ul>
   
@@ -261,6 +282,11 @@ CSS什么是CSS
 
           
           
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
         </div>
       </header>
     
@@ -272,39 +298,39 @@ CSS什么是CSS
       
 
       
-        <h1 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h1><p>最近跟小伙伴们在<a href="/ife.baidu.com">百度前端技术学院</a>学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。</p>
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近跟小伙伴们在<a href="ife.baidu.com">百度前端技术学院</a>学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。</p>
 <p>开发工具：sublime text 3</p>
 <p>主要插件：<a href="http://docs.emmet.io/" target="_blank" rel="external">Emmet</a></p>
-<h1 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h1><h2 id="u4EC0_u4E48_u662FCSS"><a href="#u4EC0_u4E48_u662FCSS" class="headerlink" title="什么是CSS"></a>什么是CSS</h2><blockquote>
+<h1 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h1><h2 id="什么是CSS"><a href="#什么是CSS" class="headerlink" title="什么是CSS"></a>什么是CSS</h2><blockquote>
 <p>层叠样式表 (Cascading Style Sheets)，常缩写为 CSS， 是一种 样式表<br>(stylesheet) 语言，用来描述 HTML、XML（包括各种 XML 语言如 SVG、XHTML）文档<br>的呈现。CSS 描述怎样在屏幕上渲染结构化元素。</p>
 </blockquote>
-<h2 id="u4E3A_u4EC0_u4E48_u4F7F_u7528CSS"><a href="#u4E3A_u4EC0_u4E48_u4F7F_u7528CSS" class="headerlink" title="为什么使用CSS"></a>为什么使用CSS</h2><p>我们知道，html文件主要携带内容，虽然html也可以进行布局相关的操作，但是当浏览器的默认渲染规则不能很好的将我们定义好的布局展示出来，可能会导致显示不统一的问题，所以就将内容和表现进行分离，由CSS专门负责变现，html负责携带内容，可以很好的解除耦合，方便扩展，例如，需要全局的更新界面布局，那么也只需要修改css。可以说，css极大的提高了工作效率。就有点类似于android开发中的style，只负责配置各种view相关的属性值，而xml声明就有些类似于html，只是声明ImageView代表一个特定的view，表现形式完全可以交给style去处理。但是，个人感觉由于css的选择器的存在，css要比android中的style高明许多。</p>
-<h1 id="CSS_u57FA_u7840_u8BED_u6CD5"><a href="#CSS_u57FA_u7840_u8BED_u6CD5" class="headerlink" title="CSS基础语法"></a>CSS基础语法</h1><p>看图</p>
+<h2 id="为什么使用CSS"><a href="#为什么使用CSS" class="headerlink" title="为什么使用CSS"></a>为什么使用CSS</h2><p>我们知道，html文件主要携带内容，虽然html也可以进行布局相关的操作，但是当浏览器的默认渲染规则不能很好的将我们定义好的布局展示出来，可能会导致显示不统一的问题，所以就将内容和表现进行分离，由CSS专门负责变现，html负责携带内容，可以很好的解除耦合，方便扩展，例如，需要全局的更新界面布局，那么也只需要修改css。可以说，css极大的提高了工作效率。就有点类似于android开发中的style，只负责配置各种view相关的属性值，而xml声明就有些类似于html，只是声明ImageView代表一个特定的view，表现形式完全可以交给style去处理。但是，个人感觉由于css的选择器的存在，css要比android中的style高明许多。</p>
+<h1 id="CSS基础语法"><a href="#CSS基础语法" class="headerlink" title="CSS基础语法"></a>CSS基础语法</h1><p>看图</p>
 <p><img src="http://7xs23g.com1.z0.glb.clouddn.com/CSS.png" alt="image"></p>
 <p>示例</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">body</span> <span class="rules">&#123;</span><br><span class="line">     <span class="rule"><span class="attribute">font-family</span>:<span class="value"> Verdana, sans-serif</span></span>;</span><br><span class="line">     &#125;</span></span><br></pre></td></tr></table></figure>
 <p>body元素的所有文字的字体都是Verdana。<br>CSS默认有集成的属性，也就是说默认情况下body下的所有字元素都会继承body的属性，就像android布局，父控件的属性也会它所有的字控件一样，例如在根布局设置<code>backgroud=&quot;#eee&quot;</code>那么，该界面的基础色就是<code>#eee</code>, css也是这样的。</p>
-<h1 id="u9009_u62E9_u5668"><a href="#u9009_u62E9_u5668" class="headerlink" title="选择器"></a>选择器</h1><p>css的强大之处在于，选择器的可配置性，对于复杂的界面显示来说这点非常有用</p>
-<h2 id="u9009_u62E9_u5668_u7684_u5206_u7EC4"><a href="#u9009_u62E9_u5668_u7684_u5206_u7EC4" class="headerlink" title="选择器的分组"></a>选择器的分组</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">h1</span>,<span class="tag">h2</span>,<span class="tag">h3</span>,<span class="tag">h4</span>,<span class="tag">h5</span>,<span class="tag">h6</span> <span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">color</span>:<span class="value"> green</span></span>;</span><br><span class="line">  &#125;</span></span><br></pre></td></tr></table></figure>
+<h1 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h1><p>css的强大之处在于，选择器的可配置性，对于复杂的界面显示来说这点非常有用</p>
+<h2 id="选择器的分组"><a href="#选择器的分组" class="headerlink" title="选择器的分组"></a>选择器的分组</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">h1</span>,<span class="tag">h2</span>,<span class="tag">h3</span>,<span class="tag">h4</span>,<span class="tag">h5</span>,<span class="tag">h6</span> <span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">color</span>:<span class="value"> green</span></span>;</span><br><span class="line">  &#125;</span></span><br></pre></td></tr></table></figure>
 <p>上面的代码表示，每个选择器都不相互产生影响，只是写在了一起而已。</p>
-<h2 id="u6D3E_u751F_u9009_u62E9_u5668"><a href="#u6D3E_u751F_u9009_u62E9_u5668" class="headerlink" title="派生选择器"></a>派生选择器</h2><blockquote>
+<h2 id="派生选择器"><a href="#派生选择器" class="headerlink" title="派生选择器"></a>派生选择器</h2><blockquote>
 <p>派生选择器就是通过依据元素在其位置的上下文关系来定义样式，以达到使标记更加简洁的<br>目的。</p>
 </blockquote>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">div</span> <span class="tag">p</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">font-style</span>:<span class="value"> italic</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">font-weight</span>:<span class="value"> normal</span></span>;</span><br><span class="line">  &#125;</span></span><br></pre></td></tr></table></figure>
 <p>在上面的例子中，只有 div 元素中的 p 元素的样式为斜体字，无需为 strong 元素定义特别的 class 或 id，代码更加简洁。当然，单独出现的div 和 p并不会受到影响。</p>
-<h2 id="id__u9009_u62E9_u5668"><a href="#id__u9009_u62E9_u5668" class="headerlink" title="id 选择器"></a>id 选择器</h2><blockquote>
+<h2 id="id-选择器"><a href="#id-选择器" class="headerlink" title="id 选择器"></a>id 选择器</h2><blockquote>
 <p>id 选择器可以为标有特定 id 的 HTML 元素指定特定的样式。以<code>#</code>来定义</p>
 </blockquote>
 <p>示例</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="id">#red</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value">red</span></span>;&#125;</span></span><br><span class="line"><span class="id">#green</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value">green</span></span>;&#125;</span></span><br></pre></td></tr></table></figure>
 <p>html这样写<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;p id="red"&gt;这个段落是红色。&lt;/p&gt;</span><br><span class="line">&lt;p id="green"&gt;这个段落是绿色。&lt;/p&gt;</span><br></pre></td></tr></table></figure></p>
 <p>但是要注意，同一个html文件中同一个id只能使用一次，具体的原因请看<a href="http://www.w3school.com.cn/xhtml/xhtml_structural_02.asp" target="_blank" rel="external">这里</a></p>
-<h2 id="u7C7B_u9009_u62E9_u5668"><a href="#u7C7B_u9009_u62E9_u5668" class="headerlink" title="类选择器"></a>类选择器</h2><p>通过设置元素的 class 属性，可以为元素指定类名。与id不同的是，同一个class可以在同一个html文件中复用。以<code>.</code>来定义</p>
+<h2 id="类选择器"><a href="#类选择器" class="headerlink" title="类选择器"></a>类选择器</h2><p>通过设置元素的 class 属性，可以为元素指定类名。与id不同的是，同一个class可以在同一个html文件中复用。以<code>.</code>来定义</p>
 <p>示例</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.center</span> <span class="rules">&#123;<span class="rule"><span class="attribute">text-align</span>:<span class="value"> center</span></span></span>&#125;</span><br></pre></td></tr></table></figure>
 <p>html代码中这样用</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1 class="center"&gt;</span><br><span class="line">	This heading will be center-aligned</span><br><span class="line">&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;p class="center"&gt;</span><br><span class="line">	This paragraph will also be center-aligned.</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="u57FA_u4E8E_u5173_u7CFB_u7684_u9009_u62E9_u5668"><a href="#u57FA_u4E8E_u5173_u7CFB_u7684_u9009_u62E9_u5668" class="headerlink" title="基于关系的选择器"></a>基于关系的选择器</h2><p>CSS有多种基于元素关系的选择器。通过它们我们可以更精确的选择元素。<br>常见的关系选择器</p>
+<h2 id="基于关系的选择器"><a href="#基于关系的选择器" class="headerlink" title="基于关系的选择器"></a>基于关系的选择器</h2><p>CSS有多种基于元素关系的选择器。通过它们我们可以更精确的选择元素。<br>常见的关系选择器</p>
 <table>
 <thead>
 <tr>
@@ -335,16 +361,50 @@ CSS什么是CSS
 </tr>
 </tbody>
 </table>
-<h2 id="u4F2A_u7C7B_u9009_u62E9_u5668"><a href="#u4F2A_u7C7B_u9009_u62E9_u5668" class="headerlink" title="伪类选择器"></a>伪类选择器</h2><p>CSS伪类（pseudo-class）是加在选择器后面的用来指定元素状态的关键字。</p>
+<h2 id="伪类选择器"><a href="#伪类选择器" class="headerlink" title="伪类选择器"></a>伪类选择器</h2><p>CSS伪类（pseudo-class）是加在选择器后面的用来指定元素状态的关键字。</p>
 <p>示例</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">a</span><span class="pseudo">:link</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="hexcolor">#FF0000</span></span></span></span>&#125;		<span class="comment">/* 未访问的链接 */</span></span><br><span class="line"><span class="tag">a</span><span class="pseudo">:visited</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="hexcolor">#00FF00</span></span></span></span>&#125;	<span class="comment">/* 已访问的链接 */</span></span><br><span class="line"><span class="tag">a</span><span class="pseudo">:hover</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="hexcolor">#FF00FF</span></span></span></span>&#125;	<span class="comment">/* 鼠标移动到链接上 */</span></span><br><span class="line"><span class="tag">a</span><span class="pseudo">:active</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="hexcolor">#0000FF</span></span></span></span>&#125;	<span class="comment">/* 选定的链接 */</span></span><br></pre></td></tr></table></figure>
 <p>上面表示a链接的各种状态的表示。</p>
-<h2 id="u5C5E_u6027_u9009_u62E9_u5668"><a href="#u5C5E_u6027_u9009_u62E9_u5668" class="headerlink" title="属性选择器"></a>属性选择器</h2><p>属性选择器可以根据元素的属性及属性值来选择元素。<br>简单的示例<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*<span class="attr_selector">[title]</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value">red</span></span>;&#125;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="属性选择器"><a href="#属性选择器" class="headerlink" title="属性选择器"></a>属性选择器</h2><p>属性选择器可以根据元素的属性及属性值来选择元素。<br>简单的示例<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*<span class="attr_selector">[title]</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value">red</span></span>;&#125;</span></span><br></pre></td></tr></table></figure></p>
 <p>上面表示把包含标题（title）的所有元素变为红色<br>在css中 <code>*</code>可以替代任何元素</p>
 <p>上面所讲到的任意选择器，都可以通过组合的方式表达更复杂的元素间的关系，产生复杂的显示效果。</p>
-<h1 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h1><p>css是前端的基础，对于界面显示和布局来说至关重要，特别是css的选择器，相互组合可以产生非常复杂的效果。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>css是前端的基础，对于界面显示和布局来说至关重要，特别是css的选择器，相互组合可以产生非常复杂的效果。</p>
 <p>最后附上ife的提交任务二<br><a href="https://github.com/w4lle/ife_baidu/blob/master/task2%2Findex.html" target="_blank" rel="external">代码地址</a><br><a href="http://w4lle.github.io/ife_baidu/task2/index.html">demo</a></p>
 <p>本文地址 <a href="http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/">http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
 
       
     </div>
@@ -446,17 +506,17 @@ CSS什么是CSS
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
-          
+
           
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -477,26 +537,29 @@ CSS什么是CSS
           
             
               <span class="links-of-author-item">
-                <a href="https://github.com/w4lle" target="_blank">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-fw fa-github"></i>
                   
+                  GitHub
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/2274417881" target="_blank">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-fw fa-weibo"></i>
                   
+                  Weibo
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://blog.csdn.net/hlglinglong" target="_blank">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
                   
-                    <i class="fa fa-csdn"></i> CSDN
+                    <i class="fa fa-fw fa-globe"></i>
                   
+                  CSDN
                 </a>
               </span>
             
@@ -506,27 +569,20 @@ CSS什么是CSS
         
         
 
-        <div class="links-of-author motion-element">
-          
-        </div>
+        
+        
 
       </section>
 
       
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator">
-            <i class="fa fa-angle-double-up"></i>
-          </div>
           <div class="post-toc">
             
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u80CC_u666F"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS"><span class="nav-number">2.</span> <span class="nav-text">CSS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4EC0_u4E48_u662FCSS"><span class="nav-number">2.1.</span> <span class="nav-text">什么是CSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4E3A_u4EC0_u4E48_u4F7F_u7528CSS"><span class="nav-number">2.2.</span> <span class="nav-text">为什么使用CSS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS_u57FA_u7840_u8BED_u6CD5"><span class="nav-number">3.</span> <span class="nav-text">CSS基础语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u9009_u62E9_u5668"><span class="nav-number">4.</span> <span class="nav-text">选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u9009_u62E9_u5668_u7684_u5206_u7EC4"><span class="nav-number">4.1.</span> <span class="nav-text">选择器的分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u6D3E_u751F_u9009_u62E9_u5668"><span class="nav-number">4.2.</span> <span class="nav-text">派生选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id__u9009_u62E9_u5668"><span class="nav-number">4.3.</span> <span class="nav-text">id 选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u7C7B_u9009_u62E9_u5668"><span class="nav-number">4.4.</span> <span class="nav-text">类选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u57FA_u4E8E_u5173_u7CFB_u7684_u9009_u62E9_u5668"><span class="nav-number">4.5.</span> <span class="nav-text">基于关系的选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4F2A_u7C7B_u9009_u62E9_u5668"><span class="nav-number">4.6.</span> <span class="nav-text">伪类选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5C5E_u6027_u9009_u62E9_u5668"><span class="nav-number">4.7.</span> <span class="nav-text">属性选择器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u603B_u7ED3"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS"><span class="nav-number">2.</span> <span class="nav-text">CSS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是CSS"><span class="nav-number">2.1.</span> <span class="nav-text">什么是CSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么使用CSS"><span class="nav-number">2.2.</span> <span class="nav-text">为什么使用CSS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS基础语法"><span class="nav-number">3.</span> <span class="nav-text">CSS基础语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择器"><span class="nav-number">4.</span> <span class="nav-text">选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#选择器的分组"><span class="nav-number">4.1.</span> <span class="nav-text">选择器的分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#派生选择器"><span class="nav-number">4.2.</span> <span class="nav-text">派生选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id-选择器"><span class="nav-number">4.3.</span> <span class="nav-text">id 选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类选择器"><span class="nav-number">4.4.</span> <span class="nav-text">类选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于关系的选择器"><span class="nav-number">4.5.</span> <span class="nav-text">基于关系的选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#伪类选择器"><span class="nav-number">4.6.</span> <span class="nav-text">伪类选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性选择器"><span class="nav-number">4.7.</span> <span class="nav-text">属性选择器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator">
-            <i class="fa fa-angle-double-down"></i>
           </div>
         </section>
       
@@ -546,224 +602,90 @@ CSS什么是CSS
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">w4lle</span>
 </div>
 
+<div>
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
-您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
 
+        
 
-
-
+        
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
   
 
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
 
   
 
 
 
+  
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
+  
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
+  
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
 
 
-
-  
-  
 
   
   
-<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
 
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 1 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
-      var $tocContent = $('.post-toc-content');
-
-      if (CONFIG.sidebar === 'post') {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
-        }
-      }
-    };
-  });
-</script>
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
 
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
 
 
 
@@ -794,12 +716,14 @@ CSS什么是CSS
 
 
 
+
+  
   
   
 
   
-  
 
+  
 
 </body>
 </html>

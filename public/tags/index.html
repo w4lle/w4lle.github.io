@@ -27,18 +27,45 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
 
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Hexo, NexT" />
@@ -54,7 +81,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.png?v=0.5.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
 
 
 
@@ -67,7 +94,7 @@
 <meta property="og:url" content="http://w4lle.github.io/tags/index.html">
 <meta property="og:site_name" content="w4lle's Notes">
 <meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
-<meta property="og:updated_time" content="2016-01-31T16:51:43.000Z">
+<meta property="og:updated_time" content="2016-06-05T11:19:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tags">
 <meta name="twitter:description" content="生活不止眼前的苟且，还有诗，和远方。">
@@ -78,7 +105,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: "always",
+    sidebar: {"position":"right","display":"always"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -108,10 +135,14 @@
 
 
 
+
+
   
+  
+    
   
 
-  <div class="container one-collumn   ">
+  <div class="container one-collumn sidebar-position-right  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -140,13 +171,11 @@
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             首页
           </a>
@@ -156,8 +185,6 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
           </a>
         </li>
@@ -165,8 +192,6 @@
         
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
             标签
           </a>
@@ -176,15 +201,11 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-question-circle fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
-      
-      
       
     </ul>
   
@@ -206,10 +227,10 @@
     
       <div class="tag-cloud">
         <div class="tag-cloud-title">
-            目前共计 20 个标签
+            目前共计 21 个标签
         </div>
         <div class="tag-cloud-tags">
-          <a href="/tags/AndFix/" style="font-size: 21px; color: #6f6f6f">AndFix</a> <a href="/tags/Android/" style="font-size: 30px; color: #111">Android</a> <a href="/tags/CSS/" style="font-size: 21px; color: #6f6f6f">CSS</a> <a href="/tags/Flexbox/" style="font-size: 12px; color: #ccc">Flexbox</a> <a href="/tags/Install-run/" style="font-size: 12px; color: #ccc">Install run</a> <a href="/tags/Toast/" style="font-size: 12px; color: #ccc">Toast</a> <a href="/tags/Zsh/" style="font-size: 12px; color: #ccc">Zsh</a> <a href="/tags/apk反编辑/" style="font-size: 12px; color: #ccc">apk反编辑</a> <a href="/tags/apk瘦身/" style="font-size: 12px; color: #ccc">apk瘦身</a> <a href="/tags/multidex/" style="font-size: 12px; color: #ccc">multidex</a> <a href="/tags/优化/" style="font-size: 12px; color: #ccc">优化</a> <a href="/tags/前端/" style="font-size: 30px; color: #111">前端</a> <a href="/tags/动态加载/" style="font-size: 12px; color: #ccc">动态加载</a> <a href="/tags/工具/" style="font-size: 21px; color: #6f6f6f">工具</a> <a href="/tags/源码分析/" style="font-size: 12px; color: #ccc">源码分析</a> <a href="/tags/热更新/" style="font-size: 21px; color: #6f6f6f">热更新</a> <a href="/tags/热补丁/" style="font-size: 12px; color: #ccc">热补丁</a> <a href="/tags/自定义View/" style="font-size: 12px; color: #ccc">自定义View</a> <a href="/tags/逆向/" style="font-size: 12px; color: #ccc">逆向</a> <a href="/tags/通知消息权限/" style="font-size: 12px; color: #ccc">通知消息权限</a>
+          <a href="/tags/AndFix/" style="font-size: 18px; color: #8e8e8e">AndFix</a> <a href="/tags/Android/" style="font-size: 24px; color: #4f4f4f">Android</a> <a href="/tags/CSS/" style="font-size: 18px; color: #8e8e8e">CSS</a> <a href="/tags/Flexbox/" style="font-size: 12px; color: #ccc">Flexbox</a> <a href="/tags/Install-run/" style="font-size: 12px; color: #ccc">Install run</a> <a href="/tags/JavaScript/" style="font-size: 12px; color: #ccc">JavaScript</a> <a href="/tags/Toast/" style="font-size: 12px; color: #ccc">Toast</a> <a href="/tags/Zsh/" style="font-size: 12px; color: #ccc">Zsh</a> <a href="/tags/apk反编辑/" style="font-size: 12px; color: #ccc">apk反编辑</a> <a href="/tags/apk瘦身/" style="font-size: 12px; color: #ccc">apk瘦身</a> <a href="/tags/multidex/" style="font-size: 12px; color: #ccc">multidex</a> <a href="/tags/优化/" style="font-size: 12px; color: #ccc">优化</a> <a href="/tags/前端/" style="font-size: 30px; color: #111">前端</a> <a href="/tags/动态加载/" style="font-size: 12px; color: #ccc">动态加载</a> <a href="/tags/工具/" style="font-size: 18px; color: #8e8e8e">工具</a> <a href="/tags/源码分析/" style="font-size: 12px; color: #ccc">源码分析</a> <a href="/tags/热更新/" style="font-size: 18px; color: #8e8e8e">热更新</a> <a href="/tags/热补丁/" style="font-size: 12px; color: #ccc">热补丁</a> <a href="/tags/自定义View/" style="font-size: 12px; color: #ccc">自定义View</a> <a href="/tags/逆向/" style="font-size: 12px; color: #ccc">逆向</a> <a href="/tags/通知消息权限/" style="font-size: 12px; color: #ccc">通知消息权限</a>
         </div>
       </div>
     
@@ -260,17 +281,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
-          
+
           
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -291,26 +312,29 @@
           
             
               <span class="links-of-author-item">
-                <a href="https://github.com/w4lle" target="_blank">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-fw fa-github"></i>
                   
+                  GitHub
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/2274417881" target="_blank">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-fw fa-weibo"></i>
                   
+                  Weibo
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://blog.csdn.net/hlglinglong" target="_blank">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
                   
-                    <i class="fa fa-csdn"></i> CSDN
+                    <i class="fa fa-fw fa-globe"></i>
                   
+                  CSDN
                 </a>
               </span>
             
@@ -320,9 +344,8 @@
         
         
 
-        <div class="links-of-author motion-element">
-          
-        </div>
+        
+        
 
       </section>
 
@@ -343,63 +366,86 @@
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">w4lle</span>
 </div>
 
+<div>
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
-您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
 
+        
 
-
-
+        
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
   
 
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
 
   
 
 
 
+  
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
+  
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
+  
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
 
 
 
   
-  
-
   
 
   
 
+  
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
 
 
 
@@ -430,12 +476,14 @@
 
 
 
+
+  
   
   
 
   
-  
 
+  
 
 </body>
 </html>

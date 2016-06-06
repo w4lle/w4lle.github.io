@@ -27,18 +27,45 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
 
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Hexo, NexT" />
@@ -52,7 +79,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.png?v=0.5.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
 
 
 
@@ -75,7 +102,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: "always",
+    sidebar: {"position":"right","display":"always"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -85,7 +112,7 @@
   };
 </script>
 
-  <title> w4lle's Notes - 生活不止眼前的苟且，还有诗，和远方。 </title>
+  <title> Hexo, NexT - w4lle's Notes - 生活不止眼前的苟且，还有诗，和远方。 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -99,10 +126,14 @@
 
 
 
+
+
   
+  
+    
   
 
-  <div class="container one-collumn  
+  <div class="container one-collumn sidebar-position-right 
    page-home 
  ">
     <div class="headband"></div>
@@ -133,13 +164,11 @@
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             首页
           </a>
@@ -149,8 +178,6 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
             归档
           </a>
         </li>
@@ -158,8 +185,6 @@
         
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
             标签
           </a>
@@ -169,15 +194,11 @@
         <li class="menu-item menu-item-guestbook">
           <a href="/guestbook" rel="section">
             
-              <i class="menu-item-icon fa fa-question-circle fa-fw"></i> <br />
-            
             留言
           </a>
         </li>
       
 
-      
-      
       
     </ul>
   
@@ -194,20 +215,113 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
-
     
-
-    
-    
-      
-      
-        
-        
-        
       
 
-      
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/31/JavaScript/" itemprop="url">
+                  前端基础（三）-- JavaScript
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-31T15:34:31+08:00" content="2016-05-31">
+              2016-05-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/31/JavaScript/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/31/JavaScript/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          JavaScript简介JavaScript可以说是世界上最流行的脚本语言，这也正达到了作者给这种语言取名字的目的，由于当时Java很火，所以这哥们儿为了JavaScript也能火起来就取了个相似的名字，并希望JavaScript也能火起来，所以现在就有了很多程序员的段子，一脸黑线。
+JavaScr
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/31/JavaScript/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -267,6 +381,9 @@
 
           
           
+
+          
+          
         </div>
       </header>
     
@@ -290,6 +407,14 @@ Color简介我们知道Color的每个颜色通道（channel）的组
             </a>
           </div>
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -364,6 +489,9 @@ Color简介我们知道Color的每个颜色通道（channel）的组
 
           
           
+
+          
+          
         </div>
       </header>
     
@@ -389,6 +517,14 @@ Color简介我们知道Color的每个颜色通道（channel）的组
             </a>
           </div>
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -463,6 +599,9 @@ Color简介我们知道Color的每个颜色通道（channel）的组
 
           
           
+
+          
+          
         </div>
       </header>
     
@@ -485,6 +624,14 @@ Color简介我们知道Color的每个颜色通道（channel）的组
             </a>
           </div>
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -559,6 +706,9 @@ Color简介我们知道Color的每个颜色通道（channel）的组
 
           
           
+
+          
+          
         </div>
       </header>
     
@@ -581,6 +731,14 @@ Color简介我们知道Color的每个颜色通道（channel）的组
             </a>
           </div>
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -655,6 +813,9 @@ Color简介我们知道Color的每个颜色通道（channel）的组
 
           
           
+
+          
+          
         </div>
       </header>
     
@@ -677,6 +838,14 @@ Color简介我们知道Color的每个颜色通道（channel）的组
             </a>
           </div>
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -751,6 +920,9 @@ Color简介我们知道Color的每个颜色通道（channel）的组
 
           
           
+
+          
+          
         </div>
       </header>
     
@@ -774,6 +946,14 @@ Color简介我们知道Color的每个颜色通道（channel）的组
             </a>
           </div>
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -848,6 +1028,9 @@ Color简介我们知道Color的每个颜色通道（channel）的组
 
           
           
+
+          
+          
         </div>
       </header>
     
@@ -872,6 +1055,14 @@ Color简介我们知道Color的每个颜色通道（channel）的组
             </a>
           </div>
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -946,6 +1137,9 @@ Color简介我们知道Color的每个颜色通道（channel）的组
 
           
           
+
+          
+          
         </div>
       </header>
     
@@ -972,6 +1166,14 @@ CSS什么是CSS
             </a>
           </div>
         
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
       
     </div>
 
@@ -1046,6 +1248,9 @@ CSS什么是CSS
 
           
           
+
+          
+          
         </div>
       </header>
     
@@ -1072,100 +1277,11 @@ CSS什么是CSS
       
     </div>
 
-    <footer class="post-footer">
+    <div>
       
+    </div>
 
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/03/Android热补丁之AndFix原理解析/" itemprop="url">
-                  Android热补丁之AndFix原理解析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-03T14:43:44+08:00" content="2016-03-03">
-              2016-03-03
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/03/03/Android热补丁之AndFix原理解析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/03/Android热补丁之AndFix原理解析/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          背景2015年下半年开源了很多Android热更新的项目，其中大部分是以QQ空间技术团队写的那篇文章为依据写出的基于multidex的热更新框架，包括Nuwa、HotFix、DroidFix等；还有这篇文章的主角，阿里开源的AndFix。
-在这之前，热补丁框架并没有那么火，原因无非就是要么用起来太重
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/03/Android热补丁之AndFix原理解析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
+    <div>
       
     </div>
 
@@ -1183,7 +1299,6 @@ CSS什么是CSS
 
 
     
-
   </section>
 
   
@@ -1229,17 +1344,17 @@ CSS什么是CSS
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
-          
+
           
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1260,26 +1375,29 @@ CSS什么是CSS
           
             
               <span class="links-of-author-item">
-                <a href="https://github.com/w4lle" target="_blank">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-fw fa-github"></i>
                   
+                  GitHub
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/2274417881" target="_blank">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-fw fa-weibo"></i>
                   
+                  Weibo
                 </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://blog.csdn.net/hlglinglong" target="_blank">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
                   
-                    <i class="fa fa-csdn"></i> CSDN
+                    <i class="fa fa-fw fa-globe"></i>
                   
+                  CSDN
                 </a>
               </span>
             
@@ -1289,9 +1407,8 @@ CSS什么是CSS
         
         
 
-        <div class="links-of-author motion-element">
-          
-        </div>
+        
+        
 
       </section>
 
@@ -1312,63 +1429,86 @@ CSS什么是CSS
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">w4lle</span>
 </div>
 
+<div>
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
-您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
 
+        
 
-
-
+        
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
   
 
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
 
   
 
 
 
+  
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
+  
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
+  
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
 
 
 
   
-  
-
   
 
   
 
+  
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
 
 
 
@@ -1399,12 +1539,14 @@ CSS什么是CSS
 
 
 
+
+  
   
   
 
   
-  
 
+  
 
 </body>
 </html>
