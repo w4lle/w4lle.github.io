@@ -1,0 +1,677 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="apk瘦身,优化," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="w4lle's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="背景随着业务功能的不断更迭，apk安装包的体积越来越大，最新的薄荷app android版本的安装包大小已经达到了22.5M，过大的安装包对于用户的体验来说会造成不好的影响，所以减小apk包的大小就显得尤为重要。
+问题原因NimbleDroid网站可以分析出apk安装包的各种大文件排行和各种依赖包的方法数，我们比较关注的是大文件的大小。上图
+不看不知道，一看真是吓一跳，超过100k的图片文件就那么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apk包瘦身笔记">
+<meta property="og:url" content="http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/index.html">
+<meta property="og:site_name" content="w4lle's Notes">
+<meta property="og:description" content="背景随着业务功能的不断更迭，apk安装包的体积越来越大，最新的薄荷app android版本的安装包大小已经达到了22.5M，过大的安装包对于用户的体验来说会造成不好的影响，所以减小apk包的大小就显得尤为重要。
+问题原因NimbleDroid网站可以分析出apk安装包的各种大文件排行和各种依赖包的方法数，我们比较关注的是大文件的大小。上图
+不看不知道，一看真是吓一跳，超过100k的图片文件就那么">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/large_file1.png">
+<meta property="og:updated_time" content="2016-06-06T10:13:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Apk包瘦身笔记">
+<meta name="twitter:description" content="背景随着业务功能的不断更迭，apk安装包的体积越来越大，最新的薄荷app android版本的安装包大小已经达到了22.5M，过大的安装包对于用户的体验来说会造成不好的影响，所以减小apk包的大小就显得尤为重要。
+问题原因NimbleDroid网站可以分析出apk安装包的各种大文件排行和各种依赖包的方法数，我们比较关注的是大文件的大小。上图
+不看不知道，一看真是吓一跳，超过100k的图片文件就那么">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+
+  <title> Apk包瘦身笔记 | w4lle's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">w4lle's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Eeeee... va?</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Apk包瘦身笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-10T19:11:51+08:00" content="2016-04-10">
+              2016-04-10
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/10/Apk包瘦身笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/10/Apk包瘦身笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>随着业务功能的不断更迭，apk安装包的体积越来越大，最新的薄荷app android版本的安装包大小已经达到了22.5M，过大的安装包对于用户的体验来说会造成不好的影响，所以减小apk包的大小就显得尤为重要。</p>
+<h1 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h1><p><a href="https://nimbledroid.com/" target="_blank" rel="external">NimbleDroid</a>网站可以分析出apk安装包的各种大文件排行和各种依赖包的方法数，我们比较关注的是大文件的大小。上图<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/large_file1.png" alt="image"></p>
+<p>不看不知道，一看真是吓一跳，超过100k的图片文件就那么多，而且超过300k的就有7个之多。<br>还有两个MP3文件也很大。</p>
+<h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><h2 id="资源混淆"><a href="#资源混淆" class="headerlink" title="资源混淆"></a>资源混淆</h2><p>资源混淆的方案采用的微信团队的<a href="https://github.com/shwenzhang/AndResGuard?spm=a313e.7916648.0.0.wwht7B" target="_blank" rel="external">AndResGuard</a>。使用方法输入一个apk文件，压缩混淆后输出一个apk包，采用引用gradle插件的方式集成到项目中，但是插件并不支持，所以就需要适配多渠道打包。薄荷项目中多渠道打包使用的是美团的方案，参考<a href="http://www.open-open.com/lib/view/open1418262988402.html" target="_blank" rel="external">Android批量打包提速</a><br>方法如下</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">project</span>.afterEvaluate &#123;</span><br><span class="line">    <span class="comment">//在Release后执行资源混淆，然后多渠道打包</span></span><br><span class="line">    <span class="comment">//打包命令 ./gradlew resguard</span></span><br><span class="line">    tasks.getByName(<span class="string">"resguard"</span>) &#123;</span><br><span class="line">        it.<span class="keyword">doLast</span> &#123;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'channel package task begin'</span></span><br><span class="line">            <span class="keyword">def</span> fileName = <span class="string">"one_v$&#123;defaultConfig.versionName&#125;_$&#123;releaseTime()&#125;_signed_7zip_aligned.apk"</span></span><br><span class="line">            <span class="keyword">def</span> rApk = <span class="keyword">new</span> <span class="keyword">File</span>(<span class="string">"app/build/outputs/apk/AndResProguard/"</span> + fileName)</span><br><span class="line">            <span class="keyword">if</span> (rApk.exists()) &#123;</span><br><span class="line">                <span class="keyword">print</span> <span class="string">'resGuard apk exits begin channel package'</span></span><br><span class="line">                packageChannel(rApk.absolutePath)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行完resguard混淆压缩后生成apk文件，调用python脚本执行多渠道打包。<br>还有一点需要注意的是，使用该方案要注意动态查找id导致找不到id的问题。需要添加白名单，项目中有明确的说明。但是对于引用第三方项目较多的来说，挨个添加id就很不现实了。<br>所以在白名单中添加所有的id<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//for all id</span></span><br><span class="line">           <span class="string">"com.boohee.one.R.id.*"</span></span><br></pre></td></tr></table></figure></p>
+<p>集成改方案后apk包大概较小了4M。并且资源文件也已经混淆，资源路径长路径变成段路径<br><code>res/drawable/icon -&gt; res/drawable/a</code><br>对于反编译apk来说难度增加了。</p>
+<h2 id="删除无用代码和资源"><a href="#删除无用代码和资源" class="headerlink" title="删除无用代码和资源"></a>删除无用代码和资源</h2><p>在Android Studio中使用lint分析无用的文件<br>Analyze -&gt; Run Inspection by Name</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unusedResources</span><br></pre></td></tr></table></figure>
+<p>会列出无用资源列表，特别是图片全部干掉。<br>另外一点，由于项目更新迭代快，业务功能更改比较频繁，这就导致了项目中的无用代码特别多，但是依靠lint检查就比较有限，需要我们根据项目功能手动删除。删除无用代码后又会引出很多无用的资源文件，lint检查后再删除一遍。<br>做完这一步大概减少了1.5M左右。但是还有好多无用的代码还没有删除，以后有时间再处理。</p>
+<h2 id="去除无用的语言资源"><a href="#去除无用的语言资源" class="headerlink" title="去除无用的语言资源"></a>去除无用的语言资源</h2><p>具体项目具体执行，对于没有国际化的项目比如薄荷，在build.gradle中添加一句</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        resConfigs <span class="string">"zh"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只使用中文资源，不光对本项目生效，还会对依赖的项目生效，比如support包。这样打包后只会打包中文资源，大概减小了1M左右。</p>
+<h2 id="删除多余的so库"><a href="#删除多余的so库" class="headerlink" title="删除多余的so库"></a>删除多余的so库</h2><p>薄荷一直以来至保留armable，这一点可以根据具体项目来定。</p>
+<h2 id="混淆"><a href="#混淆" class="headerlink" title="混淆"></a>混淆</h2><p>Proguard是编译时对java代码进行压缩，混淆，优化，预编译等操作的集成化工具。达到删除冗余，增加安全防护，减小大小的功效。薄荷一直以来并没有加入代码混淆，一方面原因是项目越来越大，混淆的话如果测试不充分很容易出问题，另一方面，薄荷一直提倡开源，并且核心并不在app端，并且有很多初学者会反编译薄荷app学习一些开发技巧。但是，对于提升用户体验来说这些都显得微不足道。我们也在着手做相关的混淆工作。</p>
+<h2 id="其余一些建议"><a href="#其余一些建议" class="headerlink" title="其余一些建议"></a>其余一些建议</h2><ul>
+<li>tiny图片处理 目前所知图片压缩效果最好的网站。蘑菇街写了tiny的gradle<a href="https://github.com/mogujie/TinyPIC_Gradle_Plugin" target="_blank" rel="external">插件</a>，薄荷还没有实践</li>
+<li>删除音频文件 薄荷项目中有一些音频文件，好在下个版本改业务功能即将下线，所以这些文件可以直接删除；另外一种方法是可以走网络获取，在线化。</li>
+<li>用更小的库</li>
+<li>png转成webp 可能会有点兼容性问题</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://jaq.alibaba.com/community/art/show?spm=a313e.7916646.24000001.3.T8AIXY&amp;articleid=219" target="_blank" rel="external">APK瘦身记，如何实现高达53%的压缩效果</a></li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=208135658&amp;idx=1&amp;sn=ac9bd6b4927e9e82f9fa14e396183a8f#rd" target="_blank" rel="external">安装包立减1M–微信Android资源混淆打包工具</a></li>
+<li><a href="http://www.jayfeng.com/2015/12/29/APK%E7%98%A6%E8%BA%AB%E5%AE%9E%E8%B7%B5/" target="_blank" rel="external">APK瘦身实践</a>]</li>
+<li><a href="http://blog.csdn.net/UsherFor/article/details/46827587" target="_blank" rel="external">如何将apk大小减少6M的</a></li>
+</ul>
+<p>本文地址 <a href="http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/">http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/apk瘦身/" rel="tag">#apk瘦身</a>
+          
+            <a href="/tags/优化/" rel="tag">#优化</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/" rel="next" title="Android关闭通知消息权限无法弹出Toast的解决方案">
+                <i class="fa fa-chevron-left"></i> Android关闭通知消息权限无法弹出Toast的解决方案
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/17/前端基础-一-CSS布局基础/" rel="prev" title="前端基础(一)--CSS布局基础">
+                前端基础(一)--CSS布局基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/10/Apk包瘦身笔记/"
+           data-title="Apk包瘦身笔记" data-url="http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/walle.jpg"
+               alt="w4lle" />
+          <p class="site-author-name" itemprop="name">w4lle</p>
+          <p class="site-description motion-element" itemprop="description">生活不止眼前的苟且，还有诗，和远方。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题原因"><span class="nav-number">2.</span> <span class="nav-text">问题原因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决办法"><span class="nav-number">3.</span> <span class="nav-text">解决办法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#资源混淆"><span class="nav-number">3.1.</span> <span class="nav-text">资源混淆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除无用代码和资源"><span class="nav-number">3.2.</span> <span class="nav-text">删除无用代码和资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去除无用的语言资源"><span class="nav-number">3.3.</span> <span class="nav-text">去除无用的语言资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除多余的so库"><span class="nav-number">3.4.</span> <span class="nav-text">删除多余的so库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#混淆"><span class="nav-number">3.5.</span> <span class="nav-text">混淆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其余一些建议"><span class="nav-number">3.6.</span> <span class="nav-text">其余一些建议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">w4lle</span>
+</div>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

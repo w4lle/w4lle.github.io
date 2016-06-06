@@ -1,0 +1,670 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Zsh,工具," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="w4lle's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="为什么要用Zsh请参考这篇文章终极 Shell
+Zsh使用技巧巧用tab自动完成tab用到最多的就是自动完成,比如cd进入某个目录，可以输入该目录的中的几个字母，然后tab自动补全。你不必输入整个目录名称，只需输入初始几个可以唯一区别与其他目录的字母，Zsh会自动匹配出剩余部分。
+环境变量展开在Zsh中，你可以按下键来展开shell中的环境变量值
+kill命令补全通常我们想要杀死某个进程，一般都要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="终极Shell--Zsh 使用技巧">
+<meta property="og:url" content="http://w4lle.github.io/2016/02/01/终极Shell-Zsh-使用技巧/index.html">
+<meta property="og:site_name" content="w4lle's Notes">
+<meta property="og:description" content="为什么要用Zsh请参考这篇文章终极 Shell
+Zsh使用技巧巧用tab自动完成tab用到最多的就是自动完成,比如cd进入某个目录，可以输入该目录的中的几个字母，然后tab自动补全。你不必输入整个目录名称，只需输入初始几个可以唯一区别与其他目录的字母，Zsh会自动匹配出剩余部分。
+环境变量展开在Zsh中，你可以按下键来展开shell中的环境变量值
+kill命令补全通常我们想要杀死某个进程，一般都要">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/QQ20160131-1%402x.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/tab.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/PWD-tab.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/PWD-tab-done.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/kill_tab.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/git-tab.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/UP1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/UP2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/alias_git.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/alias.png">
+<meta property="og:updated_time" content="2016-06-06T10:13:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="终极Shell--Zsh 使用技巧">
+<meta name="twitter:description" content="为什么要用Zsh请参考这篇文章终极 Shell
+Zsh使用技巧巧用tab自动完成tab用到最多的就是自动完成,比如cd进入某个目录，可以输入该目录的中的几个字母，然后tab自动补全。你不必输入整个目录名称，只需输入初始几个可以唯一区别与其他目录的字母，Zsh会自动匹配出剩余部分。
+环境变量展开在Zsh中，你可以按下键来展开shell中的环境变量值
+kill命令补全通常我们想要杀死某个进程，一般都要">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+
+  <title> 终极Shell--Zsh 使用技巧 | w4lle's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">w4lle's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Eeeee... va?</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                终极Shell--Zsh 使用技巧
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-01T01:51:36+08:00" content="2016-02-01">
+              2016-02-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/01/终极Shell-Zsh-使用技巧/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/01/终极Shell-Zsh-使用技巧/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="为什么要用Zsh"><a href="#为什么要用Zsh" class="headerlink" title="为什么要用Zsh"></a>为什么要用Zsh</h2><p>请参考这篇文章<a href="http://macshuo.com/?p=676" target="_blank" rel="external">终极 Shell</a></p>
+<h2 id="Zsh使用技巧"><a href="#Zsh使用技巧" class="headerlink" title="Zsh使用技巧"></a>Zsh使用技巧</h2><h3 id="巧用tab"><a href="#巧用tab" class="headerlink" title="巧用tab"></a>巧用<code>tab</code></h3><h4 id="自动完成"><a href="#自动完成" class="headerlink" title="自动完成"></a>自动完成</h4><p><code>tab</code>用到最多的就是自动完成,比如<code>cd</code>进入某个目录，可以输入该目录的中的几个字母，然后<code>tab</code>自动补全。<br>你不必输入整个目录名称，只需输入初始几个可以唯一区别与其他目录的字母，Zsh会自动匹配出剩余部分。<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/QQ20160131-1%402x.png" alt="此处输入图片的描述"><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/tab.png" alt=""></p>
+<h4 id="环境变量展开"><a href="#环境变量展开" class="headerlink" title="环境变量展开"></a>环境变量展开</h4><p>在Zsh中，你可以按下<tab>键来展开shell中的环境变量值<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/PWD-tab.png" alt=""><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/PWD-tab-done.png" alt=""></tab></p>
+<h4 id="kill命令补全"><a href="#kill命令补全" class="headerlink" title="kill命令补全"></a>kill命令补全</h4><p>通常我们想要杀死某个进程，一般都要先<code>ps</code>下查看进程，然后<code>kill</code>杀掉。使用<code>zsh</code>可以这样<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/kill_tab.png" alt=""></p>
+<h4 id="help命令"><a href="#help命令" class="headerlink" title="help命令"></a>help命令</h4><p>对于我们不熟悉的命令行，一般都会<code>--help</code>查看帮助文档，而zsh可以直接敲你想要的命令，比如这样<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/git-tab.png" alt=""></p>
+<h3 id="强大的历史记录"><a href="#强大的历史记录" class="headerlink" title="强大的历史记录"></a>强大的历史记录</h3><p>类UNIX系统通常都习惯于<code>ctrl+r</code>的方式查找命令行的历史记录，挺好用的。但是<code>zsh</code>有更强大的历史搜索，比如<code>UP</code><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/UP1.png" alt=""><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/UP2.png" alt=""><br>意思是上方向键能帮你找到最近使用的以<code>./gradlew</code>开头的命令，<code>UP</code> <code>DOWN</code>可以循环查找</p>
+<h3 id="强大的alias别名"><a href="#强大的alias别名" class="headerlink" title="强大的alias别名"></a>强大的<code>alias</code>别名</h3><p>平时工作基本都用<code>git</code>管理项目代码，每个人都有习惯使用的<code>git</code>别名，<code>zsh</code>为我们提供了一套通用的<code>alias</code>,即使换了工作环境，只要有<code>zsh</code>那么一套<code>alias</code>全部搞定。在该文件下可以看到<code>~/.oh-my-zsh/plugins/git/git.plugin.zsh</code><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/alias_git.png" alt=""><br>除了<code>git</code>别名，还有好多有用的别名，<code>alias</code>命令可以列出全部的别名<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/alias.png" alt=""></p>
+<h3 id="智能跳转"><a href="#智能跳转" class="headerlink" title="智能跳转"></a>智能跳转</h3><p>首先需要安装插件<code>aotojump</code>，zsh会自动记录你访问过的目录，通过 <code>j + 目录名</code>可以直接进行目录跳转，而且目录名支持模糊匹配和自动补全，例如你访问过<code>Develop</code>目录，输入<code>j develo</code> 即可正确跳转。</p>
+<p>本文地址 <a href="http://w4lle.github.io/2016/02/01/终极Shell-Zsh-使用技巧/">http://w4lle.github.io/2016/02/01/终极Shell-Zsh-使用技巧/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Zsh/" rel="tag">#Zsh</a>
+          
+            <a href="/tags/工具/" rel="tag">#工具</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/28/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/15/ClassyShark——分析apk利器/" rel="prev" title="ClassyShark——apk分析利器">
+                ClassyShark——apk分析利器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/02/01/终极Shell-Zsh-使用技巧/"
+           data-title="终极Shell--Zsh 使用技巧" data-url="http://w4lle.github.io/2016/02/01/终极Shell-Zsh-使用技巧/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/walle.jpg"
+               alt="w4lle" />
+          <p class="site-author-name" itemprop="name">w4lle</p>
+          <p class="site-description motion-element" itemprop="description">生活不止眼前的苟且，还有诗，和远方。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要用Zsh"><span class="nav-number">1.</span> <span class="nav-text">为什么要用Zsh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zsh使用技巧"><span class="nav-number">2.</span> <span class="nav-text">Zsh使用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#巧用tab"><span class="nav-number">2.1.</span> <span class="nav-text">巧用tab</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自动完成"><span class="nav-number">2.1.1.</span> <span class="nav-text">自动完成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#环境变量展开"><span class="nav-number">2.1.2.</span> <span class="nav-text">环境变量展开</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kill命令补全"><span class="nav-number">2.1.3.</span> <span class="nav-text">kill命令补全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#help命令"><span class="nav-number">2.1.4.</span> <span class="nav-text">help命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#强大的历史记录"><span class="nav-number">2.2.</span> <span class="nav-text">强大的历史记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#强大的alias别名"><span class="nav-number">2.3.</span> <span class="nav-text">强大的alias别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#智能跳转"><span class="nav-number">2.4.</span> <span class="nav-text">智能跳转</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">w4lle</span>
+</div>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

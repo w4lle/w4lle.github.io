@@ -1,0 +1,681 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="CSS,前端," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="w4lle's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="盒模型CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端基础(一)--CSS布局基础">
+<meta property="og:url" content="http://w4lle.github.io/2016/04/17/前端基础-一-CSS布局基础/index.html">
+<meta property="og:site_name" content="w4lle's Notes">
+<meta property="og:description" content="盒模型CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padd">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/box-model.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/absolute.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float3.png">
+<meta property="og:updated_time" content="2016-06-06T10:13:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端基础(一)--CSS布局基础">
+<meta name="twitter:description" content="盒模型CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padd">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+
+  <title> 前端基础(一)--CSS布局基础 | w4lle's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">w4lle's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Eeeee... va?</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                前端基础(一)--CSS布局基础
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-17T22:26:23+08:00" content="2016-04-17">
+              2016-04-17
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/17/前端基础-一-CSS布局基础/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/17/前端基础-一-CSS布局基础/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="盒模型"><a href="#盒模型" class="headerlink" title="盒模型"></a>盒模型</h1><p>CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padding的顺序是left、top、right、bottom，比如<code>setMargin(10, 20, 30, 20)</code>分别代表左上右下的间距分别为10px,20px,30px,20px;但是在CSS中的顺序是top、right、bottom、left，比如<code>margin: [10px, 20px, 30px, 20px]</code>分别代表左上右下间距分别为20px,10px,20px,30px。<br>概述图如下</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/box-model.png" alt="image"></p>
+<h1 id="定位基础"><a href="#定位基础" class="headerlink" title="定位基础"></a>定位基础</h1><h2 id="position定位"><a href="#position定位" class="headerlink" title="position定位"></a><code>position</code>定位</h2><p><code>position</code>包括以下几种类型的定位</p>
+<ul>
+<li><p>static 默认值。任意 position: static; 的元素不会被特殊的定位。一个 static 元素表示它不会被“positioned”，一个 position 属性被设置为其他值的元素表示它会被“positioned”。</p>
+</li>
+<li><p>relative 相对布局，在原有基础上偏离使框偏离某个方向固定距离。跟Android中的布局方式很像<br>例子</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.relative2 &#123;</span><br><span class="line">  position: relative;</span><br><span class="line">  top: -20px; //在原有top位置上向上偏移-20px</span><br><span class="line">  left: 20px; //在原有left位置上向左偏移20px</span><br><span class="line">  background-color: white;</span><br><span class="line">  width: 500px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>absolute 绝对布局，向上寻找使用过<code>position</code>定位过(除了默认值static外)的祖先元素，然后依据该元素进行定位。</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.relative</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">600px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400px</span></span></span>;</span><br><span class="line">&#125;</span></span><br><span class="line"><span class="class">.absolute</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> absolute</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">120px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">right</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">300px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">200px</span></span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>如图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/absolute.png" alt="image"></p>
+<ul>
+<li>fixed 固定定位，相对于视窗来定位，这意味着即便页面滚动，它还是会停留在相同的位置。相当于在Android开发中<code>FrameLayout</code>中的某个元素指定<code>layout_gravity</code>使其固定在根布局的某个固定的位置。<br>例子</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.fixed</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">position</span>:<span class="value"> fixed</span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">bottom</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">right</span>:<span class="value"> <span class="number">0</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">200px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">background-color</span>:<span class="value"> white</span></span>;</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>该元素的位置始终在右下角保持不变。</p>
+<h2 id="float浮动"><a href="#float浮动" class="headerlink" title="float浮动"></a><code>float</code>浮动</h2><blockquote>
+<p>浮动的框可以向左或向右移动，直到它的外边缘碰到包含框或另一个浮动框的边框为止。</p>
+</blockquote>
+<p>可以这样理解，比如<code>float: left</code>就是向左移动，直到坐边缘碰到根元素或者另外一个佛洞的边框的边缘。也就是说，如果好好几个向左浮动的元素，那么它们是从左到右依次排列的。<br>如下面的图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float1.png" alt="image"><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float2.png" alt="image"><br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/float3.png" alt="image"></p>
+<h2 id="clear清除浮动"><a href="#clear清除浮动" class="headerlink" title="clear清除浮动"></a><code>clear</code>清除浮动</h2><p>clear 属性定义了元素的哪边上不允许出现浮动元素。<br>具体的例子参考<a href="http://zh.learnlayout.com/clear.html" target="_blank" rel="external">这里</a></p>
+<h1 id="三栏式布局"><a href="#三栏式布局" class="headerlink" title="三栏式布局"></a>三栏式布局</h1><p>ife其中的一个任务<a href="http://ife.baidu.com/task/detail?taskId=3" target="_blank" rel="external">三栏式布局</a><br>就是通过CSS的布局基础知识来写的。包括position和float。</p>
+<p>代码在这里<a href="https://github.com/w4lle/ife_baidu/tree/master/task3" target="_blank" rel="external">三栏式布局</a><br>demo <a href="http://w4lle.github.io/ife_baidu/task3/task3.html">demo</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://zh.learnlayout.com/" target="_blank" rel="external">learnlayout</a></li>
+<li><a href="http://www.w3school.com.cn/css/css_positioning.asp" target="_blank" rel="external">w3school</a></li>
+</ul>
+<p>本文地址 <a href="http://w4lle.github.io/2016/04/17/前端基础-一-CSS布局基础/">http://w4lle.github.io/2016/04/17/前端基础-一-CSS布局基础/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CSS/" rel="tag">#CSS</a>
+          
+            <a href="/tags/前端/" rel="tag">#前端</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/10/Apk包瘦身笔记/" rel="next" title="Apk包瘦身笔记">
+                <i class="fa fa-chevron-left"></i> Apk包瘦身笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/02/从Instant run谈Android替换Application和动态加载机制/" rel="prev" title="从Instant run谈Android替换Application和动态加载机制">
+                从Instant run谈Android替换Application和动态加载机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/17/前端基础-一-CSS布局基础/"
+           data-title="前端基础(一)--CSS布局基础" data-url="http://w4lle.github.io/2016/04/17/前端基础-一-CSS布局基础/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/walle.jpg"
+               alt="w4lle" />
+          <p class="site-author-name" itemprop="name">w4lle</p>
+          <p class="site-description motion-element" itemprop="description">生活不止眼前的苟且，还有诗，和远方。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#盒模型"><span class="nav-number">1.</span> <span class="nav-text">盒模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#定位基础"><span class="nav-number">2.</span> <span class="nav-text">定位基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#position定位"><span class="nav-number">2.1.</span> <span class="nav-text">position定位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#float浮动"><span class="nav-number">2.2.</span> <span class="nav-text">float浮动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clear清除浮动"><span class="nav-number">2.3.</span> <span class="nav-text">clear清除浮动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三栏式布局"><span class="nav-number">3.</span> <span class="nav-text">三栏式布局</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">w4lle</span>
+</div>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

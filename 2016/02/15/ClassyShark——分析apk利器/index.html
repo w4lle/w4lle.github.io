@@ -1,0 +1,705 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="apk反编辑,工具,逆向," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="w4lle's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="背景对于一个感兴趣的android非开源项目，通常使用逆向工程查看apk中的内容，俗称反编译。工具大概包括dex2jar、JD-GUI、apktool、procyon,这些工具使用起来相对比较麻烦，如果我们只想知道该项目的基本框架、使用到哪些开源项目的话，那么就有些浪费时间。对于一些大厂的项目，我们还比较关心的是用到了哪些新的框架和技术，对于新技术的流行程度和使用普遍程度有个比较好的把握，指导是否">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ClassyShark——apk分析利器">
+<meta property="og:url" content="http://w4lle.github.io/2016/02/15/ClassyShark——分析apk利器/index.html">
+<meta property="og:site_name" content="w4lle's Notes">
+<meta property="og:description" content="背景对于一个感兴趣的android非开源项目，通常使用逆向工程查看apk中的内容，俗称反编译。工具大概包括dex2jar、JD-GUI、apktool、procyon,这些工具使用起来相对比较麻烦，如果我们只想知道该项目的基本框架、使用到哪些开源项目的话，那么就有些浪费时间。对于一些大厂的项目，我们还比较关心的是用到了哪些新的框架和技术，对于新技术的流行程度和使用普遍程度有个比较好的把握，指导是否">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/ClassyShark.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/Classy_group.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/Classy_group_2.png">
+<meta property="og:updated_time" content="2016-06-06T10:13:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ClassyShark——apk分析利器">
+<meta name="twitter:description" content="背景对于一个感兴趣的android非开源项目，通常使用逆向工程查看apk中的内容，俗称反编译。工具大概包括dex2jar、JD-GUI、apktool、procyon,这些工具使用起来相对比较麻烦，如果我们只想知道该项目的基本框架、使用到哪些开源项目的话，那么就有些浪费时间。对于一些大厂的项目，我们还比较关心的是用到了哪些新的框架和技术，对于新技术的流行程度和使用普遍程度有个比较好的把握，指导是否">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+
+  <title> ClassyShark——apk分析利器 | w4lle's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">w4lle's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Eeeee... va?</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ClassyShark——apk分析利器
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-15T14:32:15+08:00" content="2016-02-15">
+              2016-02-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/15/ClassyShark——分析apk利器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/15/ClassyShark——分析apk利器/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/ClassyShark.png" alt="image"></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>对于一个感兴趣的android非开源项目，通常使用逆向工程查看apk中的内容，俗称反编译。工具大概包括<a href="https://github.com/pxb1988/dex2jar" target="_blank" rel="external">dex2jar</a>、<a href="http://jd.benow.ca/" target="_blank" rel="external">JD-GUI</a>、<a href="http://ibotpeaches.github.io/Apktool/install/" target="_blank" rel="external">apktool</a>、<a href="https://bitbucket.org/mstrobel/procyon" target="_blank" rel="external">procyon</a>,这些工具使用起来相对比较麻烦，如果我们只想知道该项目的基本框架、使用到哪些开源项目的话，那么就有些浪费时间。<br>对于一些大厂的项目，我们还比较关心的是用到了哪些新的框架和技术，对于新技术的流行程度和使用普遍程度有个比较好的把握，指导是否需要进行深度的使用学习。比如最近的比较流行的rxjava，热更新技术等等。</p>
+<h2 id="ClassyShark"><a href="#ClassyShark" class="headerlink" title="ClassyShark"></a>ClassyShark</h2><p><a href="https://github.com/google/android-classyshark" target="_blank" rel="external">ClassyShark</a>是一款可以查看Android可执行文件的浏览工具，支持.dex, .aar, .so, .apk, .jar, .class, .xml 等文件格式，分析里面的内容包括classes.dex文件，包、方法数量、类、字符串、使用的NativeLibrary等。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ol>
+<li>打开apk文件<code>java -jar ClassyShark.jar -open &lt;YOUR_APK.apk&gt;</code> </li>
+<li>将生成的所有数据导出到文本文件里<code>java -jar ClassyShark.jar -dump &lt;BINARY_FILE&gt;</code></li>
+<li>将指定类生成的文件导出到文本文件里<code>java -jar ClassyShark.jar -dump &lt;BINARY_FILE&gt; &lt;FULLY_QUALIFIED_CLASS_NAME&gt;</code></li>
+<li>打开ClassyShark，在GUI界面展示某特定的类</li>
+<li><code>java -jar ClassyShark.jar -open &lt;BINARY_FILE&gt; &lt;FULLY_QUALIFIED_CLASS_NAME&gt;</code></li>
+<li>检测APK<code>java -jar ClassyShark.jar -inspect &lt;YOUR_APK.apk&gt;</code></li>
+<li>导出所有的字符串 <code>java -jar ClassyShark.jar -stringdump &lt;YOUR_APK.apk&gt;</code></li>
+</ol>
+<h3 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h3><p>以美团项目为例，让我们看看能得到什么有用的信息</p>
+<p><code>java -jar ClassyShark.jar -open ~/Downloads/group-351_3-meituan_.apk</code></p>
+<p><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/Classy_group.png" alt="image"></p>
+<p>美团项目中使用了MultiDex,并且classes.dex文件有3个，说明方法数肯定非常多。<br>美团的编译版本非常新, 紧跟时代, 23版本(Android 6.0)。<br>并且TargetSdkVersion也是23版本，紧跟技术方向。<br>最低版本是16(Android 4.1), 4.1以下的手机无法运行。<br>而且有好多的so库，有美团自己的，也有好多是第三方的库。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/Classy_group_2.png" alt="image"></p>
+<p>可以看到9万多个方法，怪不得会有3个classes.dex文件。<br>项目中应用了大量的第三方库，并且一般都是主流的比较稳定的开源库。<br>我们来看下都用到了哪些库</p>
+<ul>
+<li><a href="https://github.com/zxing/zxing" target="_blank" rel="external">ZXing</a>二维码识别库;<br>amap: 高德地图;</li>
+<li><a href="https://github.com/chrisbanes/Android-PullToRefresh" target="_blank" rel="external">PullToRefresh</a>使用最广的下拉刷新组件；</li>
+<li><a href="https://github.com/FasterXML/jackson-dataformat-smile" target="_blank" rel="external">jackson</a>, json解析库;</li>
+<li><a href="https://github.com/JakeWharton/NineOldAndroids" target="_blank" rel="external">NineOldAndroids</a> Jake大神的android兼容库</li>
+<li><a href="https://github.com/facebook/fresco" target="_blank" rel="external">fresco</a>,facebook出品的图片处理库，图片加载节省很多内存，避免OOM。</li>
+<li><a href="https://github.com/ReactiveX/RxJava" target="_blank" rel="external">RxJava</a>java响应式编程库，再加上<code>Square</code>的<code>Retrofit</code>库的支持，可以说未来就是<code>rxjava</code>的天下，目前市面上已经有很多基于rxjava的项目；我们团队也将基于rxjava来开发项目；<br>圈内最牛逼的开源公司<a href="https://github.com/square" target="_blank" rel="external">Square</a>，Jake大神所在的公司，可以毫不夸张的说，<a href="https://github.com/square" target="_blank" rel="external">Square</a>的开源项目使得Android开发提速了好几年</li>
+<li><a href="https://github.com/square/okhttp" target="_blank" rel="external">okhttp</a>网络请求库，已被官方采用;</li>
+<li><a href="https://github.com/square/retrofit" target="_blank" rel="external">retrofit</a>非常牛逼的网络请求库，配合<code>rxjava</code>和lambda使用，代码量减少90%;</li>
+<li><a href="https://github.com/square/otto" target="_blank" rel="external">otto</a>事件总线;</li>
+<li><a href="https://github.com/square/picasso" target="_blank" rel="external">picasso</a>图片加载库；</li>
+<li><a href="https://github.com/square/dagger" target="_blank" rel="external">dagger</a>依赖注入框架；</li>
+<li><a href="https://github.com/Manabu-GT/ExpandableTextView" target="_blank" rel="external">ExpandableTextView</a>可折叠的TextView</li>
+<li>iflytek, 科大讯飞的语音集成;</li>
+<li><a href="https://github.com/JakeWharton/ViewPagerIndicator" target="_blank" rel="external">ViewPagerIndicator</a>还是Jake大神的项目，viewpager的滚动控件；</li>
+<li><a href="http://actionbarsherlock.com/" target="_blank" rel="external">actionbarsherlock</a>依然是Jake大神的项目，Actionbar的适配库，不过已经过时了；</li>
+<li><a href="http://developer.huawei.com/push" target="_blank" rel="external">华为推送</a></li>
+<li><a href="https://github.com/jgilfelt/SystemBarTint" target="_blank" rel="external">SystemBarTint</a>状态栏沉浸效果库</li>
+<li>百度地图</li>
+<li>新浪微博</li>
+<li>腾讯的QQ和微信</li>
+<li>大众点评,已经合并一家,东西也得用;</li>
+<li><a href="http://www.umpay.com/umpay_cms/" target="_blank" rel="external">umpay</a>, 联动优势支付;</li>
+<li>支付宝；</li>
+<li><a href="https://github.com/alibaba/AndFix" target="_blank" rel="external">andfix</a>阿里出品的android热更新框架；</li>
+<li><a href="http://www.flurry.com/" target="_blank" rel="external">flurry</a>统计库；</li>
+<li><a href="http://dev.xiaomi.com/doc/?page_id=1670" target="_blank" rel="external">小米推送</a></li>
+<li><a href="https://github.com/kevinsawicki/http-request" target="_blank" rel="external">http-request</a>网络请求库；</li>
+<li><a href="https://github.com/greenrobot/EventBus" target="_blank" rel="external">EventBus</a>事件总线库；</li>
+<li><a href="https://github.com/chrisbanes/PhotoView" target="_blank" rel="external">PhotoView</a>放大缩小的图片处理库；</li>
+<li><a href="https://github.com/roboguice/roboguice" target="_blank" rel="external">roboguice</a>依赖注入框架，类似<code>Dagger</code>；</li>
+<li><a href="http://www.lingala.net/zip4j/" target="_blank" rel="external">zip4j</a>处理zip压缩的库;<br><a href="https://github.com/BoltsFramework/Bolts-Android" target="_blank" rel="external">link</a>异步task关联库,很像<code>rxjava</code>；</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>从上面分析我们可见看出，美团是一个技术很开放的公司，对于框架的使用比较多，使用的基本都是主流的开发框架，减少开发成本，增强app的稳定性和体验，对于我们来说，有很大的借鉴意义。比如，目前都在试水的热更新框架，美团选择了阿里的<code>andfix</code>,那么该技术方案肯定是得到了美团团队的验证；另外，美团团队也是比较潮流的，<code>Retrofit</code>+<code>Rxjava</code>的潮流趋势已经不可阻挡，美团已经开始使用；但是，从项目引用库中我们也可以看到一些不足之处；比如，同一种框架引用了多种第三方库，如网络库(<code>okhttp</code>,<code>http-request</code>),图片加载库(<code>fresco</code>,<code>picasso</code>),事件总线(<code>EventBus</code>, <code>Otto</code>),依赖注入(<code>Dagger</code>,<code>roboguice</code>)，推送相关的库等很多重复的库，如果去掉重复的库那么可以节省很多的编译时间和apk包的大小；还有就是，我们基本可以断定，美团团队的内部并不能很好的统一，没有有效的沟通，代码开发很混乱，导致项目结构上的臃肿，重复库的使用等等问题。</p>
+<p>通过分析App的项目结构和引用库的信息，我们大致掌握了该项目的架构，一些开发中的经验和不足，拓宽下开发视野，发现一些好用的开源库，增强我们的武器，这些都是我们在开发中可以借鉴的东西。</p>
+<p>参考</p>
+<ul>
+<li><a href="http://www.jianshu.com/p/8e8b88ea2197" target="_blank" rel="external">分析应用使用的技术框架和开源库</a></li>
+</ul>
+<p>本文地址 <a href="http://w4lle.github.io/2016/02/15/ClassyShark——分析apk利器/">http://w4lle.github.io/2016/02/15/ClassyShark——分析apk利器/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/apk反编辑/" rel="tag">#apk反编辑</a>
+          
+            <a href="/tags/工具/" rel="tag">#工具</a>
+          
+            <a href="/tags/逆向/" rel="tag">#逆向</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/01/终极Shell-Zsh-使用技巧/" rel="next" title="终极Shell--Zsh 使用技巧">
+                <i class="fa fa-chevron-left"></i> 终极Shell--Zsh 使用技巧
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/03/Android热补丁之AndFix原理解析/" rel="prev" title="Android热补丁之AndFix原理解析">
+                Android热补丁之AndFix原理解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/02/15/ClassyShark——分析apk利器/"
+           data-title="ClassyShark——apk分析利器" data-url="http://w4lle.github.io/2016/02/15/ClassyShark——分析apk利器/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/walle.jpg"
+               alt="w4lle" />
+          <p class="site-author-name" itemprop="name">w4lle</p>
+          <p class="site-description motion-element" itemprop="description">生活不止眼前的苟且，还有诗，和远方。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ClassyShark"><span class="nav-number">2.</span> <span class="nav-text">ClassyShark</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法"><span class="nav-number">2.1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体使用"><span class="nav-number">2.2.</span> <span class="nav-text">具体使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">w4lle</span>
+</div>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

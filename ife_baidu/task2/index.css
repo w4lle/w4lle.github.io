@@ -1,0 +1,182 @@
+/*全局*/
+
+body {
+    background: #eee;
+    color: #333;
+    font-size: medium;
+}
+
+.content{
+    width: 1024px;
+    margin: 0 auto;
+}
+
+
+/*导航栏*/
+
+.header
+{
+    background: blue;
+    padding: 10px 0;
+    height: 50px;
+    width: 1024px;
+}
+
+.logo {
+    line-height: 100%;
+    float: left;
+}
+
+nav {
+    float: right;
+}
+
+.nav-list {
+}
+
+.nav-list li {
+    display: inline;
+}
+
+nav a:link,
+nav a:visited {
+    width: 120px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 4px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+nav a:hover,
+nav a:active {
+    background-color: #cc0000;
+}
+
+
+/*文章*/
+
+article {
+    background: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 2px 2px 2px #aaa;
+}
+
+article p {
+    text-indent: 2em;
+    line-height: 1.6em;
+}
+
+.author,
+.time {
+    color: gray;
+    font-size: 0.8em;
+}
+
+
+/*图片区*/
+
+ul.picList {
+    list-style-type: none;
+}
+
+ul.picList li {
+    list-style-type: none;
+    border: solid;
+    border-width: 1px;
+    text-align: center;
+    margin: 20px;
+    width: 200px;
+}
+
+
+/*排行*/
+
+ol li {
+    font-weight: 900;
+}
+
+table {
+    /*表格边框折叠为单一边框*/
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table tr th {
+    background: #333;
+    color: white;
+}
+
+table,
+td,
+th {
+    border: 1px solid darkgray;
+    text-align: left;
+    padding: 4px;
+}
+
+ol+p {
+    text-indent: 0em;
+    line-height: 0em;
+}
+
+aside {
+    background: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 2px 2px 2px #aaa;
+}
+
+form {
+    display: table;
+    margin: 0px;
+    width: 100%;
+}
+
+.tableRow {
+    display: table-row;
+}
+
+.tableRow p {
+    display: table-cell;
+    padding: 20px 20px 20px 20px;
+    vertical-align: top;
+}
+
+.tableRow p:first-child {
+    text-align: right;
+}
+
+.msg {
+    font: 0.8em gray;
+}
+
+aside textarea {
+    height: 50px;
+    width: 400px;
+}
+
+button {
+    width: 100%;
+    background-color: rgb(51, 85, 208);
+    color: white;
+    border-radius: 5px;
+    margin: 0px;
+    text-align: center;
+}
+
+footer {
+    background: black;
+    width: 1024px;
+    height: 80px;
+}
+
+footer p {
+    top: 30%;
+    position: relative;
+    width: 100%;
+    text-align: center;
+    color: white;
+}

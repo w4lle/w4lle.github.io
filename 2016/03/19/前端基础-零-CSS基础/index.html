@@ -1,0 +1,728 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="CSS,前端," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="w4lle's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="背景最近跟小伙伴们在百度前端技术学院学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。
+开发工具：sublime text 3
+主要插件：Emmet
+CSS什么是CSS
+层叠样式表 (Cascading Style Sheets)，常缩写为 CSS， 是一种 样式表(stylesheet) 语言，用来描述 HTML、XML（包括各种 XML 语言如 SVG、X">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端基础(零)--CSS基础">
+<meta property="og:url" content="http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/index.html">
+<meta property="og:site_name" content="w4lle's Notes">
+<meta property="og:description" content="背景最近跟小伙伴们在百度前端技术学院学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。
+开发工具：sublime text 3
+主要插件：Emmet
+CSS什么是CSS
+层叠样式表 (Cascading Style Sheets)，常缩写为 CSS， 是一种 样式表(stylesheet) 语言，用来描述 HTML、XML（包括各种 XML 语言如 SVG、X">
+<meta property="og:image" content="http://7xs23g.com1.z0.glb.clouddn.com/CSS.png">
+<meta property="og:updated_time" content="2016-06-06T10:13:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端基础(零)--CSS基础">
+<meta name="twitter:description" content="背景最近跟小伙伴们在百度前端技术学院学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。
+开发工具：sublime text 3
+主要插件：Emmet
+CSS什么是CSS
+层叠样式表 (Cascading Style Sheets)，常缩写为 CSS， 是一种 样式表(stylesheet) 语言，用来描述 HTML、XML（包括各种 XML 语言如 SVG、X">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+
+  <title> 前端基础(零)--CSS基础 | w4lle's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">w4lle's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Eeeee... va?</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                前端基础(零)--CSS基础
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-19T22:52:40+08:00" content="2016-03-19">
+              2016-03-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/19/前端基础-零-CSS基础/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/19/前端基础-零-CSS基础/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近跟小伙伴们在<a href="ife.baidu.com">百度前端技术学院</a>学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。</p>
+<p>开发工具：sublime text 3</p>
+<p>主要插件：<a href="http://docs.emmet.io/" target="_blank" rel="external">Emmet</a></p>
+<h1 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h1><h2 id="什么是CSS"><a href="#什么是CSS" class="headerlink" title="什么是CSS"></a>什么是CSS</h2><blockquote>
+<p>层叠样式表 (Cascading Style Sheets)，常缩写为 CSS， 是一种 样式表<br>(stylesheet) 语言，用来描述 HTML、XML（包括各种 XML 语言如 SVG、XHTML）文档<br>的呈现。CSS 描述怎样在屏幕上渲染结构化元素。</p>
+</blockquote>
+<h2 id="为什么使用CSS"><a href="#为什么使用CSS" class="headerlink" title="为什么使用CSS"></a>为什么使用CSS</h2><p>我们知道，html文件主要携带内容，虽然html也可以进行布局相关的操作，但是当浏览器的默认渲染规则不能很好的将我们定义好的布局展示出来，可能会导致显示不统一的问题，所以就将内容和表现进行分离，由CSS专门负责变现，html负责携带内容，可以很好的解除耦合，方便扩展，例如，需要全局的更新界面布局，那么也只需要修改css。可以说，css极大的提高了工作效率。就有点类似于android开发中的style，只负责配置各种view相关的属性值，而xml声明就有些类似于html，只是声明ImageView代表一个特定的view，表现形式完全可以交给style去处理。但是，个人感觉由于css的选择器的存在，css要比android中的style高明许多。</p>
+<h1 id="CSS基础语法"><a href="#CSS基础语法" class="headerlink" title="CSS基础语法"></a>CSS基础语法</h1><p>看图</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/CSS.png" alt="image"></p>
+<p>示例</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">body</span> <span class="rules">&#123;</span><br><span class="line">     <span class="rule"><span class="attribute">font-family</span>:<span class="value"> Verdana, sans-serif</span></span>;</span><br><span class="line">     &#125;</span></span><br></pre></td></tr></table></figure>
+<p>body元素的所有文字的字体都是Verdana。<br>CSS默认有集成的属性，也就是说默认情况下body下的所有字元素都会继承body的属性，就像android布局，父控件的属性也会它所有的字控件一样，例如在根布局设置<code>backgroud=&quot;#eee&quot;</code>那么，该界面的基础色就是<code>#eee</code>, css也是这样的。</p>
+<h1 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h1><p>css的强大之处在于，选择器的可配置性，对于复杂的界面显示来说这点非常有用</p>
+<h2 id="选择器的分组"><a href="#选择器的分组" class="headerlink" title="选择器的分组"></a>选择器的分组</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">h1</span>,<span class="tag">h2</span>,<span class="tag">h3</span>,<span class="tag">h4</span>,<span class="tag">h5</span>,<span class="tag">h6</span> <span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">color</span>:<span class="value"> green</span></span>;</span><br><span class="line">  &#125;</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码表示，每个选择器都不相互产生影响，只是写在了一起而已。</p>
+<h2 id="派生选择器"><a href="#派生选择器" class="headerlink" title="派生选择器"></a>派生选择器</h2><blockquote>
+<p>派生选择器就是通过依据元素在其位置的上下文关系来定义样式，以达到使标记更加简洁的<br>目的。</p>
+</blockquote>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">div</span> <span class="tag">p</span> <span class="rules">&#123;</span><br><span class="line">    <span class="rule"><span class="attribute">font-style</span>:<span class="value"> italic</span></span>;</span><br><span class="line">    <span class="rule"><span class="attribute">font-weight</span>:<span class="value"> normal</span></span>;</span><br><span class="line">  &#125;</span></span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，只有 div 元素中的 p 元素的样式为斜体字，无需为 strong 元素定义特别的 class 或 id，代码更加简洁。当然，单独出现的div 和 p并不会受到影响。</p>
+<h2 id="id-选择器"><a href="#id-选择器" class="headerlink" title="id 选择器"></a>id 选择器</h2><blockquote>
+<p>id 选择器可以为标有特定 id 的 HTML 元素指定特定的样式。以<code>#</code>来定义</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="id">#red</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value">red</span></span>;&#125;</span></span><br><span class="line"><span class="id">#green</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value">green</span></span>;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>html这样写<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;p id="red"&gt;这个段落是红色。&lt;/p&gt;</span><br><span class="line">&lt;p id="green"&gt;这个段落是绿色。&lt;/p&gt;</span><br></pre></td></tr></table></figure></p>
+<p>但是要注意，同一个html文件中同一个id只能使用一次，具体的原因请看<a href="http://www.w3school.com.cn/xhtml/xhtml_structural_02.asp" target="_blank" rel="external">这里</a></p>
+<h2 id="类选择器"><a href="#类选择器" class="headerlink" title="类选择器"></a>类选择器</h2><p>通过设置元素的 class 属性，可以为元素指定类名。与id不同的是，同一个class可以在同一个html文件中复用。以<code>.</code>来定义</p>
+<p>示例</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.center</span> <span class="rules">&#123;<span class="rule"><span class="attribute">text-align</span>:<span class="value"> center</span></span></span>&#125;</span><br></pre></td></tr></table></figure>
+<p>html代码中这样用</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1 class="center"&gt;</span><br><span class="line">	This heading will be center-aligned</span><br><span class="line">&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;p class="center"&gt;</span><br><span class="line">	This paragraph will also be center-aligned.</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="基于关系的选择器"><a href="#基于关系的选择器" class="headerlink" title="基于关系的选择器"></a>基于关系的选择器</h2><p>CSS有多种基于元素关系的选择器。通过它们我们可以更精确的选择元素。<br>常见的关系选择器</p>
+<table>
+<thead>
+<tr>
+<th>选择器</th>
+<th>选择的元素</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A E</td>
+<td>任何是元素A的后代元素E (后代节点指A的子节点，子节点的子节点，以此类推)</td>
+</tr>
+<tr>
+<td>A &gt; E</td>
+<td>任何元素A的子元素</td>
+</tr>
+<tr>
+<td>E:first-child</td>
+<td>任何元素的第一个子元素E</td>
+</tr>
+<tr>
+<td>B + E</td>
+<td>任何元素B的下一个兄弟元素E</td>
+</tr>
+<tr>
+<td>B ~ E</td>
+<td>B元素后面的拥有共同父元素的兄弟元素E</td>
+</tr>
+</tbody>
+</table>
+<h2 id="伪类选择器"><a href="#伪类选择器" class="headerlink" title="伪类选择器"></a>伪类选择器</h2><p>CSS伪类（pseudo-class）是加在选择器后面的用来指定元素状态的关键字。</p>
+<p>示例</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">a</span><span class="pseudo">:link</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="hexcolor">#FF0000</span></span></span></span>&#125;		<span class="comment">/* 未访问的链接 */</span></span><br><span class="line"><span class="tag">a</span><span class="pseudo">:visited</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="hexcolor">#00FF00</span></span></span></span>&#125;	<span class="comment">/* 已访问的链接 */</span></span><br><span class="line"><span class="tag">a</span><span class="pseudo">:hover</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="hexcolor">#FF00FF</span></span></span></span>&#125;	<span class="comment">/* 鼠标移动到链接上 */</span></span><br><span class="line"><span class="tag">a</span><span class="pseudo">:active</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value"> <span class="hexcolor">#0000FF</span></span></span></span>&#125;	<span class="comment">/* 选定的链接 */</span></span><br></pre></td></tr></table></figure>
+<p>上面表示a链接的各种状态的表示。</p>
+<h2 id="属性选择器"><a href="#属性选择器" class="headerlink" title="属性选择器"></a>属性选择器</h2><p>属性选择器可以根据元素的属性及属性值来选择元素。<br>简单的示例<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*<span class="attr_selector">[title]</span> <span class="rules">&#123;<span class="rule"><span class="attribute">color</span>:<span class="value">red</span></span>;&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>上面表示把包含标题（title）的所有元素变为红色<br>在css中 <code>*</code>可以替代任何元素</p>
+<p>上面所讲到的任意选择器，都可以通过组合的方式表达更复杂的元素间的关系，产生复杂的显示效果。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>css是前端的基础，对于界面显示和布局来说至关重要，特别是css的选择器，相互组合可以产生非常复杂的效果。</p>
+<p>最后附上ife的提交任务二<br><a href="https://github.com/w4lle/ife_baidu/blob/master/task2%2Findex.html" target="_blank" rel="external">代码地址</a><br><a href="http://w4lle.github.io/ife_baidu/task2/index.html">demo</a></p>
+<p>本文地址 <a href="http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/">http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CSS/" rel="tag">#CSS</a>
+          
+            <a href="/tags/前端/" rel="tag">#前端</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/13/AndFix支持multidex解决方案/" rel="next" title="AndFix支持Multidex的解决方案">
+                <i class="fa fa-chevron-left"></i> AndFix支持Multidex的解决方案
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/" rel="prev" title="Android关闭通知消息权限无法弹出Toast的解决方案">
+                Android关闭通知消息权限无法弹出Toast的解决方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/19/前端基础-零-CSS基础/"
+           data-title="前端基础(零)--CSS基础" data-url="http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/walle.jpg"
+               alt="w4lle" />
+          <p class="site-author-name" itemprop="name">w4lle</p>
+          <p class="site-description motion-element" itemprop="description">生活不止眼前的苟且，还有诗，和远方。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS"><span class="nav-number">2.</span> <span class="nav-text">CSS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是CSS"><span class="nav-number">2.1.</span> <span class="nav-text">什么是CSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么使用CSS"><span class="nav-number">2.2.</span> <span class="nav-text">为什么使用CSS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS基础语法"><span class="nav-number">3.</span> <span class="nav-text">CSS基础语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择器"><span class="nav-number">4.</span> <span class="nav-text">选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#选择器的分组"><span class="nav-number">4.1.</span> <span class="nav-text">选择器的分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#派生选择器"><span class="nav-number">4.2.</span> <span class="nav-text">派生选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id-选择器"><span class="nav-number">4.3.</span> <span class="nav-text">id 选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类选择器"><span class="nav-number">4.4.</span> <span class="nav-text">类选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于关系的选择器"><span class="nav-number">4.5.</span> <span class="nav-text">基于关系的选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#伪类选择器"><span class="nav-number">4.6.</span> <span class="nav-text">伪类选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性选择器"><span class="nav-number">4.7.</span> <span class="nav-text">属性选择器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">w4lle</span>
+</div>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

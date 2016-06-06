@@ -1,0 +1,667 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Toast,通知消息权限," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="w4lle's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="背景在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。
+原因跟踪Toast的源代码，make方法省略，做了一些初始化的工作，show方法
+123456789101112131415161718192021222324public void show() &amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android关闭通知消息权限无法弹出Toast的解决方案">
+<meta property="og:url" content="http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/index.html">
+<meta property="og:site_name" content="w4lle's Notes">
+<meta property="og:description" content="背景在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。
+原因跟踪Toast的源代码，make方法省略，做了一些初始化的工作，show方法
+123456789101112131415161718192021222324public void show() &amp;#123;">
+<meta property="og:updated_time" content="2016-06-06T10:13:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android关闭通知消息权限无法弹出Toast的解决方案">
+<meta name="twitter:description" content="背景在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。
+原因跟踪Toast的源代码，make方法省略，做了一些初始化的工作，show方法
+123456789101112131415161718192021222324public void show() &amp;#123;">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+
+  <title> Android关闭通知消息权限无法弹出Toast的解决方案 | w4lle's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">w4lle's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Eeeee... va?</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android关闭通知消息权限无法弹出Toast的解决方案
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-27T19:47:28+08:00" content="2016-03-27">
+              2016-03-27
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。</p>
+<h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>跟踪Toast的源代码，<code>make</code>方法省略，做了一些初始化的工作，<code>show</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">　　<span class="keyword">if</span> (mNextView == <span class="keyword">null</span>) &#123;</span><br><span class="line">　　　　<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"setView must have been called"</span>);</span><br><span class="line">　　&#125;</span><br><span class="line"></span><br><span class="line">　　INotificationManager service = getService();</span><br><span class="line">　　String pkg = mContext.getPackageName();</span><br><span class="line">　　TN tn = mTN;</span><br><span class="line">　　tn.mNextView = mNextView;</span><br><span class="line"></span><br><span class="line">　　<span class="keyword">try</span> &#123;</span><br><span class="line">　　　　service.enqueueToast(pkg, tn, mDuration);</span><br><span class="line">　　&#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">　　　　<span class="comment">// Empty</span></span><br><span class="line">　　&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">private</span> INotificationManager <span class="title">getService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sService != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> sService;</span><br><span class="line">    &#125;</span><br><span class="line">    sService = INotificationManager.Stub.asInterface(ServiceManager.getService(<span class="string">"notification"</span>));</span><br><span class="line">     <span class="keyword">return</span> sService;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>熟悉<code>binder</code>通讯的同学应该都知道，其实调用了<code>NotificationManagerService.service.enqueueToast</code>方法进入toast队列，进行相应的逻辑处理后回调给Toast中的<code>TN</code>，<code>TN</code>其实就是一个<code>aidl</code>的<code>stub</code>实现，相当于<code>Client</code>端，用来接收<code>Service</code>端发来的消息。看下<code>TN</code>中的show方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleShow</span><span class="params">()</span> </span>&#123; </span><br><span class="line">			... </span><br><span class="line">            mWM = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);  </span><br><span class="line">            mWM.removeView(mView);  </span><br><span class="line">            mWM.addView(mView, mParams);  </span><br><span class="line">            trySendAccessibilityEvent();  </span><br><span class="line">            ...</span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>通过<code>WinwodManager</code>添加一个<code>view</code>显示提示消息。<br>总结来说就是toast的显示过程通过IPC通讯由<code>NotificationManagerService</code>维护一个toast队列，然后通知给Toast中的客户端<code>TN</code>调用<code>WindowManager</code>添加view。<br>那么，如果关闭通知栏消息权限，会影响<code>NotificationManagerService</code>队列的逻辑处理过程，导致不能通知<code>TN</code>显示出视图。</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>通过上面的分析，我们可以绕过<code>NotificationManagerService</code>，我们自己维护一个toast队列，处理相关的逻辑，进行显示，定时取消。关键代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">activeQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    BooheeToast toast = mQueue.peek();</span><br><span class="line">    <span class="keyword">if</span> (toast == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mAtomicInteger.decrementAndGet();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mHanlder.post(toast.mShow);</span><br><span class="line">        mHanlder.postDelayed(toast.mHide, toast.mDuration);</span><br><span class="line">        mHanlder.postDelayed(mActivite, toast.mDuration);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>mQueue</code>维护了<code>Toast</code>的队列，队列采用<code>FIFO</code>调度，每次调用<code>show()</code>方法触发<code>activeQueue()</code>方法，从队列中取出toast进行显示，然后定时取消。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Google把Toast视为系统级别的消息通知，其实是不合理的，在app前台可见的情况下，有些关键信息需要提供给用户，如果关闭了消息通知权限，那么用户就会看不到这些关键的提示就会很困惑，直接影响用户体验，并且在Android5.0之后在设置中就可以关闭app的消息权限，Toast作为一个系统级别的消息提示设计者真的挺缺心眼的。虽然MD中有SnackBar作为消息提示，其原理就是在当前界面找到根视图，在根视图<code>addView()</code>，达到弹出提示的目的，但是请原谅我的审美不够高，SnackBar真的很丑，并且最近Google又支持BottomSheet，两个叠加到一起，我的天，画面太美，我不敢看。还有就是必须要拿到当前的content，对于用Application的context弹出toast的方案来说适配起来修改比较麻烦。很明显，Toast就应该是app级的消息提示，我们的解决方案也正是这么做的。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>《Android开发艺术探索》第八章 理解Window和WindowManager</li>
+<li><a href="http://caizhitao.com/2016/02/09/android-toast-compat/" target="_blank" rel="external">解决小米MIUI系统上后台应用没法弹Toast的问题</a></li>
+<li><a href="http://androidxref.com/6.0.1_r10/xref/frameworks/base/core/java/android/widget/Toast.java" target="_blank" rel="external">Toast</a></li>
+<li><a href="http://androidxref.com/6.0.1_r10/xref/frameworks/base/services/core/java/com/android/server/notification/NotificationManagerService.java" target="_blank" rel="external">NotificationManagerService</a></li>
+</ul>
+<p>本文地址 <a href="http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/">http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Toast/" rel="tag">#Toast</a>
+          
+            <a href="/tags/通知消息权限/" rel="tag">#通知消息权限</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/19/前端基础-零-CSS基础/" rel="next" title="前端基础(零)--CSS基础">
+                <i class="fa fa-chevron-left"></i> 前端基础(零)--CSS基础
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/10/Apk包瘦身笔记/" rel="prev" title="Apk包瘦身笔记">
+                Apk包瘦身笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/"
+           data-title="Android关闭通知消息权限无法弹出Toast的解决方案" data-url="http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/walle.jpg"
+               alt="w4lle" />
+          <p class="site-author-name" itemprop="name">w4lle</p>
+          <p class="site-description motion-element" itemprop="description">生活不止眼前的苟且，还有诗，和远方。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原因"><span class="nav-number">2.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">w4lle</span>
+</div>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

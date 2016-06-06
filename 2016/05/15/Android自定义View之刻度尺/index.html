@@ -1,0 +1,682 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自定义View," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="w4lle's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="背景项目中之前用的纵向滚轮用于选择身高体重之类的需求，新版设计要求用横向刻度尺控件来实现，效果图，上面的字不在刻度尺范围内，是一个TextView。
+
+自定义控件对于Android开发者来说是必备技能，这篇文章就不讲自定义View的基础知识了，主要谈谈绘制逻辑。
+实现遵循自定义View的开发流程，onMeasure() –&amp;gt; onSizeChanged() –&amp;gt; onLayout()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android自定义View之刻度尺">
+<meta property="og:url" content="http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/index.html">
+<meta property="og:site_name" content="w4lle's Notes">
+<meta property="og:description" content="背景项目中之前用的纵向滚轮用于选择身高体重之类的需求，新版设计要求用横向刻度尺控件来实现，效果图，上面的字不在刻度尺范围内，是一个TextView。
+
+自定义控件对于Android开发者来说是必备技能，这篇文章就不讲自定义View的基础知识了，主要谈谈绘制逻辑。
+实现遵循自定义View的开发流程，onMeasure() –&amp;gt; onSizeChanged() –&amp;gt; onLayout()">
+<meta property="og:image" content="http://7xs23g.com1.z0.glb.clouddn.com/ruler">
+<meta property="og:image" content="http://7xs23g.com1.z0.glb.clouddn.com/ruler_gif.gif">
+<meta property="og:image" content="http://7xs23g.com1.z0.glb.clouddn.com/ruler1.gif">
+<meta property="og:updated_time" content="2016-06-06T10:13:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android自定义View之刻度尺">
+<meta name="twitter:description" content="背景项目中之前用的纵向滚轮用于选择身高体重之类的需求，新版设计要求用横向刻度尺控件来实现，效果图，上面的字不在刻度尺范围内，是一个TextView。
+
+自定义控件对于Android开发者来说是必备技能，这篇文章就不讲自定义View的基础知识了，主要谈谈绘制逻辑。
+实现遵循自定义View的开发流程，onMeasure() –&amp;gt; onSizeChanged() –&amp;gt; onLayout()">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+
+  <title> Android自定义View之刻度尺 | w4lle's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">w4lle's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Eeeee... va?</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android自定义View之刻度尺
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-15T16:23:43+08:00" content="2016-05-15">
+              2016-05-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/15/Android自定义View之刻度尺/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/15/Android自定义View之刻度尺/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目中之前用的纵向滚轮用于选择身高体重之类的需求，新版设计要求用横向刻度尺控件来实现，效果图，上面的字不在刻度尺范围内，是一个<code>TextView</code>。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ruler" alt="刻度尺"></p>
+<p>自定义控件对于Android开发者来说是必备技能，这篇文章就不讲自定义View的基础知识了，主要谈谈绘制逻辑。</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>遵循自定义View的开发流程，<code>onMeasure()</code> –&gt; <code>onSizeChanged()</code> –&gt; <code>onLayout()</code> –&gt; <code>onDraw()</code>。由于我们要自定义的是View而不是ViewGroup，所以onLayout()就不用实现了。</p>
+<h2 id="onMeasure-测量"><a href="#onMeasure-测量" class="headerlink" title="onMeasure() 测量"></a>onMeasure() 测量</h2><p><code>onMeasure()</code>用于测量<code>View</code>的大小，<code>View</code>的大小不仅由自身决定，同时也受父控件的影响，为了我们的控件能更好的适应各种情况，一般会自己进行测量。刻度尺<code>View</code>左右是满屏的，偷个懒宽度就不适配了，只做高度测试就好了。高度包括长刻度的高度，加上字和底部间距</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">measureHeight</span><span class="params">(<span class="keyword">int</span> heightMeasure)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> measureMode = View.MeasureSpec.getMode(heightMeasure);</span><br><span class="line">    <span class="keyword">int</span> measureSize = View.MeasureSpec.getSize(heightMeasure);</span><br><span class="line">    <span class="keyword">int</span> result = (<span class="keyword">int</span>) (bottomPadding + longLineHeight * <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">switch</span> (measureMode) &#123;</span><br><span class="line">        <span class="keyword">case</span> View.MeasureSpec.EXACTLY:</span><br><span class="line">            result = Math.max(result, measureSize);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> View.MeasureSpec.AT_MOST:</span><br><span class="line">            result = Math.min(result, measureSize);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    height = result;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="onDraw-绘制"><a href="#onDraw-绘制" class="headerlink" title="onDraw() 绘制"></a>onDraw() 绘制</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line">    canvas.setDrawFilter(pfdf);</span><br><span class="line">    drawBg(canvas);</span><br><span class="line">    drawIndicator(canvas);</span><br><span class="line">    drawRuler(canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>绘制做了三件事情：</p>
+<ol>
+<li>绘制背景色</li>
+<li>绘制指示器</li>
+<li>绘制刻度</li>
+</ol>
+<p>只看下怎么画刻度，难点在于怎么确定刻度的坐标。首先高度的坐标是一样的，刻度指示器是在屏幕正中，指示某个值，那么该刻度值的x坐标就是确定的。根据这个值去画其他坐标，包括长刻度和短刻度。</p>
+<p>首先要确定每个长刻度（和短刻度，如果有的话）的坐标宽度和单位，确定基础单位和基础单位宽度（如果有短刻度以短刻度为基础单位）。那么</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#31532;i&#20010;&#21051;&#24230;x&#22352;&#26631; = &#20013;&#38388;&#21051;&#24230;x&#22352;&#26631; + i * &#22522;&#30784;&#21333;&#20301;&#23485;&#24230;</span><br></pre></td></tr></table></figure>
+<p>其中i的取值范围在正负屏幕可绘制多少个基础单位，第0位就是屏幕正中的刻度值。以该值为基础一次画出可以在屏幕中显示的剩余刻度，如果是长刻度单位的整数倍就画长刻度，刻度值只在长刻度下画。<br>这样就有一个问题，正中刻度值必须是可以整除基础单位，比如，长刻度 = 1，中间两个短刻度，这样基础单位值就是0.5，currentValue = 0.3，那么下一个值就是0.8，但是这样显示并不是我们想要的，我们想要0、0.5、1、1.5这样的值。所以就是在初始化的时候格式化这些值，使得所有可显示的值都可以整除基础单位值，也就是余数为0。<br>由于使用float计算，所以要用到float精确计算，否则取余操作会出现不等于0的误差导致画不出长刻度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//精度支持2位小数</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">float</span> <span class="title">format</span><span class="params">(<span class="keyword">float</span> vallue)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">float</span> result = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">if</span> (getBaseUnit() &lt; <span class="number">0.1</span>) &#123;</span><br><span class="line">           <span class="comment">//0.01</span></span><br><span class="line">           result = ArithmeticUtil.round(vallue, <span class="number">2</span>);</span><br><span class="line">           <span class="comment">//float精确计算 取余</span></span><br><span class="line">           <span class="keyword">if</span> (ArithmeticUtil.remainder(result, getBaseUnit(), <span class="number">2</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">               result += <span class="number">0.01</span>;</span><br><span class="line">               result = format(result);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getBaseUnit() &lt; <span class="number">1</span>) &#123;</span><br><span class="line">           <span class="comment">//0.1</span></span><br><span class="line">           result = ArithmeticUtil.round(vallue, <span class="number">1</span>);</span><br><span class="line">           <span class="keyword">if</span> (ArithmeticUtil.remainder(result, getBaseUnit(), <span class="number">1</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">               result += <span class="number">0.1</span>;</span><br><span class="line">               result = format(result);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getBaseUnit() &lt; <span class="number">10</span>) &#123;</span><br><span class="line">           <span class="comment">//1</span></span><br><span class="line">           result = ArithmeticUtil.round(vallue, <span class="number">0</span>);</span><br><span class="line">           <span class="keyword">if</span> (ArithmeticUtil.remainder(result, getBaseUnit(), <span class="number">0</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">               result += <span class="number">1</span>;</span><br><span class="line">               result = format(result);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> result;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="处理滑动操作"><a href="#处理滑动操作" class="headerlink" title="处理滑动操作"></a>处理滑动操作</h2><p>滑动处理比较简单，以初始化为基础，每次move操作累加x坐标，以此值绘制偏移量，停止滑动时以基础单位宽度为基准四舍五入，开始动画滑动到相应的刻度值上。<br>主要方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">drawRuler</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (moveX &lt; maxRightOffset) &#123;</span><br><span class="line">            moveX = maxRightOffset;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (moveX &gt; maxLeftOffset) &#123;</span><br><span class="line">            moveX = maxLeftOffset;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> halfCount = (<span class="keyword">int</span>) (width / <span class="number">2</span> / getBaseUnitWidth());</span><br><span class="line">        <span class="keyword">float</span> moveValue = (<span class="keyword">int</span>) (moveX / getBaseUnitWidth()) * getBaseUnit();</span><br><span class="line">        currentValue = originValue - moveValue;</span><br><span class="line">        <span class="comment">//剩余偏移量</span></span><br><span class="line">        offset = moveX - (<span class="keyword">int</span>) (moveX / getBaseUnitWidth()) * getBaseUnitWidth();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = -halfCount - <span class="number">1</span>; i &lt;= halfCount + <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">float</span> value = ArithmeticUtil.addWithScale(currentValue, ArithmeticUtil.mulWithScale(i, getBaseUnit(), <span class="number">2</span>), <span class="number">2</span>);</span><br><span class="line">            <span class="comment">//只绘出范围内的图形</span></span><br><span class="line">            <span class="keyword">if</span> (value &gt;= startValue &amp;&amp; value &lt;= endValue) &#123;</span><br><span class="line">                <span class="comment">//画长的刻度</span></span><br><span class="line">                <span class="keyword">float</span> startx = width / <span class="number">2</span> + offset + i * getBaseUnitWidth();</span><br><span class="line">                <span class="keyword">if</span> (startx &gt; <span class="number">0</span> &amp;&amp; startx &lt; width) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (microUnitCount != <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (ArithmeticUtil.remainder(value, unit, <span class="number">2</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">                            drawLongLine(canvas, i, value);</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="comment">//画短线</span></span><br><span class="line">                            drawShortLine(canvas, i);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="comment">//画长线</span></span><br><span class="line">                        drawLongLine(canvas, i, value);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">//通知结果</span></span><br><span class="line">        notifyValueChange();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>关于刻度的单位，需要给出长刻度单位和中间的短刻度个数，这样中间的短刻度单位就确定了，所以理论上不管中间有几个短刻度计算都是一样的。我在里面封装了三个常用的，2、5、10三种。<br>支持的<code>styleable</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;declare-styleable name="BooheeRulerView"&gt;</span><br><span class="line">    &lt;attr name="ruler_bg_color" format="color|reference"/&gt;</span><br><span class="line">    &lt;attr name="ruler_line_color" format="color|reference"/&gt;</span><br><span class="line">    &lt;attr name="ruler_text_size" format="dimension"/&gt;</span><br><span class="line">    &lt;attr name="ruler_text_color" format="color|reference"/&gt;</span><br><span class="line">    &lt;attr name="ruler_width_per_unit" format="dimension"/&gt;</span><br><span class="line">&lt;/declare-styleable&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ruler_gif.gif" alt="效果图"></p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ruler1.gif" alt="image"></p>
+<p><a href="https://gist.github.com/w4lle/2f676f0f2005f6a24ca6c122b7e214b4" target="_blank" rel="external">代码在这里</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>实现的效果比较单一，没有做太多的扩展，有时间再完善下。</p>
+<blockquote>
+<p>转载请注明地址 w4lle.github.io</p>
+</blockquote>
+<p>本文地址 <a href="http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/">http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自定义View/" rel="tag">#自定义View</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/08/Flexbox/" rel="next" title="前端基础(二)--快速布局神器Flexbox布局">
+                <i class="fa fa-chevron-left"></i> 前端基础(二)--快速布局神器Flexbox布局
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/22/Android-Color/" rel="prev" title="Android Color位移操作">
+                Android Color位移操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/15/Android自定义View之刻度尺/"
+           data-title="Android自定义View之刻度尺" data-url="http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/walle.jpg"
+               alt="w4lle" />
+          <p class="site-author-name" itemprop="name">w4lle</p>
+          <p class="site-description motion-element" itemprop="description">生活不止眼前的苟且，还有诗，和远方。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#onMeasure-测量"><span class="nav-number">2.1.</span> <span class="nav-text">onMeasure() 测量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#onDraw-绘制"><span class="nav-number">2.2.</span> <span class="nav-text">onDraw() 绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理滑动操作"><span class="nav-number">2.3.</span> <span class="nav-text">处理滑动操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">w4lle</span>
+</div>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
