@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-06-06T06:28:16.000Z</updated>
+  <updated>2016-06-06T10:48:22.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -16,11 +16,31 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Hexo-themes</title>
+    <link href="http://w4lle.github.io/2016/06/06/Hexo-themes/"/>
+    <id>http://w4lle.github.io/2016/06/06/Hexo-themes/</id>
+    <published>2016-06-06T10:48:22.000Z</published>
+    <updated>2016-06-06T10:48:22.000Z</updated>
+    
+    <content type="html">&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/06/06/Hexo-themes/&quot;&gt;http://w4lle.github.io/2016/06/06/Hexo-themes/&lt;/a&gt; &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/06/06/Hexo-themes/&quot;&gt;http://w4lle.github.io/2016/06/06/Hexo-themes/&lt;/a&gt; &lt;/p&gt;
+
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>前端基础（三）-- JavaScript</title>
     <link href="http://w4lle.github.io/2016/05/31/JavaScript/"/>
     <id>http://w4lle.github.io/2016/05/31/JavaScript/</id>
     <published>2016-05-31T07:34:31.000Z</published>
-    <updated>2016-06-06T06:28:16.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;JavaScript简介&quot;&gt;&lt;a href=&quot;#JavaScript简介&quot; class=&quot;headerlink&quot; title=&quot;JavaScript简介&quot;&gt;&lt;/a&gt;JavaScript简介&lt;/h1&gt;&lt;p&gt;&lt;code&gt;JavaScript&lt;/code&gt;可以说是世界上最流行的脚本语言，这也正达到了作者给这种语言取名字的目的，由于当时&lt;code&gt;Java&lt;/code&gt;很火，所以这哥们儿为了&lt;code&gt;JavaScript&lt;/code&gt;也能火起来就取了个相似的名字，并希望&lt;code&gt;JavaScript&lt;/code&gt;也能火起来，所以现在就有了很多程序员的段子，一脸黑线。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;JavaScript&lt;/code&gt;是一种解释型的动态语言，我们知道用&lt;code&gt;JavaScript&lt;/code&gt;开发web，然而自从有了&lt;code&gt;Node.js&lt;/code&gt;，前端程序员瞬间变成了全栈，自从&lt;code&gt;facebook&lt;/code&gt;开源了跨平台开发框架&lt;a href=&quot;https://github.com/facebook/react-native&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;react-native&lt;/a&gt;，前端程序员瞬间能写源生客户端了，最近阿里也开源了更轻量级&lt;code&gt;Weex&lt;/code&gt;，而且最近RoyLi的创业公司搞出来一个硬件产品&lt;code&gt;Ruff&lt;/code&gt;，也可以用&lt;code&gt;JavaScript&lt;/code&gt;开发，前端程序员瞬间成为了真正的全栈，&lt;code&gt;JavaScript&lt;/code&gt;这是要大一统的节奏啊，想想也是醉了。所以，是时候学一波&lt;code&gt;JavaScript&lt;/code&gt;了。&lt;/p&gt;
@@ -105,7 +125,7 @@
     <link href="http://w4lle.github.io/2016/05/22/Android-Color/"/>
     <id>http://w4lle.github.io/2016/05/22/Android-Color/</id>
     <published>2016-05-22T09:53:01.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;之前项目中有个改变颜色的透明度的需求，大概的意思是滑动动态的改变透明度，但是不可以改变&lt;code&gt;View&lt;/code&gt;的透明度，必须改变颜色值得透明度，功能虽然是实现了，但是代码太ugly，所以重新写了一下，复习了下&lt;code&gt;Color&lt;/code&gt;的相关知识和位移的操作。&lt;/p&gt;
 &lt;h1 id=&quot;Color简介&quot;&gt;&lt;a href=&quot;#Color简介&quot; class=&quot;headerlink&quot; title=&quot;Color简介&quot;&gt;&lt;/a&gt;Color简介&lt;/h1&gt;&lt;p&gt;我们知道&lt;code&gt;Color&lt;/code&gt;的每个颜色通道（&lt;code&gt;channel&lt;/code&gt;）的组成由8位（&lt;code&gt;bit&lt;/code&gt;）为一个单位，即1个字节（&lt;code&gt;byte&lt;/code&gt;），10进制的取值范围0~255，我们一般用16进制表示，以&lt;code&gt;0x&lt;/code&gt;开头，取值范围在0x00~0xFF。&lt;/p&gt;
@@ -164,7 +184,7 @@
     <link href="http://w4lle.github.io/2016/05/15/Android%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E5%88%BB%E5%BA%A6%E5%B0%BA/"/>
     <id>http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/</id>
     <published>2016-05-15T08:23:43.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;项目中之前用的纵向滚轮用于选择身高体重之类的需求，新版设计要求用横向刻度尺控件来实现，效果图，上面的字不在刻度尺范围内，是一个&lt;code&gt;TextView&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/ruler&quot; alt=&quot;刻度尺&quot;&gt;&lt;/p&gt;
@@ -214,7 +234,7 @@
     <link href="http://w4lle.github.io/2016/05/08/Flexbox/"/>
     <id>http://w4lle.github.io/2016/05/08/Flexbox/</id>
     <published>2016-05-08T12:38:35.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;什么是Flexbox&quot;&gt;&lt;a href=&quot;#什么是Flexbox&quot; class=&quot;headerlink&quot; title=&quot;什么是Flexbox&quot;&gt;&lt;/a&gt;什么是Flexbox&lt;/h1&gt;&lt;p&gt;在&lt;a href=&quot;http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/&quot;&gt;上一篇文章&lt;/a&gt;中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。&lt;br&gt;2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的布局计算依赖于块和内联的流方向。&lt;br&gt;并且React Native也是使用的Flex布局，对于客户端开发来说学习Flex大有裨益。&lt;/p&gt;
 &lt;h1 id=&quot;基本概念和属性&quot;&gt;&lt;a href=&quot;#基本概念和属性&quot; class=&quot;headerlink&quot; title=&quot;基本概念和属性&quot;&gt;&lt;/a&gt;基本概念和属性&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Flexbox&lt;/code&gt;布局依赖于&lt;code&gt;flex directions&lt;/code&gt;，简单的说：&lt;code&gt;Flexbox&lt;/code&gt;是布局模块，而不是一个简单的属性。采用Flex布局的元素，称为&lt;code&gt;Flex容器&lt;/code&gt;（flex container），它的所有&lt;code&gt;子元素&lt;/code&gt;（flex item）自动成为容器成员。&lt;br&gt;&lt;code&gt;Flexbox&lt;/code&gt;布局很像&lt;code&gt;Android&lt;/code&gt;开发中的&lt;code&gt;LinearLayout&lt;/code&gt;布局，但是要比&lt;code&gt;LinearLayout&lt;/code&gt;要强大。跟&lt;code&gt;LinearLayout&lt;/code&gt;类似，&lt;code&gt;Flexbox&lt;/code&gt;也存在两个方向的布局–主轴（main axis）和副轴（cross axis），可以简单的理解为&lt;code&gt;LinearLayout&lt;/code&gt;的水平布局和垂直布局。主轴的开始位置（与边框的交叉点）叫做&lt;code&gt;main start&lt;/code&gt;，结束位置叫做&lt;code&gt;main end&lt;/code&gt;；交叉轴的开始位置叫做&lt;code&gt;cross start&lt;/code&gt;，结束位置叫做&lt;code&gt;cross end&lt;/code&gt;。项目默认沿主轴排列。单个项目占据的主轴空间叫做&lt;code&gt;main size&lt;/code&gt;，占据的交叉轴空间叫做&lt;code&gt;cross size&lt;/code&gt;。&lt;br&gt;&lt;img src=&quot;http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
@@ -342,7 +362,7 @@
     <link href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"/>
     <id>http://w4lle.github.io/2016/05/02/从Instant run谈Android替换Application和动态加载机制/</id>
     <published>2016-05-02T11:33:05.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Android studio 2.0 Stable&lt;/code&gt;版本中集成了&lt;code&gt;Install run&lt;/code&gt;即时编译技术，官方描述可以大幅加速编译速度，我们团队在第一时间更新并使用，总体用下来感觉，恩…也就那样吧，还不如不用的快。所以就去看了下&lt;code&gt;Install run&lt;/code&gt;的实现方式，其中有一个整体框架的基础，也就是今天的文章的主题，Android替换Application和动态加载机制。&lt;/p&gt;
 &lt;h1 id=&quot;Instant-run&quot;&gt;&lt;a href=&quot;#Instant-run&quot; class=&quot;headerlink&quot; title=&quot;Instant run&quot;&gt;&lt;/a&gt;Instant run&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Instant run&lt;/code&gt;的大概实现原理可以看下这篇&lt;a href=&quot;http://jiajixin.cn/2015/11/25/instant-run/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Instant Run 浅析&lt;/a&gt;，我们需要知道&lt;code&gt;Instant run&lt;/code&gt;使用的&lt;code&gt;gradle plugin2.0.0&lt;/code&gt;，源码在&lt;a href=&quot;https://bintray.com/android/android-tools/com.android.tools.build.gradle/view&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;，文中大概讲了下&lt;code&gt;Instant run&lt;/code&gt;的实现原理，但是并没有深入细节，特别是替换Application和动态加载机制。&lt;/p&gt;
@@ -431,7 +451,7 @@
     <link href="http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/"/>
     <id>http://w4lle.github.io/2016/04/17/前端基础-一-CSS布局基础/</id>
     <published>2016-04-17T14:26:23.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;盒模型&quot;&gt;&lt;a href=&quot;#盒模型&quot; class=&quot;headerlink&quot; title=&quot;盒模型&quot;&gt;&lt;/a&gt;盒模型&lt;/h1&gt;&lt;p&gt;CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padding的顺序是left、top、right、bottom，比如&lt;code&gt;setMargin(10, 20, 30, 20)&lt;/code&gt;分别代表左上右下的间距分别为10px,20px,30px,20px;但是在CSS中的顺序是top、right、bottom、left，比如&lt;code&gt;margin: [10px, 20px, 30px, 20px]&lt;/code&gt;分别代表左上右下间距分别为20px,10px,20px,30px。&lt;br&gt;概述图如下&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/box-model.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
@@ -487,7 +507,7 @@
     <link href="http://w4lle.github.io/2016/04/10/Apk%E5%8C%85%E7%98%A6%E8%BA%AB%E7%AC%94%E8%AE%B0/"/>
     <id>http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/</id>
     <published>2016-04-10T11:11:51.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;随着业务功能的不断更迭，apk安装包的体积越来越大，最新的薄荷app android版本的安装包大小已经达到了22.5M，过大的安装包对于用户的体验来说会造成不好的影响，所以减小apk包的大小就显得尤为重要。&lt;/p&gt;
 &lt;h1 id=&quot;问题原因&quot;&gt;&lt;a href=&quot;#问题原因&quot; class=&quot;headerlink&quot; title=&quot;问题原因&quot;&gt;&lt;/a&gt;问题原因&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://nimbledroid.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;NimbleDroid&lt;/a&gt;网站可以分析出apk安装包的各种大文件排行和各种依赖包的方法数，我们比较关注的是大文件的大小。上图&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/large_file1.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
@@ -537,7 +557,7 @@
     <link href="http://w4lle.github.io/2016/03/27/Android%E5%85%B3%E9%97%AD%E9%80%9A%E7%9F%A5%E6%B6%88%E6%81%AF%E6%9D%83%E9%99%90%E6%97%A0%E6%B3%95%E5%BC%B9%E5%87%BAToast%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
     <id>http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/</id>
     <published>2016-03-27T11:47:28.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。&lt;/p&gt;
 &lt;h1 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h1&gt;&lt;p&gt;跟踪Toast的源代码，&lt;code&gt;make&lt;/code&gt;方法省略，做了一些初始化的工作，&lt;code&gt;show&lt;/code&gt;方法&lt;/p&gt;
@@ -578,7 +598,7 @@
     <link href="http://w4lle.github.io/2016/03/19/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E9%9B%B6-CSS%E5%9F%BA%E7%A1%80/"/>
     <id>http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/</id>
     <published>2016-03-19T14:52:40.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;最近跟小伙伴们在&lt;a href=&quot;ife.baidu.com&quot;&gt;百度前端技术学院&lt;/a&gt;学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。&lt;/p&gt;
 &lt;p&gt;开发工具：sublime text 3&lt;/p&gt;
@@ -673,7 +693,7 @@
     <link href="http://w4lle.github.io/2016/03/13/AndFix%E6%94%AF%E6%8C%81multidex%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
     <id>http://w4lle.github.io/2016/03/13/AndFix支持multidex解决方案/</id>
     <published>2016-03-13T13:42:11.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在上一篇文章&lt;a href=&quot;http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/&quot;&gt;Android热补丁之AndFix原理解析&lt;/a&gt;中我们提到，AndFix的补丁文件是补丁生成工具apkPatch生成的，补丁文件&lt;code&gt;.apatch&lt;/code&gt;基于&lt;code&gt;dex diff&lt;/code&gt;的原理生成，简单来说就是对比两个apk包中的dex文件，代码在&lt;code&gt;DexFileFactory&lt;/code&gt;类中&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; DexBackedDexFile &lt;span class=&quot;title&quot;&gt;loadDexFile&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(File dexFile, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; api, &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; experimental)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; IOException&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; loadDexFile(dexFile, &lt;span class=&quot;string&quot;&gt;&quot;classes.dex&quot;&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Opcodes(api, experimental));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -731,7 +751,7 @@
     <link href="http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/"/>
     <id>http://w4lle.github.io/2016/03/03/Android热补丁之AndFix原理解析/</id>
     <published>2016-03-03T06:43:44.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;2015年下半年开源了很多Android热更新的项目，其中大部分是以QQ空间技术团队写的那篇&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;amp;mid=400118620&amp;amp;idx=1&amp;amp;sn=b4fdd5055731290eef12ad0d17f39d4a&amp;amp;scene=1&amp;amp;srcid=1106Imu9ZgwybID13e7y2nEi#wechat_redirect&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;文章&lt;/a&gt;为依据写出的基于&lt;code&gt;multidex&lt;/code&gt;的热更新框架，包括&lt;a href=&quot;https://github.com/jasonross/Nuwa&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nuwa&lt;/a&gt;、&lt;a href=&quot;https://github.com/dodola/HotFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HotFix&lt;/a&gt;、&lt;a href=&quot;https://github.com/bunnyblue/DroidFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DroidFix&lt;/a&gt;等；还有这篇文章的主角，阿里开源的&lt;a href=&quot;https://github.com/alibaba/AndFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndFix&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;在这之前，热补丁框架并没有那么火，原因无非就是要么用起来太重，要么不支持ART。比如携程出品的&lt;a href=&quot;https://github.com/CtripMobile/DynamicAPK&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DynamicAPK&lt;/a&gt;,这种框架是为了解决平台级的产品相关业务开发之间的解耦，热补丁只是其附属功能，对于量级没有那么大的项目，没有必要采用这种很重的框架。另外就是基于阿里出品的基于&lt;a href=&quot;https://github.com/rovo89/Xposed&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Xposed&lt;/a&gt;的AOP框架&lt;a href=&quot;https://github.com/alibaba/dexposed&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dexposed&lt;/a&gt;，剥离掉&lt;code&gt;Xposed&lt;/code&gt;的root部分功能，主要应该与AOP编程、插桩 (如测试、性能监控等)、在线热补丁、SDK hooking等，用起来比较重并且不支持&lt;code&gt;ART&lt;/code&gt;。&lt;br&gt;众多的热补丁框架为开发者带来了福利，不用发版本就可以紧急修复线上版本的bug。&lt;/p&gt;
@@ -840,7 +860,7 @@
     <link href="http://w4lle.github.io/2016/02/15/ClassyShark%E2%80%94%E2%80%94%E5%88%86%E6%9E%90apk%E5%88%A9%E5%99%A8/"/>
     <id>http://w4lle.github.io/2016/02/15/ClassyShark——分析apk利器/</id>
     <published>2016-02-15T06:32:15.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/ClassyShark.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;对于一个感兴趣的android非开源项目，通常使用逆向工程查看apk中的内容，俗称反编译。工具大概包括&lt;a href=&quot;https://github.com/pxb1988/dex2jar&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dex2jar&lt;/a&gt;、&lt;a href=&quot;http://jd.benow.ca/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JD-GUI&lt;/a&gt;、&lt;a href=&quot;http://ibotpeaches.github.io/Apktool/install/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;apktool&lt;/a&gt;、&lt;a href=&quot;https://bitbucket.org/mstrobel/procyon&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;procyon&lt;/a&gt;,这些工具使用起来相对比较麻烦，如果我们只想知道该项目的基本框架、使用到哪些开源项目的话，那么就有些浪费时间。&lt;br&gt;对于一些大厂的项目，我们还比较关心的是用到了哪些新的框架和技术，对于新技术的流行程度和使用普遍程度有个比较好的把握，指导是否需要进行深度的使用学习。比如最近的比较流行的rxjava，热更新技术等等。&lt;/p&gt;
@@ -923,7 +943,7 @@
     <link href="http://w4lle.github.io/2016/02/01/%E7%BB%88%E6%9E%81Shell-Zsh-%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     <id>http://w4lle.github.io/2016/02/01/终极Shell-Zsh-使用技巧/</id>
     <published>2016-01-31T17:51:36.000Z</published>
-    <updated>2016-06-05T11:19:52.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;h2 id=&quot;为什么要用Zsh&quot;&gt;&lt;a href=&quot;#为什么要用Zsh&quot; class=&quot;headerlink&quot; title=&quot;为什么要用Zsh&quot;&gt;&lt;/a&gt;为什么要用Zsh&lt;/h2&gt;&lt;p&gt;请参考这篇文章&lt;a href=&quot;http://macshuo.com/?p=676&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;终极 Shell&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;Zsh使用技巧&quot;&gt;&lt;a href=&quot;#Zsh使用技巧&quot; class=&quot;headerlink&quot; title=&quot;Zsh使用技巧&quot;&gt;&lt;/a&gt;Zsh使用技巧&lt;/h2&gt;&lt;h3 id=&quot;巧用tab&quot;&gt;&lt;a href=&quot;#巧用tab&quot; class=&quot;headerlink&quot; title=&quot;巧用tab&quot;&gt;&lt;/a&gt;巧用&lt;code&gt;tab&lt;/code&gt;&lt;/h3&gt;&lt;h4 id=&quot;自动完成&quot;&gt;&lt;a href=&quot;#自动完成&quot; class=&quot;headerlink&quot; title=&quot;自动完成&quot;&gt;&lt;/a&gt;自动完成&lt;/h4&gt;&lt;p&gt;&lt;code&gt;tab&lt;/code&gt;用到最多的就是自动完成,比如&lt;code&gt;cd&lt;/code&gt;进入某个目录，可以输入该目录的中的几个字母，然后&lt;code&gt;tab&lt;/code&gt;自动补全。&lt;br&gt;你不必输入整个目录名称，只需输入初始几个可以唯一区别与其他目录的字母，Zsh会自动匹配出剩余部分。&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/QQ20160131-1%402x.png&quot; alt=&quot;此处输入图片的描述&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/tab.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
@@ -954,7 +974,7 @@
     <link href="http://w4lle.github.io/2016/01/28/hello-world/"/>
     <id>http://w4lle.github.io/2016/01/28/hello-world/</id>
     <published>2016-01-27T16:00:00.000Z</published>
-    <updated>2016-06-06T06:19:33.000Z</updated>
+    <updated>2016-06-06T10:13:15.000Z</updated>
     
     <content type="html">&lt;p&gt;Welcome to &lt;a href=&quot;http://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;http://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;http://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick Start&quot;&gt;&lt;/a&gt;Quick Start&lt;/h2&gt;&lt;h3 id=&quot;Create-a-new-post&quot;&gt;&lt;a href=&quot;#Create-a-new-post&quot; class=&quot;headerlink&quot; title=&quot;Create a new post&quot;&gt;&lt;/a&gt;Create a new post&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo new &lt;span class=&quot;string&quot;&gt;&quot;My New Post&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
