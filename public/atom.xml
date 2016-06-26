@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-06-06T12:41:08.000Z</updated>
+  <updated>2016-06-26T12:17:21.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -14,6 +14,78 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android计步</title>
+    <link href="http://w4lle.github.io/2016/06/26/step-counter/"/>
+    <id>http://w4lle.github.io/2016/06/26/step-counter/</id>
+    <published>2016-06-26T02:35:39.000Z</published>
+    <updated>2016-06-26T12:17:21.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;计步越来越成为人们的强需求，一般有手环计步，手表计步，手机计步等实现，这篇文章讨论下手机上实现计步的两种方案。&lt;/p&gt;
+&lt;h1 id=&quot;加速度传感器（gsensor）&quot;&gt;&lt;a href=&quot;#加速度传感器（gsensor）&quot; class=&quot;headerlink&quot; title=&quot;加速度传感器（gsensor）&quot;&gt;&lt;/a&gt;加速度传感器（gsensor）&lt;/h1&gt;&lt;p&gt;人在走路时，加速度传感器会形成一个类似正弦波形图，因此可以根据检测波峰波谷记步。见下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://www.analog.com/library/analogDialogue/archives/44-06/AD44_06_FIG_03.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;可以分为几步进行：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;特征选取，由于手机在不同放置条件下三轴传感器会有不同的数据表现，所以 可以取三轴的平方和。&lt;/li&gt;
+&lt;li&gt;滤波，由于得到的数据存在一定的噪音，我们需要过滤掉这些噪音得到比 较平滑的数据，一般有中值滤波和低通滤波。&lt;/li&gt;
+&lt;li&gt;计步监测，我们一般采用判断峰谷值来决定是否是一次计步。&lt;/li&gt;
+&lt;li&gt;动态阈值，采用判断峰谷值来记步需要动态的计算阈值，符合阈值标准才能算一次计步。&lt;/li&gt;
+&lt;li&gt;步数矫正，人的步伐速度在200-2000ms之间，通过记录记步的时间戳，矫正步数。步伐间隔&lt;200ms和&gt;2000ms，认为是无效步数。&lt;/200ms和&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;使用gsensor来计步可能会存在以下问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;续航问题，由于要不停的监测gsensor变化和计算，就会导致手机不会进入休眠状态，一直保持CPU的唤醒，这对于手机的续航可能会带来一定的影响。&lt;/li&gt;
+&lt;li&gt;精度问题，计步算法需要不断的产品迭代，并且要有较好的步数矫正机制，短时间内不能做到优秀的计步功能。&lt;/li&gt;
+&lt;li&gt;后台service保活问题，要保证后台可以实时统计步数需要后台服务一直运行，包括低内存防杀机制、自启机制等。&lt;/li&gt;
+&lt;li&gt;对于一些锁屏自动关闭sensor的定制系统来说不可用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;计步传感器（step-sensor）&quot;&gt;&lt;a href=&quot;#计步传感器（step-sensor）&quot; class=&quot;headerlink&quot; title=&quot;计步传感器（step-sensor）&quot;&gt;&lt;/a&gt;计步传感器（step-sensor）&lt;/h1&gt;&lt;p&gt;相对于使用加速度传感器获取数据和计算实现计步的方式，通过计步传感器sensor监测或者读取计步数对于终端的续航能力有了很大的提高。&lt;/p&gt;
+&lt;p&gt;在Android4.4（KITKAT）系统API提供了两种硬件计步传感器的支持，因为是硬件所以需要厂商支持。可以通过以下方式查看你的手机是否支持&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;adb shell pm list features&lt;br&gt;如果有以下两项说明支持&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;feature:android.hardware.sensor.stepcounter&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;feature:android.hardware.sensor.stepdetector&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;代码检测Android4.4后更高并且有sensor支持&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;isKitkatWithStepSensor&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// BEGIN_INCLUDE(iskitkatsensor)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// Require at least Android KitKat&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; currentApiVersion = android.os.Build.VERSION.SDK_INT;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// Check that the device supports the step counter and detector sensors&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    PackageManager packageManager = getActivity().getPackageManager();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; currentApiVersion &amp;gt;= android.os.Build.VERSION_CODES.KITKAT&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;amp;&amp;amp; packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;amp;&amp;amp; packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_DETECTOR);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// END_INCLUDE(iskitkatsensor)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在使用前需要声明权限&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;uses-feature android:name=&lt;span class=&quot;string&quot;&gt;&quot;android.hardware.sensor.stepcounter&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;uses-feature android:name=&lt;span class=&quot;string&quot;&gt;&quot;android.hardware.sensor.stepdetector&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;TYPE_STEP_COUNTER&lt;br&gt;API的解释说返回从开机被激活后统计的步数，当重启手机后该数据归零，该传感器是一个硬件传感器所以它是低功耗的。为了能持续的计步，请不要反注册事件，就算手机处于休眠状态它依然会计步。当激活的时候依然会上报步数。该sensor适合在长时间的计步需求。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;TYPE_STEP_DETECTOR&lt;br&gt;翻译过来就是走路检测，API文档也确实是这样说的，该sensor只用来监监测走步，每次返回数字1.0。如果需要长事件的计步请使用TYPE_STEP_COUNTER。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;用法比较简单，实现比较方便，由于我们需要长时间的计步，所以一般我们采用&lt;code&gt;TYPE_STEP_COUNTER&lt;/code&gt;。&lt;br&gt;优点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;精度相对来说精确。&lt;/li&gt;
+&lt;li&gt;低功耗，对手机续航基本没有影响。&lt;/li&gt;
+&lt;li&gt;不需要后台服务持续唤醒，所以不需要后台保活。&lt;/li&gt;
+&lt;li&gt;实现简单。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;手机必须要Android4.4及以上版本，并且内置计步sensor硬件&lt;/li&gt;
+&lt;li&gt;并不像iOS的M7协处理器记录每天各个时段的计步数据，step counter sensor记录从开机以来所有的步数，每日计步数需要自己维护。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;总结&quot;&gt;&lt;a href=&quot;#总结&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h1&gt;&lt;p&gt;总结来说，如果用g-sensor来实现计步会保证良好的兼容性，排除锁屏自动关闭sensor的定制系统除外，基本所有的Android手机都可以使用，但是需要一定时间的算法调试和后台保活机制的健全保证，开发周期较长；如果项目需求开发周期较短，并且没有强制性的全机型兼容，那么可以考虑使用step-sensor，优点比较明显，而且使用协处理器代替纯软件计算实现计步监测已经是大势所趋。另外以上两种方案都需要开机自启权限。&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;http://www.wujiame.com/blog/2013/12/27/pedometer/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;如何在手机上实现高精度及自适应多种场景的计步器算法&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://github.com/johnjohndoe/Android-Developers-Samples/tree/master/BatchStepSensor&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android-Developers-Samples-BatchStepSensor&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.analog.com/library/analogDialogue/china/archives/44-06/pedometer.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;利用3轴数字加速度计实现功能全面的计步器设计&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/06/26/step-counter/&quot;&gt;http://w4lle.github.io/2016/06/26/step-counter/&lt;/a&gt; &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;计步越来越成为人们的强需求，一般有手环计步，手表计步，手机计步等实现，这篇文章讨论下手机上实现计步的两种方案。&lt;/p&gt;
+&lt;h1 id=&quot;加速
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+    
+  </entry>
   
   <entry>
     <title>Hexo主题同步</title>
