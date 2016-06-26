@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://w4lle.github.io/2016/06/26/step-counter/</loc>
+    
+    <lastmod>2016-06-26T12:17:21.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://w4lle.github.io/2016/06/06/Hexo-themes/</loc>
     
     <lastmod>2016-06-06T12:41:08.000Z</lastmod>
@@ -9,14 +16,7 @@
   </url>
   
   <url>
-    <loc>http://w4lle.github.io/2016/02/15/ClassyShark%E2%80%94%E2%80%94%E5%88%86%E6%9E%90apk%E5%88%A9%E5%99%A8/</loc>
-    
-    <lastmod>2016-06-06T10:13:15.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://w4lle.github.io/2016/03/19/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E9%9B%B6-CSS%E5%9F%BA%E7%A1%80/</loc>
+    <loc>http://w4lle.github.io/2016/05/08/Flexbox/</loc>
     
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     
@@ -37,6 +37,13 @@
   </url>
   
   <url>
+    <loc>http://w4lle.github.io/2016/03/13/AndFix%E6%94%AF%E6%8C%81multidex%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    
+    <lastmod>2016-06-06T10:13:15.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://w4lle.github.io/2016/01/28/hello-world/</loc>
     
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
@@ -51,14 +58,7 @@
   </url>
   
   <url>
-    <loc>http://w4lle.github.io/2016/03/13/AndFix%E6%94%AF%E6%8C%81multidex%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
-    
-    <lastmod>2016-06-06T10:13:15.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://w4lle.github.io/2016/05/08/Flexbox/</loc>
+    <loc>http://w4lle.github.io/2016/03/19/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E9%9B%B6-CSS%E5%9F%BA%E7%A1%80/</loc>
     
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     
@@ -66,6 +66,13 @@
   
   <url>
     <loc>http://w4lle.github.io/2016/02/01/%E7%BB%88%E6%9E%81Shell-Zsh-%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</loc>
+    
+    <lastmod>2016-06-06T10:13:15.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://w4lle.github.io/2016/02/15/ClassyShark%E2%80%94%E2%80%94%E5%88%86%E6%9E%90apk%E5%88%A9%E5%99%A8/</loc>
     
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     

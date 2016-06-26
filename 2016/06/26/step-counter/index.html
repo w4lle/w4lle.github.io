@@ -1,0 +1,706 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="w4lle's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言计步越来越成为人们的强需求，一般有手环计步，手表计步，手机计步等实现，这篇文章讨论下手机上实现计步的两种方案。
+加速度传感器（gsensor）人在走路时，加速度传感器会形成一个类似正弦波形图，因此可以根据检测波峰波谷记步。见下图：
+
+可以分为几步进行：
+
+特征选取，由于手机在不同放置条件下三轴传感器会有不同的数据表现，所以 可以取三轴的平方和。
+滤波，由于得到的数据存在一定的噪音，我们需要过滤">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android计步">
+<meta property="og:url" content="http://w4lle.github.io/2016/06/26/step-counter/index.html">
+<meta property="og:site_name" content="w4lle's Notes">
+<meta property="og:description" content="前言计步越来越成为人们的强需求，一般有手环计步，手表计步，手机计步等实现，这篇文章讨论下手机上实现计步的两种方案。
+加速度传感器（gsensor）人在走路时，加速度传感器会形成一个类似正弦波形图，因此可以根据检测波峰波谷记步。见下图：
+
+可以分为几步进行：
+
+特征选取，由于手机在不同放置条件下三轴传感器会有不同的数据表现，所以 可以取三轴的平方和。
+滤波，由于得到的数据存在一定的噪音，我们需要过滤">
+<meta property="og:image" content="http://www.analog.com/library/analogDialogue/archives/44-06/AD44_06_FIG_03.jpg">
+<meta property="og:updated_time" content="2016-06-26T12:17:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android计步">
+<meta name="twitter:description" content="前言计步越来越成为人们的强需求，一般有手环计步，手表计步，手机计步等实现，这篇文章讨论下手机上实现计步的两种方案。
+加速度传感器（gsensor）人在走路时，加速度传感器会形成一个类似正弦波形图，因此可以根据检测波峰波谷记步。见下图：
+
+可以分为几步进行：
+
+特征选取，由于手机在不同放置条件下三轴传感器会有不同的数据表现，所以 可以取三轴的平方和。
+滤波，由于得到的数据存在一定的噪音，我们需要过滤">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+
+  <title> Android计步 | w4lle's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">w4lle's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Eeeee... va?</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android计步
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-26T10:35:39+08:00" content="2016-06-26">
+              2016-06-26
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/26/step-counter/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/26/step-counter/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+          
+              <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>计步越来越成为人们的强需求，一般有手环计步，手表计步，手机计步等实现，这篇文章讨论下手机上实现计步的两种方案。</p>
+<h1 id="加速度传感器（gsensor）"><a href="#加速度传感器（gsensor）" class="headerlink" title="加速度传感器（gsensor）"></a>加速度传感器（gsensor）</h1><p>人在走路时，加速度传感器会形成一个类似正弦波形图，因此可以根据检测波峰波谷记步。见下图：</p>
+<p><img src="http://www.analog.com/library/analogDialogue/archives/44-06/AD44_06_FIG_03.jpg" alt=""></p>
+<p>可以分为几步进行：</p>
+<ol>
+<li>特征选取，由于手机在不同放置条件下三轴传感器会有不同的数据表现，所以 可以取三轴的平方和。</li>
+<li>滤波，由于得到的数据存在一定的噪音，我们需要过滤掉这些噪音得到比 较平滑的数据，一般有中值滤波和低通滤波。</li>
+<li>计步监测，我们一般采用判断峰谷值来决定是否是一次计步。</li>
+<li>动态阈值，采用判断峰谷值来记步需要动态的计算阈值，符合阈值标准才能算一次计步。</li>
+<li>步数矫正，人的步伐速度在200-2000ms之间，通过记录记步的时间戳，矫正步数。步伐间隔<200ms和>2000ms，认为是无效步数。</200ms和></li>
+</ol>
+<p>使用gsensor来计步可能会存在以下问题：</p>
+<ul>
+<li>续航问题，由于要不停的监测gsensor变化和计算，就会导致手机不会进入休眠状态，一直保持CPU的唤醒，这对于手机的续航可能会带来一定的影响。</li>
+<li>精度问题，计步算法需要不断的产品迭代，并且要有较好的步数矫正机制，短时间内不能做到优秀的计步功能。</li>
+<li>后台service保活问题，要保证后台可以实时统计步数需要后台服务一直运行，包括低内存防杀机制、自启机制等。</li>
+<li>对于一些锁屏自动关闭sensor的定制系统来说不可用。</li>
+</ul>
+<h1 id="计步传感器（step-sensor）"><a href="#计步传感器（step-sensor）" class="headerlink" title="计步传感器（step-sensor）"></a>计步传感器（step-sensor）</h1><p>相对于使用加速度传感器获取数据和计算实现计步的方式，通过计步传感器sensor监测或者读取计步数对于终端的续航能力有了很大的提高。</p>
+<p>在Android4.4（KITKAT）系统API提供了两种硬件计步传感器的支持，因为是硬件所以需要厂商支持。可以通过以下方式查看你的手机是否支持</p>
+<ul>
+<li><p>adb shell pm list features<br>如果有以下两项说明支持</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">feature:android.hardware.sensor.stepcounter</span><br><span class="line">feature:android.hardware.sensor.stepdetector</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>代码检测Android4.4后更高并且有sensor支持</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isKitkatWithStepSensor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// BEGIN_INCLUDE(iskitkatsensor)</span></span><br><span class="line">    <span class="comment">// Require at least Android KitKat</span></span><br><span class="line">    <span class="keyword">int</span> currentApiVersion = android.os.Build.VERSION.SDK_INT;</span><br><span class="line">    <span class="comment">// Check that the device supports the step counter and detector sensors</span></span><br><span class="line">    PackageManager packageManager = getActivity().getPackageManager();</span><br><span class="line">    <span class="keyword">return</span> currentApiVersion &gt;= android.os.Build.VERSION_CODES.KITKAT</span><br><span class="line">            &amp;&amp; packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER)</span><br><span class="line">            &amp;&amp; packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_DETECTOR);</span><br><span class="line">    <span class="comment">// END_INCLUDE(iskitkatsensor)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在使用前需要声明权限</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-feature android:name=<span class="string">"android.hardware.sensor.stepcounter"</span> /&gt;</span><br><span class="line">&lt;uses-feature android:name=<span class="string">"android.hardware.sensor.stepdetector"</span> /&gt;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>TYPE_STEP_COUNTER<br>API的解释说返回从开机被激活后统计的步数，当重启手机后该数据归零，该传感器是一个硬件传感器所以它是低功耗的。为了能持续的计步，请不要反注册事件，就算手机处于休眠状态它依然会计步。当激活的时候依然会上报步数。该sensor适合在长时间的计步需求。</p>
+</li>
+<li><p>TYPE_STEP_DETECTOR<br>翻译过来就是走路检测，API文档也确实是这样说的，该sensor只用来监监测走步，每次返回数字1.0。如果需要长事件的计步请使用TYPE_STEP_COUNTER。</p>
+</li>
+</ol>
+<p>用法比较简单，实现比较方便，由于我们需要长时间的计步，所以一般我们采用<code>TYPE_STEP_COUNTER</code>。<br>优点：</p>
+<ul>
+<li>精度相对来说精确。</li>
+<li>低功耗，对手机续航基本没有影响。</li>
+<li>不需要后台服务持续唤醒，所以不需要后台保活。</li>
+<li>实现简单。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>手机必须要Android4.4及以上版本，并且内置计步sensor硬件</li>
+<li>并不像iOS的M7协处理器记录每天各个时段的计步数据，step counter sensor记录从开机以来所有的步数，每日计步数需要自己维护。</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总结来说，如果用g-sensor来实现计步会保证良好的兼容性，排除锁屏自动关闭sensor的定制系统除外，基本所有的Android手机都可以使用，但是需要一定时间的算法调试和后台保活机制的健全保证，开发周期较长；如果项目需求开发周期较短，并且没有强制性的全机型兼容，那么可以考虑使用step-sensor，优点比较明显，而且使用协处理器代替纯软件计算实现计步监测已经是大势所趋。另外以上两种方案都需要开机自启权限。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.wujiame.com/blog/2013/12/27/pedometer/" target="_blank" rel="external">如何在手机上实现高精度及自适应多种场景的计步器算法</a><br><a href="https://github.com/johnjohndoe/Android-Developers-Samples/tree/master/BatchStepSensor" target="_blank" rel="external">Android-Developers-Samples-BatchStepSensor</a><br><a href="http://www.analog.com/library/analogDialogue/china/archives/44-06/pedometer.html" target="_blank" rel="external">利用3轴数字加速度计实现功能全面的计步器设计</a></p>
+<p>本文地址 <a href="http://w4lle.github.io/2016/06/26/step-counter/">http://w4lle.github.io/2016/06/26/step-counter/</a> </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/wechatPay.PNG" alt="w4lle WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://7xs23g.com1.z0.glb.clouddn.com/alipay.JPG" alt="w4lle Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/06/Hexo-themes/" rel="next" title="Hexo主题同步">
+                <i class="fa fa-chevron-left"></i> Hexo主题同步
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/26/step-counter/"
+           data-title="Android计步" data-url="http://w4lle.github.io/2016/06/26/step-counter/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/walle.jpg"
+               alt="w4lle" />
+          <p class="site-author-name" itemprop="name">w4lle</p>
+          <p class="site-description motion-element" itemprop="description">生活不止眼前的苟且，还有诗，和远方。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/w4lle" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2274417881/home?wvr=5" target="_blank" title="Weibo">
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/hlglinglong" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#加速度传感器（gsensor）"><span class="nav-number">2.</span> <span class="nav-text">加速度传感器（gsensor）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#计步传感器（step-sensor）"><span class="nav-number">3.</span> <span class="nav-text">计步传感器（step-sensor）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">w4lle</span>
+</div>
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
