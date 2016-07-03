@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-06-26T12:17:21.000Z</updated>
+  <updated>2016-07-03T14:09:09.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -14,6 +14,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>快速排序</title>
+    <link href="http://w4lle.github.io/2016/07/03/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"/>
+    <id>http://w4lle.github.io/2016/07/03/快速排序/</id>
+    <published>2016-07-03T12:55:44.000Z</published>
+    <updated>2016-07-03T14:09:09.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Wikipedia: 快速排序是由东尼霍尔所发展的一种排序算法。在平均状况下，排序n个项目要Ο(n log n)次比较。 在最坏状况下则需要Ο(n2)次比较，但这种状况并不常见。事实上，快速排序通常明显比其他Ο(n log )算法更快， 因为它的内部循环（inner loop）可以在大部分的架构上很有效率地被实现出来。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;快排的思路&quot;&gt;&lt;a href=&quot;#快排的思路&quot; class=&quot;headerlink&quot; title=&quot;快排的思路&quot;&gt;&lt;/a&gt;快排的思路&lt;/h1&gt;&lt;p&gt;快速排序采用了分治的策略，通常称其为分治法(Divide-and-ConquerMethod)。&lt;br&gt;该方法的基本思想是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;选取一个基准元素（pivot）&lt;/li&gt;
+&lt;li&gt;分区过程，比pivot小的放到pivot左边，比pivot大的放到pivot右边&lt;/li&gt;
+&lt;li&gt;对pivot左边的序列和右边的序列分别递归的执行步骤1和步骤2&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;虽然是采用分治法，但是分治法不能完全概括这个算法，因为我每次看完算法会很清楚，但是过段时间就忘了。然后看到了非常新颖的名字：“挖坑排序”。&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//快速排序&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;quickSort&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; s[], &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; r)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (l &amp;lt; r)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = l, j = r;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;//将数组中的最低位值取出，相当于挖了第一个坑&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x = s[l];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (i &amp;lt; j)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt;(i &amp;lt; j &amp;amp;&amp;amp; s[j] &amp;gt;= x) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;//从右向左找第一个小于x的数&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				j--;  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(i &amp;lt; j) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;//将s[j]的数挖坑填之前的坑&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				s[i++] = s[j];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt;(i &amp;lt; j &amp;amp;&amp;amp; s[i] &amp;lt; x) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// 从左向右找第一个大于等于x的数&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				i++;  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(i &amp;lt; j) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;//挖坑，填之前的坑&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;				s[j--] = s[i];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;//填最后一个坑&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        s[i] = x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        quickSort(s, l, i - &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;// 递归调用 &lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        quickSort(s, i + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, r);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;对挖坑填数进行总结&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;i =L; j = R; 将基准数挖出形成第一个坑a[i]。&lt;/li&gt;
+&lt;li&gt;j–由后向前找比它小的数，找到后挖出此数填前一个坑a[i]中。&lt;/li&gt;
+&lt;li&gt;i++由前向后找比它大的数，找到后也挖出此数填到前一个坑a[j]中。&lt;/li&gt;
+&lt;li&gt;再重复执行2，3二步，直到i==j，将基准数填入a[i]中。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;算法分析&quot;&gt;&lt;a href=&quot;#算法分析&quot; class=&quot;headerlink&quot; title=&quot;算法分析&quot;&gt;&lt;/a&gt;算法分析&lt;/h1&gt;&lt;p&gt;平均情况下快速排序的时间复杂度是O(n\lgn)O(n\lgn)，最坏情况是O(n2)O(n2)。&lt;/p&gt;
+&lt;h2 id=&quot;最坏时间复杂度&quot;&gt;&lt;a href=&quot;#最坏时间复杂度&quot; class=&quot;headerlink&quot; title=&quot;最坏时间复杂度&quot;&gt;&lt;/a&gt;最坏时间复杂度&lt;/h2&gt;&lt;p&gt;当划分产生的两个子问题分别包含 n-1 和 0个元素时，最坏情况发生。因此，快速排序必须做n-1次划分，第i次划分开始时区间长度为n-i+1，所需的比较次数为n-i(1≤i≤n-1)，故总的比较次数达到最大值：&lt;br&gt;&lt;code&gt;Cmax = n(n-1)/2=O(n^2)&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&quot;最好时间复杂度&quot;&gt;&lt;a href=&quot;#最好时间复杂度&quot; class=&quot;headerlink&quot; title=&quot;最好时间复杂度&quot;&gt;&lt;/a&gt;最好时间复杂度&lt;/h2&gt;&lt;p&gt;当划分产生的两个子问题分别包含⌊n/2⌋⌊n/2⌋和⌈n/2⌉−1⌈n/2⌉−1个元素时，最好情况发生。用递归树来分析最好情况下的比较次数更简单。因为每次划分后左、右子区间长度大致相等，故递归树的高度为O(lgn)，而递归树每一层上各结点所对应的划分过程中所需要的关键字比较次数总和不超过n，故整个排序过程所需要的关键字比较总次数C(n)=O(nlgn)。&lt;/p&gt;
+&lt;p&gt;因为快速排序的记录移动次数不大于比较的次数，所以快速排序的最坏时间复杂度应为0(n2)，最好时间复杂度为O(nlgn)。事实上只要划分是常数比例的，算法的运行时间总是O(nlgn)。 假设按照 9:1 划分，每层代价最多为 cn，递归深度为 log(10/9, n)=O(lgn)，故排序的总代价为O(nlgn)。平均情况下，比如一次坏的划分接着一次好的划分，坏的划分那一项可以合并到好的划分里，统计上来讲平均情况下的时间复杂度仍然是O(nlgn)。&lt;/p&gt;
+&lt;h1 id=&quot;优化&quot;&gt;&lt;a href=&quot;#优化&quot; class=&quot;headerlink&quot; title=&quot;优化&quot;&gt;&lt;/a&gt;优化&lt;/h1&gt;&lt;p&gt;在当前无序区中选取划分的基准关键字是决定算法性能的关键。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;“三者取中”规则，即在当前区间里，将该区间首、尾和中间位置上的关键字比较，取三者之中值所对应的记录作为基准&lt;/li&gt;
+&lt;li&gt;取位于low和high之间的随机数k(low≤k≤high)，用R[k]作为基准， 随机化的快速排序与一般的快速排序算法差别很小。但随机化后，算法的性能大大地提高了，尤其是对初始有序的文件，一般不可能导致最坏情况的发生。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/morewindows/article/details/6684558&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;白话经典算法系列之六 快速排序 快速搞定&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://harttle.com/2015/09/27/quick-sort.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;快速排序的时间和空间复杂度&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://student.zjzk.cn/course_ware/data_structure/web/paixu/paixu8.3.2.4.htm&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;快速排序算法分析&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/07/03/快速排序/&quot;&gt;http://w4lle.github.io/2016/07/03/快速排序/&lt;/a&gt; &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;Wikipedia: 快速排序是由东尼霍尔所发展的一种排序算法。在平均状况下，排序n个项目要Ο(n log n)次比较。 在最坏状况下则需要Ο(n2)次比较，但这种状况并不常见。事实上，快速排序通常明显比其他Ο(n log )算法更快， 因为它的内
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="http://w4lle.github.io/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="算法" scheme="http://w4lle.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>Android计步</title>
