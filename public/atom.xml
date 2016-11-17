@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-07-31T11:12:31.000Z</updated>
+  <updated>2016-11-17T12:29:57.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -14,6 +14,50 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo Material主题</title>
+    <link href="http://w4lle.github.io/2016/11/17/hexo-theme-material/"/>
+    <id>http://w4lle.github.io/2016/11/17/hexo-theme-material/</id>
+    <published>2016-11-17T02:41:20.000Z</published>
+    <updated>2016-11-17T12:29:57.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;Material&quot;&gt;&lt;a href=&quot;#Material&quot; class=&quot;headerlink&quot; title=&quot;Material&quot;&gt;&lt;/a&gt;Material&lt;/h1&gt;&lt;p&gt;最近把博客主题换成了&lt;a href=&quot;https://github.com/viosey/hexo-theme-material&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Material&lt;/a&gt;，该主题刚刚上线，效果还不错。&lt;/p&gt;
+&lt;p&gt;需要把以前的配置迁移一下，包括留言之类的。&lt;/p&gt;
+&lt;h1 id=&quot;多说评论&quot;&gt;&lt;a href=&quot;#多说评论&quot; class=&quot;headerlink&quot; title=&quot;多说评论&quot;&gt;&lt;/a&gt;多说评论&lt;/h1&gt;&lt;p&gt;由于之前用的NexT主题，多说后台每篇文章的thread-key是根据NexT主题来的，现在Material主题的多说配置文件如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;div id=&quot;comments&quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;!-- 多说评论框 start --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;div class=&quot;ds-thread&quot; data-thread-key=&quot;&amp;lt;% if(theme.comment.duoshuo_thread_key == &quot;id&quot;)&amp;#123; %&amp;gt;&amp;lt;%= page.id %&amp;gt;&amp;lt;% &amp;#125; else &amp;#123; %&amp;gt;&amp;lt;%= page.path %&amp;gt;&amp;lt;% &amp;#125; %&amp;gt;&quot; data-url=&quot;&amp;lt;%= config.url+ config.root + url_for(path) %&amp;gt;&quot;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;!-- 多说评论框 end --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;duoshuo_thread_key配成了page.title，就导致我们找不到多说后台的数据。&lt;/p&gt;
+&lt;p&gt;所以要找到NexT主题相关多说的配置。&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;cd themes/next/layout&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;grep -ri &lt;span class=&quot;string&quot;&gt;&quot;thread-key&quot;&lt;/span&gt; .&lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;结果：&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;./_macro/post.swig:                  &amp;lt;span class=&quot;post-comments-count ds-thread-count&quot; data-thread-key=&quot;&amp;#123;&amp;#123; post.path &amp;#125;&amp;#125;&quot; itemprop=&quot;commentsCount&quot;&amp;gt;&amp;lt;/span&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;./_partials/comments.swig:      &amp;lt;div class=&quot;ds-thread&quot; data-thread-key=&quot;&amp;#123;&amp;#123; page.path &amp;#125;&amp;#125;&quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;./_partials/share/duoshuo_share.swig:&amp;lt;div class=&quot;ds-share flat&quot; data-thread-key=&quot;&amp;#123;&amp;#123; page.path &amp;#125;&amp;#125;&quot;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;可以看到NexT配置的是page.path。那么我们找到Material主题的thread-key替换下就好了。主要就是两个地方:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;./layout/_widget/duoshuo.ejs 文章评论内容&lt;/li&gt;
+&lt;li&gt;./layout/_partial/Paradox-post_entry.ejs 首页显示评论数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;都修改下就能正常显示以前的评论了。&lt;/p&gt;
+&lt;h1 id=&quot;每日一图&quot;&gt;&lt;a href=&quot;#每日一图&quot; class=&quot;headerlink&quot; title=&quot;每日一图&quot;&gt;&lt;/a&gt;每日一图&lt;/h1&gt;&lt;p&gt;Material主题首页有个每日图片，默认是写死的。我们可以改为动态的，使用了bing的每日图片，是一位开发者抓取的然后提供的一个api，地址：&lt;a href=&quot;https://i-meto.com/bing-api/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;必应美图 API&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;使用：&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;./_partial/daily_pic.ejs&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;div &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;mdl-card__media mdl-color-text--grey-50&quot;&lt;/span&gt; style=&lt;span class=&quot;string&quot;&gt;&quot;background-image:url(https://api.i-meto.com/bing)&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;backgroud&quot;&gt;&lt;a href=&quot;#backgroud&quot; class=&quot;headerlink&quot; title=&quot;backgroud&quot;&gt;&lt;/a&gt;backgroud&lt;/h1&gt;&lt;p&gt;同上背景图也可以设置成bing的图片。&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;config_css.ejs&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;% if(theme.background.bing.enable == true)&amp;#123; %&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;style&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		body&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            background-image: url(https://api.i-meto.com/bing?&amp;lt;%= theme.background.bing.parameter %&amp;gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/style&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;config配置文件&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;# Background Settings&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# bing available parameter:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#     new | color= | type=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#         color available value: black, blue, brown, green, multi, orange, pink, purple, red, white, yellow&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#         type available value: A (animal), C (culture), N (nature), S (space), T (travel)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;background:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    purecolor: &quot;#F5F5F5&quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    bgimg: blur&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    bing:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        parameter: color=white&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        enable: true&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;不算子统计&quot;&gt;&lt;a href=&quot;#不算子统计&quot; class=&quot;headerlink&quot; title=&quot;不算子统计&quot;&gt;&lt;/a&gt;不算子统计&lt;/h1&gt;&lt;p&gt;站点统计&lt;br&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;footer.ejs&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;div&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;script async src=&quot;https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;div&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		本站总访问量 &amp;lt;span id=&quot;busuanzi_value_site_pv&quot;&amp;gt;&amp;lt;/span&amp;gt; &amp;amp;nbsp&amp;amp;nbsp&amp;amp;nbsp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		你是第&amp;lt;span id=&quot;busuanzi_value_site_uv&quot;&amp;gt;&amp;lt;/span&amp;gt;个来到的小伙伴&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/11/17/hexo-theme-material/&quot;&gt;http://w4lle.github.io/2016/11/17/hexo-theme-material/&lt;/a&gt; &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Material&quot;&gt;&lt;a href=&quot;#Material&quot; class=&quot;headerlink&quot; title=&quot;Material&quot;&gt;&lt;/a&gt;Material&lt;/h1&gt;&lt;p&gt;最近把博客主题换成了&lt;a href=&quot;https://github.com/viosey/h
+    
+    </summary>
+    
+    
+      <category term="Hexo" scheme="http://w4lle.github.io/tags/Hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>AsyncTask解析</title>
