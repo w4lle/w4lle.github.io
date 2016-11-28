@@ -213,7 +213,7 @@
 	<ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
 		for="post-toc-trigger-btn">
 			
-			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Material"><span class="post-toc-number">1.</span> <span class="post-toc-text">Material</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多说评论"><span class="post-toc-number">2.</span> <span class="post-toc-text">多说评论</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#每日一图"><span class="post-toc-number">3.</span> <span class="post-toc-text">每日一图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#backgroud"><span class="post-toc-number">4.</span> <span class="post-toc-text">backgroud</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#不算子统计"><span class="post-toc-number">5.</span> <span class="post-toc-text">不算子统计</span></a></li></ol>
+			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Material"><span class="post-toc-number">1.</span> <span class="post-toc-text">Material</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多说评论"><span class="post-toc-number">2.</span> <span class="post-toc-text">多说评论</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#每日一图"><span class="post-toc-number">3.</span> <span class="post-toc-text">每日一图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#backgroud"><span class="post-toc-number">4.</span> <span class="post-toc-text">backgroud</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#不算子统计"><span class="post-toc-number">5.</span> <span class="post-toc-text">不算子统计</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文章摘要"><span class="post-toc-number">6.</span> <span class="post-toc-text">文章摘要</span></a></li></ol>
 		
 <!--			<li class="mdl-menu__item">Some Action</li>-->
 	</ul>
@@ -355,6 +355,13 @@
 <p>config配置文件</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Background Settings</span><br><span class="line"># bing available parameter:</span><br><span class="line">#     new | color= | type=</span><br><span class="line">#         color available value: black, blue, brown, green, multi, orange, pink, purple, red, white, yellow</span><br><span class="line">#         type available value: A (animal), C (culture), N (nature), S (space), T (travel)</span><br><span class="line">background:</span><br><span class="line">    purecolor: "#F5F5F5"</span><br><span class="line">    bgimg: blur</span><br><span class="line">    bing:</span><br><span class="line">        parameter: color=white</span><br><span class="line">        enable: true</span><br></pre></td></tr></table></figure>
 <h1 id="不算子统计"><a href="#不算子统计" class="headerlink" title="不算子统计"></a>不算子统计</h1><p>站点统计<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">footer.ejs</span><br><span class="line">		&lt;div&gt;</span><br><span class="line">		&lt;script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"&gt;&lt;/script&gt;</span><br><span class="line">		&lt;div&gt;</span><br><span class="line">		本站总访问量 &lt;span id="busuanzi_value_site_pv"&gt;&lt;/span&gt; &amp;nbsp&amp;nbsp&amp;nbsp</span><br><span class="line">		你是第&lt;span id="busuanzi_value_site_uv"&gt;&lt;/span&gt;个来到的小伙伴</span><br><span class="line">		&lt;/div&gt;</span><br><span class="line">		&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<h1 id="文章摘要"><a href="#文章摘要" class="headerlink" title="文章摘要"></a>文章摘要</h1><p>有两种方式设置：</p>
+<ol>
+<li>写死固定大小</li>
+<li>more标签<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">以上是摘要</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line">以下是余下全文</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>推荐第二种</p>
 <p>本文地址 <a href="http://w4lle.github.io/2016/11/17/hexo-theme-material/">http://w4lle.github.io/2016/11/17/hexo-theme-material/</a> </p>
 
 	
@@ -397,6 +404,14 @@
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     
     <!-- Prev Nav -->
+    
+        <a href="/2016/11/28/retrofit-multipart/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
     
 
     <!-- Section Spacer -->
@@ -490,7 +505,7 @@
         </a>
         <ul class="dropdown-menu">
             <li>
-            <a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+            <a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
         </ul>
     </li>
 
@@ -506,12 +521,18 @@
 			</a>
 		</li>
 	
+		<li>
+			<a href="/tags" title="标签">
+				标签
+			</a>
+		</li>
+	
 
     <!-- Article Numebr  -->
     <li>
         <a href="/archives">
              文章总数
-             <span class="sidebar-badge">20</span>
+             <span class="sidebar-badge">21</span>
         </a>
     </li>
 </ul>

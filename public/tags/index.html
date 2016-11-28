@@ -221,168 +221,52 @@
 
 <!-- Layouts -->
 
-    <!-- Post Module -->
-    <div class="material-post_container">
-		
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-	<!-- Paradox Post Header -->
+    <!-- Tags Cloud -->
+	<style>
+	#bottom{
+		position: relative;
+	}
 	
-		
-			<!-- Random Thumbnail -->
-			<div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-				<script>
-    
-    var randomNum;
-    randomNum = Math.floor(Math.random() * 5 + 1);
-    
-    $(".post_thumbnail-random").css('background-image', 'url(' + '/img/random/' + randomNum + '.png' + ')');
-    
+	@media screen and (max-width: 480px){
+		.material-tagscloud{
+			margin: 6em 2em 0;
+		}
+	}
+	
+	.material-tagscloud a{
+		padding: 10px;
+		line-height: 40px;
+		white-space: nowrap;
+		transition: .6s;
+	}
+	.material-tagscloud a:hover{
+		transition: .6s;
+		color: #FAFAFA !important;
+    	background: #9E9E9E;
+	}
+</style>
+
+<div class=" material-tagscloud">
+	<div class="material-post mdl-grid">
+		<a href="/tags/AndFix/" style="font-size: 22.33px; color: #595959">AndFix</a> <a href="/tags/Android/" style="font-size: 35px; color: #212121">Android</a> <a href="/tags/CSS/" style="font-size: 22.33px; color: #595959">CSS</a> <a href="/tags/Flexbox/" style="font-size: 16px; color: #757575">Flexbox</a> <a href="/tags/Hexo/" style="font-size: 22.33px; color: #595959">Hexo</a> <a href="/tags/Install-run/" style="font-size: 16px; color: #757575">Install run</a> <a href="/tags/JavaScript/" style="font-size: 16px; color: #757575">JavaScript</a> <a href="/tags/Retrofit/" style="font-size: 16px; color: #757575">Retrofit</a> <a href="/tags/Toast/" style="font-size: 16px; color: #757575">Toast</a> <a href="/tags/Zsh/" style="font-size: 16px; color: #757575">Zsh</a> <a href="/tags/apk反编辑/" style="font-size: 16px; color: #757575">apk反编辑</a> <a href="/tags/apk瘦身/" style="font-size: 16px; color: #757575">apk瘦身</a> <a href="/tags/multidex/" style="font-size: 16px; color: #757575">multidex</a> <a href="/tags/优化/" style="font-size: 16px; color: #757575">优化</a> <a href="/tags/前端/" style="font-size: 28.67px; color: #3d3d3d">前端</a> <a href="/tags/动态加载/" style="font-size: 16px; color: #757575">动态加载</a> <a href="/tags/工具/" style="font-size: 22.33px; color: #595959">工具</a> <a href="/tags/排序/" style="font-size: 16px; color: #757575">排序</a> <a href="/tags/源码分析/" style="font-size: 16px; color: #757575">源码分析</a> <a href="/tags/热更新/" style="font-size: 22.33px; color: #595959">热更新</a> <a href="/tags/热补丁/" style="font-size: 16px; color: #757575">热补丁</a> <a href="/tags/算法/" style="font-size: 16px; color: #757575">算法</a> <a href="/tags/自定义View/" style="font-size: 16px; color: #757575">自定义View</a> <a href="/tags/进程保活/" style="font-size: 16px; color: #757575">进程保活</a> <a href="/tags/逆向/" style="font-size: 16px; color: #757575">逆向</a> <a href="/tags/通知消息权限/" style="font-size: 16px; color: #757575">通知消息权限</a>
+	</div>
+</div>
+
+
+<script>
+	var adjustFooter = function(){
+		if( ($("#bottom").offset().top + $("#bottom").outerHeight() ) < $(window).height() ){
+			var footerBottom = $(window).height() - $("#bottom").outerHeight() - $("#bottom").offset().top;
+//			console.log(footerBottom);
+			$("#bottom").css("bottom", "-" + footerBottom + "px");
+		}
+	};
+	
+	$(document).ready(function(){
+		adjustFooter();
+	});
 </script>
 
-		
-	
-        <p class="article-headline-p">
-            tags
-        </p>
-    </div>
-
-	
-
-				
-				
-					<!-- Paradox Post Info -->
-					<div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-    
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>w4lle</strong>
-        <span>1月 29, 2016</span>
-    </div>
-    
-    <div class="section-spacer"></div>
-	
-    <!-- Favorite -->
-<!--
-    <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button>
--->
-    
-    <!-- Tags (bookmark) -->
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
-    </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        
-    </ul>
-    
-    <!-- Share -->
-    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    
-    
-    
-    
-    <!-- Busuanzi Views -->
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            阅读量 <span id="busuanzi_value_page_pv"></span>
-        </li>
-    </a>
-    
-    
-    <!-- Share Twitter -->
-    <a class="post_share-link" href="https://twitter.com/intent/tweet?text=tags&url=http://w4lle.github.io//tags/index.html&via=w4lle" target="_blank">
-        <li class="mdl-menu__item">
-            分享到 Twitter
-        </li>
-    </a>
-    
-    <!-- Share Google+ -->
-    <a class="post_share-link" href="https://plus.google.com/share?url=http://w4lle.github.io//tags/index.html" target="_blank">
-        <li class="mdl-menu__item">
-            分享到 Google+
-        </li>
-    </a>
-    
-    <!-- Share Weibo -->
-    <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=tags&url=http://w4lle.github.io//tags/index.html&pic=&searchPic=false&style=simple" target="_blank">
-        <li class="mdl-menu__item">
-            分享到微博
-        </li>
-    </a>
-</ul>
-</div>
-				
-
-                <!-- Post Content -->
-                <div id="post-content" class="markdown-Github mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-	
-		
-	
-	
-	
-	
-</div>
-				
-				
-
-                <!-- Post Comments -->
-                
-    <!-- 使用多说评论 -->
-    <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
-<style>
-    #ds-thread #ds-reset .ds-post-button{
-        background-color: #0097A7 !important;
-    }
-    #ds-wrapper #ds-reset .ds-icons-32{
-        background-color: #0097A7 !important;
-    }
-    #ds-reset .ds-highlight {
-        color: #0097A7 !important;
-    }
-</style>
-<div id="comments">
-    <!-- 多说评论框 start -->
-        <div class="ds-thread" 
-            data-thread-key="tags/index.html" 
-            data-url="http://w4lle.github.io//tags/index.html"
-            data-title="tags"></div>
-    <!-- 多说评论框 end -->
-</div>
-
-
-
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    
-    <!-- Prev Nav -->
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-</nav>
-        </div>
-    </div>
 
 				
 				
@@ -458,7 +342,7 @@
         </a>
         <ul class="dropdown-menu">
             <li>
-            <a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+            <a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
         </ul>
     </li>
 
@@ -474,12 +358,18 @@
 			</a>
 		</li>
 	
+		<li>
+			<a href="/tags" title="标签">
+				标签
+			</a>
+		</li>
+	
 
     <!-- Article Numebr  -->
     <li>
         <a href="/archives">
              文章总数
-             <span class="sidebar-badge">20</span>
+             <span class="sidebar-badge">21</span>
         </a>
     </li>
 </ul>
