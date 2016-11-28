@@ -4,7 +4,7 @@
     <!-- Title -->
     
     <title>
-        Apk包瘦身笔记 | w4lle&#39;s Notes
+        Retrofit Multipart多文件上传 | w4lle&#39;s Notes
     </title>
     
     <!-- Favicons -->
@@ -40,7 +40,7 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://w4lle.github.io">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Apk包瘦身笔记 | w4lle&#39;s Notes">
+    <meta property="og:title" content="Retrofit Multipart多文件上传 | w4lle&#39;s Notes">
     <meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
     
      <!--[if lte IE 9]>
@@ -213,7 +213,7 @@
 	<ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
 		for="post-toc-trigger-btn">
 			
-			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#问题原因"><span class="post-toc-number">2.</span> <span class="post-toc-text">问题原因</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决办法"><span class="post-toc-number">3.</span> <span class="post-toc-text">解决办法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#资源混淆"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">资源混淆</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#删除无用代码和资源"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">删除无用代码和资源</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#去除无用的语言资源"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">去除无用的语言资源</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#删除多余的so库"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">删除多余的so库</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#混淆"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">混淆</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#其余一些建议"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">其余一些建议</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">4.</span> <span class="post-toc-text">参考</span></a></li></ol>
+			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#multipart-form-data-是什么"><span class="post-toc-number">2.</span> <span class="post-toc-text">multipart/form-data 是什么</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Volley-multipart"><span class="post-toc-number">3.</span> <span class="post-toc-text">Volley multipart</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Retrofit-multipart"><span class="post-toc-number">4.</span> <span class="post-toc-text">Retrofit multipart</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件和参数一起提交"><span class="post-toc-number">5.</span> <span class="post-toc-text">文件和参数一起提交</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考</span></a></li></ol>
 		
 <!--			<li class="mdl-menu__item">Some Action</li>-->
 	</ul>
@@ -231,22 +231,11 @@
                 
 	<!-- Paradox Post Header -->
 	
-		
-			<!-- Random Thumbnail -->
-			<div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-				<script>
-    
-    var randomNum;
-    randomNum = Math.floor(Math.random() * 5 + 1);
-    
-    $(".post_thumbnail-random").css('background-image', 'url(' + '/img/random/' + randomNum + '.png' + ')');
-    
-</script>
-
-		
+		<!-- Custom Thumbnail -->
+		<div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://7xs23g.com1.z0.glb.clouddn.com/retrofit.jpg)">
 	
         <p class="article-headline-p">
-            Apk包瘦身笔记
+            Retrofit Multipart多文件上传
         </p>
     </div>
 
@@ -264,7 +253,7 @@
     <!-- Author Name & Date -->
     <div>
         <strong>w4lle</strong>
-        <span>4月 10, 2016</span>
+        <span>11月 28, 2016</span>
     </div>
     
     <div class="section-spacer"></div>
@@ -284,7 +273,7 @@
     </button>
     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
         <li class="mdl-menu__item">
-        <a class="post_tag-link" href="/tags/apk瘦身/">apk瘦身</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/优化/">优化</a>
+        <a class="post_tag-link" href="/tags/Retrofit/">Retrofit</a>
     </ul>
     
     <!-- Share -->
@@ -306,21 +295,21 @@
     
     
     <!-- Share Twitter -->
-    <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Apk包瘦身笔记&url=http://w4lle.github.io//2016/04/10/Apk包瘦身笔记/index.html&via=w4lle" target="_blank">
+    <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Retrofit Multipart多文件上传&url=http://w4lle.github.io//2016/11/28/retrofit-multipart/index.html&via=w4lle" target="_blank">
         <li class="mdl-menu__item">
             分享到 Twitter
         </li>
     </a>
     
     <!-- Share Google+ -->
-    <a class="post_share-link" href="https://plus.google.com/share?url=http://w4lle.github.io//2016/04/10/Apk包瘦身笔记/index.html" target="_blank">
+    <a class="post_share-link" href="https://plus.google.com/share?url=http://w4lle.github.io//2016/11/28/retrofit-multipart/index.html" target="_blank">
         <li class="mdl-menu__item">
             分享到 Google+
         </li>
     </a>
     
     <!-- Share Weibo -->
-    <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Apk包瘦身笔记&url=http://w4lle.github.io//2016/04/10/Apk包瘦身笔记/index.html&pic=&searchPic=false&style=simple" target="_blank">
+    <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Retrofit Multipart多文件上传&url=http://w4lle.github.io//2016/11/28/retrofit-multipart/index.html&pic=&searchPic=false&style=simple" target="_blank">
         <li class="mdl-menu__item">
             分享到微博
         </li>
@@ -332,34 +321,50 @@
                 <!-- Post Content -->
                 <div id="post-content" class="markdown-Github mdl-color-text--grey-700 mdl-card__supporting-text fade out">
 	
-		<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>随着业务功能的不断更迭，apk安装包的体积越来越大，最新的薄荷app android版本的安装包大小已经达到了22.5M，过大的安装包对于用户的体验来说会造成不好的影响，所以减小apk包的大小就显得尤为重要。</p>
-<h1 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h1><p><a href="https://nimbledroid.com/" target="_blank" rel="external">NimbleDroid</a>网站可以分析出apk安装包的各种大文件排行和各种依赖包的方法数，我们比较关注的是大文件的大小。上图<br><img src="https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/large_file1.png" alt="image"></p>
-<p>不看不知道，一看真是吓一跳，超过100k的图片文件就那么多，而且超过300k的就有7个之多。<br>还有两个MP3文件也很大。</p>
-<h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><h2 id="资源混淆"><a href="#资源混淆" class="headerlink" title="资源混淆"></a>资源混淆</h2><p>资源混淆的方案采用的微信团队的<a href="https://github.com/shwenzhang/AndResGuard?spm=a313e.7916648.0.0.wwht7B" target="_blank" rel="external">AndResGuard</a>。使用方法输入一个apk文件，压缩混淆后输出一个apk包，采用引用gradle插件的方式集成到项目中，但是插件并不支持，所以就需要适配多渠道打包。薄荷项目中多渠道打包使用的是美团的方案，参考<a href="http://www.open-open.com/lib/view/open1418262988402.html" target="_blank" rel="external">Android批量打包提速</a><br>方法如下</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">project</span>.afterEvaluate &#123;</span><br><span class="line">    <span class="comment">//在Release后执行资源混淆，然后多渠道打包</span></span><br><span class="line">    <span class="comment">//打包命令 ./gradlew resguard</span></span><br><span class="line">    tasks.getByName(<span class="string">"resguard"</span>) &#123;</span><br><span class="line">        it.<span class="keyword">doLast</span> &#123;</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'channel package task begin'</span></span><br><span class="line">            <span class="keyword">def</span> fileName = <span class="string">"one_v$&#123;defaultConfig.versionName&#125;_$&#123;releaseTime()&#125;_signed_7zip_aligned.apk"</span></span><br><span class="line">            <span class="keyword">def</span> rApk = <span class="keyword">new</span> <span class="keyword">File</span>(<span class="string">"app/build/outputs/apk/AndResProguard/"</span> + fileName)</span><br><span class="line">            <span class="keyword">if</span> (rApk.exists()) &#123;</span><br><span class="line">                <span class="keyword">print</span> <span class="string">'resGuard apk exits begin channel package'</span></span><br><span class="line">                packageChannel(rApk.absolutePath)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行完resguard混淆压缩后生成apk文件，调用python脚本执行多渠道打包。<br>还有一点需要注意的是，使用该方案要注意动态查找id导致找不到id的问题。需要添加白名单，项目中有明确的说明。但是对于引用第三方项目较多的来说，挨个添加id就很不现实了。<br>所以在白名单中添加所有的id<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//for all id</span></span><br><span class="line">           <span class="string">"com.boohee.one.R.id.*"</span></span><br></pre></td></tr></table></figure></p>
-<p>集成改方案后apk包大概较小了4M。并且资源文件也已经混淆，资源路径长路径变成段路径<br><code>res/drawable/icon -&gt; res/drawable/a</code><br>对于反编译apk来说难度增加了。</p>
-<h2 id="删除无用代码和资源"><a href="#删除无用代码和资源" class="headerlink" title="删除无用代码和资源"></a>删除无用代码和资源</h2><p>在Android Studio中使用lint分析无用的文件<br>Analyze -&gt; Run Inspection by Name</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unusedResources</span><br></pre></td></tr></table></figure>
-<p>会列出无用资源列表，特别是图片全部干掉。<br>另外一点，由于项目更新迭代快，业务功能更改比较频繁，这就导致了项目中的无用代码特别多，但是依靠lint检查就比较有限，需要我们根据项目功能手动删除。删除无用代码后又会引出很多无用的资源文件，lint检查后再删除一遍。<br>做完这一步大概减少了1.5M左右。但是还有好多无用的代码还没有删除，以后有时间再处理。</p>
-<h2 id="去除无用的语言资源"><a href="#去除无用的语言资源" class="headerlink" title="去除无用的语言资源"></a>去除无用的语言资源</h2><p>具体项目具体执行，对于没有国际化的项目比如薄荷，在build.gradle中添加一句</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        resConfigs <span class="string">"zh"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>只使用中文资源，不光对本项目生效，还会对依赖的项目生效，比如support包。这样打包后只会打包中文资源，大概减小了1M左右。</p>
-<h2 id="删除多余的so库"><a href="#删除多余的so库" class="headerlink" title="删除多余的so库"></a>删除多余的so库</h2><p>薄荷一直以来至保留armable，这一点可以根据具体项目来定。</p>
-<h2 id="混淆"><a href="#混淆" class="headerlink" title="混淆"></a>混淆</h2><p>Proguard是编译时对java代码进行压缩，混淆，优化，预编译等操作的集成化工具。达到删除冗余，增加安全防护，减小大小的功效。薄荷一直以来并没有加入代码混淆，一方面原因是项目越来越大，混淆的话如果测试不充分很容易出问题，另一方面，薄荷一直提倡开源，并且核心并不在app端，并且有很多初学者会反编译薄荷app学习一些开发技巧。但是，对于提升用户体验来说这些都显得微不足道。我们也在着手做相关的混淆工作。</p>
-<h2 id="其余一些建议"><a href="#其余一些建议" class="headerlink" title="其余一些建议"></a>其余一些建议</h2><ul>
-<li>tiny图片处理 目前所知图片压缩效果最好的网站。蘑菇街写了tiny的gradle<a href="https://github.com/mogujie/TinyPIC_Gradle_Plugin" target="_blank" rel="external">插件</a>，薄荷还没有实践</li>
-<li>删除音频文件 薄荷项目中有一些音频文件，好在下个版本改业务功能即将下线，所以这些文件可以直接删除；另外一种方法是可以走网络获取，在线化。</li>
-<li>用更小的库</li>
-<li>png转成webp 可能会有点兼容性问题</li>
+		<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>新项目的网络库已经由Volley切到了Retrofit，配合<code>Rxjava + Dagger2 + CleanArchitecture</code> ，有效的将项目解耦和，各个层次职责更清晰。依赖注入和注解、动态代理极大的简化了网络请求，开发更高效。</p>
+<p>项目中经常会有上传文件的需求，特别是上传图片。上传图片通常有两种方式：</p>
+<ul>
+<li>bitmap通过Base64转为String，这种方式对于客户端最友好，但是对于服务端要复杂些</li>
+<li>multipart/form-data 方式</li>
 </ul>
+<a id="more"></a>
+<h1 id="multipart-form-data-是什么"><a href="#multipart-form-data-是什么" class="headerlink" title="multipart/form-data 是什么"></a>multipart/form-data 是什么</h1><p>http协议将请求分为3个部分：状态行，请求头，请求体。<br>而RESTFul风格请求更multipart又有些不同，具体的：</p>
+<ol>
+<li><code>multipart/form-data</code>的基础方法是post，也就是说是由post方法来组合实现的。</li>
+<li><code>multipart/form-data</code>与post方法的不同之处：请求头，请求体。</li>
+<li><code>multipart/form-data</code>的请求头必须包含一个特殊的头信息：Content-Type，且其值也必须规定为multipart/form-data，同时还需要规定一个内容分割符用于分割请求体中的多个post的内容，如文件内容和文本内容自然需要分割开来，不然接收方就无法正常解析和还原这个文件。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Content-Type: multipart/form-data; boundary=$&#123;bound&#125;</span><br></pre></td></tr></table></figure>
+<p>其中${bound}是定义的分隔符，用于分割各项内容(文件,key-value对)。post格式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">--$&#123;bound&#125;</span><br><span class="line">Content-Disposition: form-data; name=<span class="string">"Filename"</span></span><br><span class="line"> </span><br><span class="line">HTTP.pdf</span><br><span class="line">--$&#123;bound&#125;</span><br><span class="line">Content-Disposition: form-data; name=<span class="string">"file000"</span>; filename=<span class="string">"HTTP协议详解.pdf"</span></span><br><span class="line">Content-Type: application/octet-stream</span><br><span class="line"> </span><br><span class="line">%PDF-<span class="number">1.5</span></span><br><span class="line">file content</span><br><span class="line">%%EOF</span><br><span class="line"> </span><br><span class="line">--$&#123;bound&#125;</span><br><span class="line">Content-Disposition: form-data; name=<span class="string">"Upload"</span></span><br><span class="line"> </span><br><span class="line">Submit Query</span><br><span class="line">--$&#123;bound&#125;--</span><br></pre></td></tr></table></figure>
+<p>${bound}是Content-Type里boundary的值</p>
+<h1 id="Volley-multipart"><a href="#Volley-multipart" class="headerlink" title="Volley multipart"></a>Volley multipart</h1><p>在之前的项目中使用Volley，由于Volley的高度可扩展性实现起来比较方便，封装一个<a href="https://gist.github.com/w4lle/aecfecc5285c6d8e85eeff80685cadbb" target="_blank" rel="external">MultipartRequest</a>即可。主要的这行代码更改Content-Type的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getBodyContentType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"multipart/form-data;charset=utf-8;boundary="</span> + boundary ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Retrofit-multipart"><a href="#Retrofit-multipart" class="headerlink" title="Retrofit multipart"></a>Retrofit multipart</h1><p>由于Retrofit是一个网络库的封装，具体的网络请求默认是使用OkHttp，Retrofit对于multipart的支持最终也会转换成OkHttp的实现。</p>
+<p>在Retrofit中实现一个multipart上传：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Multipart</span></span><br><span class="line"><span class="annotation">@POST</span>(<span class="string">"upload"</span>)</span><br><span class="line"><span class="function">Call&lt;ResponseBody&gt; <span class="title">uploadFile</span><span class="params">(</span><br><span class="line">    @Part(<span class="string">"description"</span>)</span> RequestBody description,</span><br><span class="line">    @Part MultipartBody.Part file)</span>;</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li><code>@retrofit2.http.Multipart</code>注解: 标记一个请求是multipart/form-data类型,需要和@retrofit2.http.POST一同使用，参数可以是<code>MultipartBody.Part</code>或<code>RequestBody</code>。</li>
+<li><code>@retrofit2.http.Part</code>注解: 代表Multipart里的一项数据,即用${bound}分隔的内容块。</li>
+</ul>
+<p>可以很方便的上传一个文件和一个参数。但是这样就有一个问题，如果我有一个实体类想要一起上传怎么办，总不能再uploadFile方法里定义很多<code>@Part(&quot;description&quot;) RequestBody description</code>这种参数吧，如果我有多张图片要一起上传呢？</p>
+<h1 id="文件和参数一起提交"><a href="#文件和参数一起提交" class="headerlink" title="文件和参数一起提交"></a>文件和参数一起提交</h1><p>可以使用@PartMap()注解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    <span class="annotation">@Multipart</span></span><br><span class="line">    <span class="annotation">@POST</span>(<span class="string">"upload"</span>)</span><br><span class="line">    <span class="function">Call&lt;ResponseBody&gt; <span class="title">uploadFileWithPartMap</span><span class="params">(</span><br><span class="line">            @PartMap()</span> Map&lt;String, RequestBody&gt; partMap,</span><br><span class="line">            @Part MultipartBody.Part file)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@PartMap注解代表参数的一个集合。这样使用起来就很方便，对于多个参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, String&gt; partMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    MultiPartUtil.putRequestBodyMap(partMap, <span class="string">"service_code"</span>, certiValue[checkedItem]);</span><br><span class="line">    MultiPartUtil.putRequestBodyMap(partMap, <span class="string">"good_at"</span>, goodAt);</span><br><span class="line">    MultiPartUtil.putRequestBodyMap(partMap, <span class="string">"introduction"</span>, des);</span><br><span class="line">    MultiPartUtil.putRequestBodyMap(partMap, <span class="string">"integrity"</span>, <span class="string">"certificate"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String MULTIPART_FORM_DATA = <span class="string">"multipart/form-data"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">putRequestBodyMap</span><span class="params">(Map map, String key, String value)</span> </span>&#123;</span><br><span class="line">        putRequestBodyMap(map, key, createPartFromString(value));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="annotation">@NonNull</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RequestBody <span class="title">createPartFromString</span><span class="params">(String descriptionString)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (descriptionString == <span class="keyword">null</span>) &#123;</span><br><span class="line">            descriptionString = <span class="string">""</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> RequestBody.create(</span><br><span class="line">                MediaType.parse(MULTIPART_FORM_DATA), descriptionString);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">putRequestBodyMap</span><span class="params">(Map map, String key, RequestBody body)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!TextUtils.isEmpty(key) &amp;&amp; body != <span class="keyword">null</span>) &#123;</span><br><span class="line">            map.put(key, body);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>构造了<code>Content-Type</code>为<code>multipart/form-data</code>的RequestBody（正常情况下应该为 <code>application/json; charset=utf-8</code>）,同样的构造File part</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> MultipartBody.<span class="function">Part <span class="title">prepareFilePart</span><span class="params">(String partName, String fileUri)</span> </span>&#123;</span><br><span class="line"><span class="comment">//压缩</span></span><br><span class="line">    File file = ViewUtils.compressImageToFile(fileUri, <span class="keyword">new</span> File(FileUtils.getImageCache(BaseApplication.getContext()), partName + <span class="string">".png"</span>));</span><br><span class="line">    <span class="keyword">if</span> (file != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// 为file建立RequestBody实例</span></span><br><span class="line">        RequestBody requestFile =</span><br><span class="line">        RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), file);</span><br><span class="line">        <span class="comment">// MultipartBody.Part借助文件名完成最终的上传</span></span><br><span class="line">        <span class="keyword">return</span> MultipartBody.Part.createFormData(partName, file.getName(), requestFile);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就基本符合需求，那么如果有多张图片呢？总不能一个参数一个参数写吧。<br>其实也很简单，由于<code>@Part MultipartBody.Part file</code>类型一致，那么我们就可以使用可变参数列表。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    <span class="annotation">@Multipart</span></span><br><span class="line">    <span class="annotation">@POST</span>(<span class="string">"upload"</span>)</span><br><span class="line">    <span class="function">Observable&lt;JsonObject&gt; <span class="title">authCertification</span><span class="params">(@PartMap Map&lt;String, RequestBody&gt; partMap, @Part MultipartBody.Part... files)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">api.authCertification(partMap, avatarPart,</span><br><span class="line">                idFrontPart, idBackPart, authOnePart, authTwoPart, authThreePart)</span><br></pre></td></tr></table></figure>
+<p>可以传任意多个文件。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
-<li><a href="http://jaq.alibaba.com/community/art/show?spm=a313e.7916646.24000001.3.T8AIXY&amp;articleid=219" target="_blank" rel="external">APK瘦身记，如何实现高达53%的压缩效果</a></li>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=208135658&amp;idx=1&amp;sn=ac9bd6b4927e9e82f9fa14e396183a8f#rd" target="_blank" rel="external">安装包立减1M–微信Android资源混淆打包工具</a></li>
-<li><a href="http://www.jayfeng.com/2015/12/29/APK%E7%98%A6%E8%BA%AB%E5%AE%9E%E8%B7%B5/" target="_blank" rel="external">APK瘦身实践</a>]</li>
-<li><a href="http://blog.csdn.net/UsherFor/article/details/46827587" target="_blank" rel="external">如何将apk大小减少6M的</a></li>
+<li><a href="https://futurestud.io/tutorials/retrofit-2-passing-multiple-parts-along-a-file-with-partmap" target="_blank" rel="external">Retrofit 2 — Passing Multiple Parts Along a File with @PartMap</a></li>
+<li><a href="http://www.chenkaihua.com/2016/04/02/retrofit2-upload-multipart-files/" target="_blank" rel="external">Retrofit2 multpart多文件上传详解</a></li>
+<li><a href="https://my.oschina.net/cnlw/blog/168466" target="_blank" rel="external">HTTP协议之multipart/form-data请求分析</a></li>
 </ul>
-<p>本文地址 <a href="http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/">http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/</a> </p>
+<p>本文地址 <a href="http://w4lle.github.io/2016/11/28/retrofit-multipart/">http://w4lle.github.io/2016/11/28/retrofit-multipart/</a> </p>
 
 	
 	
@@ -387,9 +392,9 @@
 <div id="comments">
     <!-- 多说评论框 start -->
         <div class="ds-thread" 
-            data-thread-key="2016/04/10/Apk包瘦身笔记/" 
-            data-url="http://w4lle.github.io//2016/04/10/Apk包瘦身笔记/index.html"
-            data-title="Apk包瘦身笔记"></div>
+            data-thread-key="2016/11/28/retrofit-multipart/" 
+            data-url="http://w4lle.github.io//2016/11/28/retrofit-multipart/index.html"
+            data-title="Retrofit Multipart多文件上传"></div>
     <!-- 多说评论框 end -->
 </div>
 
@@ -402,21 +407,13 @@
     
     <!-- Prev Nav -->
     
-        <a href="/2016/04/17/前端基础-一-CSS布局基础/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
 
     <!-- Section Spacer -->
     <div class="section-spacer"></div>
 
     <!-- Next Nav -->
     
-        <a href="/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/" id="post_nav-older" class="next-content">
+        <a href="/2016/11/17/hexo-theme-material/" id="post_nav-older" class="next-content">
             旧篇
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
