@@ -213,7 +213,7 @@
 	<ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
 		for="post-toc-trigger-btn">
 			
-			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#快捷键"><span class="post-toc-number">1.</span> <span class="post-toc-text">快捷键</span></a></li></ol>
+			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#快捷键"><span class="post-toc-number">1.</span> <span class="post-toc-text">快捷键</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#AS-常用快捷键"><span class="post-toc-number">2.</span> <span class="post-toc-text">AS 常用快捷键</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#导航"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">导航</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#导航（二）"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">导航（二）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#编辑"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">编辑</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#编辑（二）"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">编辑（二）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#重构"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">重构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#编译"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">编译</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#debug"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">debug</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#查找"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">查找</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#万能键"><span class="post-toc-number">2.8.</span> <span class="post-toc-text">万能键</span></a></li></ol></li></ol>
 		
 <!--			<li class="mdl-menu__item">Some Action</li>-->
 	</ul>
@@ -324,6 +324,79 @@
 		<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><p>整理了下常用的快捷键<br>因为我用AndroidStudio的vim插件，所以在编辑这块没有整理太多。<br>需要的同学可以自己学些下。</p>
 <p>熟记这些快捷键 + vim = 基本不用鼠标 = 提升效率50%</p>
 <a id="more"></a>
+<h1 id="AS-常用快捷键"><a href="#AS-常用快捷键" class="headerlink" title="AS 常用快捷键"></a>AS 常用快捷键</h1><h2 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h2><ul>
+<li>cmd + o                  打开class文件</li>
+<li>cmd + shift + o          打开任意文件</li>
+<li>cmd + alt + o            打开变量所在文件</li>
+<li>shift + shift            打开任意位置文件</li>
+<li>cmd + e                  最近使用文件</li>
+<li>cmd + shift + e          最近修改文件</li>
+<li>cmd + u                  打开父类</li>
+</ul>
+<h2 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h2><ul>
+<li>cmd + number             打开工具面板</li>
+<li>shift + esc              关闭当前工具面板</li>
+<li>cmd + shift + F12        关闭所有面板</li>
+<li>esc                      焦点切换回编辑器</li>
+<li>F12                      重新打开上次所在工具面板</li>
+<li>alt + F12                打开terminal</li>
+<li>ctrl + tab               在最近打开tab间切换</li>
+<li>ctrl + h                 继承结构</li>
+<li>ctrl + alt + h           方法调用路径</li>
+</ul>
+<h3 id="导航（二）"><a href="#导航（二）" class="headerlink" title="导航（二）"></a>导航（二）</h3><ul>
+<li>cmd + shift + h          方法结构            </li>
+<li>alt + F1                 在Finder中打开</li>
+<li>cmd + []                 光标历史跳转</li>
+<li>cmd + ,                  打开设置</li>
+<li>cmd + down               打开项目设置</li>
+<li>cmd + l                  跳转到指定行</li>
+</ul>
+<h2 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h2><ul>
+<li>cmd + shift + enter      语句补全</li>
+<li>alt + enter              智能纠错</li>
+<li>tab/enter                代码补全</li>
+<li>!                        取反补全</li>
+<li>cmd + j                  模板方法</li>
+<li>.                        后缀补全</li>
+<li>cmd + p                  查看方法参数</li>
+<li>cmd + shift + up/down    上下移动代码</li>
+<li>cmd + /                  注释一行</li>
+<li>cmd + alt + /            注释多行</li>
+</ul>
+<h3 id="编辑（二）"><a href="#编辑（二）" class="headerlink" title="编辑（二）"></a>编辑（二）</h3><ul>
+<li>cmd + alt + t            Surround with</li>
+<li>shift + j                合并下一行代码为一行</li>
+<li>cmd + alt + l            格式化代码</li>
+<li>cmd + n                  生成代码</li>
+<li>ctrl + space             唤出自动补全</li>
+<li>cmd + F12                当前类内容结构</li>
+<li>hold alt                 块操作</li>
+<li>cmd + y                  方法预览</li>
+<li>ctrl + shift + q         上下文信息</li>
+</ul>
+<h2 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h2><ul>
+<li>ctrl + o                 重写方法</li>
+<li>ctrl + i                 实现方法</li>
+<li>cmd + alt + m            抽取方法</li>
+</ul>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><ul>
+<li>shift + F10                 run</li>
+<li>cmd + F9                    make</li>
+</ul>
+<h2 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h2><ul>
+<li>F8                          下一步</li>
+<li>F7                          进入</li>
+</ul>
+<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><ul>
+<li>cmd + f                       </li>
+<li>cmd + shift + f               全局搜索</li>
+<li>cmd + alt + F7                预览方法调用</li>
+<li>alt + F7                      方法调用</li>
+</ul>
+<h2 id="万能键"><a href="#万能键" class="headerlink" title="万能键"></a>万能键</h2><ul>
+<li>cmd + shift + a </li>
+</ul>
 <p>ppt:</p>
 <p><a href="http://w4lle.github.io/sliders/androidstudio-shortcurts/index.html">http://w4lle.github.io/sliders/androidstudio-shortcurts/index.html</a></p>
 <p>本文地址 <a href="http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/">http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/</a> </p>
