@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <!-- Title -->
+    
+    <title>
+        Android热补丁之Tinker原理分析 | w4lle&#39;s Notes
+    </title>
+    
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+    
+    <!-- Meta & INfo -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <meta name="description" content="生活不止眼前的苟且，还有诗，和远方。">
+    <meta name="keywords" content="Android">
+    
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+    
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+    
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.github.io">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Android热补丁之Tinker原理分析 | w4lle&#39;s Notes">
+    <meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
+    
+     <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+        
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+    
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="/css/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.min.css" type="text/css">
+    <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+	body, html{
+		font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+	}
+	
+    a{
+        color: #00838F
+    }
+    
+    .mdl-card__media,
+    #search-label,
+    #search-form-label:after,
+    #scheme-Paradox .hot_tags-count,
+    #scheme-Paradox .sidebar_archives-count,
+    #scheme-Paradox .sidebar-colored .sidebar-header,
+    #scheme-Paradox .sidebar-colored .sidebar-badge{
+        background-color: #0097A7 !important
+    }
+    
+	/* Sidebar User Drop Down Menu Text Color */
+	#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus{
+        color: #0097A7 !important
+    }
+    
+    #post_entry-right-info,
+    .sidebar-colored .sidebar-nav li:hover > a,
+    .sidebar-colored .sidebar-nav li:hover > a i,
+    .sidebar-colored .sidebar-nav li > a:hover,
+    .sidebar-colored .sidebar-nav li > a:hover i,
+    .sidebar-colored .sidebar-nav li > a:focus i,
+    .sidebar-colored .sidebar-nav > .open > a,
+    .sidebar-colored .sidebar-nav > .open > a:hover,
+    .sidebar-colored .sidebar-nav > .open > a:focus,
+    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a{
+        color: #0097A7 !important
+    }
+    
+    .toTop{
+        background: #757575 !important
+    }
+		
+	.material-layout .material-post>.material-nav,
+	.material-layout .material-index>.material-nav,
+	.material-nav a{
+		color: #757575;
+	}
+		
+	#scheme-Paradox .MD-burger-layer {
+		background-color: #757575;
+	}
+
+	#scheme-Paradox #post-toc-trigger-btn{
+		color: #757575;
+	}
+	
+	.post-toc a:hover{
+		color: #00838F;
+		text-decoration: underline;
+	}
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+        body{
+            background-color: #F5F5F5
+        }
+		
+		/* blog_info bottom background */
+        #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+            background-color: #fff;
+        }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+        .fade {
+            transition: all 800ms linear;
+            -webkit-transform: translate3d(0,0,0);
+            -moz-transform: translate3d(0,0,0);
+            -ms-transform: translate3d(0,0,0);
+            -o-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
+            opacity: 1;
+        }
+
+        .fade.out{
+            opacity: 0;
+        }
+    </style>
+
+	<script src="/js/jquery.min.js" type="text/javascript"></script>
+	
+	<!-- UC Browser Compatible-->
+	<script>
+		var agent = navigator.userAgent.toLowerCase();
+		if(agent.indexOf('ucbrowser')>0) {
+			document.write('<link rel="stylesheet" href="/css/uc.css" type="text/css">');
+		   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+		}
+	</script>
+    
+    <!-- Custom Head -->
+    
+</head>
+	
+	
+
+    <body id="scheme-Paradox">
+
+		
+        <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+				
+			
+			
+            <!-- Main Container -->
+            <main class="material-layout__content" id="main">
+				
+                <!-- Top Anchor -->
+                <div id="top"></div>
+				
+				
+                <!-- Hamburger Button -->
+                <button class="MD-burger-icon sidebar-toggle">
+                    <span class="MD-burger-layer"></span>
+                </button>
+				
+				
+                
+	<!-- Back Button -->
+<!--
+	<div class="material-back" id="backhome-div" tabindex="0">
+		<a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="#" onclick="window.history.back();return false;" target="_self" role="button" data-upgraded=",MaterialButton,MaterialRipple">
+			<i class="material-icons" role="presentation">arrow_back</i>
+			<span class="mdl-button__ripple-container">
+				<span class="mdl-ripple"></span>
+			</span>
+		</a>
+	</div>			
+-->
+	<!-- Left aligned menu below button -->
+	<button id="post-toc-trigger-btn"
+			class="mdl-button mdl-js-button mdl-button--icon">
+	  <i class="material-icons">format_list_numbered</i>
+	</button>
+
+	<ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+		for="post-toc-trigger-btn">
+			
+			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#从接入Tinker入手"><span class="post-toc-number">2.</span> <span class="post-toc-text">从接入Tinker入手</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Application的替换"><span class="post-toc-number">3.</span> <span class="post-toc-text">Application的替换</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#补丁加载"><span class="post-toc-number">4.</span> <span class="post-toc-text">补丁加载</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加载补丁dex"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">加载补丁dex</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#v14"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">v14</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#v19"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">v19</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#v23"><span class="post-toc-number">4.1.3.</span> <span class="post-toc-text">v23</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#v24"><span class="post-toc-number">4.1.4.</span> <span class="post-toc-text">v24</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">4.1.5.</span> <span class="post-toc-text">总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加载补丁资源"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">加载补丁资源</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加载补丁so"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">加载补丁so</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#遇到的问题"><span class="post-toc-number">5.</span> <span class="post-toc-text">遇到的问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结-1"><span class="post-toc-number">6.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">7.</span> <span class="post-toc-text">参考</span></a></li></ol>
+		
+<!--			<li class="mdl-menu__item">Some Action</li>-->
+	</ul>
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+		
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+	<!-- Paradox Post Header -->
+	
+		<!-- Custom Thumbnail -->
+		<div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://7xs23g.com1.z0.glb.clouddn.com/tinker.jpg)">
+	
+        <p class="article-headline-p">
+            Android热补丁之Tinker原理分析
+        </p>
+    </div>
+
+	
+
+				
+				
+					<!-- Paradox Post Info -->
+					<div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+    
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>w4lle</strong>
+        <span>12月 16, 2016</span>
+    </div>
+    
+    <div class="section-spacer"></div>
+	
+    <!-- Favorite -->
+<!--
+    <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button>
+-->
+    
+    <!-- Tags (bookmark) -->
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/热补丁/">热补丁</a>
+    </ul>
+    
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    
+    
+    
+    <!-- Busuanzi Views -->
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            阅读量 <span id="busuanzi_value_page_pv"></span>
+        </li>
+    </a>
+    
+    
+    <!-- Share Twitter -->
+    <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Android热补丁之Tinker原理分析&url=http://w4lle.github.io//2016/12/16/tinker/index.html&via=w4lle" target="_blank">
+        <li class="mdl-menu__item">
+            分享到 Twitter
+        </li>
+    </a>
+    
+    <!-- Share Google+ -->
+    <a class="post_share-link" href="https://plus.google.com/share?url=http://w4lle.github.io//2016/12/16/tinker/index.html" target="_blank">
+        <li class="mdl-menu__item">
+            分享到 Google+
+        </li>
+    </a>
+    
+    <!-- Share Weibo -->
+    <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Android热补丁之Tinker原理分析&url=http://w4lle.github.io//2016/12/16/tinker/index.html&pic=&searchPic=false&style=simple" target="_blank">
+        <li class="mdl-menu__item">
+            分享到微博
+        </li>
+    </a>
+</ul>
+</div>
+				
+
+                <!-- Post Content -->
+                <div id="post-content" class="markdown-Github mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+	
+		<blockquote>
+<p>本文分析版本  <a href="https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6" target="_blank" rel="external">93ecc9351367badc02a91fac25764bee50e6e6a6</a><br>项目地址： <a href="https://github.com/Tencent/tinker/" target="_blank" rel="external">Tinker</a></p>
+</blockquote>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在今年的MDCC大会上，微信开发团队宣布正式开源Tinker，在这之前微信团队已经发出过一些Tinker的相关文章，说实话在开源之前我们还是相当期待Tinker开源的，一方面是因为之前使用的热补丁一直存在一些兼容性问题，另一方面也好奇Tinker的实现方案。</p>
+<p>在开源后我们团队第一时间着手研究Tinker，在详细阅读了源码之后，我们确定要在之后的一个版本集成Tinker上线，线上效果显示Tinker的修复效果果然牛逼，错误率明显下降的同时也没有报出兼容性的问题。附一张薄荷app使用Tinker修复前后的错误率对比。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/fatal.png" alt=""></p>
+<h1 id="从接入Tinker入手"><a href="#从接入Tinker入手" class="headerlink" title="从接入Tinker入手"></a>从接入Tinker入手</h1><p>想要深入某个框架，前提是要学会使用它。我们就从Tinker的接入入手一步一步解开它的实现原理。参照<a href="https://github.com/Tencent/tinker/wiki" target="_blank" rel="external">wiki</a>我们做了如下操作。</p>
+<p>实现一个Application</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OneApplicationForTinker</span> <span class="keyword">extends</span> <span class="title">TinkerApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OneApplicationForTinker</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(</span><br><span class="line">                <span class="comment">//tinkerFlags, tinker支持的类型，dex,library，还是全部都支持！</span></span><br><span class="line">                ShareConstants.TINKER_ENABLE_ALL,</span><br><span class="line">                <span class="comment">//ApplicationLike的实现类，只能传递字符串,不能使用class.getName()</span></span><br><span class="line">                <span class="string">"com.boohee.one.MyApplication"</span>,</span><br><span class="line">                <span class="comment">//加载Tinker的主类名，对于特殊需求可能需要使用自己的加载类。需要注意的是：</span></span><br><span class="line">                <span class="comment">//这个类以及它使用的类都是不能被补丁修改的，并且我们需要将它们加到dex.loader[]中。</span></span><br><span class="line">                <span class="comment">//一般来说，我们使用默认即可。</span></span><br><span class="line">                <span class="string">"com.tencent.tinker.loader.TinkerLoader"</span>,</span><br><span class="line">                <span class="comment">//由于合成过程中我们已经校验了各个文件的Md5，并将它们存放在/data/data/..目录中。</span></span><br><span class="line">                <span class="comment">// 默认每次加载时我们并不会去校验tinker文件的Md5,但是你也可通过开启loadVerifyFlag强制每次加载时校验，</span></span><br><span class="line">                <span class="comment">// 但是这会带来一定的时间损耗。</span></span><br><span class="line">                <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中的几个参数做哟了详细说明，Tinker其实提供了注解的方式生成该类，但是我们为了更清楚的了解Tinker的原理，所以并没有使用注解。</p>
+<p>然后在<code>AndroidManifest.xml</code>中声明该类为<code>application</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;application</span><br><span class="line">        android:name=".tinker.OneApplicationForTinker"</span><br><span class="line">        ...</span><br><span class="line">&lt;/application&gt;</span><br></pre></td></tr></table></figure>
+<p>那我们就知道了，app的入口Application就是该类，该类继承自TinkerApplication。然后我们项目中的MyApplication继承自ApplicationLike，其实看到这里，就大概猜到了OneApplicationForTinker可能是一个代理，App中的Application的真正实现还是MyApplication。</p>
+<h1 id="Application的替换"><a href="#Application的替换" class="headerlink" title="Application的替换"></a>Application的替换</h1><p>为了做分析前的铺垫，我们从最开始的接入入手，实现了OneApplicationForTinker，继承自TinkerApplication。我们继续往下看。<br>看下TinkerApplication的实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">TinkerApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">TinkerApplication</span><span class="params">(<span class="keyword">int</span> tinkerFlags, String delegateClassName,</span><br><span class="line">                                String loaderClassName, <span class="keyword">boolean</span> tinkerLoadVerifyFlag)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.tinkerFlags = tinkerFlags;</span><br><span class="line">        <span class="keyword">this</span>.delegateClassName = delegateClassName;</span><br><span class="line">        <span class="keyword">this</span>.loaderClassName = loaderClassName;</span><br><span class="line">        <span class="keyword">this</span>.tinkerLoadVerifyFlag = tinkerLoadVerifyFlag;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Object <span class="title">createDelegate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// Use reflection to create the delegate so it doesn't need to go into the primary dex.</span></span><br><span class="line">            <span class="comment">// And we can also patch it</span></span><br><span class="line">            Class&lt;?&gt; delegateClass = Class.forName(delegateClassName, <span class="keyword">false</span>, getClassLoader());</span><br><span class="line">            Constructor&lt;?&gt; constructor = delegateClass.getConstructor(Application.class, <span class="keyword">int</span>.class, <span class="keyword">boolean</span>.class, <span class="keyword">long</span>.class, <span class="keyword">long</span>.class,</span><br><span class="line">                Intent.class, Resources[].class, ClassLoader[].class, AssetManager[].class);</span><br><span class="line">            <span class="keyword">return</span> constructor.newInstance(<span class="keyword">this</span>, tinkerFlags, tinkerLoadVerifyFlag,</span><br><span class="line">                applicationStartElapsedTime, applicationStartMillisTime,</span><br><span class="line">                tinkerResultIntent, resources, classLoader, assetManager);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(<span class="string">"createDelegate failed"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">ensureDelegate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (delegate == <span class="keyword">null</span>) &#123;</span><br><span class="line">            delegate = createDelegate();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * Hook for sub-classes to run logic after the &#123;<span class="doctag">@link</span> Application#attachBaseContext&#125; has been</span><br><span class="line">     * called but before the delegate is created. Implementors should be very careful what they do</span><br><span class="line">     * here since &#123;<span class="doctag">@link</span> android.app.Application#onCreate&#125; will not have yet been called.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onBaseContextAttached</span><span class="params">(Context base)</span> </span>&#123;</span><br><span class="line">        applicationStartElapsedTime = SystemClock.elapsedRealtime();</span><br><span class="line">        applicationStartMillisTime = System.currentTimeMillis();</span><br><span class="line">        loadTinker();</span><br><span class="line">        ensureDelegate();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Method method = ShareReflectUtil.findMethod(delegate, <span class="string">"onBaseContextAttached"</span>, Context.class);</span><br><span class="line">            method.invoke(delegate, base);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(<span class="string">"onBaseContextAttached method not found"</span>, t);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//重置安全模式次数，大于等于三次会进入安全模式不再加载</span></span><br><span class="line">        <span class="keyword">if</span> (useSafeMode) &#123;</span><br><span class="line">            String processName = ShareTinkerInternals.getProcessName(<span class="keyword">this</span>);</span><br><span class="line">            String preferName = ShareConstants.TINKER_OWN_PREFERENCE_CONFIG + processName;</span><br><span class="line">            SharedPreferences sp = getSharedPreferences(preferName, Context.MODE_PRIVATE);</span><br><span class="line">            sp.edit().putInt(ShareConstants.TINKER_SAFE_MODE_COUNT, <span class="number">0</span>).commit();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">attachBaseContext</span><span class="params">(Context base)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.attachBaseContext(base);</span><br><span class="line">        onBaseContextAttached(base);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">delegateMethod</span><span class="params">(String methodName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (delegate != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Method method = ShareReflectUtil.findMethod(delegate, methodName, <span class="keyword">new</span> Class[<span class="number">0</span>]);</span><br><span class="line">                method.invoke(delegate, <span class="keyword">new</span> Object[<span class="number">0</span>]);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(String.format(<span class="string">"%s method not found"</span>, methodName), t);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">        ensureDelegate();</span><br><span class="line">        delegateMethod(<span class="string">"onCreate"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>TinkerApplication继承自Application，说明它是正经的Application，而且在manifest文件中声明的也必须是它。然后在Application的各个声明中期方法中反射调用<code>delegate</code>同步Application的周期方法回调，其中的<code>delegate</code>是我们传过来的我们项目中的Application <code>MyApplication</code>。</p>
+<p>其中的loaderTinker()方法是Tinker的加载流程，我们稍后会讲到，在反射调用MyApplication的attachBaseContext之前，loaderTinker()已经被调用完成，也就是说，Tinker是在加载完整个流程之后才去调用的app中的Application的attachBaseContext开始真正的整个App的生命周期。说白了就是采用了代理。</p>
+<p>看到这里，如果你看过我之前写的<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a>，就会发现跟这个好像。区别在于，InstantRun是在编译器修改manifest插入IncrementalClassLoader，运行时动态替换成项目中实际使用的MyApplication，进而替换了ClassLoader和资源等，开发者在毫不知情的情况下就完成了替换。</p>
+<p>其中大量使用了反射，hook系统api，替换运行时系统中保有的Application的引用，最终完成替换，Tinker团队之前做过测试，100w人会有几十个在替换的时候出现问题，而且如果反射替换Application的问题，那么这个过程是不可逆的。Tinker为了兼容性问题考虑，采用了工程代理的方式，避免进入兼容性的坑。虽然可以用注解的方式生成，但是这种方式相比InstantRun的那一套接入成本还是增大不少，不过为了线上的稳定，这一切都是值得的。</p>
+<p>还有一点需要注意的是，TinkerApplication是采用反射调用的MyApplication，为什么一定是反射，我们直接传过去MyApplication的引用直接调用不就好了吗？关于这一点，我们后面会详细说明。</p>
+<h1 id="补丁加载"><a href="#补丁加载" class="headerlink" title="补丁加载"></a>补丁加载</h1><p>在补丁加载之前，我们需要知道补丁文件现在已经下发到app中，并且通过dexDiff合成并且校验然后push到<code>/data/data/package_name/tinker/</code>下。大概的文件目录：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@android:/data/data/tinker.sample.android/tinker # ls</span><br><span class="line">info.lock</span><br><span class="line">patch-bc7c9396</span><br><span class="line">patch.info</span><br><span class="line"></span><br><span class="line">root@android:/data/data/tinker.sample.android/tinker/patch-bc7c9396 # ls</span><br><span class="line">dex</span><br><span class="line">odex</span><br><span class="line">patch-bc7c9396.apk</span><br><span class="line">res</span><br></pre></td></tr></table></figure>
+<p>刚才讲到loadTinker()方法是实现Tinker加载补丁的关键，我们继续看下实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loadTinker</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//disable tinker, not need to install</span></span><br><span class="line">    <span class="keyword">if</span> (tinkerFlags == TINKER_DISABLE) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    tinkerResultIntent = <span class="keyword">new</span> Intent();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//reflect tinker loader, because loaderClass may be define by user!</span></span><br><span class="line">        Class&lt;?&gt; tinkerLoadClass = Class.forName(loaderClassName, <span class="keyword">false</span>, getClassLoader());</span><br><span class="line"></span><br><span class="line">        Method loadMethod = tinkerLoadClass.getMethod(TINKER_LOADER_METHOD, TinkerApplication.class, <span class="keyword">int</span>.class, <span class="keyword">boolean</span>.class);</span><br><span class="line">        Constructor&lt;?&gt; constructor = tinkerLoadClass.getConstructor();</span><br><span class="line">        tinkerResultIntent = (Intent) loadMethod.invoke(constructor.newInstance(), <span class="keyword">this</span>, tinkerFlags, tinkerLoadVerifyFlag);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">        <span class="comment">//has exception, put exception error code</span></span><br><span class="line">        ShareIntentUtil.setIntentReturnCode(tinkerResultIntent, ShareConstants.ERROR_LOAD_PATCH_UNKNOWN_EXCEPTION);</span><br><span class="line">        tinkerResultIntent.putExtra(INTENT_PATCH_EXCEPTION, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中的<code>loaderClassName</code>是我们传过来的<code>&quot;com.tencent.tinker.loader.TinkerLoader&quot;</code>，反射调用TinkerLoader的tryLoad()方法拿到加载补丁结果，这里为什么也要用反射，是因为Tinker做了很多扩展性的工作，TinkerLoader只是默认实现，开发者完全可以自己定义加载器完成加载流程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TinkerLoader</span></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * only main process can handle patch version change or incomplete</span><br><span class="line">     */</span></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Intent <span class="title">tryLoad</span><span class="params">(TinkerApplication app, <span class="keyword">int</span> tinkerFlag, <span class="keyword">boolean</span> tinkerLoadVerifyFlag)</span> </span>&#123;</span><br><span class="line">        Intent resultIntent = <span class="keyword">new</span> Intent();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> begin = SystemClock.elapsedRealtime();</span><br><span class="line">        tryLoadPatchFilesInternal(app, tinkerFlag, tinkerLoadVerifyFlag, resultIntent);</span><br><span class="line">        <span class="keyword">long</span> cost = SystemClock.elapsedRealtime() - begin;</span><br><span class="line">        ShareIntentUtil.setIntentPatchCostTime(resultIntent, cost);</span><br><span class="line">        <span class="keyword">return</span> resultIntent;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>调用tryLoadPatchFilesInternal()方法，然后计算消耗时间。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">tryLoadPatchFilesInternal</span><span class="params">(TinkerApplication app, <span class="keyword">int</span> tinkerFlag, <span class="keyword">boolean</span> tinkerLoadVerifyFlag, Intent resultIntent)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">        <span class="comment">//tinker/patch.info</span></span><br><span class="line">        File patchInfoFile = SharePatchFileUtil.getPatchInfoFile(patchDirectoryPath);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//old = 641e634c5b8f1649c75caf73794acbdf</span></span><br><span class="line">        <span class="comment">//new = 2c150d8560334966952678930ba67fa8</span></span><br><span class="line">        File patchInfoLockFile = SharePatchFileUtil.getPatchInfoLockFile(patchDirectoryPath);</span><br><span class="line"></span><br><span class="line">        patchInfo = SharePatchInfo.readAndCheckPropertyWithLock(patchInfoFile, patchInfoLockFile);</span><br><span class="line"></span><br><span class="line">        String oldVersion = patchInfo.oldVersion;</span><br><span class="line">        String newVersion = patchInfo.newVersion;</span><br><span class="line"></span><br><span class="line">        resultIntent.putExtra(ShareIntentUtil.INTENT_PATCH_OLD_VERSION, oldVersion);</span><br><span class="line">        resultIntent.putExtra(ShareIntentUtil.INTENT_PATCH_NEW_VERSION, newVersion);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> mainProcess = ShareTinkerInternals.isInMainProcess(app);</span><br><span class="line">        <span class="keyword">boolean</span> versionChanged = !(oldVersion.equals(newVersion));</span><br><span class="line"></span><br><span class="line">        String version = oldVersion;</span><br><span class="line">        <span class="keyword">if</span> (versionChanged &amp;&amp; mainProcess) &#123;</span><br><span class="line">            version = newVersion;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//patch-641e634c</span></span><br><span class="line">        String patchName = SharePatchFileUtil.getPatchVersionDirectory(version);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//tinker/patch.info/patch-641e634c</span></span><br><span class="line">        String patchVersionDirectory = patchDirectoryPath + <span class="string">"/"</span> + patchName;</span><br><span class="line">        File patchVersionDirectoryFile = <span class="keyword">new</span> File(patchVersionDirectory);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//tinker/patch.info/patch-641e634c/patch-641e634c.apk</span></span><br><span class="line">        File patchVersionFile = <span class="keyword">new</span> File(patchVersionDirectoryFile.getAbsolutePath(), SharePatchFileUtil.getPatchVersionFile(version));</span><br><span class="line"></span><br><span class="line">        ShareSecurityCheck securityCheck = <span class="keyword">new</span> ShareSecurityCheck(app);</span><br><span class="line"></span><br><span class="line"><span class="comment">//校验签名和tinkerId</span></span><br><span class="line">        <span class="keyword">int</span> returnCode = ShareTinkerInternals.checkSignatureAndTinkerID(app, patchVersionFile, securityCheck);</span><br><span class="line"></span><br><span class="line">        resultIntent.putExtra(ShareIntentUtil.INTENT_PATCH_PACKAGE_CONFIG, securityCheck.getPackagePropertiesIfPresent());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> isEnabledForDex = ShareTinkerInternals.isTinkerEnabledForDex(tinkerFlag);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (isEnabledForDex) &#123;</span><br><span class="line">            <span class="comment">//tinker/patch.info/patch-641e634c/dex</span></span><br><span class="line">            <span class="keyword">boolean</span> dexCheck = TinkerDexLoader.checkComplete(patchVersionDirectory, securityCheck, resultIntent);</span><br><span class="line">            <span class="keyword">if</span> (!dexCheck) &#123;</span><br><span class="line">                <span class="comment">//file not found, do not load patch</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> isEnabledForNativeLib = ShareTinkerInternals.isTinkerEnabledForNativeLib(tinkerFlag);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (isEnabledForNativeLib) &#123;</span><br><span class="line">            <span class="comment">//tinker/patch.info/patch-641e634c/lib</span></span><br><span class="line">            <span class="keyword">boolean</span> libCheck = TinkerSoLoader.checkComplete(patchVersionDirectory, securityCheck, resultIntent);</span><br><span class="line">            <span class="keyword">if</span> (!libCheck) &#123;</span><br><span class="line">                <span class="comment">//file not found, do not load patch</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//check resource</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> isEnabledForResource = ShareTinkerInternals.isTinkerEnabledForResource(tinkerFlag);</span><br><span class="line">        Log.w(TAG, <span class="string">"tryLoadPatchFiles:isEnabledForResource:"</span> + isEnabledForResource);</span><br><span class="line">        <span class="keyword">if</span> (isEnabledForResource) &#123;</span><br><span class="line">            <span class="keyword">boolean</span> resourceCheck = TinkerResourceLoader.checkComplete(app, patchVersionDirectory, securityCheck, resultIntent);</span><br><span class="line">            <span class="keyword">if</span> (!resourceCheck) &#123;</span><br><span class="line">                <span class="comment">//file not found, do not load patch</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//we should first try rewrite patch info file, if there is a error, we can't load jar</span></span><br><span class="line">        <span class="keyword">if</span> (mainProcess &amp;&amp; versionChanged) &#123;</span><br><span class="line">            patchInfo.oldVersion = version;</span><br><span class="line">            <span class="comment">//update old version to new</span></span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//是否已经进入安全模式</span></span><br><span class="line">        <span class="keyword">if</span> (!checkSafeModeCount(app)) &#123;</span><br><span class="line">            ...</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//now we can load patch jar</span></span><br><span class="line">        <span class="keyword">if</span> (isEnabledForDex) &#123;</span><br><span class="line">            <span class="keyword">boolean</span> loadTinkerJars = TinkerDexLoader.loadTinkerJars(app, tinkerLoadVerifyFlag, patchVersionDirectory, resultIntent);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//now we can load patch resource</span></span><br><span class="line">        <span class="keyword">if</span> (isEnabledForResource) &#123;</span><br><span class="line">            <span class="keyword">boolean</span> loadTinkerResources = TinkerResourceLoader.loadTinkerResources(tinkerLoadVerifyFlag, patchVersionDirectory, resultIntent);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//all is ok!</span></span><br><span class="line">        ShareIntentUtil.setIntentReturnCode(resultIntent, ShareConstants.ERROR_LOAD_OK);</span><br><span class="line">        Log.i(TAG, <span class="string">"tryLoadPatchFiles: load end, ok!"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>贴的代码省略了好多判空操作，会判断补丁是否存在，检查补丁信息中的数据是否有效，校验补丁签名以及tinkerId与基准包是否一致。在校验签名时，为了加速校验速度，Tinker只校验 <code>*_meta.txt</code>文件，然后再根据meta文件中的md5校验其他文件。<br>其中，meta文件有以下几种：</p>
+<ul>
+<li>package_meta.txt 补丁包的基本信息</li>
+<li>dex_meta.txt     补丁包中dex文件的信息</li>
+<li>so_meta.txt      补丁包中so文件的信息</li>
+<li>res_meta.txt     补丁包中资源文件的信息</li>
+</ul>
+<p>然后根据开发者配置的Tinker可补丁类型判断是否可以加载dex，res，so。然后分别分发给TinkerDexLoader、TinkerSoLoader、TinkerResourceLoader分别进行校验是否符合加载条件进而进行加载。</p>
+<h2 id="加载补丁dex"><a href="#加载补丁dex" class="headerlink" title="加载补丁dex"></a>加载补丁dex</h2><p>在开始讲load dex之前，先说下Tinker的补丁方案，Tinker采用的是下发差分包，然后在手机端合成全量的dex文件进行加载。而在build.gradle配置中的tinkerPatch</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dex.loader = [<span class="string">"com.tencent.tinker.loader.*"</span>,</span><br><span class="line"><span class="string">"tinker.sample.android.app.SampleApplication"</span>,</span><br><span class="line"><span class="string">"tinker.sample.android.app.BaseBuildInfo"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>这个配置中的类不会出现在任何全量补丁dex里，也就是说在合成后，这些类还在老的dex文件中，比如在补丁前dex顺序是这样的：<code>oldDex1 -&gt; oldDex2 -&gt; oldDex3..</code>，那么假如修改了dex1中的文件，那么补丁顺序是这样的<code>newDex1 -&gt; oldDex1 -&gt; oldDex2...</code>其中合成后的newDex1中的类是oldDex1中除了dex.loader中标明的类之外的所有类，dex.loader中的类依然在oldDex1中。</p>
+<p>由于Tinker的方案是基于Multidex实现的修改dexElements的顺序实现的，所以最终还是要修改classLoder中dexPathList中dexElements的顺序。Android中有两种ClassLoader用于加载dex文件，BootClassLoader、PathClassLoader和DexClassLoader都是继承自BaseDexClassLoader</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">BaseDexClassLoader</span><span class="params">(String dexPath, File optimizedDirectory,</span><br><span class="line">            String libraryPath, ClassLoader parent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(parent);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.originalPath = dexPath;</span><br><span class="line">        <span class="keyword">this</span>.pathList =</span><br><span class="line">            <span class="keyword">new</span> DexPathList(<span class="keyword">this</span>, dexPath, libraryPath, optimizedDirectory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        Class clazz = pathList.findClass(name);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (clazz == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ClassNotFoundException(name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> clazz;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//DexPathList</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Class <span class="title">findClass</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Element element : dexElements) &#123;</span><br><span class="line">            DexFile dex = element.dexFile;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (dex != <span class="keyword">null</span>) &#123;</span><br><span class="line">                Class clazz = dex.loadClassBinaryName(name, definingContext);</span><br><span class="line">                <span class="keyword">if</span> (clazz != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> clazz;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>最终在DexPathList的findClass中遍历dexElements，谁在前面用谁。而这个dexElements是在方法makeDexElements中生成的，我们的目的就是hook这个方法把dex插入到dexElements的前面。</p>
+<p>继续加载流程，首先调用TinkerDexLoader的checkComplete校验dex_meta.xml文件中记载的dex补丁文件和经过opt优化过的文件是否存在，然后调用loadTinkerJars加载补丁dex。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/**</span><br><span class="line">     * Load tinker JARs and add them to</span><br><span class="line">     * the Application ClassLoader.</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span> application The application.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="annotation">@TargetApi</span>(Build.VERSION_CODES.ICE_CREAM_SANDWICH)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">loadTinkerJars</span><span class="params">(Application application, <span class="keyword">boolean</span> tinkerLoadVerifyFlag, String directory, Intent intentResult)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        PathClassLoader classLoader = (PathClassLoader) TinkerDexLoader.class.getClassLoader();</span><br><span class="line"></span><br><span class="line">        String dexPath = directory + <span class="string">"/"</span> + DEX_PATH + <span class="string">"/"</span>;</span><br><span class="line">        File optimizeDir = <span class="keyword">new</span> File(directory + <span class="string">"/"</span> + DEX_OPTIMIZE_PATH);</span><br><span class="line"></span><br><span class="line">        ArrayList&lt;File&gt; legalFiles = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> isArtPlatForm = ShareTinkerInternals.isVmArt();</span><br><span class="line">        <span class="keyword">for</span> (ShareDexDiffPatchInfo info : dexList) &#123;</span><br><span class="line">            <span class="comment">//for dalvik, ignore art support dex</span></span><br><span class="line">            <span class="keyword">if</span> (isJustArtSupportDex(info)) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            String path = dexPath + info.realName;</span><br><span class="line">            File file = <span class="keyword">new</span> File(path);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (tinkerLoadVerifyFlag) &#123;</span><br><span class="line">                <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">                String checkMd5 = isArtPlatForm ? info.destMd5InArt : info.destMd5InDvm;</span><br><span class="line">                <span class="keyword">if</span> (!SharePatchFileUtil.verifyDexFileMd5(file, checkMd5)) &#123;</span><br><span class="line">                    <span class="comment">//it is good to delete the mismatch file</span></span><br><span class="line">                    ...</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            legalFiles.add(file);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            SystemClassLoaderAdder.installDexes(application, classLoader, optimizeDir, legalFiles);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">            Log.e(TAG, <span class="string">"install dexes failed"</span>);</span><br><span class="line"><span class="comment">//            e.printStackTrace();</span></span><br><span class="line">            intentResult.putExtra(ShareIntentUtil.INTENT_PATCH_EXCEPTION, e);</span><br><span class="line">            ShareIntentUtil.setIntentReturnCode(intentResult, ShareConstants.ERROR_LOAD_PATCH_VERSION_DEX_LOAD_EXCEPTION);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Log.i(TAG, <span class="string">"after loaded classloader: "</span> + application.getClassLoader().toString());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>根据传过来的tinkerLoadVerifyFlag选项控制是否每次加载都要验证dex的md5值，一般来说不需要，默认也是false，会节省加载时间。然后调用SystemClassLoaderAdder去加载。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//SystemClassLoaderAdder</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">installDexes</span><span class="params">(Application application, PathClassLoader loader, File dexOptDir, List&lt;File&gt; files)</span></span><br><span class="line">        <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!files.isEmpty()) &#123;</span><br><span class="line">            ClassLoader classLoader = loader;</span><br><span class="line">            <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">24</span>) &#123;</span><br><span class="line">                classLoader = AndroidNClassLoader.inject(loader, application);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//because in dalvik, if inner class is not the same classloader with it wrapper class.</span></span><br><span class="line">            <span class="comment">//it won't fail at dex2opt</span></span><br><span class="line">            <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">23</span>) &#123;</span><br><span class="line">                V23.install(classLoader, files, dexOptDir);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">19</span>) &#123;</span><br><span class="line">                V19.install(classLoader, files, dexOptDir);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">14</span>) &#123;</span><br><span class="line">                V14.install(classLoader, files, dexOptDir);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                V4.install(classLoader, files, dexOptDir);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!checkDexInstall()) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(ShareConstants.CHECK_DEX_INSTALL_FAIL);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>看到这里，如果你之前看过Multidex.install()方法的实现，就会感觉很相似。只不过热修复是把dex插到dexElements的前面，Multidex是把其余的dex插到后面。相同的就是都是分版本加载，我们分别来看，由于v14以下(Android4.0以前)太过古老，我们就不看了，从v14开始。</p>
+<h3 id="v14"><a href="#v14" class="headerlink" title="v14"></a>v14</h3><p>14 &lt;= SDK &lt; 19<br>Android 4.0 &lt;= Android系统 &lt; Android 4.4</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Installer for platform versions 14, 15, 16, 17 and 18.</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">V14</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">install</span><span class="params">(ClassLoader loader, List&lt;File&gt; additionalClassPathEntries,</span><br><span class="line">                                File optimizedDirectory)</span></span><br><span class="line">        <span class="keyword">throws</span> IllegalArgumentException, IllegalAccessException,</span><br><span class="line">        NoSuchFieldException, InvocationTargetException, NoSuchMethodException </span>&#123;</span><br><span class="line">        Field pathListField = ShareReflectUtil.findField(loader, <span class="string">"pathList"</span>);</span><br><span class="line">        Object dexPathList = pathListField.get(loader);</span><br><span class="line">        ShareReflectUtil.expandFieldArray(dexPathList, <span class="string">"dexElements"</span>, makeDexElements(dexPathList,</span><br><span class="line">            <span class="keyword">new</span> ArrayList&lt;File&gt;(additionalClassPathEntries), optimizedDirectory));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object[] makeDexElements(</span><br><span class="line">        Object dexPathList, ArrayList&lt;File&gt; files, File optimizedDirectory)</span><br><span class="line">        <span class="keyword">throws</span> IllegalAccessException, InvocationTargetException,</span><br><span class="line">        NoSuchMethodException &#123;</span><br><span class="line">        Method makeDexElements =</span><br><span class="line">            ShareReflectUtil.findMethod(dexPathList, <span class="string">"makeDexElements"</span>, ArrayList.class, File.class);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (Object[]) makeDexElements.invoke(dexPathList, files, optimizedDirectory);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反射找到classLoder中的pathList，然后反射调用pathList中的makeDexElements方法，穿进去的参数分别是补丁dexList和优化过的opt目录，在Tinker中是dex补丁目录的同级目录<code>odex/</code>。</p>
+<p>其中有个ShareReflectUtil.expandFieldArray我们看下实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">expandFieldArray</span><span class="params">(Object instance, String fieldName, Object[] extraElements)</span></span><br><span class="line">    <span class="keyword">throws</span> NoSuchFieldException, IllegalArgumentException, IllegalAccessException </span>&#123;</span><br><span class="line">    Field jlrField = findField(instance, fieldName);</span><br><span class="line"></span><br><span class="line">    Object[] original = (Object[]) jlrField.get(instance);</span><br><span class="line">    Object[] combined = (Object[]) Array.newInstance(original.getClass().getComponentType(), original.length + extraElements.length);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// <span class="doctag">NOTE:</span> changed to copy extraElements first, for patch load first</span></span><br><span class="line"></span><br><span class="line">    System.arraycopy(extraElements, <span class="number">0</span>, combined, <span class="number">0</span>, extraElements.length);</span><br><span class="line">    System.arraycopy(original, <span class="number">0</span>, combined, extraElements.length, original.length);</span><br><span class="line"></span><br><span class="line">    jlrField.set(instance, combined);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意传进来的值分别是pathList,”dexElements”和新生成的dexElements数组，找到pathList的原始oldDexElements，然后生成一个新的数组combined，长度是oldDexElements.length + newDexElements.length。然后将newDexElements拷贝到combined的前面，将oldDexElements拷贝的combined的剩余位置，我们称之为dex前置。</p>
+<p>刚才我们说Tinker是将dex前置，Multidex是将dex后置，我们顺便看下Multidex.install()中expandFieldArray的实现吧。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Multidex.java</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">expandFieldArray</span><span class="params">(Object instance, String fieldName,</span><br><span class="line">            Object[] extraElements)</span> <span class="keyword">throws</span> NoSuchFieldException, IllegalArgumentException,</span><br><span class="line">            IllegalAccessException </span>&#123;</span><br><span class="line">        Field jlrField = findField(instance, fieldName);</span><br><span class="line">        Object[] original = (Object[]) jlrField.get(instance);</span><br><span class="line">        Object[] combined = (Object[]) Array.newInstance(</span><br><span class="line">                original.getClass().getComponentType(), original.length + extraElements.length);</span><br><span class="line">        System.arraycopy(original, <span class="number">0</span>, combined, <span class="number">0</span>, original.length);</span><br><span class="line">        System.arraycopy(extraElements, <span class="number">0</span>, combined, original.length, extraElements.length);</span><br><span class="line">        jlrField.set(instance, combined);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>它是先把oldDexElements拷贝到了前面，在把newDexElements拷贝到了后面，我们称之为dex后置。</p>
+<h3 id="v19"><a href="#v19" class="headerlink" title="v19"></a>v19</h3><p>19 &lt;= SDK &lt; 23<br>Android 4.4 &lt;= Android系统 &lt; Android 6.0</p>
+<p>跟v14的区别不大，只是在makeDexElements方法中多加了一个参数suppressedExceptions异常数组，另外在makeDexElements的catch异常中多加了一次重试</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">                Log.e(TAG, <span class="string">"NoSuchMethodException: makeDexElements(ArrayList,File,ArrayList) failure"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    makeDexElements = ShareReflectUtil.findMethod(dexPathList, <span class="string">"makeDexElements"</span>, List.class, File.class, List.class);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (NoSuchMethodException e1) &#123;</span><br><span class="line">                    Log.e(TAG, <span class="string">"NoSuchMethodException: makeDexElements(List,File,List) failure"</span>);</span><br><span class="line">                    <span class="keyword">throw</span> e1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+<p>是因为Tinker发现线上有的Rom将改方法参数类型给改了，本来是<code>makeDexElements(ArrayList,File,ArrayList)</code>，给改成了<code>makeDexElements(List,File,List)</code>，做了个兼容处理。</p>
+<h3 id="v23"><a href="#v23" class="headerlink" title="v23"></a>v23</h3><p>23 &lt;= SDK &lt; 24<br>Android 6.0 &lt;= Android系统 &lt; Android 7.0</p>
+<p>Android6.0以后把makeDexElements给改了，改成了<code>makePathElements(List,File,List)</code>，如果找不到的话再找一下<code>makeDexElements(List,File,List)</code>。其余没啥区别。</p>
+<h3 id="v24"><a href="#v24" class="headerlink" title="v24"></a>v24</h3><p>SDK &gt;=24<br>Android 系统 &gt;= Android7.0</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">24</span>) &#123;</span><br><span class="line">    classLoader = AndroidNClassLoader.inject(loader, application);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>哎，这个好像跟上面不太一样啊，这是为啥呢。<br><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286341&amp;idx=1&amp;sn=054d595af6e824cbe4edd79427fc2706&amp;scene=0" target="_blank" rel="external">Android N混合编译与对热补丁影响解析</a>中详细解释了混合编译对热不定的影响。我做下简单的总结。</p>
+<p>我们知道，在Dalvik虚拟机中，总是在运行时通过JIT（Just-In—Time）把字节码文件编译成机器码文件再执行，这样跑起来程序就很慢，所在ART上，改为AOT（Ahead-Of—Time）提前编译，即在安装应用或OTA系统升级时提前把字节码编译成机器码，这样就可以直接执行了，提高了运行效率。但是AOT有个缺点就是每次执行的时间都太长了，并且占用的ROM空间又很大，所以在Android N上Google做了混合编译同时支持JIT和AOT。混合编译的作用简单来说，在应用运行时分析运行过的代码以及“热代码”，并将配置存储下来。在设备空闲与充电时，ART仅仅编译这份配置中的“热代码”。</p>
+<p>简单来说，就是在应用安装和首次运行不做AOT编译，先让用户愉快的玩耍起来，然后把在运行中JIT解释执行的那部分代码收集起来，在手机空闲的时候通过dex2aot编译生成一份名为app image的base.art文件，然后在下次启动的时候一次性把app image加载进来到缓存，预先加载代替用时查找以提升应用的性能。</p>
+<p>这种方式对热补丁的影响就是，app image中已经存在的类会被插入到ClassLoader的ClassTable，再次加载类时，直接从ClassTable中取而不会走DefineClass。假设base.art文件在补丁前已经存在，这里存在三种情况：</p>
+<ol>
+<li>补丁修改的类都不appimage中；这种情况是最理想的，此时补丁机制依然有效；</li>
+<li>补丁修改的类部分在appimage中；这种情况我们只能更新一部分的类，此时是最危险的。一部分类是新的，一部分类是旧的，app可能会出现地址错乱而出现crash。</li>
+<li>补丁修改的类全部在appimage中；这种情况只是造成补丁不生效，app并不会因此造成crash。</li>
+</ol>
+<p>Tinker的解决方案是，完全废弃掉PathClassloader，而采用一个新建Classloader来加载后续的所有类，即可达到将cache无用化的效果。基本原理我们清楚了，让我们来看下代码吧。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//AndroidNClassLoader.java</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> AndroidNClassLoader <span class="title">inject</span><span class="params">(PathClassLoader originClassLoader, Application application)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        AndroidNClassLoader classLoader = createAndroidNClassLoader(originClassLoader);</span><br><span class="line">        reflectPackageInfoClassloader(application, classLoader);</span><br><span class="line">        <span class="keyword">return</span> classLoader;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> AndroidNClassLoader <span class="title">createAndroidNClassLoader</span><span class="params">(PathClassLoader original)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//let all element ""</span></span><br><span class="line">        AndroidNClassLoader androidNClassLoader = <span class="keyword">new</span> AndroidNClassLoader(<span class="string">""</span>,  original);</span><br><span class="line">        Field originPathList = findField(original, <span class="string">"pathList"</span>);</span><br><span class="line">        Object originPathListObject = originPathList.get(original);</span><br><span class="line">        <span class="comment">//should reflect definingContext also</span></span><br><span class="line">        Field originClassloader = findField(originPathListObject, <span class="string">"definingContext"</span>);</span><br><span class="line">        originClassloader.set(originPathListObject, androidNClassLoader);</span><br><span class="line">        <span class="comment">//copy pathList</span></span><br><span class="line">        Field pathListField = findField(androidNClassLoader, <span class="string">"pathList"</span>);</span><br><span class="line">        <span class="comment">//just use PathClassloader's pathList</span></span><br><span class="line">        pathListField.set(androidNClassLoader, originPathListObject);</span><br><span class="line">        <span class="keyword">return</span> androidNClassLoader;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们按步骤进行：</p>
+<ol>
+<li>新建一个AndroidNClassLoader 它的parent是originPathClassLoader。注意，PathClassLoader的optimizedDirectory只能是null，这个后面还有用。</li>
+<li>找到originPathClassLoader中的pathList 和 pathList中的类型为ClassLoader的definingContext。</li>
+<li>替换definingContext为AndroidNClassLoader</li>
+<li>将AndroidNClassLoader中的pathList替换为originPathClassLoader的pathList。</li>
+</ol>
+<p>有的同学可能会问，Android 的ClassLoader采用双亲委托模型，只有parent找不到的情况下才会去找AndroidNClassLoader，那我新建这个AndroidNClassLoader有什么用，最终还是会去originPathClassLoader中取找。其实不是这样的，我们已经将originPathClassLoader中pathList中的definingContext(是个ClassLoader)替换为了AndroidNClassLoader了。这个definingContext会在生成DexFile的时候传递进去，而ClassLoader的findClass()方法会调用pathList的findClass方法，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//DexPathList.java</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Class <span class="title">findClass</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Element element : dexElements) &#123;</span><br><span class="line">            DexFile dex = element.dexFile;</span><br><span class="line">            <span class="keyword">if</span> (dex != <span class="keyword">null</span>) &#123;</span><br><span class="line">                Class clazz = dex.loadClassBinaryName(name, definingContext);</span><br><span class="line">                <span class="keyword">if</span> (clazz != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> clazz;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>最终还是调用的dexFile.loadClassBinaryName()方法，其中的第二个参数其实就已经是AndroidNClassLoader了。</p>
+<p>还记得刚才说的AndroidNClassLder的optimizedDirectory是null吗</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//DexPathList.java</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Element[] makeDexElements(ArrayList&lt;File&gt; files,</span><br><span class="line">            File optimizedDirectory) &#123;</span><br><span class="line">            ...</span><br><span class="line">            dex = loadDexFile(file, optimizedDirectory);</span><br><span class="line">            ....</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> DexFile <span class="title">loadDexFile</span><span class="params">(File file, File optimizedDirectory)</span></span><br><span class="line">            <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (optimizedDirectory == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> DexFile(file);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String optimizedPath = optimizedPathFor(file, optimizedDirectory);</span><br><span class="line">            <span class="keyword">return</span> DexFile.loadDex(file.getPath(), optimizedPath, <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>看到这里我们明白了，optimizedDirectory是用来缓存我们需要加载的dex文件的，并创建一个DexFile对象，如果它为null，那么会直接使用dex文件原有的路径来创建DexFile对象。意思也就是说我不需要用缓存，不需要用app image加载。</p>
+<p>接续往下走</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">reflectPackageInfoClassloader</span><span class="params">(Application application, ClassLoader reflectClassLoader)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    String defBase = <span class="string">"mBase"</span>;</span><br><span class="line">    String defPackageInfo = <span class="string">"mPackageInfo"</span>;</span><br><span class="line">    String defClassLoader = <span class="string">"mClassLoader"</span>;</span><br><span class="line"></span><br><span class="line">    Context baseContext = (Context) findField(application, defBase).get(application);</span><br><span class="line">    Object basePackageInfo = findField(baseContext, defPackageInfo).get(baseContext);</span><br><span class="line">    Field classLoaderField = findField(basePackageInfo, defClassLoader);</span><br><span class="line">    Thread.currentThread().setContextClassLoader(reflectClassLoader);</span><br><span class="line">    classLoaderField.set(basePackageInfo, reflectClassLoader);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作用是替换掉了mPackageInfo中的ClassLoader，mPackageInfo是LoadedApk的对象，代表了APK文件在内存中的表示，诸如Apk文件的代码和资源，甚至代码里面的Activity，Service等组件的信息我们都可以通过此对象获取。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ActivityThread.java</span></span><br><span class="line">java.lang.ClassLoader cl = r.packageInfo.getClassLoader();</span><br><span class="line">activity = mInstrumentation.newActivity(cl, component.getClassName(), r.intent);</span><br><span class="line">StrictMode.incrementExpectedActivityCount(activity.getClass());</span><br><span class="line">r.intent.setExtrasClassLoader(cl);</span><br></pre></td></tr></table></figure>
+<p>到这里就完成了AndroidNClassLoader的创建与替换，接下来的加载过程使用了v23的加载流程，就不细说了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>至此，整个dex加载流程就分析完了。我们看到Tinker在兼容性上做了充足的工作，整个加载流程虽然跟其他基于Multidex的热补丁框架差不多，但是在兼容性上做了更完备的处理。</p>
+<h2 id="加载补丁资源"><a href="#加载补丁资源" class="headerlink" title="加载补丁资源"></a>加载补丁资源</h2><p>Tinker的资源更新采用的InstantRun的资源补丁方式，全量替换资源。由于App加载资源是依赖Context.getResources()方法返回的Resources对象，Resources 内部包装了 AssetManager，最终由 AssetManager 从 apk 文件中加载资源。我们要做的就是新建一个AssetManager()，hook掉其中的addAssetPath()方法，将我们的资源补丁目录传递进去，然后循环替换Resources对象中的AssetManager对象，达到资源替换的目的。看下代码实现。</p>
+<p>首先依然先根据res_meta.xml文件中记载的信息检查文件(res/resources.apk)是否存在，实现在TinkerResourceLoader.checkComplete()方法，然后调用<code>TinkerResourcePatcher.isResourceCanPatch(context);</code>判断是否支持反射更新资源，看下具体的实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">isResourceCanPatch</span><span class="params">(Context context)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">    <span class="comment">// Create a new AssetManager instance and point it to the resources installed under /sdcard</span></span><br><span class="line">    newAssetManager = AssetManager.class.getConstructor().newInstance();</span><br><span class="line">    addAssetPathMethod = AssetManager.class.getDeclaredMethod(<span class="string">"addAssetPath"</span>, String.class);</span><br><span class="line">    addAssetPathMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Kitkat needs this method call, Lollipop doesn't. However, it doesn't seem to cause any harm</span></span><br><span class="line">    <span class="comment">// in L, so we do it unconditionally.</span></span><br><span class="line">    ensureStringBlocksMethod = AssetManager.class.getDeclaredMethod(<span class="string">"ensureStringBlocks"</span>);</span><br><span class="line">    ensureStringBlocksMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Iterate over all known Resources objects</span></span><br><span class="line">    <span class="keyword">if</span> (SDK_INT &gt;= KITKAT) &#123;</span><br><span class="line">        <span class="comment">//pre-N</span></span><br><span class="line">        <span class="comment">// Find the singleton instance of ResourcesManager</span></span><br><span class="line">        Class&lt;?&gt; resourcesManagerClass = Class.forName(<span class="string">"android.app.ResourcesManager"</span>);</span><br><span class="line">        Method mGetInstance = resourcesManagerClass.getDeclaredMethod(<span class="string">"getInstance"</span>);</span><br><span class="line">        mGetInstance.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object resourcesManager = mGetInstance.invoke(<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Field fMActiveResources = resourcesManagerClass.getDeclaredField(<span class="string">"mActiveResources"</span>);</span><br><span class="line">            fMActiveResources.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            ArrayMap&lt;?, WeakReference&lt;Resources&gt;&gt; arrayMap =</span><br><span class="line">                (ArrayMap&lt;?, WeakReference&lt;Resources&gt;&gt;) fMActiveResources.get(resourcesManager);</span><br><span class="line">            references = arrayMap.values();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException ignore) &#123;</span><br><span class="line">            <span class="comment">// N moved the resources to mResourceReferences</span></span><br><span class="line">            Field mResourceReferences = resourcesManagerClass.getDeclaredField(<span class="string">"mResourceReferences"</span>);</span><br><span class="line">            mResourceReferences.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            <span class="comment">//noinspection unchecked</span></span><br><span class="line">            references = (Collection&lt;WeakReference&lt;Resources&gt;&gt;) mResourceReferences.get(resourcesManager);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Class&lt;?&gt; activityThread = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">        Field fMActiveResources = activityThread.getDeclaredField(<span class="string">"mActiveResources"</span>);</span><br><span class="line">        fMActiveResources.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object thread = getActivityThread(context, activityThread);</span><br><span class="line">        <span class="annotation">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">        HashMap&lt;?, WeakReference&lt;Resources&gt;&gt; map =</span><br><span class="line">            (HashMap&lt;?, WeakReference&lt;Resources&gt;&gt;) fMActiveResources.get(thread);</span><br><span class="line">        references = map.values();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// check resource</span></span><br><span class="line">    <span class="keyword">if</span> (references == <span class="keyword">null</span> || references.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"resource references is null or empty"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        assetsFiled = Resources.class.getDeclaredField(<span class="string">"mAssets"</span>);</span><br><span class="line">        assetsFiled.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable ignore) &#123;</span><br><span class="line">        <span class="comment">// N moved the mAssets inside an mResourcesImpl field</span></span><br><span class="line">        resourcesImplFiled = Resources.class.getDeclaredField(<span class="string">"mResourcesImpl"</span>);</span><br><span class="line">        resourcesImplFiled.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照步骤来吧，首先新建一个AssetManager对象，拿到其中的addAssetPath方法的反射addAssetPathMethod，然后拿到ensureStringBlocks的反射，然后区分版本拿到Resources的集合。</p>
+<ul>
+<li>SDK &gt;= 19，从ResourcesManager中拿到mActiveResources变量，是个持有Resources的ArrayMap，赋值给references，Android N中该变量叫做mResourceReferences</li>
+<li>SDK &lt; 19，从ActivityThread中获取mActiveResources，是个HashMap持有Resources，赋值给references</li>
+</ul>
+<p>如果references为空，说明该系统不支持资源补丁，throw 一个IllegalStateException被上层调用catch。</p>
+<p>然后调用monkeyPatchExistingResources方法，将补丁资源路径(res/resources.apk)传递进去，代码就不贴了，简单描述为反射调用新建的AssetManager的addAssetPath将路径穿进去，然后主动调用ensureStringBlocks方法确保资源的字符串索引创建出来；然后循环遍历持有Resources对象的references集合，依次替换其中的AssetManager为新建的AssetManager，最后调用Resources.updateConfiguration将Resources对象的配置信息更新到最新状态，完成整个资源替换的过程。</p>
+<p>目前来看InstantRun的资源更新方式最简便而且兼容性也最好，市面上大多数的热补丁框架都采用这套方案。Tinker的这套方案虽然也采用全量的替换，但是在下发patch中依然采用差量资源的方式获取差分包，下发到手机后再合成全量的资源文件，有效的控制了补丁文件的大小。</p>
+<h2 id="加载补丁so"><a href="#加载补丁so" class="headerlink" title="加载补丁so"></a>加载补丁so</h2><p>依然根据so_meta.txt中的补丁信息校验so文件是否都存在。然后将so补丁列表存放在结果中libs的字段。</p>
+<p>so的更新方式跟dex和资源都不太一样，因为系统提供给了开发者自定义so目录的选项</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">System</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">load</span><span class="params">(String pathName)</span> </span>&#123;</span><br><span class="line">        Runtime.getRuntime().load(pathName, VMStack.getCallingClassLoader());</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Tinker加载SO补丁提供了两个入口，分别是TinkerInstaller和TinkerApplicationHelper。他们两个的区别是TinkerInstaller只有在Tinker.install过之后才能使用,否则会抛出异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TinkerInstaller</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">loadLibraryFromTinker</span><span class="params">(Context context, String relativePath, String libname)</span> <span class="keyword">throws</span> UnsatisfiedLinkError </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Tinker tinker = Tinker.with(context);</span><br><span class="line"></span><br><span class="line">        libname = libname.startsWith(<span class="string">"lib"</span>) ? libname : <span class="string">"lib"</span> + libname;</span><br><span class="line">        libname = libname.endsWith(<span class="string">".so"</span>) ? libname : libname + <span class="string">".so"</span>;</span><br><span class="line">        String relativeLibPath = relativePath + <span class="string">"/"</span> + libname;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//TODO we should add cpu abi, and the real path later</span></span><br><span class="line">        <span class="keyword">if</span> (tinker.isEnabledForNativeLib() &amp;&amp; tinker.isTinkerLoaded()) &#123;</span><br><span class="line">            TinkerLoadResult loadResult = tinker.getTinkerLoadResultIfPresent();</span><br><span class="line">            <span class="keyword">if</span> (loadResult.libs != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (String name : loadResult.libs.keySet()) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (name.equals(relativeLibPath)) &#123;</span><br><span class="line">                        String patchLibraryPath = loadResult.libraryDirectory + <span class="string">"/"</span> + name;</span><br><span class="line">                        File library = <span class="keyword">new</span> File(patchLibraryPath);</span><br><span class="line">                        <span class="keyword">if</span> (library.exists()) &#123;</span><br><span class="line">                            <span class="comment">//whether we check md5 when load</span></span><br><span class="line">                            <span class="keyword">boolean</span> verifyMd5 = tinker.isTinkerLoadVerify();</span><br><span class="line">                            <span class="keyword">if</span> (verifyMd5 &amp;&amp; !SharePatchFileUtil.verifyFileMd5(library, loadResult.libs.get(name))) &#123;</span><br><span class="line">                                tinker.getLoadReporter().onLoadFileMd5Mismatch(library, ShareConstants.TYPE_LIBRARY);</span><br><span class="line">                            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                                System.load(patchLibraryPath);</span><br><span class="line">                                TinkerLog.i(TAG, <span class="string">"loadLibraryFromTinker success:"</span> + patchLibraryPath);</span><br><span class="line">                                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>简单来说就是遍历检查的结果列表libs，找到要加载的类，调用System.load方法进行加载。</p>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><p>在集成Tinker的过程中，遇到了一个问题，环境是Dalvik，在开篇最一开始我们提到了dex.loader的配置，我把项目中用于下载补丁文件的工具类A加到了其中，然后下发补丁报错，出现Class ref in pre-verified class resolved to unexpected  implementation的crash。Qzone的那套热补丁为了消除这个错误采用插庄的方式来规避，Tinker采用全量dex的方式来规避该问题，那为什么还会出现呢。</p>
+<p>根据log找到了报错点是在工具类A中的一个直接引用类B的方法中报错。错误原因在加载补丁dex一节其实已经提到一些，我们引用过来，这个配置(dex.loader)中的类不会出现在任何全量补丁dex里，也就是说在合成后，这些类还在老的dex文件中，比如在补丁前dex顺序是这样的：<code>oldDex1 -&gt; oldDex2 -&gt; oldDex3..</code>，那么假如修改了dex1中的文件，那么补丁顺序是这样的<code>newDex1 -&gt; oldDex1 -&gt; oldDex2...</code>其中合成后的newDex1中的类是oldDex1中除了dex.loader中标明的类之外的所有类，dex.loader中的类依然在oldDex1中。<br>也就是说A类是在dex.loader配置中的，补丁后，A依然在oldDex1中，而A的直接引用类B却出现在了newDex1中，并且在之前A类已经被打上了preverify标志，所在A再去newDex1中加载B的话就会报该错误。</p>
+<p>那有的同学可能会问了，TinkerApplication也在oldDex1中的，而我们的ApplicationLike在补丁后也出现在了newDex1中，TinkerApplication反射调用ApplicationLike的生命周期方法为什么没有出现crash呢？还记得文章前面的有一个反射么，我们说了要注意后面会讲到，就是在这里用到的。</p>
+<p>校验preverify的方法，正常的类加载会走到这里。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ClassObject* dvmResolveClass(<span class="keyword">const</span> ClassObject* referrer, u4 classIdx,</span><br><span class="line">    bool fromUnverifiedConstant)</span><br><span class="line">&#123;</span><br><span class="line">....</span><br><span class="line">       <span class="keyword">if</span> (!fromUnverifiedConstant &amp;&amp;</span><br><span class="line">            IS_CLASS_FLAG_SET(referrer, CLASS_ISPREVERIFIED))</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而反射走了完全不同的路径，不会走到dvmResolveClass方法，也就不会报错了。关于这个方法，我们下篇文章会详细讲解。反射最直接的目的也是为了隔离开这两个类，也就是隔离开了Tinker组件和app。如图</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ref.png" alt=""></p>
+<p>通过反射，将Tinker组建和App隔离开，并且先后顺序是先Tinker后App，这样可以防止App中的代码提前加载，确保App中所有的代码都可以具有被热修复的能力包括ApplicationLike。</p>
+<p>这个问题的<a href="https://github.com/Tencent/tinker/issues/124" target="_blank" rel="external">issue</a></p>
+<h1 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h1><p>到这里，Tinker的基本补丁加载流程就分析完了，本文只对补丁加载流程加以分析，对dexDiff差分以及补丁加载没有做说明，如果你对这部分感兴趣可以参考这篇文章<a href="https://www.zybuluo.com/dodola/note/554061" target="_blank" rel="external">Tinker Dexdiff算法解析</a>。另外ART下的内联影响和OTA升级没有做过多说明，Tinker官方已经有相关文章。</p>
+<p>我们简单对Tinker做下总结。<br>优点：</p>
+<ul>
+<li>支持类、资源、so修复</li>
+<li>兼容性处理的很好，全平台支持</li>
+<li>由于不用插庄，所以性能损耗很小</li>
+<li>完善的开发文档和官方技术支持</li>
+<li>gradle支持，再自己定义下可以一键打补丁包</li>
+<li>dexDiff算法使得补丁文件较小</li>
+<li>扩展性良好，代码中处处为开发者留出开放接口，简直业界良心</li>
+<li>支持多次补丁</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>不支持及时生效，下发补丁需要重启生效</li>
+<li>占用ROM空间较大，这点空间在如今的手机大ROM下也不算个事</li>
+</ul>
+<p>如果你正在考虑接入Tinker，那么强烈推荐你使用Tinker，地精修补匠，带你无限刷新！</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286384&amp;idx=1&amp;sn=f1aff31d6a567674759be476bcd12549&amp;scene=4#wechat_redirect" target="_blank" rel="external">微信Tinker的一切都在这里，包括源码(一)</a><br><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a><br><a href="https://segmentfault.com/a/1190000004062880" target="_blank" rel="external">Android动态加载基础 ClassLoader工作机制</a></p>
+<p>本文地址 <a href="http://w4lle.github.io/2016/12/16/tinker/">http://w4lle.github.io/2016/12/16/tinker/</a> </p>
+
+	
+	
+	
+	
+</div>
+				
+				
+
+                <!-- Post Comments -->
+                
+    <!-- 使用多说评论 -->
+    <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
+<style>
+    #ds-thread #ds-reset .ds-post-button{
+        background-color: #0097A7 !important;
+    }
+    #ds-wrapper #ds-reset .ds-icons-32{
+        background-color: #0097A7 !important;
+    }
+    #ds-reset .ds-highlight {
+        color: #0097A7 !important;
+    }
+</style>
+<div id="comments">
+    <!-- 多说评论框 start -->
+        <div class="ds-thread" 
+            data-thread-key="2016/12/16/tinker/" 
+            data-url="http://w4lle.github.io//2016/12/16/tinker/index.html"
+            data-title="Android热补丁之Tinker原理分析"></div>
+    <!-- 多说评论框 end -->
+</div>
+
+
+
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/12/14/AndroidStudio-shotcurts-md/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+        </div>
+    </div>
+
+				
+				
+					<!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay "></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored  sidebar-fixed-left" role="navigation">
+	<div id="sidebar-main">
+	    <!-- Sidebar Header -->
+		<div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+    <i class="material-icons">clear_all</i>
+    <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="w4lle's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        wanglinglong.me@gmail.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+		<!-- Sidebar Navigation  -->
+		<ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+			
+                <li>
+                    <a href="mailto:wanglinglong.me@gmail.com" target="_blank" title="Email Me">
+						<i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    <li id="sidebar-first-li">
+        <a href="/" target="_self">
+            <i class="material-icons sidebar-material-icons">home</i>
+             主页
+        </a>
+    </li>
+
+    <!-- I'm Feeling Lucky -->
+<!--
+    <li class="dropdown">
+        <a href="" target="_self">
+            <i class="material-icons sidebar-material-icons">explore</i>
+             sidebar.imlucky
+        </a>
+    </li>
+-->
+
+	
+    <!-- Archives  -->
+    <li class="dropdown">
+        <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+            <i class="material-icons sidebar-material-icons">inbox</i>
+             归档
+            <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+            <a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+        </ul>
+    </li>
+
+    <!-- Divider -->
+    <li class="divider"></li>
+
+
+    <!-- Pages  -->
+	
+		<li>
+			<a href="/guestbook" title="最近访客">
+				最近访客
+			</a>
+		</li>
+	
+		<li>
+			<a href="/tags" title="标签">
+				标签
+			</a>
+		</li>
+	
+
+    <!-- Article Numebr  -->
+    <li>
+        <a href="/archives">
+             文章总数
+             <span class="sidebar-badge">24</span>
+        </a>
+    </li>
+</ul>
+
+		<!-- Sidebar Divider -->
+		<div class="sidebar-divider"></div>
+
+		<!-- Sidebar Footer -->
+		<!-- 
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持。 :) 
+-->
+
+<!-- Theme Material -->
+<a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+	<div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+		主题 - Material
+		<span class="sidebar-badge badge-circle">i</span>
+	</div>
+</a>
+
+<!-- Help & Support -->
+<!--
+<a href="mailto:hiviosey@gmail.com" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+		sidebar.help
+		<span class="mdl-button__ripple-container">
+			<span class="mdl-ripple"></span>
+		</span>
+	</div>
+</a>
+-->
+
+<!-- Feedback -->
+<!--
+<a href="https://github.com/viosey/hexo-theme-material/issues" target="_blank" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+         sidebar.feedback
+                    <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></div>
+</a>
+-->
+
+<!-- Abount Theme -->
+<!--
+<a href="https://blog.viosey.com/index.php/Material.html" target="_blank" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+         sidebar.about_theme
+        <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></div>
+</a>-->
+
+	</div>
+    
+    <!-- Sidebar Sponsor -->
+    
+
+
+</aside>
+
+				
+				
+				
+					<!-- Footer Top Button -->
+					<div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+				
+				
+				<!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+	
+	
+		<!-- Paradox Footer Left Section -->
+		<div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+    
+    
+    <!-- Facebook -->
+    
+    
+    
+    <!-- Google + -->
+    
+    
+    
+    <!-- Weibo -->
+    
+    <a href="http://weibo.com/u/2274417881" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-weibo.png);">
+        <span class="visuallyhidden">Weibo</span>
+    </button></a>
+    
+    
+    <!-- Instagram -->
+    
+    
+    
+    <!-- Tumblr -->
+    
+    
+    
+    <!-- Github -->
+    
+    <a href="https://github.com/w4lle" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-github.png);">
+        <span class="visuallyhidden">Github</span>
+    </button></a>
+    
+
+        <!-- CSDN -->
+    
+    <a href="http://blog.csdn.net/hlglinglong" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-csdn.png);">
+        <span class="visuallyhidden">CSDN</span>
+    </button></a>
+    
+</div>
+
+
+		<!--Copyright-->
+		<div id="copyright">Copyright&nbsp;©&nbsp;<script type="text/javascript">var fd = new Date();document.write(fd.getFullYear());</script>&nbsp;w4lle's Notes
+
+		<div>
+	    <!-- Busuanzi -->
+		
+	    <script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+		
+		<div>
+		总访问量 <span id="busuanzi_value_site_pv"></span> 
+		你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+		</div>
+		</div>
+
+		</div>
+
+		<!-- Paradox Footer Right Section -->
+
+		<!-- 
+		I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+		It will not impact the appearance and can give developers a lot of support :)
+
+		很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+		它不会影响美观并可以给开发者很大的支持。 :) 
+		-->
+
+		<div class="mdl-mini-footer--right-section">
+			<div>
+				<div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+				<div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+			</div>
+		</div>
+	
+
+</footer>
+                
+				<!-- Import File -->
+<script src="/js/js.min.js" type="text/javascript"></script>
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    
+    $('#nprogress .bar').css({
+        'background': '#FF4081'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#FF4081',
+        'border-left-color': '#FF4081'
+    });
+    
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <!-- 多说公共 js 代码 start -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';ds.async = true;
+            ds.src = 'https://static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0] 
+             || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+    <!-- 多说公共 js 代码 end -->
+
+
+
+
+<!-- Swiftye -->
+
+
+<!-- Local Search-->
+
+
+<!-- Window Load-->
+<script>
+    // Post_Toc parent position fixed
+    $(window).load(function() {
+        $(".post-toc-wrap").parent(".mdl-menu__container").css("position", "fixed");
+    });
+</script>
+            </main>
+        </div>
+		
+    </body>
+		
+	
+</html>
