@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-12-16T17:10:11.000Z</updated>
+  <updated>2016-12-16T17:12:31.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,12 +20,13 @@
     <link href="http://w4lle.github.io/2016/12/16/tinker/"/>
     <id>http://w4lle.github.io/2016/12/16/tinker/</id>
     <published>2016-12-16T01:49:06.000Z</published>
-    <updated>2016-12-16T17:10:11.000Z</updated>
+    <updated>2016-12-16T17:12:31.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文分析版本  &lt;a href=&quot;https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;93ecc9351367badc02a91fac25764bee50e6e6a6&lt;/a&gt;&lt;br&gt;项目地址： &lt;a href=&quot;https://github.com/Tencent/tinker/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在今年的MDCC大会上，微信开发团队宣布正式开源Tinker，在这之前微信团队已经发出过一些Tinker的相关文章，说实话在开源之前我们还是相当期待Tinker开源的，一方面是因为之前使用的热补丁一直存在一些兼容性问题，另一方面也好奇Tinker的实现方案。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;p&gt;在开源后我们团队第一时间着手研究Tinker，在详细阅读了源码之后，我们确定要在之后的一个版本集成Tinker上线，线上效果显示Tinker的修复效果果然牛逼，错误率明显下降的同时也没有报出兼容性的问题。附一张薄荷app使用Tinker修复前后的错误率对比。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/fatal.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;h1 id=&quot;从接入Tinker入手&quot;&gt;&lt;a href=&quot;#从接入Tinker入手&quot; class=&quot;headerlink&quot; title=&quot;从接入Tinker入手&quot;&gt;&lt;/a&gt;从接入Tinker入手&lt;/h1&gt;&lt;p&gt;想要深入某个框架，前提是要学会使用它。我们就从Tinker的接入入手一步一步解开它的实现原理。参照&lt;a href=&quot;https://github.com/Tencent/tinker/wiki&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;wiki&lt;/a&gt;我们做了如下操作。&lt;/p&gt;
@@ -167,7 +168,9 @@
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;本文分析版本  &lt;a href=&quot;https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6&quot; target=&quot;_blank&quot; rel=&quot;exter
+&lt;p&gt;本文分析版本  &lt;a href=&quot;https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6&quot;&gt;93ecc9351367badc02a91fac25764bee50e6e6a6&lt;/a&gt;&lt;br&gt;项目地址： &lt;a href=&quot;https://github.com/Tencent/tinker/&quot;&gt;Tinker&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在今年的MDCC大会上，微信开发团队宣布正式开源Tinker，在这之前微信团队已经发出过一些Tinker的相关文章，说实话在开源之前我们还是相当期待Tinker开源的，一方面是因为之前使用的热补丁一直存在一些兼容性问题，另一方面也好奇Tinker的实现方案。&lt;/p&gt;
     
     </summary>
     

@@ -325,6 +325,7 @@
 <p>本文分析版本  <a href="https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6" target="_blank" rel="external">93ecc9351367badc02a91fac25764bee50e6e6a6</a><br>项目地址： <a href="https://github.com/Tencent/tinker/" target="_blank" rel="external">Tinker</a></p>
 </blockquote>
 <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在今年的MDCC大会上，微信开发团队宣布正式开源Tinker，在这之前微信团队已经发出过一些Tinker的相关文章，说实话在开源之前我们还是相当期待Tinker开源的，一方面是因为之前使用的热补丁一直存在一些兼容性问题，另一方面也好奇Tinker的实现方案。</p>
+<a id="more"></a>
 <p>在开源后我们团队第一时间着手研究Tinker，在详细阅读了源码之后，我们确定要在之后的一个版本集成Tinker上线，线上效果显示Tinker的修复效果果然牛逼，错误率明显下降的同时也没有报出兼容性的问题。附一张薄荷app使用Tinker修复前后的错误率对比。</p>
 <p><img src="http://7xs23g.com1.z0.glb.clouddn.com/fatal.png" alt=""></p>
 <h1 id="从接入Tinker入手"><a href="#从接入Tinker入手" class="headerlink" title="从接入Tinker入手"></a>从接入Tinker入手</h1><p>想要深入某个框架，前提是要学会使用它。我们就从Tinker的接入入手一步一步解开它的实现原理。参照<a href="https://github.com/Tencent/tinker/wiki" target="_blank" rel="external">wiki</a>我们做了如下操作。</p>
