@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-12-16T17:12:31.000Z</updated>
+  <updated>2016-12-17T01:06:47.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://w4lle.github.io/2016/12/16/tinker/"/>
     <id>http://w4lle.github.io/2016/12/16/tinker/</id>
     <published>2016-12-16T01:49:06.000Z</published>
-    <updated>2016-12-16T17:12:31.000Z</updated>
+    <updated>2016-12-17T01:06:47.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文分析版本  &lt;a href=&quot;https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;93ecc9351367badc02a91fac25764bee50e6e6a6&lt;/a&gt;&lt;br&gt;项目地址： &lt;a href=&quot;https://github.com/Tencent/tinker/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker&lt;/a&gt;&lt;/p&gt;
@@ -157,11 +157,11 @@
 &lt;/ul&gt;
 &lt;p&gt;缺点：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;不支持及时生效，下发补丁需要重启生效&lt;/li&gt;
+&lt;li&gt;不支持及时生效，下发补丁需要重启生效，MultiDex方案决定的&lt;/li&gt;
 &lt;li&gt;占用ROM空间较大，这点空间在如今的手机大ROM下也不算个事&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;如果你正在考虑接入Tinker，那么强烈推荐你使用Tinker，地精修补匠，带你无限刷新！&lt;/p&gt;
-&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;amp;mid=2649286384&amp;amp;idx=1&amp;amp;sn=f1aff31d6a567674759be476bcd12549&amp;amp;scene=4#wechat_redirect&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;微信Tinker的一切都在这里，包括源码(一)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/&quot;&gt;从Instant run谈Android替换Application和动态加载机制&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000004062880&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android动态加载基础 ClassLoader工作机制&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;amp;mid=2649286384&amp;amp;idx=1&amp;amp;sn=f1aff31d6a567674759be476bcd12549&amp;amp;scene=4#wechat_redirect&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;微信Tinker的一切都在这里，包括源码(一)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;amp;mid=2649286341&amp;amp;idx=1&amp;amp;sn=054d595af6e824cbe4edd79427fc2706&amp;amp;scene=0&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android N混合编译与对热补丁影响解析&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.zybuluo.com/dodola/note/554061&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker Dexdiff算法解析&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/&quot;&gt;从Instant run谈Android替换Application和动态加载机制&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000004062880&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android动态加载基础 ClassLoader工作机制&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/12/16/tinker/&quot;&gt;http://w4lle.github.io/2016/12/16/tinker/&lt;/a&gt; &lt;/p&gt;
 </content>
     
