@@ -894,7 +894,7 @@ ClassObject* dvmResolveClass(const ClassObject* referrer, u4 classIdx,
  - 不支持及时生效，下发补丁需要重启生效，MultiDex方案决定的
  - 占用ROM空间较大，这点空间在如今的手机大ROM下也不算个事
 
-如果你正在考虑接入Tinker，那么强烈推荐你使用Tinker，地精修补匠，带你无限刷新！
+如果你正在考虑接入热补丁，那么强烈推荐你使用Tinker，地精修补匠，带你无限刷新！
 
 # 参考
 
