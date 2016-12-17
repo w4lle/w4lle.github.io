@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-12-17T05:09:37.000Z</updated>
+  <updated>2016-12-17T05:13:40.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://w4lle.github.io/2016/12/16/tinker/"/>
     <id>http://w4lle.github.io/2016/12/16/tinker/</id>
     <published>2016-12-16T01:49:06.000Z</published>
-    <updated>2016-12-17T05:09:37.000Z</updated>
+    <updated>2016-12-17T05:13:40.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文分析版本  &lt;a href=&quot;https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;93ecc9351367badc02a91fac25764bee50e6e6a6&lt;/a&gt;&lt;br&gt;项目地址： &lt;a href=&quot;https://github.com/Tencent/tinker/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker&lt;/a&gt;&lt;/p&gt;
@@ -142,7 +142,7 @@
 &lt;p&gt;而反射走了完全不同的路径，不会走到dvmResolveClass方法，也就不会报错了。关于这个方法，我们下篇文章会详细讲解。反射最直接的目的也是为了隔离开这两个类，也就是隔离开了Tinker组件和app。如图&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/ref.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;通过反射，将Tinker组建和App隔离开，并且先后顺序是先Tinker后App，这样可以防止App中的代码提前加载，确保App中所有的代码都可以具有被热修复的能力包括ApplicationLike。&lt;/p&gt;
-&lt;p&gt;然后又有同学问了，为啥Dalvik有问题，ART没问题呢？那是因为在ART虚拟机原生支持从AP文件加载多个dex文件。在应用安装时执行dex2oat扫描 classes(..N).dex文件，并将它们编译成单个oat文件，供 Android设备执，也就不存在MultiDex的问题了。&lt;/p&gt;
+&lt;p&gt;然后又有同学问了，为啥Dalvik有问题，ART没问题呢？那是因为在ART虚拟机原生支持从APK文件加载多个dex文件。在应用安装时执行dex2oat扫描 classes(..N).dex文件，并将它们编译成单个oat文件，供 Android设备执，也就不存在MultiDex的问题了。&lt;/p&gt;
 &lt;p&gt;这个问题的&lt;a href=&quot;https://github.com/Tencent/tinker/issues/124&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;issue&lt;/a&gt;&lt;/p&gt;
 &lt;h1 id=&quot;总结-1&quot;&gt;&lt;a href=&quot;#总结-1&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h1&gt;&lt;p&gt;到这里，Tinker的基本补丁加载流程就分析完了，本文只对补丁加载流程加以分析，对dexDiff差分以及补丁加载没有做说明，如果你对这部分感兴趣可以参考这篇文章&lt;a href=&quot;https://www.zybuluo.com/dodola/note/554061&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker Dexdiff算法解析&lt;/a&gt;。另外ART下的内联影响和OTA升级没有做过多说明，Tinker官方已经有相关文章。&lt;/p&gt;
 &lt;p&gt;我们简单对Tinker做下总结。&lt;br&gt;优点：&lt;/p&gt;

@@ -441,7 +441,7 @@
 <p>而反射走了完全不同的路径，不会走到dvmResolveClass方法，也就不会报错了。关于这个方法，我们下篇文章会详细讲解。反射最直接的目的也是为了隔离开这两个类，也就是隔离开了Tinker组件和app。如图</p>
 <p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ref.png" alt=""></p>
 <p>通过反射，将Tinker组建和App隔离开，并且先后顺序是先Tinker后App，这样可以防止App中的代码提前加载，确保App中所有的代码都可以具有被热修复的能力包括ApplicationLike。</p>
-<p>然后又有同学问了，为啥Dalvik有问题，ART没问题呢？那是因为在ART虚拟机原生支持从AP文件加载多个dex文件。在应用安装时执行dex2oat扫描 classes(..N).dex文件，并将它们编译成单个oat文件，供 Android设备执，也就不存在MultiDex的问题了。</p>
+<p>然后又有同学问了，为啥Dalvik有问题，ART没问题呢？那是因为在ART虚拟机原生支持从APK文件加载多个dex文件。在应用安装时执行dex2oat扫描 classes(..N).dex文件，并将它们编译成单个oat文件，供 Android设备执，也就不存在MultiDex的问题了。</p>
 <p>这个问题的<a href="https://github.com/Tencent/tinker/issues/124" target="_blank" rel="external">issue</a></p>
 <h1 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h1><p>到这里，Tinker的基本补丁加载流程就分析完了，本文只对补丁加载流程加以分析，对dexDiff差分以及补丁加载没有做说明，如果你对这部分感兴趣可以参考这篇文章<a href="https://www.zybuluo.com/dodola/note/554061" target="_blank" rel="external">Tinker Dexdiff算法解析</a>。另外ART下的内联影响和OTA升级没有做过多说明，Tinker官方已经有相关文章。</p>
 <p>我们简单对Tinker做下总结。<br>优点：</p>
