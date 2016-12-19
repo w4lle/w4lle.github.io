@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2016-12-17T05:20:29.000Z</updated>
+  <updated>2016-12-19T02:44:23.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://w4lle.github.io/2016/12/16/tinker/"/>
     <id>http://w4lle.github.io/2016/12/16/tinker/</id>
     <published>2016-12-16T01:49:06.000Z</published>
-    <updated>2016-12-17T05:20:29.000Z</updated>
+    <updated>2016-12-19T02:44:23.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文分析版本  &lt;a href=&quot;https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;93ecc9351367badc02a91fac25764bee50e6e6a6&lt;/a&gt;&lt;br&gt;项目地址： &lt;a href=&quot;https://github.com/Tencent/tinker/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker&lt;/a&gt;&lt;/p&gt;
@@ -79,6 +79,7 @@
 &lt;p&gt;刚才我们说Tinker是将dex前置，Multidex是将dex后置，我们顺便看下Multidex.install()中expandFieldArray的实现吧。&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//Multidex.java&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;expandFieldArray&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Object instance, String fieldName,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Object[] extraElements)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; NoSuchFieldException, IllegalArgumentException,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            IllegalAccessException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Field jlrField = findField(instance, fieldName);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Object[] original = (Object[]) jlrField.get(instance);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Object[] combined = (Object[]) Array.newInstance(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                original.getClass().getComponentType(), original.length + extraElements.length);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.arraycopy(original, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, combined, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, original.length);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.arraycopy(extraElements, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, combined, original.length, extraElements.length);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        jlrField.set(instance, combined);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;它是先把oldDexElements拷贝到了前面，在把newDexElements拷贝到了后面，我们称之为dex后置。&lt;/p&gt;
+&lt;p&gt;实际上，对于Multidex的项目，不论Tinker是否加载了补丁，都应该在ApplicationLike的onBaseContextAttached方法中执行&lt;code&gt;MultiDex.install(base);&lt;/code&gt;。&lt;/p&gt;
 &lt;h3 id=&quot;v19&quot;&gt;&lt;a href=&quot;#v19&quot; class=&quot;headerlink&quot; title=&quot;v19&quot;&gt;&lt;/a&gt;v19&lt;/h3&gt;&lt;p&gt;19 &amp;lt;= SDK &amp;lt; 23&lt;br&gt;Android 4.4 &amp;lt;= Android系统 &amp;lt; Android 6.0&lt;/p&gt;
 &lt;p&gt;跟v14的区别不大，只是在makeDexElements方法中多加了一个参数suppressedExceptions异常数组，另外在makeDexElements的catch异常中多加了一次重试&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (NoSuchMethodException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Log.e(TAG, &lt;span class=&quot;string&quot;&gt;&quot;NoSuchMethodException: makeDexElements(ArrayList,File,ArrayList) failure&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    makeDexElements = ShareReflectUtil.findMethod(dexPathList, &lt;span class=&quot;string&quot;&gt;&quot;makeDexElements&quot;&lt;/span&gt;, List.class, File.class, List.class);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (NoSuchMethodException e1) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    Log.e(TAG, &lt;span class=&quot;string&quot;&gt;&quot;NoSuchMethodException: makeDexElements(List,File,List) failure&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;keyword&quot;&gt;throw&lt;/span&gt; e1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -175,6 +176,8 @@
     
     </summary>
     
+    
+      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
       <category term="热补丁" scheme="http://w4lle.github.io/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
     
@@ -1081,7 +1084,7 @@
     <link href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"/>
     <id>http://w4lle.github.io/2016/05/02/从Instant run谈Android替换Application和动态加载机制/</id>
     <published>2016-05-02T11:33:05.000Z</published>
-    <updated>2016-06-06T10:13:15.000Z</updated>
+    <updated>2016-12-19T02:45:00.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Android studio 2.0 Stable&lt;/code&gt;版本中集成了&lt;code&gt;Install run&lt;/code&gt;即时编译技术，官方描述可以大幅加速编译速度，我们团队在第一时间更新并使用，总体用下来感觉，恩…也就那样吧，还不如不用的快。所以就去看了下&lt;code&gt;Install run&lt;/code&gt;的实现方式，其中有一个整体框架的基础，也就是今天的文章的主题，Android替换Application和动态加载机制。&lt;/p&gt;
 &lt;h1 id=&quot;Instant-run&quot;&gt;&lt;a href=&quot;#Instant-run&quot; class=&quot;headerlink&quot; title=&quot;Instant run&quot;&gt;&lt;/a&gt;Instant run&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Instant run&lt;/code&gt;的大概实现原理可以看下这篇&lt;a href=&quot;http://jiajixin.cn/2015/11/25/instant-run/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Instant Run 浅析&lt;/a&gt;，我们需要知道&lt;code&gt;Instant run&lt;/code&gt;使用的&lt;code&gt;gradle plugin2.0.0&lt;/code&gt;，源码在&lt;a href=&quot;https://bintray.com/android/android-tools/com.android.tools.build.gradle/view&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;，文中大概讲了下&lt;code&gt;Instant run&lt;/code&gt;的实现原理，但是并没有深入细节，特别是替换Application和动态加载机制。&lt;/p&gt;
@@ -1157,11 +1160,7 @@
     
       <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
-      <category term="Install run" scheme="http://w4lle.github.io/tags/Install-run/"/>
-    
-      <category term="动态加载" scheme="http://w4lle.github.io/tags/%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD/"/>
-    
-      <category term="热更新" scheme="http://w4lle.github.io/tags/%E7%83%AD%E6%9B%B4%E6%96%B0/"/>
+      <category term="热补丁" scheme="http://w4lle.github.io/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
     
   </entry>
   
@@ -1412,7 +1411,7 @@
     <link href="http://w4lle.github.io/2016/03/13/AndFix%E6%94%AF%E6%8C%81multidex%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
     <id>http://w4lle.github.io/2016/03/13/AndFix支持multidex解决方案/</id>
     <published>2016-03-13T13:42:11.000Z</published>
-    <updated>2016-06-06T10:13:15.000Z</updated>
+    <updated>2016-12-19T02:42:28.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在上一篇文章&lt;a href=&quot;http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/&quot;&gt;Android热补丁之AndFix原理解析&lt;/a&gt;中我们提到，AndFix的补丁文件是补丁生成工具apkPatch生成的，补丁文件&lt;code&gt;.apatch&lt;/code&gt;基于&lt;code&gt;dex diff&lt;/code&gt;的原理生成，简单来说就是对比两个apk包中的dex文件，代码在&lt;code&gt;DexFileFactory&lt;/code&gt;类中&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; DexBackedDexFile &lt;span class=&quot;title&quot;&gt;loadDexFile&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(File dexFile, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; api, &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; experimental)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; IOException&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; loadDexFile(dexFile, &lt;span class=&quot;string&quot;&gt;&quot;classes.dex&quot;&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Opcodes(api, experimental));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -1459,9 +1458,7 @@
     
       <category term="AndFix" scheme="http://w4lle.github.io/tags/AndFix/"/>
     
-      <category term="multidex" scheme="http://w4lle.github.io/tags/multidex/"/>
-    
-      <category term="热更新" scheme="http://w4lle.github.io/tags/%E7%83%AD%E6%9B%B4%E6%96%B0/"/>
+      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
   </entry>
   

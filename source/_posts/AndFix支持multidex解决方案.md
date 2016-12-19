@@ -1,7 +1,7 @@
 ---
 title: AndFix支持Multidex的解决方案
 date: 2016-03-13 21:42:11
-tags: [AndFix, 热更新, multidex]
+tags: [Android, AndFix]
 ---
 
 

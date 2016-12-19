@@ -1,7 +1,7 @@
 ---
 title: Android热补丁之AndFix原理解析
 date: 2016-03-03 14:43:44
-tags: [热补丁, AndFix, 源码分析]
+tags: [Android, 热补丁]
 ---
 
 # 背景

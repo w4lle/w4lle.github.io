@@ -1,7 +1,7 @@
 ---
 title: 从Instant run谈Android替换Application和动态加载机制
 date: 2016-05-02 19:33:05
-tags: [Android, 动态加载, 热更新, Install run]
+tags: [Android, 热补丁]
 ---
 
 # 背景

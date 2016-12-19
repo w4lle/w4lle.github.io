@@ -1,7 +1,7 @@
 ﻿---
 title: Android热补丁之Tinker原理解析
 date: 2016-12-16 09:49:06
-tags: [热补丁]
+tags: [Android, 热补丁]
 thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/tinker.jpg
 ---
 
@@ -548,6 +548,8 @@ Android 4.0 <= Android系统 < Android 4.4
 ```
 
 它是先把oldDexElements拷贝到了前面，在把newDexElements拷贝到了后面，我们称之为dex后置。
+
+实际上，对于Multidex的项目，不论Tinker是否加载了补丁，都应该在ApplicationLike的onBaseContextAttached方法中执行``MultiDex.install(base);``。
 
 ### v19
 
