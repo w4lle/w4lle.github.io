@@ -720,7 +720,14 @@ Tinker的资源更新采用的InstantRun的资源补丁方式，全量替换资�
 ```java
     public static void isResourceCanPatch(Context context) throws Throwable {
         // Create a new AssetManager instance and point it to the resources installed under /sdcard
-        newAssetManager = AssetManager.class.getConstructor().newInstance();
+        AssetManager assets = context.getAssets();
+        // Baidu os
+        if (assets.getClass().getName().equals("android.content.res.BaiduAssetManager")) {
+            Class baiduAssetManager = Class.forName("android.content.res.BaiduAssetManager");
+            newAssetManager = (AssetManager) baiduAssetManager.getConstructor().newInstance();
+        } else {
+            newAssetManager = AssetManager.class.getConstructor().newInstance();
+        }
         addAssetPathMethod = AssetManager.class.getDeclaredMethod("addAssetPath", String.class);
         addAssetPathMethod.setAccessible(true);
 
@@ -775,7 +782,7 @@ Tinker的资源更新采用的InstantRun的资源补丁方式，全量替换资�
     }
 ```
 
-按照步骤来吧，首先新建一个AssetManager对象，拿到其中的addAssetPath方法的反射addAssetPathMethod，然后拿到ensureStringBlocks的反射，然后区分版本拿到Resources的集合。
+按照步骤来吧，首先新建一个AssetManager对象，其中对BaiduROM做了兼容(BaiduAssetManager)，拿到其中的addAssetPath方法的反射addAssetPathMethod，然后拿到ensureStringBlocks的反射，然后区分版本拿到Resources的集合。
 
  - SDK >= 19，从ResourcesManager中拿到mActiveResources变量，是个持有Resources的ArrayMap，赋值给references，Android N中该变量叫做mResourceReferences
  - SDK < 19，从ActivityThread中获取mActiveResources，是个HashMap持有Resources，赋值给references
@@ -895,8 +902,9 @@ ClassObject* dvmResolveClass(const ClassObject* referrer, u4 classIdx,
 
  - 不支持及时生效，下发补丁需要重启生效，MultiDex方案决定的
  - 占用ROM空间较大，这点空间在如今的手机大ROM下也不算个事
+ - 对加固支持不太好
 
-如果你正在考虑接入热补丁，那么强烈推荐你使用Tinker，地精修补匠，带你无限刷新！
+总结下来Tinker是一种基于单ClassLoader加载多dex方案的热补丁框架，兼容性做的比较好，功能强大。如果你正在考虑接入热补丁，那么强烈推荐你使用Tinker，地精修补匠，带你无限刷新！
 
 # 参考
 
@@ -905,4 +913,5 @@ ClassObject* dvmResolveClass(const ClassObject* referrer, u4 classIdx,
 [Tinker Dexdiff算法解析](https://www.zybuluo.com/dodola/note/554061)
 [从Instant run谈Android替换Application和动态加载机制](http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/)
 [Android动态加载基础 ClassLoader工作机制](https://segmentfault.com/a/1190000004062880)
+[Android应用程序资源管理器（Asset Manager）的创建过程分析](http://blog.csdn.net/luoshengyang/article/details/8791064)
 

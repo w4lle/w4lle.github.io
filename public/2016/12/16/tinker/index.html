@@ -157,6 +157,8 @@
 
 	<script src="/js/jquery.min.js" type="text/javascript"></script>
 	
+	<link rel="stylesheet" href="/css/highlight/solarized-white.css" type="text/css">
+	
 	<!-- UC Browser Compatible-->
 	<script>
 		var agent = navigator.userAgent.toLowerCase();
@@ -192,7 +194,9 @@
                 </button>
 				
 				
-                
+                <!-- Post TOC -->
+
+    
 	<!-- Back Button -->
 <!--
 	<div class="material-back" id="backhome-div" tabindex="0">
@@ -217,6 +221,7 @@
 		
 <!--			<li class="mdl-menu__item">Some Action</li>-->
 	</ul>
+
 
 
 <!-- Layouts -->
@@ -289,7 +294,9 @@
     <!-- Busuanzi Views -->
     <a class="post_share-link" href="#">
         <li class="mdl-menu__item">
-            阅读量 <span id="busuanzi_value_page_pv"></span>
+            <span id="busuanzi_container_page_pv">
+                <span id="busuanzi_value_page_pv"></span>&nbsp;浏览量
+            </span>
         </li>
     </a>
     
@@ -419,8 +426,8 @@
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>至此，整个dex加载流程就分析完了。我们看到Tinker在兼容性上做了充足的工作，整个加载流程虽然跟其他基于Multidex的热补丁框架差不多，但是在兼容性上做了更完备的处理。</p>
 <h2 id="加载补丁资源"><a href="#加载补丁资源" class="headerlink" title="加载补丁资源"></a>加载补丁资源</h2><p>Tinker的资源更新采用的InstantRun的资源补丁方式，全量替换资源。由于App加载资源是依赖Context.getResources()方法返回的Resources对象，Resources 内部包装了 AssetManager，最终由 AssetManager 从 apk 文件中加载资源。我们要做的就是新建一个AssetManager()，hook掉其中的addAssetPath()方法，将我们的资源补丁目录传递进去，然后循环替换Resources对象中的AssetManager对象，达到资源替换的目的。看下代码实现。</p>
 <p>首先依然先根据res_meta.xml文件中记载的信息检查文件(res/resources.apk)是否存在，实现在TinkerResourceLoader.checkComplete()方法，然后调用<code>TinkerResourcePatcher.isResourceCanPatch(context);</code>判断是否支持反射更新资源，看下具体的实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">isResourceCanPatch</span><span class="params">(Context context)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">    <span class="comment">// Create a new AssetManager instance and point it to the resources installed under /sdcard</span></span><br><span class="line">    newAssetManager = AssetManager.class.getConstructor().newInstance();</span><br><span class="line">    addAssetPathMethod = AssetManager.class.getDeclaredMethod(<span class="string">"addAssetPath"</span>, String.class);</span><br><span class="line">    addAssetPathMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Kitkat needs this method call, Lollipop doesn't. However, it doesn't seem to cause any harm</span></span><br><span class="line">    <span class="comment">// in L, so we do it unconditionally.</span></span><br><span class="line">    ensureStringBlocksMethod = AssetManager.class.getDeclaredMethod(<span class="string">"ensureStringBlocks"</span>);</span><br><span class="line">    ensureStringBlocksMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Iterate over all known Resources objects</span></span><br><span class="line">    <span class="keyword">if</span> (SDK_INT &gt;= KITKAT) &#123;</span><br><span class="line">        <span class="comment">//pre-N</span></span><br><span class="line">        <span class="comment">// Find the singleton instance of ResourcesManager</span></span><br><span class="line">        Class&lt;?&gt; resourcesManagerClass = Class.forName(<span class="string">"android.app.ResourcesManager"</span>);</span><br><span class="line">        Method mGetInstance = resourcesManagerClass.getDeclaredMethod(<span class="string">"getInstance"</span>);</span><br><span class="line">        mGetInstance.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object resourcesManager = mGetInstance.invoke(<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Field fMActiveResources = resourcesManagerClass.getDeclaredField(<span class="string">"mActiveResources"</span>);</span><br><span class="line">            fMActiveResources.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            ArrayMap&lt;?, WeakReference&lt;Resources&gt;&gt; arrayMap =</span><br><span class="line">                (ArrayMap&lt;?, WeakReference&lt;Resources&gt;&gt;) fMActiveResources.get(resourcesManager);</span><br><span class="line">            references = arrayMap.values();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException ignore) &#123;</span><br><span class="line">            <span class="comment">// N moved the resources to mResourceReferences</span></span><br><span class="line">            Field mResourceReferences = resourcesManagerClass.getDeclaredField(<span class="string">"mResourceReferences"</span>);</span><br><span class="line">            mResourceReferences.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            <span class="comment">//noinspection unchecked</span></span><br><span class="line">            references = (Collection&lt;WeakReference&lt;Resources&gt;&gt;) mResourceReferences.get(resourcesManager);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Class&lt;?&gt; activityThread = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">        Field fMActiveResources = activityThread.getDeclaredField(<span class="string">"mActiveResources"</span>);</span><br><span class="line">        fMActiveResources.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object thread = getActivityThread(context, activityThread);</span><br><span class="line">        <span class="annotation">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">        HashMap&lt;?, WeakReference&lt;Resources&gt;&gt; map =</span><br><span class="line">            (HashMap&lt;?, WeakReference&lt;Resources&gt;&gt;) fMActiveResources.get(thread);</span><br><span class="line">        references = map.values();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// check resource</span></span><br><span class="line">    <span class="keyword">if</span> (references == <span class="keyword">null</span> || references.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"resource references is null or empty"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        assetsFiled = Resources.class.getDeclaredField(<span class="string">"mAssets"</span>);</span><br><span class="line">        assetsFiled.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable ignore) &#123;</span><br><span class="line">        <span class="comment">// N moved the mAssets inside an mResourcesImpl field</span></span><br><span class="line">        resourcesImplFiled = Resources.class.getDeclaredField(<span class="string">"mResourcesImpl"</span>);</span><br><span class="line">        resourcesImplFiled.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>按照步骤来吧，首先新建一个AssetManager对象，拿到其中的addAssetPath方法的反射addAssetPathMethod，然后拿到ensureStringBlocks的反射，然后区分版本拿到Resources的集合。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">isResourceCanPatch</span><span class="params">(Context context)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">    <span class="comment">// Create a new AssetManager instance and point it to the resources installed under /sdcard</span></span><br><span class="line">    AssetManager assets = context.getAssets();</span><br><span class="line">    <span class="comment">// Baidu os</span></span><br><span class="line">    <span class="keyword">if</span> (assets.getClass().getName().equals(<span class="string">"android.content.res.BaiduAssetManager"</span>)) &#123;</span><br><span class="line">        Class baiduAssetManager = Class.forName(<span class="string">"android.content.res.BaiduAssetManager"</span>);</span><br><span class="line">        newAssetManager = (AssetManager) baiduAssetManager.getConstructor().newInstance();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        newAssetManager = AssetManager.class.getConstructor().newInstance();</span><br><span class="line">    &#125;</span><br><span class="line">    addAssetPathMethod = AssetManager.class.getDeclaredMethod(<span class="string">"addAssetPath"</span>, String.class);</span><br><span class="line">    addAssetPathMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Kitkat needs this method call, Lollipop doesn't. However, it doesn't seem to cause any harm</span></span><br><span class="line">    <span class="comment">// in L, so we do it unconditionally.</span></span><br><span class="line">    ensureStringBlocksMethod = AssetManager.class.getDeclaredMethod(<span class="string">"ensureStringBlocks"</span>);</span><br><span class="line">    ensureStringBlocksMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Iterate over all known Resources objects</span></span><br><span class="line">    <span class="keyword">if</span> (SDK_INT &gt;= KITKAT) &#123;</span><br><span class="line">        <span class="comment">//pre-N</span></span><br><span class="line">        <span class="comment">// Find the singleton instance of ResourcesManager</span></span><br><span class="line">        Class&lt;?&gt; resourcesManagerClass = Class.forName(<span class="string">"android.app.ResourcesManager"</span>);</span><br><span class="line">        Method mGetInstance = resourcesManagerClass.getDeclaredMethod(<span class="string">"getInstance"</span>);</span><br><span class="line">        mGetInstance.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object resourcesManager = mGetInstance.invoke(<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Field fMActiveResources = resourcesManagerClass.getDeclaredField(<span class="string">"mActiveResources"</span>);</span><br><span class="line">            fMActiveResources.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            ArrayMap&lt;?, WeakReference&lt;Resources&gt;&gt; arrayMap =</span><br><span class="line">                (ArrayMap&lt;?, WeakReference&lt;Resources&gt;&gt;) fMActiveResources.get(resourcesManager);</span><br><span class="line">            references = arrayMap.values();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException ignore) &#123;</span><br><span class="line">            <span class="comment">// N moved the resources to mResourceReferences</span></span><br><span class="line">            Field mResourceReferences = resourcesManagerClass.getDeclaredField(<span class="string">"mResourceReferences"</span>);</span><br><span class="line">            mResourceReferences.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            <span class="comment">//noinspection unchecked</span></span><br><span class="line">            references = (Collection&lt;WeakReference&lt;Resources&gt;&gt;) mResourceReferences.get(resourcesManager);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Class&lt;?&gt; activityThread = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">        Field fMActiveResources = activityThread.getDeclaredField(<span class="string">"mActiveResources"</span>);</span><br><span class="line">        fMActiveResources.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object thread = getActivityThread(context, activityThread);</span><br><span class="line">        <span class="annotation">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">        HashMap&lt;?, WeakReference&lt;Resources&gt;&gt; map =</span><br><span class="line">            (HashMap&lt;?, WeakReference&lt;Resources&gt;&gt;) fMActiveResources.get(thread);</span><br><span class="line">        references = map.values();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// check resource</span></span><br><span class="line">    <span class="keyword">if</span> (references == <span class="keyword">null</span> || references.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"resource references is null or empty"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        assetsFiled = Resources.class.getDeclaredField(<span class="string">"mAssets"</span>);</span><br><span class="line">        assetsFiled.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable ignore) &#123;</span><br><span class="line">        <span class="comment">// N moved the mAssets inside an mResourcesImpl field</span></span><br><span class="line">        resourcesImplFiled = Resources.class.getDeclaredField(<span class="string">"mResourcesImpl"</span>);</span><br><span class="line">        resourcesImplFiled.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照步骤来吧，首先新建一个AssetManager对象，其中对BaiduROM做了兼容(BaiduAssetManager)，拿到其中的addAssetPath方法的反射addAssetPathMethod，然后拿到ensureStringBlocks的反射，然后区分版本拿到Resources的集合。</p>
 <ul>
 <li>SDK &gt;= 19，从ResourcesManager中拿到mActiveResources变量，是个持有Resources的ArrayMap，赋值给references，Android N中该变量叫做mResourceReferences</li>
 <li>SDK &lt; 19，从ActivityThread中获取mActiveResources，是个HashMap持有Resources，赋值给references</li>
@@ -460,9 +467,10 @@
 <ul>
 <li>不支持及时生效，下发补丁需要重启生效，MultiDex方案决定的</li>
 <li>占用ROM空间较大，这点空间在如今的手机大ROM下也不算个事</li>
+<li>对加固支持不太好</li>
 </ul>
-<p>如果你正在考虑接入热补丁，那么强烈推荐你使用Tinker，地精修补匠，带你无限刷新！</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286384&amp;idx=1&amp;sn=f1aff31d6a567674759be476bcd12549&amp;scene=4#wechat_redirect" target="_blank" rel="external">微信Tinker的一切都在这里，包括源码(一)</a><br><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286341&amp;idx=1&amp;sn=054d595af6e824cbe4edd79427fc2706&amp;scene=0" target="_blank" rel="external">Android N混合编译与对热补丁影响解析</a><br><a href="https://www.zybuluo.com/dodola/note/554061" target="_blank" rel="external">Tinker Dexdiff算法解析</a><br><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a><br><a href="https://segmentfault.com/a/1190000004062880" target="_blank" rel="external">Android动态加载基础 ClassLoader工作机制</a></p>
+<p>总结下来Tinker是一种基于单ClassLoader加载多dex方案的热补丁框架，兼容性做的比较好，功能强大。如果你正在考虑接入热补丁，那么强烈推荐你使用Tinker，地精修补匠，带你无限刷新！</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286384&amp;idx=1&amp;sn=f1aff31d6a567674759be476bcd12549&amp;scene=4#wechat_redirect" target="_blank" rel="external">微信Tinker的一切都在这里，包括源码(一)</a><br><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286341&amp;idx=1&amp;sn=054d595af6e824cbe4edd79427fc2706&amp;scene=0" target="_blank" rel="external">Android N混合编译与对热补丁影响解析</a><br><a href="https://www.zybuluo.com/dodola/note/554061" target="_blank" rel="external">Tinker Dexdiff算法解析</a><br><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a><br><a href="https://segmentfault.com/a/1190000004062880" target="_blank" rel="external">Android动态加载基础 ClassLoader工作机制</a><br><a href="http://blog.csdn.net/luoshengyang/article/details/8791064" target="_blank" rel="external">Android应用程序资源管理器（Asset Manager）的创建过程分析</a></p>
 <p>本文地址 <a href="http://w4lle.github.io/2016/12/16/tinker/">http://w4lle.github.io/2016/12/16/tinker/</a> </p>
 
 	
@@ -475,6 +483,7 @@
 
                 <!-- Post Comments -->
                 
+                    
     <!-- 使用多说评论 -->
     <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
 <style>
@@ -492,13 +501,14 @@
     <!-- 多说评论框 start -->
         <div class="ds-thread" 
             data-thread-key="2016/12/16/tinker/" 
-            data-url="http://w4lle.github.io//2016/12/16/tinker/index.html"
+            data-url="http://w4lle.github.io/2016/12/16/tinker/"
             data-title="Android热补丁之Tinker原理解析"></div>
     <!-- 多说评论框 end -->
 </div>
 
 
 
+                
             </div>
 
             <!-- Post Prev & Next Nav -->
@@ -739,13 +749,6 @@ It will not impact the appearance and can give developers a lot of support :)
         <span class="visuallyhidden">Github</span>
     </button></a>
     
-
-        <!-- CSDN -->
-    
-    <a href="http://blog.csdn.net/hlglinglong" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-csdn.png);">
-        <span class="visuallyhidden">CSDN</span>
-    </button></a>
-    
 </div>
 
 
@@ -782,10 +785,11 @@ It will not impact the appearance and can give developers a lot of support :)
 			</div>
 		</div>
 	
-
+    
 </footer>
                 
 				<!-- Import File -->
+<script src="/js/highlight.min.js" type="text/javascript"></script>
 <script src="/js/js.min.js" type="text/javascript"></script>
 <script src="/js/nprogress.js" type="text/javascript"></script>
 
@@ -847,11 +851,14 @@ It will not impact the appearance and can give developers a lot of support :)
 
 <!-- Window Load-->
 <script>
-    // Post_Toc parent position fixed
     $(window).load(function() {
+        // Post_Toc parent position fixed
         $(".post-toc-wrap").parent(".mdl-menu__container").css("position", "fixed");
     });
 </script>
+
+<!-- MathJax Load-->
+
             </main>
         </div>
 		

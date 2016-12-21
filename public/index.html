@@ -157,6 +157,8 @@
 
 	<script src="/js/jquery.min.js" type="text/javascript"></script>
 	
+	<link rel="stylesheet" href="/css/highlight/solarized-white.css" type="text/css">
+	
 	<!-- UC Browser Compatible-->
 	<script>
 		var agent = navigator.userAgent.toLowerCase();
@@ -282,11 +284,24 @@
             <span class="visuallyhidden">show menu</span>
         </button>
         <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="menubtn">
-            <a class="index_share-link" href="/atom.xml">
+            
+            <!-- All Site UV -->
+            <a class="index_share-link" href="#">
                 <li class="mdl-menu__item mdl-js-ripple-effect">
-                    文章 RSS
+                    <span id="busuanzi_container_site_uv">
+                        <span id="busuanzi_value_site_uv"></span>&nbsp;浏览量
+                    </span>
                 </li>
             </a>
+            
+            
+            
+                <a class="index_share-link" href="/atom.xml">
+                    <li class="mdl-menu__item mdl-js-ripple-effect">
+                        文章 RSS
+                    </li>
+                </a>
+            
             <a class="index_share-link" href="https://twitter.com/intent/tweet?text=w4lle&#39;s Notes&url=http://w4lle.github.io/&via=w4lle" target="_blank">
                 <li class="mdl-menu__item mdl-js-ripple-effect">
                     分享到 Twitter
@@ -307,6 +322,7 @@
 </div>
 
 	
+    <div class="locate-thumbnail-symbol"></div>
     
     
 		
@@ -326,7 +342,7 @@
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          本文分析版本  93ecc9351367badc02a91fac25764bee50e6e6a6项目地址： Tinker
+            本文分析版本  93ecc9351367badc02a91fac25764bee50e6e6a6项目地址： Tinker
 
 背景在今年的MDCC大会上，微信开发团队宣布正式开源Tinker，在这之前微信团队已经发出过一些Tinker的相关文章，说实话在开源之前我们还是相当期待Tinker开源的，一方面是因为之前使用的热补丁一直存在一些兼容性问题，另一方面也好奇Tinker的实现方案。
         
@@ -390,7 +406,7 @@
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          快捷键整理了下常用的快捷键因为我用AndroidStudio的vim插件，所以在编辑这块没有整理太多。需要的同学可以自己学些下。
+            快捷键整理了下常用的快捷键因为我用AndroidStudio的vim插件，所以在编辑这块没有整理太多。需要的同学可以自己学些下。
 熟记这些快捷键 + vim = 基本不用鼠标 = 提升效率50%
         
         &nbsp;&nbsp;&nbsp;
@@ -453,7 +469,7 @@
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          背景之前的底层网络...
+            背景之前的底层网络...
         
         &nbsp;&nbsp;&nbsp;
         <span>
@@ -515,7 +531,7 @@
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          背景新项目的网络库已经由Volley切到了Retrofit，配合Rxjava + Dagger2 + CleanArchitecture ，有效的将项目解耦和，各个层次职责更清晰。依赖注入和注解、动态代理极大的简化了网络请求，开发更高效。
+            背景新项目的网络库已经由Volley切到了Retrofit，配合Rxjava + Dagger2 + CleanArchitecture ，有效的将项目解耦和，各个层次职责更清晰。依赖注入和注解、动态代理极大的简化了网络请求，开发更高效。
 项目中经常会有上传文件的需求，特别是上传图片。上传图片通常有两种方式：
 
 bitmap通过Base64转为String，这种方式对于客户端最友好，但是对于服务端要复杂些
@@ -583,7 +599,7 @@ multipart/form-data 方式
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          
+            
         
         &nbsp;&nbsp;&nbsp;
         <span>
@@ -647,7 +663,7 @@ multipart/form-data 方式
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          
+            
         
         &nbsp;&nbsp;&nbsp;
         <span>
@@ -711,7 +727,7 @@ multipart/form-data 方式
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          进程保活
+            进程保活
         
         &nbsp;&nbsp;&nbsp;
         <span>
@@ -775,7 +791,7 @@ multipart/form-data 方式
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          Wikipedia: 快速排序是由东尼霍尔所发展的一种排序算法。在平均状况下，排序n个项目要Ο(n log n)次比较。 ...
+            Wikipedia: 快速排序是由东尼霍尔所发展的一种排序算法。在平均状况下，排序n个项目要Ο(n log n)次比较。 ...
         
         &nbsp;&nbsp;&nbsp;
         <span>
@@ -839,7 +855,7 @@ multipart/form-data 方式
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          前言计步越来越成为...
+            前言计步越来越成为...
         
         &nbsp;&nbsp;&nbsp;
         <span>
@@ -903,7 +919,7 @@ multipart/form-data 方式
     <!-- Post Excerpt -->
     <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
         
-          问题由于升级
+            问题由于升级
         
         &nbsp;&nbsp;&nbsp;
         <span>
@@ -959,7 +975,7 @@ multipart/form-data 方式
     
     var randomNum;
     
-    var locatePost = $(".something-else").next();
+    var locatePost = $(".locate-thumbnail-symbol").next();
     for(var i=0; i < 10; i++){
         
         randomNum = Math.floor(Math.random() * 5 + 1);
@@ -1191,13 +1207,6 @@ It will not impact the appearance and can give developers a lot of support :)
         <span class="visuallyhidden">Github</span>
     </button></a>
     
-
-        <!-- CSDN -->
-    
-    <a href="http://blog.csdn.net/hlglinglong" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-csdn.png);">
-        <span class="visuallyhidden">CSDN</span>
-    </button></a>
-    
 </div>
 
 
@@ -1234,10 +1243,11 @@ It will not impact the appearance and can give developers a lot of support :)
 			</div>
 		</div>
 	
-
+    
 </footer>
                 
 				<!-- Import File -->
+<script src="/js/highlight.min.js" type="text/javascript"></script>
 <script src="/js/js.min.js" type="text/javascript"></script>
 <script src="/js/nprogress.js" type="text/javascript"></script>
 
@@ -1299,11 +1309,14 @@ It will not impact the appearance and can give developers a lot of support :)
 
 <!-- Window Load-->
 <script>
-    // Post_Toc parent position fixed
     $(window).load(function() {
+        // Post_Toc parent position fixed
         $(".post-toc-wrap").parent(".mdl-menu__container").css("position", "fixed");
     });
 </script>
+
+<!-- MathJax Load-->
+
             </main>
         </div>
 		
