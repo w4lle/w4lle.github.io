@@ -189,7 +189,7 @@
     <link href="http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/"/>
     <id>http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/</id>
     <published>2016-12-14T10:47:01.000Z</published>
-    <updated>2016-12-15T02:15:15.000Z</updated>
+    <updated>2016-12-23T02:27:54.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;快捷键&quot;&gt;&lt;a href=&quot;#快捷键&quot; class=&quot;headerlink&quot; title=&quot;快捷键&quot;&gt;&lt;/a&gt;快捷键&lt;/h1&gt;&lt;p&gt;整理了下常用的快捷键&lt;br&gt;因为我用AndroidStudio的vim插件，所以在编辑这块没有整理太多。&lt;br&gt;需要的同学可以自己学些下。&lt;/p&gt;
 &lt;p&gt;熟记这些快捷键 + vim = 基本不用鼠标 = 提升效率50%&lt;/p&gt;
@@ -221,6 +221,7 @@
 &lt;li&gt;cmd + ,                  打开设置&lt;/li&gt;
 &lt;li&gt;cmd + down               打开项目设置&lt;/li&gt;
 &lt;li&gt;cmd + l                  跳转到指定行&lt;/li&gt;
+&lt;li&gt;F2                       跳转到下一个报错的位置&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;编辑&quot;&gt;&lt;a href=&quot;#编辑&quot; class=&quot;headerlink&quot; title=&quot;编辑&quot;&gt;&lt;/a&gt;编辑&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;cmd + shift + enter      语句补全&lt;/li&gt;

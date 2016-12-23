@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/</loc>
+    
+    <lastmod>2016-12-23T02:27:54.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://w4lle.github.io/2016/12/16/tinker/</loc>
     
     <lastmod>2016-12-21T06:10:59.000Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>http://w4lle.github.io/2016/03/13/AndFix%E6%94%AF%E6%8C%81multidex%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
     
     <lastmod>2016-12-19T02:42:28.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/</loc>
-    
-    <lastmod>2016-12-15T02:15:15.000Z</lastmod>
     
   </url>
   
