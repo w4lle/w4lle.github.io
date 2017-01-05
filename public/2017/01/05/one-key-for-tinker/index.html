@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <!-- Title -->
+    
+    <title>
+        一键接入Tinker | w4lle&#39;s Notes
+    </title>
+    
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+    
+    <!-- Meta & INfo -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <meta name="description" content="生活不止眼前的苟且，还有诗，和远方。">
+    <meta name="keywords" content="Android">
+    
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+    
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+    
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.github.io">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="一键接入Tinker | w4lle&#39;s Notes">
+    <meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
+    
+     <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+        
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+    
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="/css/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.min.css" type="text/css">
+    <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+	body, html{
+		font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+	}
+	
+    a{
+        color: #00838F
+    }
+    
+    .mdl-card__media,
+    #search-label,
+    #search-form-label:after,
+    #scheme-Paradox .hot_tags-count,
+    #scheme-Paradox .sidebar_archives-count,
+    #scheme-Paradox .sidebar-colored .sidebar-header,
+    #scheme-Paradox .sidebar-colored .sidebar-badge{
+        background-color: #0097A7 !important
+    }
+    
+	/* Sidebar User Drop Down Menu Text Color */
+	#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus{
+        color: #0097A7 !important
+    }
+    
+    #post_entry-right-info,
+    .sidebar-colored .sidebar-nav li:hover > a,
+    .sidebar-colored .sidebar-nav li:hover > a i,
+    .sidebar-colored .sidebar-nav li > a:hover,
+    .sidebar-colored .sidebar-nav li > a:hover i,
+    .sidebar-colored .sidebar-nav li > a:focus i,
+    .sidebar-colored .sidebar-nav > .open > a,
+    .sidebar-colored .sidebar-nav > .open > a:hover,
+    .sidebar-colored .sidebar-nav > .open > a:focus,
+    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a{
+        color: #0097A7 !important
+    }
+    
+    .toTop{
+        background: #757575 !important
+    }
+		
+	.material-layout .material-post>.material-nav,
+	.material-layout .material-index>.material-nav,
+	.material-nav a{
+		color: #757575;
+	}
+		
+	#scheme-Paradox .MD-burger-layer {
+		background-color: #757575;
+	}
+
+	#scheme-Paradox #post-toc-trigger-btn{
+		color: #757575;
+	}
+	
+	.post-toc a:hover{
+		color: #00838F;
+		text-decoration: underline;
+	}
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+        body{
+            background-color: #F5F5F5
+        }
+		
+		/* blog_info bottom background */
+        #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+            background-color: #fff;
+        }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+        .fade {
+            transition: all 800ms linear;
+            -webkit-transform: translate3d(0,0,0);
+            -moz-transform: translate3d(0,0,0);
+            -ms-transform: translate3d(0,0,0);
+            -o-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
+            opacity: 1;
+        }
+
+        .fade.out{
+            opacity: 0;
+        }
+    </style>
+
+	<script src="/js/jquery.min.js" type="text/javascript"></script>
+	
+	<link rel="stylesheet" href="/css/highlight/solarized-white.css" type="text/css">
+	
+	<!-- UC Browser Compatible-->
+	<script>
+		var agent = navigator.userAgent.toLowerCase();
+		if(agent.indexOf('ucbrowser')>0) {
+			document.write('<link rel="stylesheet" href="/css/uc.css" type="text/css">');
+		   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+		}
+	</script>
+    
+    <!-- Custom Head -->
+    
+</head>
+	
+	
+
+    <body id="scheme-Paradox">
+
+		
+        <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+				
+			
+			
+            <!-- Main Container -->
+            <main class="material-layout__content" id="main">
+				
+                <!-- Top Anchor -->
+                <div id="top"></div>
+				
+				
+                <!-- Hamburger Button -->
+                <button class="MD-burger-icon sidebar-toggle">
+                    <span class="MD-burger-layer"></span>
+                </button>
+				
+				
+                <!-- Post TOC -->
+
+    
+	<!-- Back Button -->
+<!--
+	<div class="material-back" id="backhome-div" tabindex="0">
+		<a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="#" onclick="window.history.back();return false;" target="_self" role="button" data-upgraded=",MaterialButton,MaterialRipple">
+			<i class="material-icons" role="presentation">arrow_back</i>
+			<span class="mdl-button__ripple-container">
+				<span class="mdl-ripple"></span>
+			</span>
+		</a>
+	</div>			
+-->
+	<!-- Left aligned menu below button -->
+	<button id="post-toc-trigger-btn"
+			class="mdl-button mdl-js-button mdl-button--icon">
+	  <i class="material-icons">format_list_numbered</i>
+	</button>
+
+	<ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+		for="post-toc-trigger-btn">
+			
+			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#InstantRun"><span class="post-toc-number">2.</span> <span class="post-toc-text">InstantRun</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实现"><span class="post-toc-number">3.</span> <span class="post-toc-text">实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#打包"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">打包</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行时替换Application"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">运行时替换Application</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#兼容性"><span class="post-toc-number">4.</span> <span class="post-toc-text">兼容性</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">5.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考</span></a></li></ol>
+		
+<!--			<li class="mdl-menu__item">Some Action</li>-->
+	</ul>
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+		
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+	<!-- Paradox Post Header -->
+	
+		<!-- Custom Thumbnail -->
+		<div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://7xs23g.com1.z0.glb.clouddn.com/tinker2.jpeg)">
+	
+        <p class="article-headline-p">
+            一键接入Tinker
+        </p>
+    </div>
+
+	
+
+				
+				
+					<!-- Paradox Post Info -->
+					<div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+    
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>w4lle</strong>
+        <span>1月 05, 2017</span>
+    </div>
+    
+    <div class="section-spacer"></div>
+	
+    <!-- Favorite -->
+<!--
+    <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button>
+-->
+    
+    <!-- Tags (bookmark) -->
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Android/">Android</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Tinker/">Tinker</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/热补丁/">热补丁</a>
+    </ul>
+    
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    
+    
+    
+    <!-- Busuanzi Views -->
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            阅读量 <span id="busuanzi_value_page_pv"></span>
+        </li>
+    </a>
+    
+    
+    <!-- Share Twitter -->
+    <a class="post_share-link" href="https://twitter.com/intent/tweet?text=一键接入Tinker&url=http://w4lle.github.io//2017/01/05/one-key-for-tinker/index.html&via=w4lle" target="_blank">
+        <li class="mdl-menu__item">
+            分享到 Twitter
+        </li>
+    </a>
+    
+    <!-- Share Google+ -->
+    <a class="post_share-link" href="https://plus.google.com/share?url=http://w4lle.github.io//2017/01/05/one-key-for-tinker/index.html" target="_blank">
+        <li class="mdl-menu__item">
+            分享到 Google+
+        </li>
+    </a>
+    
+    <!-- Share Weibo -->
+    <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=一键接入Tinker&url=http://w4lle.github.io//2017/01/05/one-key-for-tinker/index.html&pic=&searchPic=false&style=simple" target="_blank">
+        <li class="mdl-menu__item">
+            分享到微博
+        </li>
+    </a>
+</ul>
+</div>
+				
+
+                <!-- Post Content -->
+                <div id="post-content" class="markdown-Github mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+	
+		<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>Tinker开源挺长时间了，使用的开发者也越来越多，对于一些小白开发者来说对接Tinker的成本还是挺高的，其中主要因素还是不能理解为什么Application要修改成ApplicationLike，以及改造后对项目中使用Application的地方也要同步修改。</p>
+<p>在上篇文章<a href="http://w4lle.github.io/2016/12/16/tinker/">Android热补丁之Tinker原理解析</a>中我们已经讲解了这样做的目的以及Tinker的加载补丁的流程，本篇文章主要讲一下一键接入Tinker的实现思路。</p>
+<h1 id="InstantRun"><a href="#InstantRun" class="headerlink" title="InstantRun"></a>InstantRun</h1><p>我们的目的是要实现不修改Application达到替换Application的效果，在这篇文章<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a>中，详细讲述了如何动态替换Application，总结起来就两步：</p>
+<ol>
+<li>打包时替换Application标签，插入BootstrapApplication</li>
+<li>运行时hook系统api，将BootstrapApplication换回MyApplication</li>
+</ol>
+<p>那么，我们依然可以用这套方案来实现Tinker的一键接入，动态替换Application。</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>有了思路我们就可以敲代码了。</p>
+<h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>打包时我们要改变Manifest中Application的标签值，可以通过自定义Gradle插件来实现，关键代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@TaskAction</span></span><br><span class="line">    <span class="function">def <span class="title">updateManifest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        def ns = <span class="keyword">new</span> Namespace(<span class="string">"http://schemas.android.com/apk/res/android"</span>, <span class="string">"android"</span>)</span><br><span class="line">        def xml = <span class="keyword">new</span> XmlParser().parse(<span class="keyword">new</span> InputStreamReader(<span class="keyword">new</span> FileInputStream(manifestPath), <span class="string">"utf-8"</span>))</span><br><span class="line"></span><br><span class="line">        def application = xml.application[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> (application) &#123;</span><br><span class="line">            def metaDataTags = application[<span class="string">'meta-data'</span>]</span><br><span class="line"></span><br><span class="line">            String rawApplicationName = application.attributes()[ns.name]</span><br><span class="line">            metaDataTags.findAll &#123;</span><br><span class="line">                it.attributes()[ns.name].equals(TINKER_APPLICATION)</span><br><span class="line">            &#125;.each &#123;</span><br><span class="line">                it.parent().remove(it)</span><br><span class="line">            &#125;</span><br><span class="line">            application.appendNode(<span class="string">'meta-data'</span>, [(ns.name): TINKER_APPLICATION, (ns.value): rawApplicationName])</span><br><span class="line">            application.attributes()[ns.name] = TINKER_APPLICATION_VALUE</span><br><span class="line">            project.logger.error(<span class="string">"tinkerpatch change application name from $&#123;rawApplicationName&#125; to $&#123;TINKER_APPLICATION_VALUE&#125;"</span>)</span><br><span class="line"></span><br><span class="line">            def printer = <span class="keyword">new</span> XmlNodePrinter(<span class="keyword">new</span> PrintWriter(manifestPath, <span class="string">"utf-8"</span>))</span><br><span class="line">            printer.preserveWhitespace = <span class="keyword">true</span></span><br><span class="line">            printer.print(xml)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>打包出的apk中的AndroidManifest.xml文件基本是这样的</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;application android:name="com.w4lle.onekeytinker.BootstrapApplication"&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;meta-data android:name="ONEKEY_TINKER_APPLICATION" android:value="com.w4lle.onekeytinker.App"/&gt;</span><br><span class="line">  &lt;/application&gt;</span><br></pre></td></tr></table></figure>
+<p>其中的App是项目中原有的Application，BootstrapApplication是后期我们插入的Application。第一步完成。</p>
+<p>另外说一句，这个Gradle插件的顺序应该是打包工具生成Manifest之后，Tinker相关Task之前。</p>
+<h2 id="运行时替换Application"><a href="#运行时替换Application" class="headerlink" title="运行时替换Application"></a>运行时替换Application</h2><p>这一步的主要工作也是分两步，第一就是解析Manifest文件，拿到realApplication(App)和BootstrapApplication；然后hook 系统完成替换。</p>
+<p>InstantRun中的替换实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">monkeyPatchApplication</span><span class="params">(@Nullable Context context,</span><br><span class="line">                                              @Nullable Application bootstrap,</span><br><span class="line">                                              @Nullable Application realApplication)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// Find the ActivityThread instance for the current thread</span></span><br><span class="line">            Class&lt;?&gt; activityThread = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">            Object currentActivityThread = getActivityThread(context, activityThread);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Find the mInitialApplication field of the ActivityThread to the real application</span></span><br><span class="line">            Field mInitialApplication = activityThread.getDeclaredField(<span class="string">"mInitialApplication"</span>);</span><br><span class="line">            mInitialApplication.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            Application initialApplication = (Application) mInitialApplication.get(currentActivityThread);</span><br><span class="line">            <span class="keyword">if</span> (realApplication != <span class="keyword">null</span> &amp;&amp; initialApplication == bootstrap) &#123;</span><br><span class="line">            <span class="comment">//**2.替换掉ActivityThread.mInitialApplication**</span></span><br><span class="line">                mInitialApplication.set(currentActivityThread, realApplication);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Replace all instance of the stub application in ActivityThread#mAllApplications with the</span></span><br><span class="line">            <span class="comment">// real one</span></span><br><span class="line">            <span class="keyword">if</span> (realApplication != <span class="keyword">null</span>) &#123;</span><br><span class="line">                Field mAllApplications = activityThread.getDeclaredField(<span class="string">"mAllApplications"</span>);</span><br><span class="line">                mAllApplications.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                List&lt;Application&gt; allApplications = (List&lt;Application&gt;) mAllApplications</span><br><span class="line">                        .get(currentActivityThread);</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; allApplications.size(); i++) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (allApplications.get(i) == bootstrap) &#123;</span><br><span class="line">                    <span class="comment">//**1.替换掉ActivityThread.mAllApplications**</span></span><br><span class="line">                        allApplications.set(i, realApplication);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Figure out how loaded APKs are stored.</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// API version 8 has PackageInfo, 10 has LoadedApk. 9, I don't know.</span></span><br><span class="line">            Class&lt;?&gt; loadedApkClass;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                loadedApkClass = Class.forName(<span class="string">"android.app.LoadedApk"</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                loadedApkClass = Class.forName(<span class="string">"android.app.ActivityThread$PackageInfo"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            Field mApplication = loadedApkClass.getDeclaredField(<span class="string">"mApplication"</span>);</span><br><span class="line">            mApplication.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 10 doesn't have this field, 14 does. Fortunately, there are not many Honeycomb devices</span></span><br><span class="line">            <span class="comment">// floating around.</span></span><br><span class="line">            Field mLoadedApk = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                mLoadedApk = Application.class.getDeclaredField(<span class="string">"mLoadedApk"</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">                <span class="comment">// According to testing, it's okay to ignore this.</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Enumerate all LoadedApk (or PackageInfo) fields in ActivityThread#mPackages and</span></span><br><span class="line">            <span class="comment">// ActivityThread#mResourcePackages and do two things:</span></span><br><span class="line">            <span class="comment">//   - Replace the Application instance in its mApplication field with the real one</span></span><br><span class="line">            <span class="comment">//   - Set Application#mLoadedApk to the found LoadedApk instance</span></span><br><span class="line">            <span class="keyword">for</span> (String fieldName : <span class="keyword">new</span> String[]&#123;<span class="string">"mPackages"</span>, <span class="string">"mResourcePackages"</span>&#125;) &#123;</span><br><span class="line">                Field field = activityThread.getDeclaredField(fieldName);</span><br><span class="line">                field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                Object value = field.get(currentActivityThread);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> (Map.Entry&lt;String, WeakReference&lt;?&gt;&gt; entry :</span><br><span class="line">                        ((Map&lt;String, WeakReference&lt;?&gt;&gt;) value).entrySet()) &#123;</span><br><span class="line">                    Object loadedApk = entry.getValue().get();</span><br><span class="line">                    <span class="keyword">if</span> (loadedApk == <span class="keyword">null</span>) &#123;</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (mApplication.get(loadedApk) == bootstrap) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (realApplication != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        <span class="comment">//**3.替换掉mApplication**</span></span><br><span class="line">                            mApplication.set(loadedApk, realApplication);</span><br><span class="line">                        &#125;</span><br><span class="line">                        </span><br><span class="line">                        <span class="keyword">if</span> (realApplication != <span class="keyword">null</span> &amp;&amp; mLoadedApk != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        <span class="comment">//**4.替换掉mLoadedApk**</span></span><br><span class="line">                            mLoadedApk.set(realApplication, loadedApk);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>主要做了两件事：</p>
+<ol>
+<li>替换Application<ul>
+<li>baseContext.mPackageInfo.mApplication 代码3处</li>
+<li>baseContext.mPackageInfo.mActivityThread.mInitialApplication 代码2处</li>
+<li>baseContext.mPackageInfo.mActivityThread.mAllApplications 代码1处</li>
+</ul>
+</li>
+<li>替换mLoadedApk对象，代码4处</li>
+</ol>
+<p>详细请查看<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a></p>
+<p>做完上面这两步这样就可以实现一键接入了。</p>
+<h1 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h1><p>在上篇文章中我们提到，由于该方案大量hook系统api，在国内Android碎片化如此严重的市场环境下，该方案兼容性有一些问题，大概有 1/1w的概率会出现替换失败的问题，如果替换失败，那么在系统中运行的Application还是BootstrapApplication，而我们App中的Application已经没有了Application的生命周期和作用。</p>
+<p>所以我们要在失败catch中调用下Application的生命周期方法以保证程序能够正常初始化启动起来。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">  e = <span class="keyword">true</span>;</span><br><span class="line">  realApplication.onCreate();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConfigurationChanged</span><span class="params">(Configuration paramConfiguration)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ((e) &amp;&amp; (realApplication != <span class="keyword">null</span>)) &#123;</span><br><span class="line">    realApplication.onConfigurationChanged(paramConfiguration);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">super</span>.onConfigurationChanged(paramConfiguration);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLowMemory</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ((e) &amp;&amp; (realApplication != <span class="keyword">null</span>)) &#123;</span><br><span class="line">    realApplication.onLowMemory();</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">super</span>.onLowMemory();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@TargetApi</span>(<span class="number">14</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTrimMemory</span><span class="params">(<span class="keyword">int</span> paramInt)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ((e) &amp;&amp; (realApplication != <span class="keyword">null</span>)) &#123;</span><br><span class="line">    realApplication.onTrimMemory(paramInt);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">super</span>.onTrimMemory(paramInt);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTerminate</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ((e) &amp;&amp; (realApplication != <span class="keyword">null</span>)) &#123;</span><br><span class="line">    realApplication.onTerminate();</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">super</span>.onTerminate();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这么做虽然能保证App能启动，但是实际上还会有隐性问题存在。比如App中有如下代码<code>((App) getApplication()).xxx();</code>，那么在替换失败的情况下可能就会崩了， 因为<code>getApplication()</code>得到的是BootstrapApplication，强转为<code>App</code>类型肯定就挂了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>整体思路大概讲清楚了，虽然这种方案接入成本低，但是兼容性问题是个很麻烦的事情，说不定啥时候就崩了。推荐大家还是使用Tinker自有的接入方案。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a><br><a href="http://www.tinkerpatch.com/" target="_blank" rel="external">TinkerPatch</a></p>
+<p>本文地址 <a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/">http://w4lle.github.io/2017/01/05/one-key-for-tinker/</a> </p>
+
+	
+	
+	
+	
+</div>
+				
+				
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用多说评论 -->
+    <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
+<style>
+    #ds-thread #ds-reset .ds-post-button{
+        background-color: #0097A7 !important;
+    }
+    #ds-wrapper #ds-reset .ds-icons-32{
+        background-color: #0097A7 !important;
+    }
+    #ds-reset .ds-highlight {
+        color: #0097A7 !important;
+    }
+</style>
+<div id="comments">
+    <!-- 多说评论框 start -->
+        <div class="ds-thread" 
+            data-thread-key="2017/01/05/one-key-for-tinker/" 
+            data-url="http://w4lle.github.io/2017/01/05/one-key-for-tinker/"
+            data-title="一键接入Tinker"></div>
+    <!-- 多说评论框 end -->
+</div>
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/12/16/tinker/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+        </div>
+    </div>
+
+				
+				
+					<!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay "></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored  sidebar-fixed-left" role="navigation">
+	<div id="sidebar-main">
+	    <!-- Sidebar Header -->
+		<div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+    <i class="material-icons">clear_all</i>
+    <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="w4lle's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        wanglinglong.me@gmail.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+		<!-- Sidebar Navigation  -->
+		<ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+			
+                <li>
+                    <a href="mailto:wanglinglong.me@gmail.com" target="_blank" title="Email Me">
+						<i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    <li id="sidebar-first-li">
+        <a href="/" target="_self">
+            <i class="material-icons sidebar-material-icons">home</i>
+             主页
+        </a>
+    </li>
+
+    <!-- I'm Feeling Lucky -->
+<!--
+    <li class="dropdown">
+        <a href="" target="_self">
+            <i class="material-icons sidebar-material-icons">explore</i>
+             sidebar.imlucky
+        </a>
+    </li>
+-->
+
+	
+    <!-- Archives  -->
+    <li class="dropdown">
+        <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+            <i class="material-icons sidebar-material-icons">inbox</i>
+             归档
+            <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+            <a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+        </ul>
+    </li>
+
+    <!-- Divider -->
+    <li class="divider"></li>
+
+
+    <!-- Pages  -->
+	
+		<li>
+			<a href="/guestbook" title="最近访客">
+				最近访客
+			</a>
+		</li>
+	
+		<li>
+			<a href="/tags" title="标签">
+				标签
+			</a>
+		</li>
+	
+
+    <!-- Article Numebr  -->
+    <li>
+        <a href="/archives">
+             文章总数
+             <span class="sidebar-badge">25</span>
+        </a>
+    </li>
+</ul>
+
+		<!-- Sidebar Divider -->
+		<div class="sidebar-divider"></div>
+
+		<!-- Sidebar Footer -->
+		<!-- 
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持。 :) 
+-->
+
+<!-- Theme Material -->
+<a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+	<div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+		主题 - Material
+		<span class="sidebar-badge badge-circle">i</span>
+	</div>
+</a>
+
+<!-- Help & Support -->
+<!--
+<a href="mailto:hiviosey@gmail.com" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+		sidebar.help
+		<span class="mdl-button__ripple-container">
+			<span class="mdl-ripple"></span>
+		</span>
+	</div>
+</a>
+-->
+
+<!-- Feedback -->
+<!--
+<a href="https://github.com/viosey/hexo-theme-material/issues" target="_blank" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+         sidebar.feedback
+                    <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></div>
+</a>
+-->
+
+<!-- Abount Theme -->
+<!--
+<a href="https://blog.viosey.com/index.php/Material.html" target="_blank" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+         sidebar.about_theme
+        <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></div>
+</a>-->
+
+	</div>
+    
+    <!-- Sidebar Sponsor -->
+    
+
+
+</aside>
+
+				
+				
+				
+					<!-- Footer Top Button -->
+					<div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+				
+				
+				<!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+	
+	
+		<!-- Paradox Footer Left Section -->
+		<div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+    
+    
+    <!-- Facebook -->
+    
+    
+    
+    <!-- Google + -->
+    
+    
+    
+    <!-- Weibo -->
+    
+    <a href="http://weibo.com/u/2274417881" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-weibo.png);">
+        <span class="visuallyhidden">Weibo</span>
+    </button></a>
+    
+    
+    <!-- Instagram -->
+    
+    
+    
+    <!-- Tumblr -->
+    
+    
+    
+    <!-- Github -->
+    
+    <a href="https://github.com/w4lle" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-github.png);">
+        <span class="visuallyhidden">Github</span>
+    </button></a>
+    
+
+    <!-- CSDN -->
+    
+    <a href="http://blog.csdn.net/hlglinglong" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-csdn.png);">
+        <span class="visuallyhidden">CSDN</span>
+    </button></a>
+    
+</div>
+
+
+		<!--Copyright-->
+		<div id="copyright">Copyright&nbsp;©&nbsp;<script type="text/javascript">var fd = new Date();document.write(fd.getFullYear());</script>&nbsp;w4lle's Notes
+
+		<div>
+	    <!-- Busuanzi -->
+		
+	    <script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+		
+		<div>
+		总访问量 <span id="busuanzi_value_site_pv"></span> 
+		你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+		</div>
+		</div>
+
+		</div>
+
+		<!-- Paradox Footer Right Section -->
+
+		<!-- 
+		I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+		It will not impact the appearance and can give developers a lot of support :)
+
+		很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+		它不会影响美观并可以给开发者很大的支持。 :) 
+		-->
+
+		<div class="mdl-mini-footer--right-section">
+			<div>
+				<div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+				<div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+			</div>
+		</div>
+	
+    
+</footer>
+                
+				<!-- Import File -->
+<script src="/js/highlight.min.js" type="text/javascript"></script>
+<script src="/js/js.min.js" type="text/javascript"></script>
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    
+    $('#nprogress .bar').css({
+        'background': '#FF4081'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#FF4081',
+        'border-left-color': '#FF4081'
+    });
+    
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <!-- 多说公共 js 代码 start -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';ds.async = true;
+            ds.src = 'https://static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0] 
+             || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+    <!-- 多说公共 js 代码 end -->
+
+
+
+
+<!-- Swiftye -->
+
+
+<!-- Local Search-->
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $(".post-toc-wrap").parent(".mdl-menu__container").css("position", "fixed");
+    });
+</script>
+
+<!-- MathJax Load-->
+
+            </main>
+        </div>
+		
+    </body>
+		
+	
+</html>

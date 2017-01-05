@@ -48,6 +48,7 @@ thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/%E6%95%88%E7%8E%87.jpeg
  - cmd + ,                  打开设置
  - cmd + down               打开项目设置
  - cmd + l                  跳转到指定行
+ - F2                       跳转到下一个报错的位置
 
 ## 编辑
 
