@@ -191,7 +191,7 @@ public static void monkeyPatchApplication(@Nullable Context context,
 
   public void onConfigurationChanged(Configuration paramConfiguration)
   {
-    if ((e) && (realApplication != null)) {
+    if (e && realApplication != null) {
       realApplication.onConfigurationChanged(paramConfiguration);
       return;
     }
@@ -200,7 +200,7 @@ public static void monkeyPatchApplication(@Nullable Context context,
 
   public void onLowMemory()
   {
-    if ((e) && (realApplication != null)) {
+    if (e && realApplication != null) {
       realApplication.onLowMemory();
       return;
     }
@@ -210,7 +210,7 @@ public static void monkeyPatchApplication(@Nullable Context context,
   @TargetApi(14)
   public void onTrimMemory(int paramInt)
   {
-    if ((e) && (realApplication != null)) {
+    if (e && realApplication != null) {
       realApplication.onTrimMemory(paramInt);
       return;
     }
@@ -219,7 +219,7 @@ public static void monkeyPatchApplication(@Nullable Context context,
 
   public void onTerminate()
   {
-    if ((e) && (realApplication != null)) {
+    if (e && realApplication != null) {
       realApplication.onTerminate();
       return;
     }
