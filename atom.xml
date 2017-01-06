@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2017-01-06T02:52:26.000Z</updated>
+  <updated>2017-01-06T14:21:19.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -14,6 +14,75 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android Things初探</title>
+    <link href="http://w4lle.github.io/2017/01/06/AndroidThings-0/"/>
+    <id>http://w4lle.github.io/2017/01/06/AndroidThings-0/</id>
+    <published>2017-01-06T09:26:47.000Z</published>
+    <updated>2017-01-06T14:21:19.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;Android Things是Google推出的全新物联网操作系统，前身是去年发布的物联网平台 Brillo。Brillo 使用 C/C++ 基于 NDK 进行开发，而Android Things使用JAVA、Android Studio、Android SDK、NDK等进行开发，另外还新增了名为&lt;code&gt;Things Support Library&lt;/code&gt;的库这个库有两个主要功能：通过多种协议和接口（GPIO、PWM、I2C、SPI、UART等）访问传感器和执行器的外围I/O API；以及一个用户驱动API（User Driver API），可以给应用程序添加新的设备驱动，用于将硬件事件注入系统，使它们可以为应用程序所用。还有，Android Things 天生支持物联网通讯协议 Weave，可让所有类型的设备能够连上云端并与其他服务如 Google Assistant 交互。Android Things目前支持三种硬件平台：Intel Edison、NXP Pico、Raspberry Pi 3。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/things0.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;简单来说，通过Android Things，开发者可以像开发Android应用一样简单地控制硬件设备。&lt;/p&gt;
+&lt;h1 id=&quot;搭建开发环境&quot;&gt;&lt;a href=&quot;#搭建开发环境&quot; class=&quot;headerlink&quot; title=&quot;搭建开发环境&quot;&gt;&lt;/a&gt;搭建开发环境&lt;/h1&gt;&lt;p&gt;硬件平台选择了树莓派3，需要准备的硬件设备：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;树莓派3开发板一个&lt;/li&gt;
+&lt;li&gt;SD卡一张，我买的32&lt;/li&gt;
+&lt;li&gt;USB插口线一条&lt;/li&gt;
+&lt;li&gt;HDMI视频输出线一条&lt;/li&gt;
+&lt;li&gt;显示器一台&lt;/li&gt;
+&lt;li&gt;有线鼠标一个&lt;/li&gt;
+&lt;li&gt;LED灯2个&lt;/li&gt;
+&lt;li&gt;杜邦线若干条&lt;/li&gt;
+&lt;li&gt;网线一条&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;然后准备把img烧入SD卡，步骤参考&lt;a href=&quot;https://developer.android.com/things/hardware/developer-kits.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官网&lt;/a&gt;和&lt;a href=&quot;https://www.raspberrypi.org/documentation/installation/installing-images/mac.md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;树莓派官网&lt;/a&gt;，我按照官网操作&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo dd bs=1m if=iot_rpi3.img of=/dev/disk2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;提示&lt;code&gt;Resource busy&lt;/code&gt;，&lt;a href=&quot;http://raspberrypi.stackexchange.com/questions/9217/resource-busy-error-when-using-dd-to-copy-disk-img-to-sd-card&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;解决方案&lt;/a&gt;如下:&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;df -h&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo diskutil unmount /dev/disk2s1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo dd bs=&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;m &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;=iot_rpi3.img of=/dev/rdisk2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;烧好后把SD卡插入开发板的卡槽里，USB线连电脑，HDMI连显示器。然后通电开机。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/things1.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/things2.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;看到这个界面就启动好了，实际上这个界面就是一个Launcher App的一个Activity IoTLauncher。&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;➜ code &amp;gt;adb shell dumpsys activity | grep &lt;span class=&quot;string&quot;&gt;&quot;mFocusedActivity&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  mFocusedActivity: ActivityRecord&amp;#123;a7148f7 u0 com.android.iotlauncher/.IoTLauncher t1&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;然后插网线，内网IP会显示在Launcher界面，然后用adb连接开发板，连wifi&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;adb connect 192.168.1.143&amp;#10;adb shell am startservice \\n    &amp;#10;-n com.google.wifisetup/.WifiSetupService \\n    &amp;#10;-a WifiSetupService.Connect \\n&amp;#10;-e boohee \\n&amp;#10;-e passphrase boohee0690apple&amp;#10;adb shell ping 8.8.8.8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;连接led灯&quot;&gt;&lt;a href=&quot;#连接led灯&quot; class=&quot;headerlink&quot; title=&quot;连接led灯&quot;&gt;&lt;/a&gt;连接led灯&lt;/h1&gt;&lt;p&gt;根据demo给的图连接led灯&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/rpi3_schematics.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;这张图给出了两根线一个插地线，一个插GPIO。&lt;br&gt;这里放上一张图展示了树莓派上对应的针脚类型和name，接下来的操作led需要name才能控制。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/gpio.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;运行程序&quot;&gt;&lt;a href=&quot;#运行程序&quot; class=&quot;headerlink&quot; title=&quot;运行程序&quot;&gt;&lt;/a&gt;运行程序&lt;/h1&gt;&lt;p&gt;官网提供了几个Demo，我们下载下来然后运行第一个Blink&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;PeripheralManagerService service = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; PeripheralManagerService();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            mLedGpio = service.openGpio(&lt;span class=&quot;string&quot;&gt;&quot;BCM5&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            mLedGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;openGpio方法中的参数就是上面提到的针脚对应的name。程序跑起来之后就可以看到每隔一秒led闪一下，挺有意思。&lt;/p&gt;
+&lt;p&gt;我们稍微改造下，写一个xml文件中有一个button，每次点击button控制led灯的状态。&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;findViewById(R.id.btn_blink).setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; View.OnClickListener() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onClick&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(View v)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            mLedGpio.setValue(!mLedGpio.getValue());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (IOException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            e.printStackTrace();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;外接鼠标，每点一下button改变一下led的亮灭。&lt;br&gt;然后再改下，插两个led灯，第二个在BCM21 &lt;code&gt;mLedGpio2 = service.openGpio(&amp;quot;BCM21&amp;quot;);&lt;/code&gt;&lt;br&gt;然后每隔1s控制两个灯的状态取反。&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;mLedGpio2.setValue(mLedGpio.getValue());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;mLedGpio.setValue(!mLedGpio.getValue());&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;效果如图，gif压缩太严重，凑合看吧。&lt;br&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/things3.gif&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;对于开发者来说，通过Android Things控制硬件真的感觉跟开发一款Android App没有太大什么区别，同样的开发工具，同样的开发环境，甚至SDK大于24的Andriod App同样可以安装到Android Things系统上；而对于NDK开发，跟Android上也是一模一样。&lt;/p&gt;
+&lt;h1 id=&quot;Android-Everywhere&quot;&gt;&lt;a href=&quot;#Android-Everywhere&quot; class=&quot;headerlink&quot; title=&quot;Android Everywhere&quot;&gt;&lt;/a&gt;Android Everywhere&lt;/h1&gt;&lt;p&gt;还记得RoyLi在做的名为Ruff的物联网平台，RoyLi是这样介绍它的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt; Ruff 让不会做硬件的软件工程师根据产品经理的创意编写应用，(软件工程师)不用关心底层实现和驱动移植问题，通过开发者建立的应用生态最终解决物联网软件落后的问题。&lt;br&gt;Ruff的目的就是要做物联网领域的Android平台，采用比较流行的JavaScript作为编程语言直接操作硬件。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;而现在Android Things已经移植到了物联网领域，Google的野心也可见一斑，其对于像Ruff这样的创业项目的冲击也可想而知。放一张2015年Google I/O大会上的旧图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/google_to.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Android有庞大的开发者支持，完善的开发工具配套，也许Android真的可以做到连接万物的可能，Android在不远的未来真的可能无处不在，乘此东风，Android开发者也可大有可为。&lt;/p&gt;
+&lt;h1 id=&quot;安全&quot;&gt;&lt;a href=&quot;#安全&quot; class=&quot;headerlink&quot; title=&quot;安全&quot;&gt;&lt;/a&gt;安全&lt;/h1&gt;&lt;p&gt;说到物联网就不得不说安全，在软件层面盗个号，个人信息被窃取可能感觉问题不大，但是对于联网的硬件来说就很可怕了，比如说门锁被破解，你家的煤气被远程控制，半夜你家电视突然响了，就问你怕不怕。&lt;/p&gt;
+&lt;p&gt;Google既然想统一IoT标准，那么IoT的安全性必须重视，因为在标准未统一之前破解某一款硬件设备性意义不大，而标准统一之后，我只要破解这个平台就搞定了一切。真心希望Google可以做到让人满意的安全性。&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://developer.android.com/things/hardware/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android Things&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://github.com/androidthings&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android Things Sample&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2017/01/06/AndroidThings-0/&quot;&gt;http://w4lle.github.io/2017/01/06/AndroidThings-0/&lt;/a&gt; &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;Android Things是Google推出的全新物联网操作系统，前身是去年发布的物联网平台 Brillo。Brillo 使用 C/C++
+    
+    </summary>
+    
+    
+      <category term="Android Things" scheme="http://w4lle.github.io/tags/Android-Things/"/>
+    
+  </entry>
   
   <entry>
     <title>一键接入Tinker</title>
@@ -1352,99 +1421,6 @@
     
     
       <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>前端基础(零)--CSS基础</title>
-    <link href="http://w4lle.github.io/2016/03/19/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E9%9B%B6-CSS%E5%9F%BA%E7%A1%80/"/>
-    <id>http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/</id>
-    <published>2016-03-19T14:52:40.000Z</published>
-    <updated>2017-01-06T01:52:17.000Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;最近跟小伙伴们在&lt;a href=&quot;ife.baidu.com&quot;&gt;百度前端技术学院&lt;/a&gt;学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。&lt;/p&gt;
-&lt;p&gt;开发工具：sublime text 3&lt;/p&gt;
-&lt;p&gt;主要插件：&lt;a href=&quot;http://docs.emmet.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Emmet&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;CSS&quot;&gt;&lt;a href=&quot;#CSS&quot; class=&quot;headerlink&quot; title=&quot;CSS&quot;&gt;&lt;/a&gt;CSS&lt;/h1&gt;&lt;h2 id=&quot;什么是CSS&quot;&gt;&lt;a href=&quot;#什么是CSS&quot; class=&quot;headerlink&quot; title=&quot;什么是CSS&quot;&gt;&lt;/a&gt;什么是CSS&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;层叠样式表 (Cascading Style Sheets)，常缩写为 CSS， 是一种 样式表&lt;br&gt;(stylesheet) 语言，用来描述 HTML、XML（包括各种 XML 语言如 SVG、XHTML）文档&lt;br&gt;的呈现。CSS 描述怎样在屏幕上渲染结构化元素。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;为什么使用CSS&quot;&gt;&lt;a href=&quot;#为什么使用CSS&quot; class=&quot;headerlink&quot; title=&quot;为什么使用CSS&quot;&gt;&lt;/a&gt;为什么使用CSS&lt;/h2&gt;&lt;p&gt;我们知道，html文件主要携带内容，虽然html也可以进行布局相关的操作，但是当浏览器的默认渲染规则不能很好的将我们定义好的布局展示出来，可能会导致显示不统一的问题，所以就将内容和表现进行分离，由CSS专门负责变现，html负责携带内容，可以很好的解除耦合，方便扩展，例如，需要全局的更新界面布局，那么也只需要修改css。可以说，css极大的提高了工作效率。就有点类似于android开发中的style，只负责配置各种view相关的属性值，而xml声明就有些类似于html，只是声明ImageView代表一个特定的view，表现形式完全可以交给style去处理。但是，个人感觉由于css的选择器的存在，css要比android中的style高明许多。&lt;/p&gt;
-&lt;h1 id=&quot;CSS基础语法&quot;&gt;&lt;a href=&quot;#CSS基础语法&quot; class=&quot;headerlink&quot; title=&quot;CSS基础语法&quot;&gt;&lt;/a&gt;CSS基础语法&lt;/h1&gt;&lt;p&gt;看图&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/CSS.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
-&lt;p&gt;示例&lt;/p&gt;
-&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;font-family&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; Verdana, sans-serif&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;body元素的所有文字的字体都是Verdana。&lt;br&gt;CSS默认有集成的属性，也就是说默认情况下body下的所有字元素都会继承body的属性，就像android布局，父控件的属性也会它所有的字控件一样，例如在根布局设置&lt;code&gt;backgroud=&amp;quot;#eee&amp;quot;&lt;/code&gt;那么，该界面的基础色就是&lt;code&gt;#eee&lt;/code&gt;, css也是这样的。&lt;/p&gt;
-&lt;h1 id=&quot;选择器&quot;&gt;&lt;a href=&quot;#选择器&quot; class=&quot;headerlink&quot; title=&quot;选择器&quot;&gt;&lt;/a&gt;选择器&lt;/h1&gt;&lt;p&gt;css的强大之处在于，选择器的可配置性，对于复杂的界面显示来说这点非常有用&lt;/p&gt;
-&lt;h2 id=&quot;选择器的分组&quot;&gt;&lt;a href=&quot;#选择器的分组&quot; class=&quot;headerlink&quot; title=&quot;选择器的分组&quot;&gt;&lt;/a&gt;选择器的分组&lt;/h2&gt;&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;h1&lt;/span&gt;,&lt;span class=&quot;tag&quot;&gt;h2&lt;/span&gt;,&lt;span class=&quot;tag&quot;&gt;h3&lt;/span&gt;,&lt;span class=&quot;tag&quot;&gt;h4&lt;/span&gt;,&lt;span class=&quot;tag&quot;&gt;h5&lt;/span&gt;,&lt;span class=&quot;tag&quot;&gt;h6&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; green&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;上面的代码表示，每个选择器都不相互产生影响，只是写在了一起而已。&lt;/p&gt;
-&lt;h2 id=&quot;派生选择器&quot;&gt;&lt;a href=&quot;#派生选择器&quot; class=&quot;headerlink&quot; title=&quot;派生选择器&quot;&gt;&lt;/a&gt;派生选择器&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;派生选择器就是通过依据元素在其位置的上下文关系来定义样式，以达到使标记更加简洁的&lt;br&gt;目的。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;font-style&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; italic&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;font-weight&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; normal&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;在上面的例子中，只有 div 元素中的 p 元素的样式为斜体字，无需为 strong 元素定义特别的 class 或 id，代码更加简洁。当然，单独出现的div 和 p并不会受到影响。&lt;/p&gt;
-&lt;h2 id=&quot;id-选择器&quot;&gt;&lt;a href=&quot;#id-选择器&quot; class=&quot;headerlink&quot; title=&quot;id 选择器&quot;&gt;&lt;/a&gt;id 选择器&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;id 选择器可以为标有特定 id 的 HTML 元素指定特定的样式。以&lt;code&gt;#&lt;/code&gt;来定义&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;示例&lt;/p&gt;
-&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;id&quot;&gt;#red&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt;red&lt;/span&gt;&lt;/span&gt;;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;id&quot;&gt;#green&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt;green&lt;/span&gt;&lt;/span&gt;;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;html这样写&lt;br&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;p id=&quot;red&quot;&amp;gt;这个段落是红色。&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;p id=&quot;green&quot;&amp;gt;这个段落是绿色。&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;但是要注意，同一个html文件中同一个id只能使用一次，具体的原因请看&lt;a href=&quot;http://www.w3school.com.cn/xhtml/xhtml_structural_02.asp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;类选择器&quot;&gt;&lt;a href=&quot;#类选择器&quot; class=&quot;headerlink&quot; title=&quot;类选择器&quot;&gt;&lt;/a&gt;类选择器&lt;/h2&gt;&lt;p&gt;通过设置元素的 class 属性，可以为元素指定类名。与id不同的是，同一个class可以在同一个html文件中复用。以&lt;code&gt;.&lt;/code&gt;来定义&lt;/p&gt;
-&lt;p&gt;示例&lt;/p&gt;
-&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;.center&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;text-align&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; center&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;html代码中这样用&lt;/p&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;h1 class=&quot;center&quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	This heading will be center-aligned&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;p class=&quot;center&quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	This paragraph will also be center-aligned.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h2 id=&quot;基于关系的选择器&quot;&gt;&lt;a href=&quot;#基于关系的选择器&quot; class=&quot;headerlink&quot; title=&quot;基于关系的选择器&quot;&gt;&lt;/a&gt;基于关系的选择器&lt;/h2&gt;&lt;p&gt;CSS有多种基于元素关系的选择器。通过它们我们可以更精确的选择元素。&lt;br&gt;常见的关系选择器&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;选择器&lt;/th&gt;
-&lt;th&gt;选择的元素&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;A E&lt;/td&gt;
-&lt;td&gt;任何是元素A的后代元素E (后代节点指A的子节点，子节点的子节点，以此类推)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;A &amp;gt; E&lt;/td&gt;
-&lt;td&gt;任何元素A的子元素&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;E:first-child&lt;/td&gt;
-&lt;td&gt;任何元素的第一个子元素E&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;B + E&lt;/td&gt;
-&lt;td&gt;任何元素B的下一个兄弟元素E&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;B ~ E&lt;/td&gt;
-&lt;td&gt;B元素后面的拥有共同父元素的兄弟元素E&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h2 id=&quot;伪类选择器&quot;&gt;&lt;a href=&quot;#伪类选择器&quot; class=&quot;headerlink&quot; title=&quot;伪类选择器&quot;&gt;&lt;/a&gt;伪类选择器&lt;/h2&gt;&lt;p&gt;CSS伪类（pseudo-class）是加在选择器后面的用来指定元素状态的关键字。&lt;/p&gt;
-&lt;p&gt;示例&lt;/p&gt;
-&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;pseudo&quot;&gt;:link&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;hexcolor&quot;&gt;#FF0000&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&amp;#125;		&lt;span class=&quot;comment&quot;&gt;/* 未访问的链接 */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;pseudo&quot;&gt;:visited&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;hexcolor&quot;&gt;#00FF00&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&amp;#125;	&lt;span class=&quot;comment&quot;&gt;/* 已访问的链接 */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;pseudo&quot;&gt;:hover&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;hexcolor&quot;&gt;#FF00FF&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&amp;#125;	&lt;span class=&quot;comment&quot;&gt;/* 鼠标移动到链接上 */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;pseudo&quot;&gt;:active&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; &lt;span class=&quot;hexcolor&quot;&gt;#0000FF&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&amp;#125;	&lt;span class=&quot;comment&quot;&gt;/* 选定的链接 */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;上面表示a链接的各种状态的表示。&lt;/p&gt;
-&lt;h2 id=&quot;属性选择器&quot;&gt;&lt;a href=&quot;#属性选择器&quot; class=&quot;headerlink&quot; title=&quot;属性选择器&quot;&gt;&lt;/a&gt;属性选择器&lt;/h2&gt;&lt;p&gt;属性选择器可以根据元素的属性及属性值来选择元素。&lt;br&gt;简单的示例&lt;br&gt;&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;*&lt;span class=&quot;attr_selector&quot;&gt;[title]&lt;/span&gt; &lt;span class=&quot;rules&quot;&gt;&amp;#123;&lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt;red&lt;/span&gt;&lt;/span&gt;;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;上面表示把包含标题（title）的所有元素变为红色&lt;br&gt;在css中 &lt;code&gt;*&lt;/code&gt;可以替代任何元素&lt;/p&gt;
-&lt;p&gt;上面所讲到的任意选择器，都可以通过组合的方式表达更复杂的元素间的关系，产生复杂的显示效果。&lt;/p&gt;
-&lt;h1 id=&quot;总结&quot;&gt;&lt;a href=&quot;#总结&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h1&gt;&lt;p&gt;css是前端的基础，对于界面显示和布局来说至关重要，特别是css的选择器，相互组合可以产生非常复杂的效果。&lt;/p&gt;
-&lt;p&gt;最后附上ife的提交任务二&lt;br&gt;&lt;a href=&quot;https://github.com/w4lle/ife_baidu/blob/master/task2%2Findex.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;代码地址&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://w4lle.github.io/ife_baidu/task2/index.html&quot;&gt;demo&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/&quot;&gt;http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/&lt;/a&gt; &lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;最近跟小伙伴们在&lt;a href=&quot;ife.baidu.com&quot;&gt;百度前端技术学院&lt;/a&gt;学习前端相关的知识，接下来一系列博客会记录学习的过程
-    
-    </summary>
-    
-    
-      <category term="前端" scheme="http://w4lle.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   

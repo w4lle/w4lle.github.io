@@ -4,7 +4,7 @@
     <!-- Title -->
     
     <title>
-        Android进程保活之绑定系统服务 | w4lle&#39;s Notes
+        Android Things初探 | w4lle&#39;s Notes
     </title>
     
     <!-- Favicons -->
@@ -40,7 +40,7 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://w4lle.github.io">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Android进程保活之绑定系统服务 | w4lle&#39;s Notes">
+    <meta property="og:title" content="Android Things初探 | w4lle&#39;s Notes">
     <meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
     
      <!--[if lte IE 9]>
@@ -217,7 +217,7 @@
 	<ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
 		for="post-toc-trigger-btn">
 			
-			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#进程保活"><span class="post-toc-number">1.</span> <span class="post-toc-text">进程保活</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#防杀机制"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">防杀机制</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#后台自启"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">后台自启</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#绑定系统服务"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">绑定系统服务</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">2.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">3.</span> <span class="post-toc-text">参考</span></a></li></ol>
+			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#搭建开发环境"><span class="post-toc-number">2.</span> <span class="post-toc-text">搭建开发环境</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#连接led灯"><span class="post-toc-number">3.</span> <span class="post-toc-text">连接led灯</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#运行程序"><span class="post-toc-number">4.</span> <span class="post-toc-text">运行程序</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Android-Everywhere"><span class="post-toc-number">5.</span> <span class="post-toc-text">Android Everywhere</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安全"><span class="post-toc-number">6.</span> <span class="post-toc-text">安全</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">7.</span> <span class="post-toc-text">参考</span></a></li></ol>
 		
 <!--			<li class="mdl-menu__item">Some Action</li>-->
 	</ul>
@@ -236,22 +236,11 @@
                 
 	<!-- Paradox Post Header -->
 	
-		
-			<!-- Random Thumbnail -->
-			<div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-				<script>
-    
-    var randomNum;
-    randomNum = Math.floor(Math.random() * 5 + 1);
-    
-    $(".post_thumbnail-random").css('background-image', 'url(' + '/img/random/' + randomNum + '.png' + ')');
-    
-</script>
-
-		
+		<!-- Custom Thumbnail -->
+		<div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://7xs23g.com1.z0.glb.clouddn.com/androidthings.png)">
 	
         <p class="article-headline-p">
-            Android进程保活之绑定系统服务
+            Android Things初探
         </p>
     </div>
 
@@ -269,7 +258,7 @@
     <!-- Author Name & Date -->
     <div>
         <strong>w4lle</strong>
-        <span>7月 24, 2016</span>
+        <span>1月 06, 2017</span>
     </div>
     
     <div class="section-spacer"></div>
@@ -289,7 +278,7 @@
     </button>
     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
         <li class="mdl-menu__item">
-        <a class="post_tag-link" href="/tags/Android/">Android</a>
+        <a class="post_tag-link" href="/tags/Android-Things/">Android Things</a>
     </ul>
     
     <!-- Share -->
@@ -311,21 +300,21 @@
     
     
     <!-- Share Twitter -->
-    <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Android进程保活之绑定系统服务&url=http://w4lle.github.io//2016/07/24/Android进程保活之绑定系统服务/index.html&via=w4lle" target="_blank">
+    <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Android Things初探&url=http://w4lle.github.io//2017/01/06/AndroidThings-0/index.html&via=w4lle" target="_blank">
         <li class="mdl-menu__item">
             分享到 Twitter
         </li>
     </a>
     
     <!-- Share Google+ -->
-    <a class="post_share-link" href="https://plus.google.com/share?url=http://w4lle.github.io//2016/07/24/Android进程保活之绑定系统服务/index.html" target="_blank">
+    <a class="post_share-link" href="https://plus.google.com/share?url=http://w4lle.github.io//2017/01/06/AndroidThings-0/index.html" target="_blank">
         <li class="mdl-menu__item">
             分享到 Google+
         </li>
     </a>
     
     <!-- Share Weibo -->
-    <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Android进程保活之绑定系统服务&url=http://w4lle.github.io//2016/07/24/Android进程保活之绑定系统服务/index.html&pic=&searchPic=false&style=simple" target="_blank">
+    <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Android Things初探&url=http://w4lle.github.io//2017/01/06/AndroidThings-0/index.html&pic=&searchPic=false&style=simple" target="_blank">
         <li class="mdl-menu__item">
             分享到微博
         </li>
@@ -337,35 +326,55 @@
                 <!-- Post Content -->
                 <div id="post-content" class="markdown-Github mdl-color-text--grey-700 mdl-card__supporting-text fade out">
 	
-		<h1 id="进程保活"><a href="#进程保活" class="headerlink" title="进程保活"></a>进程保活</h1><p>有些业务需要service在后台持续的运行，所以就要有后台保活机制，包括lowMemory防杀和自启。</p>
-<h2 id="防杀机制"><a href="#防杀机制" class="headerlink" title="防杀机制"></a>防杀机制</h2><p>基本就是提高进程优先级，保证在低内存时进程不被有限杀死，常用的方法就是利用系统bug提高进程优先级，灰色保活手段。</p>
-<h2 id="后台自启"><a href="#后台自启" class="headerlink" title="后台自启"></a>后台自启</h2><p>大概包括</p>
+		<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>Android Things是Google推出的全新物联网操作系统，前身是去年发布的物联网平台 Brillo。Brillo 使用 C/C++ 基于 NDK 进行开发，而Android Things使用JAVA、Android Studio、Android SDK、NDK等进行开发，另外还新增了名为<code>Things Support Library</code>的库这个库有两个主要功能：通过多种协议和接口（GPIO、PWM、I2C、SPI、UART等）访问传感器和执行器的外围I/O API；以及一个用户驱动API（User Driver API），可以给应用程序添加新的设备驱动，用于将硬件事件注入系统，使它们可以为应用程序所用。还有，Android Things 天生支持物联网通讯协议 Weave，可让所有类型的设备能够连上云端并与其他服务如 Google Assistant 交互。Android Things目前支持三种硬件平台：Intel Edison、NXP Pico、Raspberry Pi 3。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/things0.png" alt=""></p>
+<p>简单来说，通过Android Things，开发者可以像开发Android应用一样简单地控制硬件设备。</p>
+<h1 id="搭建开发环境"><a href="#搭建开发环境" class="headerlink" title="搭建开发环境"></a>搭建开发环境</h1><p>硬件平台选择了树莓派3，需要准备的硬件设备：</p>
 <ul>
-<li>Receiver拉起</li>
-<li>AlarmManager拉起</li>
-<li>双进程互相守护</li>
-<li>利用推送SDK拉起进程</li>
+<li>树莓派3开发板一个</li>
+<li>SD卡一张，我买的32</li>
+<li>USB插口线一条</li>
+<li>HDMI视频输出线一条</li>
+<li>显示器一台</li>
+<li>有线鼠标一个</li>
+<li>LED灯2个</li>
+<li>杜邦线若干条</li>
+<li>网线一条</li>
 </ul>
-<p>以上说的这几种是常用的方法，对于原生和没有深度定制的ROM有一定作用，但是对于像小米、魅族等这类深度定制的系统来说效果不是很好。</p>
-<h2 id="绑定系统服务"><a href="#绑定系统服务" class="headerlink" title="绑定系统服务"></a>绑定系统服务</h2><p>系统提供一些系统级的Service，比如AccessibilityService辅助服务、NotificationListenerService用于监听通知消息。这篇文章主要讲下怎样利用NotificationListenerService用于监听通知消息实现进程保活。</p>
-<p>首先，如果想使用系统service，必须要用户手动点开权限。我们可以添加一个设置的入口直接跳到系统设置通知权限的界面，显示提示用户需要开启权限。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">goNLPermission</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(<span class="string">"android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"</span>);</span><br><span class="line">        context.startActivity(intent);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>界面就不截图了，然后我们app中要有一个权限的状态检查用于提示用户是否开启了通知显示权。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 检查通知使用权</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">checkNotificationPermission</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    String pkg = context.getPackageName();</span><br><span class="line">    String flat = Settings.Secure.getString(context.getContentResolver(), <span class="string">"enabled_notification_listeners"</span>);</span><br><span class="line">    <span class="keyword">boolean</span> enabled = flat != <span class="keyword">null</span> &amp;&amp; flat.contains(pkg);</span><br><span class="line">    <span class="keyword">return</span> enabled;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注册，声明运行在com.package.pedometer进程中</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;service</span><br><span class="line">    android:name=".service.MyListenerService"</span><br><span class="line">    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"</span><br><span class="line">    android:process=":pedometer"&gt;</span><br><span class="line">    &lt;intent-filter&gt;</span><br><span class="line">        &lt;action android:name="android.service.notification.NotificationListenerService"/&gt;</span><br><span class="line">    &lt;/intent-filter&gt;</span><br><span class="line">&lt;/service&gt;</span><br></pre></td></tr></table></figure>
-<p>然后需要继承NotificationListenerService实现两个方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 监听系统通知，需要用户手动开启权限，那么该进程可以不死</span><br><span class="line"> */</span></span><br><span class="line"><span class="annotation">@TargetApi</span>(Build.VERSION_CODES.JELLY_BEAN_MR2)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyListenerService</span> <span class="keyword">extends</span> <span class="title">NotificationListenerService</span> </span>&#123;</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotificationPosted</span><span class="params">(StatusBarNotification sbn)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotificationRemoved</span><span class="params">(StatusBarNotification sbn)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>方法中什么都不用实现，MyListenerService所在的进程就拥有了跟NotificationListenerService一样的权限。可以试下手动强制停止进程会发现怎么都结束不掉，强制停止的按钮一直可以点击。可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell ps | grep ***</span><br></pre></td></tr></table></figure></p>
-<p>命令查看进程是否存活。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/<span class="number">12869</span>/oom_adj</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>查看进程的oom_adj的值为0，那么我们知道在灰色保活手段上基本就是提高oom_adj的值，越小越不容易被杀死，这种方法一步到位。</p>
-<p>那么怎么应用到我们自己的service中呢？很简单，将service跟MyListenerService运行在同一个进程就可以了。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;service</span><br><span class="line">    android:name=".service.StepCounterService"</span><br><span class="line">    android:exported="true"</span><br><span class="line">    android:process=":pedometer"&gt;</span><br><span class="line">&lt;/service&gt;</span><br></pre></td></tr></table></figure>
-<p>这样基本就可以保证service所在的进程不被杀死了。当然，如果ROM厂商在系统级别拦截掉了，这种方法也会无效了。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>如果要用这种方法进程保活，那么你的app肯定是有显示通知栏的通知，不然用户谁这么傻去给你开这么权限呢。其次，显示通知栏消息就是前台进程了，用户始终可以看到，再配合service自启的几种方法，基本就可以保证我们的进程不死了。当然，这种方法也不能说绝对管用，在深度定制面前，一切都是渣渣。验证下来，魅族基本都好用，小米4c不太好用，小米其他机型没有测试。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://blog.csdn.net/aigestudio/article/details/51348408" target="_blank" rel="external">论Android应用进程长存的可行性</a><br><a href="http://www.jianshu.com/p/63aafe3c12af#" target="_blank" rel="external">关于 Android 进程保活，你所需要知道的一切</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/07/24/Android进程保活之绑定系统服务/">http://w4lle.github.io/2016/07/24/Android进程保活之绑定系统服务/</a> </p>
+<p>然后准备把img烧入SD卡，步骤参考<a href="https://developer.android.com/things/hardware/developer-kits.html" target="_blank" rel="external">官网</a>和<a href="https://www.raspberrypi.org/documentation/installation/installing-images/mac.md" target="_blank" rel="external">树莓派官网</a>，我按照官网操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dd bs=1m if=iot_rpi3.img of=/dev/disk2</span><br></pre></td></tr></table></figure>
+<p>提示<code>Resource busy</code>，<a href="http://raspberrypi.stackexchange.com/questions/9217/resource-busy-error-when-using-dd-to-copy-disk-img-to-sd-card" target="_blank" rel="external">解决方案</a>如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br><span class="line">sudo diskutil unmount /dev/disk2s1</span><br><span class="line">sudo dd bs=<span class="number">1</span>m <span class="keyword">if</span>=iot_rpi3.img of=/dev/rdisk2</span><br></pre></td></tr></table></figure>
+<p>烧好后把SD卡插入开发板的卡槽里，USB线连电脑，HDMI连显示器。然后通电开机。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/things1.jpg" alt=""><br><img src="http://7xs23g.com1.z0.glb.clouddn.com/things2.jpg" alt=""></p>
+<p>看到这个界面就启动好了，实际上这个界面就是一个Launcher App的一个Activity IoTLauncher。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜ code &gt;adb shell dumpsys activity | grep <span class="string">"mFocusedActivity"</span></span><br><span class="line">  mFocusedActivity: ActivityRecord&#123;a7148f7 u0 com.android.iotlauncher/.IoTLauncher t1&#125;</span><br></pre></td></tr></table></figure>
+<p>然后插网线，内网IP会显示在Launcher界面，然后用adb连接开发板，连wifi</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb connect 192.168.1.143&#10;adb shell am startservice \\n    &#10;-n com.google.wifisetup/.WifiSetupService \\n    &#10;-a WifiSetupService.Connect \\n&#10;-e boohee \\n&#10;-e passphrase boohee0690apple&#10;adb shell ping 8.8.8.8</span><br></pre></td></tr></table></figure>
+<h1 id="连接led灯"><a href="#连接led灯" class="headerlink" title="连接led灯"></a>连接led灯</h1><p>根据demo给的图连接led灯</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/rpi3_schematics.png" alt=""></p>
+<p>这张图给出了两根线一个插地线，一个插GPIO。<br>这里放上一张图展示了树莓派上对应的针脚类型和name，接下来的操作led需要name才能控制。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/gpio.png" alt=""></p>
+<h1 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h1><p>官网提供了几个Demo，我们下载下来然后运行第一个Blink</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PeripheralManagerService service = <span class="keyword">new</span> PeripheralManagerService();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            mLedGpio = service.openGpio(<span class="string">"BCM5"</span>);</span><br><span class="line">            mLedGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);</span><br><span class="line">            &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+<p>openGpio方法中的参数就是上面提到的针脚对应的name。程序跑起来之后就可以看到每隔一秒led闪一下，挺有意思。</p>
+<p>我们稍微改造下，写一个xml文件中有一个button，每次点击button控制led灯的状态。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">findViewById(R.id.btn_blink).setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            mLedGpio.setValue(!mLedGpio.getValue());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>外接鼠标，每点一下button改变一下led的亮灭。<br>然后再改下，插两个led灯，第二个在BCM21 <code>mLedGpio2 = service.openGpio(&quot;BCM21&quot;);</code><br>然后每隔1s控制两个灯的状态取反。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mLedGpio2.setValue(mLedGpio.getValue());</span><br><span class="line">mLedGpio.setValue(!mLedGpio.getValue());</span><br></pre></td></tr></table></figure>
+<p>效果如图，gif压缩太严重，凑合看吧。<br><img src="http://7xs23g.com1.z0.glb.clouddn.com/things3.gif" alt=""></p>
+<p>对于开发者来说，通过Android Things控制硬件真的感觉跟开发一款Android App没有太大什么区别，同样的开发工具，同样的开发环境，甚至SDK大于24的Andriod App同样可以安装到Android Things系统上；而对于NDK开发，跟Android上也是一模一样。</p>
+<h1 id="Android-Everywhere"><a href="#Android-Everywhere" class="headerlink" title="Android Everywhere"></a>Android Everywhere</h1><p>还记得RoyLi在做的名为Ruff的物联网平台，RoyLi是这样介绍它的</p>
+<blockquote>
+<p> Ruff 让不会做硬件的软件工程师根据产品经理的创意编写应用，(软件工程师)不用关心底层实现和驱动移植问题，通过开发者建立的应用生态最终解决物联网软件落后的问题。<br>Ruff的目的就是要做物联网领域的Android平台，采用比较流行的JavaScript作为编程语言直接操作硬件。</p>
+</blockquote>
+<p>而现在Android Things已经移植到了物联网领域，Google的野心也可见一斑，其对于像Ruff这样的创业项目的冲击也可想而知。放一张2015年Google I/O大会上的旧图</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/google_to.png" alt=""></p>
+<p>Android有庞大的开发者支持，完善的开发工具配套，也许Android真的可以做到连接万物的可能，Android在不远的未来真的可能无处不在，乘此东风，Android开发者也可大有可为。</p>
+<h1 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h1><p>说到物联网就不得不说安全，在软件层面盗个号，个人信息被窃取可能感觉问题不大，但是对于联网的硬件来说就很可怕了，比如说门锁被破解，你家的煤气被远程控制，半夜你家电视突然响了，就问你怕不怕。</p>
+<p>Google既然想统一IoT标准，那么IoT的安全性必须重视，因为在标准未统一之前破解某一款硬件设备性意义不大，而标准统一之后，我只要破解这个平台就搞定了一切。真心希望Google可以做到让人满意的安全性。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://developer.android.com/things/hardware/index.html" target="_blank" rel="external">Android Things</a><br><a href="https://github.com/androidthings" target="_blank" rel="external">Android Things Sample</a></p>
+<p>本文地址 <a href="http://w4lle.github.io/2017/01/06/AndroidThings-0/">http://w4lle.github.io/2017/01/06/AndroidThings-0/</a> </p>
 
 	
 	
@@ -394,9 +403,9 @@
 <div id="comments">
     <!-- 多说评论框 start -->
         <div class="ds-thread" 
-            data-thread-key="2016/07/24/Android进程保活之绑定系统服务/" 
-            data-url="http://w4lle.github.io/2016/07/24/Android进程保活之绑定系统服务/"
-            data-title="Android进程保活之绑定系统服务"></div>
+            data-thread-key="2017/01/06/AndroidThings-0/" 
+            data-url="http://w4lle.github.io/2017/01/06/AndroidThings-0/"
+            data-title="Android Things初探"></div>
     <!-- 多说评论框 end -->
 </div>
 
@@ -410,21 +419,13 @@
     
     <!-- Prev Nav -->
     
-        <a href="/2016/07/29/AsyncTask/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
 
     <!-- Section Spacer -->
     <div class="section-spacer"></div>
 
     <!-- Next Nav -->
     
-        <a href="/2016/07/03/快速排序/" id="post_nav-older" class="next-content">
+        <a href="/2017/01/05/one-key-for-tinker/" id="post_nav-older" class="next-content">
             旧篇
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
