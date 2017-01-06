@@ -1,7 +1,7 @@
 ---
 title: Android关闭通知消息权限无法弹出Toast的解决方案
 date: 2016-03-27 19:47:28
-tags: [Android, 通知消息权限, Toast]
+tags: [Android]
 ---
 
 

@@ -1,7 +1,7 @@
 ﻿---
 title: Android热补丁之Tinker原理解析
 date: 2016-12-16 09:49:06
-tags: [Android, 热补丁, Tinker]
+tags: [Android, 热补丁]
 thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/tinker.jpg
 ---
 

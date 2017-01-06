@@ -1,7 +1,7 @@
 ---
 title: 前端基础(二)--快速布局神器Flexbox布局
 date: 2016-05-08 20:38:35
-tags: [前端, Flexbox]
+tags: [前端]
 ---
 
 # 什么是Flexbox

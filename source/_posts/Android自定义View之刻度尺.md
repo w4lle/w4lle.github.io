@@ -1,7 +1,7 @@
 ---
 title: Android自定义View之刻度尺
 date: 2016-05-15 16:23:43
-tags: [自定义View]
+tags: [Android]
 ---
 
 

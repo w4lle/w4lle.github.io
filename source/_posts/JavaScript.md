@@ -1,7 +1,7 @@
 ﻿---
 title: 前端基础（三）-- JavaScript
 date: 2016-05-31 15:34:31
-tags: [前端, JavaScript]
+tags: [前端]
 ---
 
 # JavaScript简介

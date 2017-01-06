@@ -1,7 +1,7 @@
 ---
 title: AndroidStudio 常用快捷键
 date: 2016-12-14 18:47:01
-tags: [快捷键]
+tags: [Android]
 thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/%E6%95%88%E7%8E%87.jpeg
 ---
 

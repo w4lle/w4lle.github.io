@@ -1,7 +1,7 @@
 ---
 title: ClassyShark——apk分析利器
 date: 2016-02-15 14:32:15
-tags: [工具,apk反编辑,逆向]
+tags: [工具, Android]
 
 ---
 

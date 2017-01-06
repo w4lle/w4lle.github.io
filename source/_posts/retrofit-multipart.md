@@ -2,7 +2,7 @@
 title: Retrofit Multipart多文件上传
 date: 2016-11-28 09:03:43
 thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/retrofit.jpg
-tags: [Retrofit]
+tags: [Android]
 ---
 
 

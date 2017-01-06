@@ -1,7 +1,7 @@
 ﻿---
 title: Android进程保活之绑定系统服务
 date: 2016-07-24 20:25:32
-tags: [Android, 进程保活]
+tags: [Android]
 ---
 
 # 进程保活

@@ -1,7 +1,7 @@
 ﻿---
 title: 一键接入Tinker
 date: 2017-01-05 14:15:49
-tags: [Android, 热补丁, Tinker]
+tags: [Android, 热补丁]
 thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/tinker2.jpeg
 ---
 
@@ -46,7 +46,6 @@ Tinker开源挺长时间了，使用的开发者也越来越多，对于一些�
             }
             application.appendNode('meta-data', [(ns.name): TINKER_APPLICATION, (ns.value): rawApplicationName])
             application.attributes()[ns.name] = TINKER_APPLICATION_VALUE
-            project.logger.error("tinkerpatch change application name from ${rawApplicationName} to ${TINKER_APPLICATION_VALUE}")
 
             def printer = new XmlNodePrinter(new PrintWriter(manifestPath, "utf-8"))
             printer.preserveWhitespace = true
@@ -64,9 +63,7 @@ Tinker开源挺长时间了，使用的开发者也越来越多，对于一些�
   </application>
 ```
 
-其中的App是项目中原有的Application，BootstrapApplication是后期我们插入的Application。第一步完成。
-
-另外说一句，这个Gradle插件的顺序应该是打包工具生成Manifest之后，Tinker相关Task之前。
+其中的App是项目中原有的Application，BootstrapApplication是后期我们插入的Application。自定义Gradle插件时可以封装一个Extension配置参数，把Tinker的相关配置封装起来，一些不变的默认配置项都可以写到里面，这样项目的gradle配置可以更简洁。另外说一句，这个Gradle插件的顺序应该是打包工具生成Manifest之后，Tinker相关Task之前。
 
 ## 运行时替换Application
 

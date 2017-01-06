@@ -1,7 +1,7 @@
 ---
 title: Apk包瘦身笔记
 date: 2016-04-10 19:11:51
-tags: [apk瘦身, 优化]
+tags: [Android]
 ---
 
 # 背景

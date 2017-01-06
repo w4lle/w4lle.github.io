@@ -1,7 +1,7 @@
 ---
 title: 终极Shell--Zsh 使用技巧
 date: 2016-02-01 01:51:36
-tags: [工具,Zsh]
+tags: [工具]
 
 ---
 ## 为什么要用Zsh
