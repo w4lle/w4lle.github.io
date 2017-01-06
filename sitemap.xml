@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://w4lle.github.io/2017/01/05/one-key-for-tinker/</loc>
+    
+    <lastmod>2017-01-06T02:52:26.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://w4lle.github.io/2016/05/31/JavaScript/</loc>
     
     <lastmod>2017-01-06T01:56:52.000Z</lastmod>
@@ -47,13 +54,6 @@
     <loc>http://w4lle.github.io/2016/11/28/retrofit-multipart/</loc>
     
     <lastmod>2017-01-06T01:53:41.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://w4lle.github.io/2017/01/05/one-key-for-tinker/</loc>
-    
-    <lastmod>2017-01-06T01:53:25.000Z</lastmod>
     
   </url>
   
