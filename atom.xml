@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2017-01-05T08:54:18.000Z</updated>
+  <updated>2017-01-06T01:53:25.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/"/>
     <id>http://w4lle.github.io/2017/01/05/one-key-for-tinker/</id>
     <published>2017-01-05T06:15:49.000Z</published>
-    <updated>2017-01-05T08:54:18.000Z</updated>
+    <updated>2017-01-06T01:53:25.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;Tinker开源挺长时间了，使用的开发者也越来越多，对于一些小白开发者来说对接Tinker的成本还是挺高的，其中主要因素还是不能理解为什么Application要修改成ApplicationLike，以及改造后对项目中使用Application的地方也要同步修改。&lt;/p&gt;
 &lt;p&gt;在上篇文章&lt;a href=&quot;http://w4lle.github.io/2016/12/16/tinker/&quot;&gt;Android热补丁之Tinker原理解析&lt;/a&gt;中我们已经讲解了这样做的目的以及Tinker的加载补丁的流程，本篇文章主要讲一下一键接入Tinker的实现思路。&lt;/p&gt;
@@ -35,8 +35,7 @@
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@TaskAction&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;def &lt;span class=&quot;title&quot;&gt;updateManifest&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        def ns = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Namespace(&lt;span class=&quot;string&quot;&gt;&quot;http://schemas.android.com/apk/res/android&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;android&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        def xml = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; XmlParser().parse(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; InputStreamReader(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; FileInputStream(manifestPath), &lt;span class=&quot;string&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        def application = xml.application[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (application) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            def metaDataTags = application[&lt;span class=&quot;string&quot;&gt;&#39;meta-data&#39;&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            String rawApplicationName = application.attributes()[ns.name]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            metaDataTags.findAll &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                it.attributes()[ns.name].equals(TINKER_APPLICATION)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;.each &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                it.parent().remove(it)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            application.appendNode(&lt;span class=&quot;string&quot;&gt;&#39;meta-data&#39;&lt;/span&gt;, [(ns.name): TINKER_APPLICATION, (ns.value): rawApplicationName])&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            application.attributes()[ns.name] = TINKER_APPLICATION_VALUE&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            project.logger.error(&lt;span class=&quot;string&quot;&gt;&quot;tinkerpatch change application name from $&amp;#123;rawApplicationName&amp;#125; to $&amp;#123;TINKER_APPLICATION_VALUE&amp;#125;&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            def printer = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; XmlNodePrinter(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; PrintWriter(manifestPath, &lt;span class=&quot;string&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            printer.preserveWhitespace = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            printer.print(xml)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;打包出的apk中的AndroidManifest.xml文件基本是这样的&lt;/p&gt;
 &lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;application android:name=&quot;com.w4lle.onekeytinker.BootstrapApplication&quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;meta-data android:name=&quot;ONEKEY_TINKER_APPLICATION&quot; android:value=&quot;com.w4lle.onekeytinker.App&quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;lt;/application&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;其中的App是项目中原有的Application，BootstrapApplication是后期我们插入的Application。第一步完成。&lt;/p&gt;
-&lt;p&gt;另外说一句，这个Gradle插件的顺序应该是打包工具生成Manifest之后，Tinker相关Task之前。&lt;/p&gt;
+&lt;p&gt;其中的App是项目中原有的Application，BootstrapApplication是后期我们插入的Application。自定义Gradle插件时可以封装一个Extension配置参数，把Tinker的相关配置封装起来，一些不变的默认配置项都可以写到里面，这样项目的gradle配置可以更简洁。另外说一句，这个Gradle插件的顺序应该是打包工具生成Manifest之后，Tinker相关Task之前。&lt;/p&gt;
 &lt;h2 id=&quot;运行时替换Application&quot;&gt;&lt;a href=&quot;#运行时替换Application&quot; class=&quot;headerlink&quot; title=&quot;运行时替换Application&quot;&gt;&lt;/a&gt;运行时替换Application&lt;/h2&gt;&lt;p&gt;这一步的主要工作也是分两步，第一就是解析Manifest文件，拿到realApplication(App)和BootstrapApplication；然后hook 系统完成替换。&lt;/p&gt;
 &lt;p&gt;InstantRun中的替换实现&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;82&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;83&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;84&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;85&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;86&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;monkeyPatchApplication&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(@Nullable Context context,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                                              @Nullable Application bootstrap,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                                              @Nullable Application realApplication)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// Find the ActivityThread instance for the current thread&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Class&amp;lt;?&amp;gt; activityThread = Class.forName(&lt;span class=&quot;string&quot;&gt;&quot;android.app.ActivityThread&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Object currentActivityThread = getActivityThread(context, activityThread);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// Find the mInitialApplication field of the ActivityThread to the real application&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Field mInitialApplication = activityThread.getDeclaredField(&lt;span class=&quot;string&quot;&gt;&quot;mInitialApplication&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            mInitialApplication.setAccessible(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Application initialApplication = (Application) mInitialApplication.get(currentActivityThread);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (realApplication != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; &amp;amp;&amp;amp; initialApplication == bootstrap) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;//**2.替换掉ActivityThread.mInitialApplication**&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                mInitialApplication.set(currentActivityThread, realApplication);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// Replace all instance of the stub application in ActivityThread#mAllApplications with the&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// real one&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (realApplication != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Field mAllApplications = activityThread.getDeclaredField(&lt;span class=&quot;string&quot;&gt;&quot;mAllApplications&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                mAllApplications.setAccessible(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                List&amp;lt;Application&amp;gt; allApplications = (List&amp;lt;Application&amp;gt;) mAllApplications&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        .get(currentActivityThread);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; allApplications.size(); i++) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (allApplications.get(i) == bootstrap) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;comment&quot;&gt;//**1.替换掉ActivityThread.mAllApplications**&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        allApplications.set(i, realApplication);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// Figure out how loaded APKs are stored.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// API version 8 has PackageInfo, 10 has LoadedApk. 9, I don&#39;t know.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Class&amp;lt;?&amp;gt; loadedApkClass;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                loadedApkClass = Class.forName(&lt;span class=&quot;string&quot;&gt;&quot;android.app.LoadedApk&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (ClassNotFoundException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                loadedApkClass = Class.forName(&lt;span class=&quot;string&quot;&gt;&quot;android.app.ActivityThread$PackageInfo&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Field mApplication = loadedApkClass.getDeclaredField(&lt;span class=&quot;string&quot;&gt;&quot;mApplication&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            mApplication.setAccessible(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// 10 doesn&#39;t have this field, 14 does. Fortunately, there are not many Honeycomb devices&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// floating around.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Field mLoadedApk = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                mLoadedApk = Application.class.getDeclaredField(&lt;span class=&quot;string&quot;&gt;&quot;mLoadedApk&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (NoSuchFieldException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;comment&quot;&gt;// According to testing, it&#39;s okay to ignore this.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// Enumerate all LoadedApk (or PackageInfo) fields in ActivityThread#mPackages and&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// ActivityThread#mResourcePackages and do two things:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;//   - Replace the Application instance in its mApplication field with the real one&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;//   - Set Application#mLoadedApk to the found LoadedApk instance&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String fieldName : &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; String[]&amp;#123;&lt;span class=&quot;string&quot;&gt;&quot;mPackages&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;mResourcePackages&quot;&lt;/span&gt;&amp;#125;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Field field = activityThread.getDeclaredField(fieldName);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                field.setAccessible(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Object value = field.get(currentActivityThread);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (Map.Entry&amp;lt;String, WeakReference&amp;lt;?&amp;gt;&amp;gt; entry :&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        ((Map&amp;lt;String, WeakReference&amp;lt;?&amp;gt;&amp;gt;) value).entrySet()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    Object loadedApk = entry.getValue().get();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (loadedApk == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;keyword&quot;&gt;continue&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mApplication.get(loadedApk) == bootstrap) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (realApplication != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;comment&quot;&gt;//**3.替换掉mApplication**&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                            mApplication.set(loadedApk, realApplication);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (realApplication != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; &amp;amp;&amp;amp; mLoadedApk != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;comment&quot;&gt;//**4.替换掉mLoadedApk**&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                            mLoadedApk.set(realApplication, loadedApk);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (Throwable e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; IllegalStateException(e);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -70,8 +69,6 @@
     
       <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
-      <category term="Tinker" scheme="http://w4lle.github.io/tags/Tinker/"/>
-    
       <category term="热补丁" scheme="http://w4lle.github.io/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
     
   </entry>
@@ -81,7 +78,7 @@
     <link href="http://w4lle.github.io/2016/12/16/tinker/"/>
     <id>http://w4lle.github.io/2016/12/16/tinker/</id>
     <published>2016-12-16T01:49:06.000Z</published>
-    <updated>2017-01-05T06:41:02.000Z</updated>
+    <updated>2017-01-06T01:53:55.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文分析版本  &lt;a href=&quot;https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;93ecc9351367badc02a91fac25764bee50e6e6a6&lt;/a&gt;&lt;br&gt;项目地址： &lt;a href=&quot;https://github.com/Tencent/tinker/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker&lt;/a&gt;&lt;/p&gt;
@@ -241,8 +238,6 @@
     
       <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
-      <category term="Tinker" scheme="http://w4lle.github.io/tags/Tinker/"/>
-    
       <category term="热补丁" scheme="http://w4lle.github.io/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
     
   </entry>
@@ -252,7 +247,7 @@
     <link href="http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/"/>
     <id>http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/</id>
     <published>2016-12-14T10:47:01.000Z</published>
-    <updated>2016-12-23T02:27:54.000Z</updated>
+    <updated>2017-01-06T01:51:38.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;快捷键&quot;&gt;&lt;a href=&quot;#快捷键&quot; class=&quot;headerlink&quot; title=&quot;快捷键&quot;&gt;&lt;/a&gt;快捷键&lt;/h1&gt;&lt;p&gt;整理了下常用的快捷键&lt;br&gt;因为我用AndroidStudio的vim插件，所以在编辑这块没有整理太多。&lt;br&gt;需要的同学可以自己学些下。&lt;/p&gt;
 &lt;p&gt;熟记这些快捷键 + vim = 基本不用鼠标 = 提升效率50%&lt;/p&gt;
@@ -344,7 +339,7 @@
     </summary>
     
     
-      <category term="快捷键" scheme="http://w4lle.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
   </entry>
   
@@ -353,7 +348,7 @@
     <link href="http://w4lle.github.io/2016/12/06/OkHttp/"/>
     <id>http://w4lle.github.io/2016/12/06/OkHttp/</id>
     <published>2016-12-06T08:20:52.000Z</published>
-    <updated>2016-12-11T14:06:19.000Z</updated>
+    <updated>2017-01-06T01:53:45.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;之前的底层网络库基本就是Apache HttpClient和HttpURLConnection。由于HttClient比较难用，官方在Android2.3以后就不建议用了，并且在Android5.0以后废弃了HttpClient，在Android6.0更是删除了HttpClient。&lt;/p&gt;
 &lt;p&gt;HttpURLConnection是一种多用途、轻量极的HTTP客户端，使用它来进行HTTP操作可以适用于大多数的应用程序，但是在Android 2.2版本之前存在一些bug，所以官方建议在Android2.3以后替代HttpClient，Volley就是按版本分区使用这两个网络库。&lt;/p&gt;
@@ -434,7 +429,7 @@
     </summary>
     
     
-      <category term="OkHttp" scheme="http://w4lle.github.io/tags/OkHttp/"/>
+      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
   </entry>
   
@@ -443,7 +438,7 @@
     <link href="http://w4lle.github.io/2016/11/28/retrofit-multipart/"/>
     <id>http://w4lle.github.io/2016/11/28/retrofit-multipart/</id>
     <published>2016-11-28T01:03:43.000Z</published>
-    <updated>2016-11-28T14:20:56.000Z</updated>
+    <updated>2017-01-06T01:53:41.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;新项目的网络库已经由Volley切到了Retrofit，配合&lt;code&gt;Rxjava + Dagger2 + CleanArchitecture&lt;/code&gt; ，有效的将项目解耦和，各个层次职责更清晰。依赖注入和注解、动态代理极大的简化了网络请求，开发更高效。&lt;/p&gt;
 &lt;p&gt;项目中经常会有上传文件的需求，特别是上传图片。上传图片通常有两种方式：&lt;/p&gt;
@@ -503,7 +498,7 @@
     </summary>
     
     
-      <category term="Retrofit" scheme="http://w4lle.github.io/tags/Retrofit/"/>
+      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
   </entry>
   
@@ -604,7 +599,7 @@
     <link href="http://w4lle.github.io/2016/07/24/Android%E8%BF%9B%E7%A8%8B%E4%BF%9D%E6%B4%BB%E4%B9%8B%E7%BB%91%E5%AE%9A%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1/"/>
     <id>http://w4lle.github.io/2016/07/24/Android进程保活之绑定系统服务/</id>
     <published>2016-07-24T12:25:32.000Z</published>
-    <updated>2016-07-24T13:23:59.000Z</updated>
+    <updated>2017-01-06T01:51:30.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;进程保活&quot;&gt;&lt;a href=&quot;#进程保活&quot; class=&quot;headerlink&quot; title=&quot;进程保活&quot;&gt;&lt;/a&gt;进程保活&lt;/h1&gt;&lt;p&gt;有些业务需要service在后台持续的运行，所以就要有后台保活机制，包括lowMemory防杀和自启。&lt;/p&gt;
 &lt;h2 id=&quot;防杀机制&quot;&gt;&lt;a href=&quot;#防杀机制&quot; class=&quot;headerlink&quot; title=&quot;防杀机制&quot;&gt;&lt;/a&gt;防杀机制&lt;/h2&gt;&lt;p&gt;基本就是提高进程优先级，保证在低内存时进程不被有限杀死，常用的方法就是利用系统bug提高进程优先级，灰色保活手段。&lt;/p&gt;
@@ -647,8 +642,6 @@
     
       <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
-      <category term="进程保活" scheme="http://w4lle.github.io/tags/%E8%BF%9B%E7%A8%8B%E4%BF%9D%E6%B4%BB/"/>
-    
   </entry>
   
   <entry>
@@ -656,7 +649,7 @@
     <link href="http://w4lle.github.io/2016/07/03/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"/>
     <id>http://w4lle.github.io/2016/07/03/快速排序/</id>
     <published>2016-07-03T12:55:44.000Z</published>
-    <updated>2016-07-03T14:09:09.000Z</updated>
+    <updated>2017-01-06T01:56:50.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;Wikipedia: 快速排序是由东尼霍尔所发展的一种排序算法。在平均状况下，排序n个项目要Ο(n log n)次比较。 在最坏状况下则需要Ο(n2)次比较，但这种状况并不常见。事实上，快速排序通常明显比其他Ο(n log )算法更快， 因为它的内部循环（inner loop）可以在大部分的架构上很有效率地被实现出来。&lt;/p&gt;
@@ -697,9 +690,7 @@
     </summary>
     
     
-      <category term="排序" scheme="http://w4lle.github.io/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-      <category term="算法" scheme="http://w4lle.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+      <category term="其他" scheme="http://w4lle.github.io/tags/%E5%85%B6%E4%BB%96/"/>
     
   </entry>
   
@@ -827,7 +818,7 @@
     <link href="http://w4lle.github.io/2016/05/31/JavaScript/"/>
     <id>http://w4lle.github.io/2016/05/31/JavaScript/</id>
     <published>2016-05-31T07:34:31.000Z</published>
-    <updated>2016-06-06T10:13:15.000Z</updated>
+    <updated>2017-01-06T01:56:52.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;JavaScript简介&quot;&gt;&lt;a href=&quot;#JavaScript简介&quot; class=&quot;headerlink&quot; title=&quot;JavaScript简介&quot;&gt;&lt;/a&gt;JavaScript简介&lt;/h1&gt;&lt;p&gt;&lt;code&gt;JavaScript&lt;/code&gt;可以说是世界上最流行的脚本语言，这也正达到了作者给这种语言取名字的目的，由于当时&lt;code&gt;Java&lt;/code&gt;很火，所以这哥们儿为了&lt;code&gt;JavaScript&lt;/code&gt;也能火起来就取了个相似的名字，并希望&lt;code&gt;JavaScript&lt;/code&gt;也能火起来，所以现在就有了很多程序员的段子，一脸黑线。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;JavaScript&lt;/code&gt;是一种解释型的动态语言，我们知道用&lt;code&gt;JavaScript&lt;/code&gt;开发web，然而自从有了&lt;code&gt;Node.js&lt;/code&gt;，前端程序员瞬间变成了全栈，自从&lt;code&gt;facebook&lt;/code&gt;开源了跨平台开发框架&lt;a href=&quot;https://github.com/facebook/react-native&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;react-native&lt;/a&gt;，前端程序员瞬间能写源生客户端了，最近阿里也开源了更轻量级&lt;code&gt;Weex&lt;/code&gt;，而且最近RoyLi的创业公司搞出来一个硬件产品&lt;code&gt;Ruff&lt;/code&gt;，也可以用&lt;code&gt;JavaScript&lt;/code&gt;开发，前端程序员瞬间成为了真正的全栈，&lt;code&gt;JavaScript&lt;/code&gt;这是要大一统的节奏啊，想想也是醉了。所以，是时候学一波&lt;code&gt;JavaScript&lt;/code&gt;了。&lt;/p&gt;
@@ -901,8 +892,6 @@
     </summary>
     
     
-      <category term="JavaScript" scheme="http://w4lle.github.io/tags/JavaScript/"/>
-    
       <category term="前端" scheme="http://w4lle.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
@@ -971,7 +960,7 @@
     <link href="http://w4lle.github.io/2016/05/15/Android%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E5%88%BB%E5%BA%A6%E5%B0%BA/"/>
     <id>http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/</id>
     <published>2016-05-15T08:23:43.000Z</published>
-    <updated>2016-06-06T10:13:15.000Z</updated>
+    <updated>2017-01-06T01:51:27.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;项目中之前用的纵向滚轮用于选择身高体重之类的需求，新版设计要求用横向刻度尺控件来实现，效果图，上面的字不在刻度尺范围内，是一个&lt;code&gt;TextView&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/ruler&quot; alt=&quot;刻度尺&quot;&gt;&lt;/p&gt;
@@ -1012,7 +1001,7 @@
     </summary>
     
     
-      <category term="自定义View" scheme="http://w4lle.github.io/tags/%E8%87%AA%E5%AE%9A%E4%B9%89View/"/>
+      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
   </entry>
   
@@ -1021,7 +1010,7 @@
     <link href="http://w4lle.github.io/2016/05/08/Flexbox/"/>
     <id>http://w4lle.github.io/2016/05/08/Flexbox/</id>
     <published>2016-05-08T12:38:35.000Z</published>
-    <updated>2016-06-06T10:13:15.000Z</updated>
+    <updated>2017-01-06T01:52:08.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;什么是Flexbox&quot;&gt;&lt;a href=&quot;#什么是Flexbox&quot; class=&quot;headerlink&quot; title=&quot;什么是Flexbox&quot;&gt;&lt;/a&gt;什么是Flexbox&lt;/h1&gt;&lt;p&gt;在&lt;a href=&quot;http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/&quot;&gt;上一篇文章&lt;/a&gt;中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。&lt;br&gt;2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的布局计算依赖于块和内联的流方向。&lt;br&gt;并且React Native也是使用的Flex布局，对于客户端开发来说学习Flex大有裨益。&lt;/p&gt;
 &lt;h1 id=&quot;基本概念和属性&quot;&gt;&lt;a href=&quot;#基本概念和属性&quot; class=&quot;headerlink&quot; title=&quot;基本概念和属性&quot;&gt;&lt;/a&gt;基本概念和属性&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Flexbox&lt;/code&gt;布局依赖于&lt;code&gt;flex directions&lt;/code&gt;，简单的说：&lt;code&gt;Flexbox&lt;/code&gt;是布局模块，而不是一个简单的属性。采用Flex布局的元素，称为&lt;code&gt;Flex容器&lt;/code&gt;（flex container），它的所有&lt;code&gt;子元素&lt;/code&gt;（flex item）自动成为容器成员。&lt;br&gt;&lt;code&gt;Flexbox&lt;/code&gt;布局很像&lt;code&gt;Android&lt;/code&gt;开发中的&lt;code&gt;LinearLayout&lt;/code&gt;布局，但是要比&lt;code&gt;LinearLayout&lt;/code&gt;要强大。跟&lt;code&gt;LinearLayout&lt;/code&gt;类似，&lt;code&gt;Flexbox&lt;/code&gt;也存在两个方向的布局–主轴（main axis）和副轴（cross axis），可以简单的理解为&lt;code&gt;LinearLayout&lt;/code&gt;的水平布局和垂直布局。主轴的开始位置（与边框的交叉点）叫做&lt;code&gt;main start&lt;/code&gt;，结束位置叫做&lt;code&gt;main end&lt;/code&gt;；交叉轴的开始位置叫做&lt;code&gt;cross start&lt;/code&gt;，结束位置叫做&lt;code&gt;cross end&lt;/code&gt;。项目默认沿主轴排列。单个项目占据的主轴空间叫做&lt;code&gt;main size&lt;/code&gt;，占据的交叉轴空间叫做&lt;code&gt;cross size&lt;/code&gt;。&lt;br&gt;&lt;img src=&quot;http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
@@ -1138,8 +1127,6 @@
     </summary>
     
     
-      <category term="Flexbox" scheme="http://w4lle.github.io/tags/Flexbox/"/>
-    
       <category term="前端" scheme="http://w4lle.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
@@ -1234,7 +1221,7 @@
     <link href="http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/"/>
     <id>http://w4lle.github.io/2016/04/17/前端基础-一-CSS布局基础/</id>
     <published>2016-04-17T14:26:23.000Z</published>
-    <updated>2016-06-06T10:13:15.000Z</updated>
+    <updated>2017-01-06T01:52:18.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;盒模型&quot;&gt;&lt;a href=&quot;#盒模型&quot; class=&quot;headerlink&quot; title=&quot;盒模型&quot;&gt;&lt;/a&gt;盒模型&lt;/h1&gt;&lt;p&gt;CSS中， Box Model叫盒模型（或框模型），Box Model规定了元素框处理元素内容（element content）、内边距（padding）、边框（border） 和 外边距（margin） 的方式。这种方式基本类似于Android开发中的布局方式，所以对于Android developer学习前端布局方式可以很快的入门。但是有一点，在Android中设置margin和padding的顺序是left、top、right、bottom，比如&lt;code&gt;setMargin(10, 20, 30, 20)&lt;/code&gt;分别代表左上右下的间距分别为10px,20px,30px,20px;但是在CSS中的顺序是top、right、bottom、left，比如&lt;code&gt;margin: [10px, 20px, 30px, 20px]&lt;/code&gt;分别代表左上右下间距分别为20px,10px,20px,30px。&lt;br&gt;概述图如下&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/box-model.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
@@ -1279,8 +1266,6 @@
     </summary>
     
     
-      <category term="CSS" scheme="http://w4lle.github.io/tags/CSS/"/>
-    
       <category term="前端" scheme="http://w4lle.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
@@ -1290,7 +1275,7 @@
     <link href="http://w4lle.github.io/2016/04/10/Apk%E5%8C%85%E7%98%A6%E8%BA%AB%E7%AC%94%E8%AE%B0/"/>
     <id>http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/</id>
     <published>2016-04-10T11:11:51.000Z</published>
-    <updated>2016-06-06T10:13:15.000Z</updated>
+    <updated>2017-01-06T01:51:48.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;随着业务功能的不断更迭，apk安装包的体积越来越大，最新的薄荷app android版本的安装包大小已经达到了22.5M，过大的安装包对于用户的体验来说会造成不好的影响，所以减小apk包的大小就显得尤为重要。&lt;/p&gt;
 &lt;h1 id=&quot;问题原因&quot;&gt;&lt;a href=&quot;#问题原因&quot; class=&quot;headerlink&quot; title=&quot;问题原因&quot;&gt;&lt;/a&gt;问题原因&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://nimbledroid.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;NimbleDroid&lt;/a&gt;网站可以分析出apk安装包的各种大文件排行和各种依赖包的方法数，我们比较关注的是大文件的大小。上图&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/large_file1.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
@@ -1329,9 +1314,7 @@
     </summary>
     
     
-      <category term="apk瘦身" scheme="http://w4lle.github.io/tags/apk%E7%98%A6%E8%BA%AB/"/>
-    
-      <category term="优化" scheme="http://w4lle.github.io/tags/%E4%BC%98%E5%8C%96/"/>
+      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
   </entry>
   
@@ -1340,7 +1323,7 @@
     <link href="http://w4lle.github.io/2016/03/27/Android%E5%85%B3%E9%97%AD%E9%80%9A%E7%9F%A5%E6%B6%88%E6%81%AF%E6%9D%83%E9%99%90%E6%97%A0%E6%B3%95%E5%BC%B9%E5%87%BAToast%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
     <id>http://w4lle.github.io/2016/03/27/Android关闭通知消息权限无法弹出Toast的问题解决方案/</id>
     <published>2016-03-27T11:47:28.000Z</published>
-    <updated>2016-06-06T10:13:15.000Z</updated>
+    <updated>2017-01-06T01:51:18.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在之前一段时间里经常有用户反馈无法看到薄荷app弹出的消息提示，导致用户对一些使用场景感到很困惑。猜测可能是由于用户关闭了薄荷app的通知消息的权限导致的问题，测试后发现果真如此。&lt;/p&gt;
 &lt;h1 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h1&gt;&lt;p&gt;跟踪Toast的源代码，&lt;code&gt;make&lt;/code&gt;方法省略，做了一些初始化的工作，&lt;code&gt;show&lt;/code&gt;方法&lt;/p&gt;
@@ -1370,10 +1353,6 @@
     
       <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
-      <category term="Toast" scheme="http://w4lle.github.io/tags/Toast/"/>
-    
-      <category term="通知消息权限" scheme="http://w4lle.github.io/tags/%E9%80%9A%E7%9F%A5%E6%B6%88%E6%81%AF%E6%9D%83%E9%99%90/"/>
-    
   </entry>
   
   <entry>
@@ -1381,7 +1360,7 @@
     <link href="http://w4lle.github.io/2016/03/19/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E9%9B%B6-CSS%E5%9F%BA%E7%A1%80/"/>
     <id>http://w4lle.github.io/2016/03/19/前端基础-零-CSS基础/</id>
     <published>2016-03-19T14:52:40.000Z</published>
-    <updated>2016-06-06T10:13:15.000Z</updated>
+    <updated>2017-01-06T01:52:17.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;最近跟小伙伴们在&lt;a href=&quot;ife.baidu.com&quot;&gt;百度前端技术学院&lt;/a&gt;学习前端相关的知识，接下来一系列博客会记录学习的过程和知识点，这是第一篇文章CSS基础。&lt;/p&gt;
 &lt;p&gt;开发工具：sublime text 3&lt;/p&gt;
@@ -1464,8 +1443,6 @@
     
     </summary>
     
-    
-      <category term="CSS" scheme="http://w4lle.github.io/tags/CSS/"/>
     
       <category term="前端" scheme="http://w4lle.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
     
