@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2017-01-07T03:00:13.000Z</updated>
+  <updated>2017-01-08T08:49:36.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://w4lle.github.io/2017/01/06/AndroidThings-0/"/>
     <id>http://w4lle.github.io/2017/01/06/AndroidThings-0/</id>
     <published>2017-01-06T09:26:47.000Z</published>
-    <updated>2017-01-07T03:00:13.000Z</updated>
+    <updated>2017-01-08T08:49:36.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;Android Things是Google推出的全新物联网操作系统&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;前身是去年发布的物联网平台 Brillo。Brillo 使用 C/C++ 基于 NDK 进行开发，而Android Things使用JAVA、Android Studio、Android SDK、NDK等进行开发，另外还新增了名为&lt;code&gt;Things Support Library&lt;/code&gt;的库这个库有两个主要功能：通过多种协议和接口（GPIO、PWM、I2C、SPI、UART等）访问传感器和执行器的外围I/O API；以及一个用户驱动API（User Driver API），可以给应用程序添加新的设备驱动，用于将硬件事件注入系统，使它们可以为应用程序所用。还有，Android Things 天生支持物联网通讯协议 Weave，可让所有类型的设备能够连上云端并与其他服务如 Google Assistant 交互。Android Things目前支持三种硬件平台：Intel Edison、NXP Pico、Raspberry Pi 3。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/things0.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
@@ -46,7 +46,7 @@
 &lt;p&gt;看到这个界面就启动好了，实际上这个界面就是Android应用Launcher的一个Activity IoTLauncher。IoT(Internet of Things)物联网的简称。&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;➜ code &amp;gt;adb shell dumpsys activity | grep &lt;span class=&quot;string&quot;&gt;&quot;mFocusedActivity&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  mFocusedActivity: ActivityRecord&amp;#123;a7148f7 u0 com.android.iotlauncher/.IoTLauncher t1&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;然后插网线，内网IP会显示在Launcher界面，然后用adb连接开发板，连wifi&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;adb connect 192.168.1.143&amp;#10;adb shell am startservice \\n    &amp;#10;-n com.google.wifisetup/.WifiSetupService \\n    &amp;#10;-a WifiSetupService.Connect \\n&amp;#10;-e boohee \\n&amp;#10;-e passphrase boohee0690apple&amp;#10;adb shell ping 8.8.8.8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;adb connect 192.168.1.143&amp;#10;adb shell am startservice \\n    &amp;#10;-n com.google.wifisetup/.WifiSetupService \\n    &amp;#10;-a WifiSetupService.Connect \\n&amp;#10;-e ssid ssid \\n&amp;#10;-e passphrase ***&amp;#10;adb shell ping 8.8.8.8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;h1 id=&quot;连接led灯&quot;&gt;&lt;a href=&quot;#连接led灯&quot; class=&quot;headerlink&quot; title=&quot;连接led灯&quot;&gt;&lt;/a&gt;连接led灯&lt;/h1&gt;&lt;p&gt;根据demo给的图连接led灯&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://7xs23g.com1.z0.glb.clouddn.com/rpi3_schematics.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;这张图给出了两根线一个插地线，一个插绿色的GPIO。&lt;br&gt;这里放上一张图展示了树莓派上对应的针脚类型和name，接下来的操作led需要name才能控制。&lt;/p&gt;

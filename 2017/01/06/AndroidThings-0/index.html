@@ -350,7 +350,7 @@
 <p>看到这个界面就启动好了，实际上这个界面就是Android应用Launcher的一个Activity IoTLauncher。IoT(Internet of Things)物联网的简称。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜ code &gt;adb shell dumpsys activity | grep <span class="string">"mFocusedActivity"</span></span><br><span class="line">  mFocusedActivity: ActivityRecord&#123;a7148f7 u0 com.android.iotlauncher/.IoTLauncher t1&#125;</span><br></pre></td></tr></table></figure>
 <p>然后插网线，内网IP会显示在Launcher界面，然后用adb连接开发板，连wifi</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb connect 192.168.1.143&#10;adb shell am startservice \\n    &#10;-n com.google.wifisetup/.WifiSetupService \\n    &#10;-a WifiSetupService.Connect \\n&#10;-e boohee \\n&#10;-e passphrase boohee0690apple&#10;adb shell ping 8.8.8.8</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb connect 192.168.1.143&#10;adb shell am startservice \\n    &#10;-n com.google.wifisetup/.WifiSetupService \\n    &#10;-a WifiSetupService.Connect \\n&#10;-e ssid ssid \\n&#10;-e passphrase ***&#10;adb shell ping 8.8.8.8</span><br></pre></td></tr></table></figure>
 <h1 id="连接led灯"><a href="#连接led灯" class="headerlink" title="连接led灯"></a>连接led灯</h1><p>根据demo给的图连接led灯</p>
 <p><img src="http://7xs23g.com1.z0.glb.clouddn.com/rpi3_schematics.png" alt=""></p>
 <p>这张图给出了两根线一个插地线，一个插绿色的GPIO。<br>这里放上一张图展示了树莓派上对应的针脚类型和name，接下来的操作led需要name才能控制。</p>
