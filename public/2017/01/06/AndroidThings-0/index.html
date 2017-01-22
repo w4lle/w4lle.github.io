@@ -350,7 +350,7 @@
 <p>看到这个界面就启动好了，实际上这个界面就是Android应用Launcher的一个Activity IoTLauncher。IoT(Internet of Things)物联网的简称。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜ code &gt;adb shell dumpsys activity | grep <span class="string">"mFocusedActivity"</span></span><br><span class="line">  mFocusedActivity: ActivityRecord&#123;a7148f7 u0 com.android.iotlauncher/.IoTLauncher t1&#125;</span><br></pre></td></tr></table></figure>
 <p>然后插网线，内网IP会显示在Launcher界面，然后用adb连接开发板，连wifi</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb connect 192.168.1.143&#10;adb shell am startservice \\n    &#10;-n com.google.wifisetup/.WifiSetupService \\n    &#10;-a WifiSetupService.Connect \\n&#10;-e boohee \\n&#10;-e passphrase boohee0690apple&#10;adb shell ping 8.8.8.8</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb connect 192.168.1.143&#10;adb shell am startservice \\n    &#10;-n com.google.wifisetup/.WifiSetupService \\n    &#10;-a WifiSetupService.Connect \\n&#10;-e ssid ssid \\n&#10;-e passphrase ***&#10;adb shell ping 8.8.8.8</span><br></pre></td></tr></table></figure>
 <h1 id="连接led灯"><a href="#连接led灯" class="headerlink" title="连接led灯"></a>连接led灯</h1><p>根据demo给的图连接led灯</p>
 <p><img src="http://7xs23g.com1.z0.glb.clouddn.com/rpi3_schematics.png" alt=""></p>
 <p>这张图给出了两根线一个插地线，一个插绿色的GPIO。<br>这里放上一张图展示了树莓派上对应的针脚类型和name，接下来的操作led需要name才能控制。</p>
@@ -373,7 +373,7 @@
 <p>Android有庞大的开发者支持，完善的开发工具配套，也许Android真的可以做到连接万物的可能，Android在不远的未来真的可能无处不在，乘此东风，Android开发者也可大有可为。</p>
 <h1 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h1><p>说到物联网就不得不说安全，在软件层面盗个号，个人信息被窃取可能感觉问题不大，但是对于联网的硬件来说就很可怕了，比如说门锁被破解，你家的煤气被远程控制，半夜你家电视突然响了，就问你怕不怕。</p>
 <p>Google既然想统一IoT标准，那么IoT的安全性必须重视，因为在标准未统一之前破解某一款硬件设备性意义不大，而标准统一之后，只要破解这个平台就搞定了一切。真心希望Google可以做到让人满意的安全性。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://developer.android.com/things/hardware/index.html" target="_blank" rel="external">Android Things</a><br><a href="https://github.com/androidthings" target="_blank" rel="external">Android Things Sample</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://developer.android.com/things/hardware/index.html" target="_blank" rel="external">Android Things</a><br><a href="https://github.com/androidthings" target="_blank" rel="external">Android Things Sample</a><br><a href="http://www.jianshu.com/nb/3704305" target="_blank" rel="external">ttdevs的树莓派专题</a></p>
 <p>本文地址 <a href="http://w4lle.github.io/2017/01/06/AndroidThings-0/">http://w4lle.github.io/2017/01/06/AndroidThings-0/</a> </p>
 
 	
@@ -418,6 +418,14 @@
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     
     <!-- Prev Nav -->
+    
+        <a href="/2017/01/22/gradle-modules/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
     
 
     <!-- Section Spacer -->
@@ -511,7 +519,7 @@
         </a>
         <ul class="dropdown-menu">
             <li>
-            <a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+            <a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
         </ul>
     </li>
 
@@ -538,7 +546,7 @@
     <li>
         <a href="/archives">
              文章总数
-             <span class="sidebar-badge">26</span>
+             <span class="sidebar-badge">27</span>
         </a>
     </li>
 </ul>

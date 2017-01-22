@@ -61,8 +61,8 @@ Android Things是Google推出的全新物联网操作系统
     adb shell am startservice \\n    
     -n com.google.wifisetup/.WifiSetupService \\n    
     -a WifiSetupService.Connect \\n
-    -e boohee \\n
-    -e passphrase boohee0690apple
+    -e ssid ssid \\n
+    -e passphrase ***
     adb shell ping 8.8.8.8
 ```
 
@@ -143,3 +143,4 @@ Google既然想统一IoT标准，那么IoT的安全性必须重视，因为在�
 
 [Android Things](https://developer.android.com/things/hardware/index.html)
 [Android Things Sample](https://github.com/androidthings)
+[ttdevs的树莓派专题](http://www.jianshu.com/nb/3704305)
