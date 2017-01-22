@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <!-- Title -->
+    
+    <title>
+        Gradle模块化配置 | w4lle&#39;s Notes
+    </title>
+    
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+    
+    <!-- Meta & INfo -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <meta name="description" content="生活不止眼前的苟且，还有诗，和远方。">
+    <meta name="keywords" content="Android">
+    
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+    
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+    
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.github.io">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Gradle模块化配置 | w4lle&#39;s Notes">
+    <meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
+    
+     <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+        
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+    
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="/css/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.min.css" type="text/css">
+    <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+	body, html{
+		font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+	}
+	
+    a{
+        color: #00838F
+    }
+    
+    .mdl-card__media,
+    #search-label,
+    #search-form-label:after,
+    #scheme-Paradox .hot_tags-count,
+    #scheme-Paradox .sidebar_archives-count,
+    #scheme-Paradox .sidebar-colored .sidebar-header,
+    #scheme-Paradox .sidebar-colored .sidebar-badge{
+        background-color: #0097A7 !important
+    }
+    
+	/* Sidebar User Drop Down Menu Text Color */
+	#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus{
+        color: #0097A7 !important
+    }
+    
+    #post_entry-right-info,
+    .sidebar-colored .sidebar-nav li:hover > a,
+    .sidebar-colored .sidebar-nav li:hover > a i,
+    .sidebar-colored .sidebar-nav li > a:hover,
+    .sidebar-colored .sidebar-nav li > a:hover i,
+    .sidebar-colored .sidebar-nav li > a:focus i,
+    .sidebar-colored .sidebar-nav > .open > a,
+    .sidebar-colored .sidebar-nav > .open > a:hover,
+    .sidebar-colored .sidebar-nav > .open > a:focus,
+    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a{
+        color: #0097A7 !important
+    }
+    
+    .toTop{
+        background: #757575 !important
+    }
+		
+	.material-layout .material-post>.material-nav,
+	.material-layout .material-index>.material-nav,
+	.material-nav a{
+		color: #757575;
+	}
+		
+	#scheme-Paradox .MD-burger-layer {
+		background-color: #757575;
+	}
+
+	#scheme-Paradox #post-toc-trigger-btn{
+		color: #757575;
+	}
+	
+	.post-toc a:hover{
+		color: #00838F;
+		text-decoration: underline;
+	}
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+        body{
+            background-color: #F5F5F5
+        }
+		
+		/* blog_info bottom background */
+        #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+            background-color: #fff;
+        }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+        .fade {
+            transition: all 800ms linear;
+            -webkit-transform: translate3d(0,0,0);
+            -moz-transform: translate3d(0,0,0);
+            -ms-transform: translate3d(0,0,0);
+            -o-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
+            opacity: 1;
+        }
+
+        .fade.out{
+            opacity: 0;
+        }
+    </style>
+
+	<script src="/js/jquery.min.js" type="text/javascript"></script>
+	
+	<link rel="stylesheet" href="/css/highlight/solarized-white.css" type="text/css">
+	
+	<!-- UC Browser Compatible-->
+	<script>
+		var agent = navigator.userAgent.toLowerCase();
+		if(agent.indexOf('ucbrowser')>0) {
+			document.write('<link rel="stylesheet" href="/css/uc.css" type="text/css">');
+		   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+		}
+	</script>
+    
+    <!-- Custom Head -->
+    
+</head>
+	
+	
+
+    <body id="scheme-Paradox">
+
+		
+        <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+				
+			
+			
+            <!-- Main Container -->
+            <main class="material-layout__content" id="main">
+				
+                <!-- Top Anchor -->
+                <div id="top"></div>
+				
+				
+                <!-- Hamburger Button -->
+                <button class="MD-burger-icon sidebar-toggle">
+                    <span class="MD-burger-layer"></span>
+                </button>
+				
+				
+                <!-- Post TOC -->
+
+    
+	<!-- Back Button -->
+<!--
+	<div class="material-back" id="backhome-div" tabindex="0">
+		<a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="#" onclick="window.history.back();return false;" target="_self" role="button" data-upgraded=",MaterialButton,MaterialRipple">
+			<i class="material-icons" role="presentation">arrow_back</i>
+			<span class="mdl-button__ripple-container">
+				<span class="mdl-ripple"></span>
+			</span>
+		</a>
+	</div>			
+-->
+	<!-- Left aligned menu below button -->
+	<button id="post-toc-trigger-btn"
+			class="mdl-button mdl-js-button mdl-button--icon">
+	  <i class="material-icons">format_list_numbered</i>
+	</button>
+
+	<ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+		for="post-toc-trigger-btn">
+			
+			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#AndResGuard配置"><span class="post-toc-number">2.</span> <span class="post-toc-text">AndResGuard配置</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Tinker配置"><span class="post-toc-number">3.</span> <span class="post-toc-text">Tinker配置</span></a></li></ol>
+		
+<!--			<li class="mdl-menu__item">Some Action</li>-->
+	</ul>
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+		
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+	<!-- Paradox Post Header -->
+	
+		<!-- Custom Thumbnail -->
+		<div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://7xs23g.com1.z0.glb.clouddn.com/gradle.jpg)">
+	
+        <p class="article-headline-p">
+            Gradle模块化配置
+        </p>
+    </div>
+
+	
+
+				
+				
+					<!-- Paradox Post Info -->
+					<div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+    
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>w4lle</strong>
+        <span>1月 22, 2017</span>
+    </div>
+    
+    <div class="section-spacer"></div>
+	
+    <!-- Favorite -->
+<!--
+    <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button>
+-->
+    
+    <!-- Tags (bookmark) -->
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Android/">Android</a>
+    </ul>
+    
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    
+    
+    
+    <!-- Busuanzi Views -->
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            阅读量 <span id="busuanzi_value_page_pv"></span>
+        </li>
+    </a>
+    
+    
+    <!-- Share Twitter -->
+    <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Gradle模块化配置&url=http://w4lle.github.io//2017/01/22/gradle-modules/index.html&via=w4lle" target="_blank">
+        <li class="mdl-menu__item">
+            分享到 Twitter
+        </li>
+    </a>
+    
+    <!-- Share Google+ -->
+    <a class="post_share-link" href="https://plus.google.com/share?url=http://w4lle.github.io//2017/01/22/gradle-modules/index.html" target="_blank">
+        <li class="mdl-menu__item">
+            分享到 Google+
+        </li>
+    </a>
+    
+    <!-- Share Weibo -->
+    <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Gradle模块化配置&url=http://w4lle.github.io//2017/01/22/gradle-modules/index.html&pic=&searchPic=false&style=simple" target="_blank">
+        <li class="mdl-menu__item">
+            分享到微博
+        </li>
+    </a>
+</ul>
+</div>
+				
+
+                <!-- Post Content -->
+                <div id="post-content" class="markdown-Github mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+	
+		<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>随着项目越来越大，引用第三方库的gradle愈来愈多，app的build.gradle文件也越来越长，拿薄荷App为例已经达到了1000行左右，一大坨代码赛在一起看起来很不爽。并且将第三方库的配置移植到新项目也很困难，稍微不注意就会出错。本文以<a href="https://github.com/shwenzhang/AndResGuard" target="_blank" rel="external">AndResGuard</a>和<a href="https://github.com/Tencent/tinker" target="_blank" rel="external">Tinker</a>为例讲解下如何模块化配置Gradle。</p>
+<h1 id="AndResGuard配置"><a href="#AndResGuard配置" class="headerlink" title="AndResGuard配置"></a>AndResGuard配置</h1><p>首先新建resguard.gradle文件，配置内容如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: <span class="string">'AndResGuard'</span></span><br><span class="line">andResGuard &#123;</span><br><span class="line">    use7zip = <span class="keyword">true</span></span><br><span class="line">    useSign = <span class="keyword">true</span></span><br><span class="line">    keepRoot = <span class="keyword">false</span></span><br><span class="line">    whiteList&#123;...&#125;</span><br><span class="line">    compressFilePattern&#123;...&#125;</span><br><span class="line">    sevenzip&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在主项目的build.gradle中加入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apply from: <span class="string">'../resguard.gradle'</span></span><br><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath (<span class="string">'com.tencent.mm:AndResGuard-gradle-plugin:1.1.16'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就配置好了，子Project依赖resguard脚本，sync下就能看到resguard Task了。那么移植到新项目只需要把resguard.gradle拷贝过去就ok了。</p>
+<h1 id="Tinker配置"><a href="#Tinker配置" class="headerlink" title="Tinker配置"></a>Tinker配置</h1><p>由于要配合AndResGuard使用，Tinker的gradle配置相对来说复杂些，然后我又在中间插入了自动备份和多渠道打包的task，然后就可以一键打Release包和补丁包。</p>
+<p>首先新建tinker.gralde文件，首先把Tinker的官方基本配置copy进来此处代码略。先看下Project的build.gradle文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">apply from: <span class="string">'../tinker.gradle'</span></span><br><span class="line">apply from: <span class="string">'../utils.gradle'</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">    classpath (<span class="string">"com.tencent.tinker:tinker-patch-gradle-plugin:$&#123;TINKER_VERSION&#125;"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Project只需要配置这两行代码就可以了。其中的utils.gradle是一个工具脚本文件，其中有一些常用的工具方法。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//utils.gradle</span></span><br><span class="line">ext &#123;</span><br><span class="line">    releaseTime = <span class="keyword">this</span>.&amp;releaseTime</span><br><span class="line">    packageChannel = <span class="keyword">this</span>.&amp;packageChannel</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">def <span class="title">releaseTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Date().format(<span class="string">"yyyy-MM-dd"</span>, TimeZone.getTimeZone(<span class="string">"UTC"</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//多渠道打包，使用的美团方案</span></span><br><span class="line"><span class="function">def <span class="title">packageChannel</span><span class="params">(String releaseApk)</span> </span>&#123;</span><br><span class="line">    print <span class="string">"begin package Channel! \n "</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        def stdout = <span class="keyword">new</span> ByteArrayOutputStream()</span><br><span class="line">        exec &#123;</span><br><span class="line">            commandLine <span class="string">'python'</span>, rootProject.getRootDir().getAbsolutePath() + <span class="string">"/app/multi_build.py"</span>, releaseApk</span><br><span class="line">            standardOutput = stdout</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stdout.toString().trim()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (ignored) &#123;</span><br><span class="line">        print <span class="string">"package Channel Error! \n "</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"UnKnown"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中的多渠道打包方案仍然使用的美团之前的往META-INF插入空文件的做法，是因为AndResGuard赞不支持v2签名，暂时无法使用新一代的v2签名多渠道打包方案<a href="https://github.com/Meituan-Dianping/walle" target="_blank" rel="external">walle</a>。</p>
+<p>继续看tinker.gradle，首先需要配置依赖库和打包时的插入代码比如版本号。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        <span class="comment">//每次发补丁需要更改此处 增加patch版本号。升级app 版本要还原0.0</span></span><br><span class="line">        buildConfigField <span class="string">"String"</span>, <span class="string">"PATCH_VERSION"</span>, <span class="string">"\"0.0\""</span></span><br><span class="line">        buildConfigField <span class="string">"String"</span>, <span class="string">"PLATFORM"</span>, <span class="string">"\"all\""</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    provided(<span class="string">"com.tencent.tinker:tinker-android-anno:$&#123;cfg.TINKER_VERSION&#125;"</span>)</span><br><span class="line">    compile(<span class="string">"com.tencent.tinker:tinker-android-lib:$&#123;cfg.TINKER_VERSION&#125;"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样配置完Tinker就可以可用了，然后我们要处理和AndResGuard配置使用以及自动备份自动打渠道包，步骤如下：</p>
+<ol>
+<li>使用resguard打正式包后需要备份apk、R、mapping、Resource mapping；并且打渠道包</li>
+<li>打补丁包需要自动填入resguard新打出包的路径buildApkPath，apk、R、mapping、Resource mapping文件的对应路径。</li>
+<li>打补丁包时resguard新打出的包不需要备份</li>
+<li>需要区分debug和release切换备份路径</li>
+</ol>
+<p>对应以上几点，给出关键代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line">def cfg = rootProject.ext</span><br><span class="line">def bakPath = file(<span class="string">"$&#123;buildDir.parent&#125;/tinkerBackup/"</span>)</span><br><span class="line">def bakResguard = file(<span class="string">"$&#123;bakPath&#125;"</span>)</span><br><span class="line">def debugBakPath = file(<span class="string">"$&#123;buildDir.absolutePath&#125;/tinkerBackup"</span>)</span><br><span class="line">ext &#123;</span><br><span class="line">    appName = <span class="string">"nicepro"</span></span><br><span class="line">    ...</span><br><span class="line">    省略tinker配置</span><br><span class="line">&#125;</span><br><span class="line">    def isNeedBackup = <span class="keyword">true</span></span><br><span class="line">    task AtinkerPatchPrepare &lt;&lt; &#123;</span><br><span class="line">        isNeedBackup = <span class="keyword">false</span></span><br><span class="line">        def backUpVersion = <span class="string">""</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">new</span> File(<span class="string">"$&#123;bakResguard&#125;/version.txt"</span>).exists()) &#123;</span><br><span class="line">            backUpVersion = <span class="keyword">new</span> File(<span class="string">"$&#123;bakResguard&#125;/version.txt"</span>).getText()</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!backUpVersion.isEmpty()) &#123;</span><br><span class="line">            print <span class="string">"app version : + $&#123;backUpVersion&#125; \n"</span></span><br><span class="line">            project.tinkerPatch.oldApk = <span class="string">"$&#123;bakResguard&#125;/$&#123;backUpVersion&#125;.apk"</span></span><br><span class="line">            project.tinkerPatch.buildConfig.applyResourceMapping = <span class="string">"$&#123;bakResguard&#125;/$&#123;backUpVersion&#125;_R.txt"</span></span><br><span class="line">            project.andResGuard.mappingFile = file(<span class="string">"$&#123;bakResguard&#125;/resource_mapping_$&#123;backUpVersion&#125;.txt"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * bak apk and mapping</span><br><span class="line">     */</span></span><br><span class="line">    android.applicationVariants.all &#123; variant -&gt;</span><br><span class="line">        <span class="comment">/**</span><br><span class="line">         * task type, you want to bak</span><br><span class="line">         */</span></span><br><span class="line">        def taskName = <span class="string">'release'</span></span><br><span class="line"><span class="comment">//        def taskName = 'debug'</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (taskName.equals(<span class="string">"debug"</span>)) &#123;</span><br><span class="line">            bakResguard = file(<span class="string">"$&#123;buildDir.absolutePath&#125;/tinkerBackup"</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        tasks.all &#123;</span><br><span class="line">            <span class="keyword">if</span> (variant.buildType.name == taskName) &#123;</span><br><span class="line"></span><br><span class="line">                def backUpVersion = <span class="string">""</span></span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">new</span> File(<span class="string">"$&#123;bakResguard&#125;/version.txt"</span>).exists()) &#123;</span><br><span class="line">                    backUpVersion = <span class="keyword">new</span> File(<span class="string">"$&#123;bakResguard&#125;/version.txt"</span>).getText()</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">"tinkerPatch$&#123;taskName.capitalize()&#125;"</span>.equalsIgnoreCase(it.name)) &#123;</span><br><span class="line">                    def resguardTask</span><br><span class="line">                    tasks.all &#123;</span><br><span class="line">                        <span class="keyword">if</span> (it.name.equalsIgnoreCase(<span class="string">"resguard$&#123;taskName.capitalize()&#125;"</span>)) &#123;</span><br><span class="line">                            resguardTask = it</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    it.doFirst(&#123;</span><br><span class="line">                        <span class="comment">// change build apk path</span></span><br><span class="line">                        it.buildApkPath = <span class="string">"$&#123;buildDir&#125;/outputs/apk/AndResGuard_$&#123;appName&#125;_$&#123;cfg.versionName&#125;_$&#123;releaseTime()&#125;/$&#123;appName&#125;_$&#123;cfg.versionName&#125;_$&#123;releaseTime()&#125;_signed_7zip_aligned.apk"</span></span><br><span class="line">                        project.android.ext.tinkerOldApkPath = <span class="string">"$&#123;bakResguard&#125;/$&#123;backUpVersion&#125;.apk"</span></span><br><span class="line">                        project.android.ext.tinkerApplyResourcePath = <span class="string">"$&#123;bakResguard&#125;/$&#123;backUpVersion&#125;_R.txt"</span></span><br><span class="line">                    &#125;)</span><br><span class="line">                    it.dependsOn AtinkerPatchPrepare</span><br><span class="line">                    it.dependsOn resguardTask</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (<span class="string">"resguard$&#123;taskName.capitalize()&#125;"</span>.equalsIgnoreCase(it.name)) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!backUpVersion.isEmpty() &amp;&amp; <span class="keyword">new</span> File(<span class="string">"$&#123;backUpVersion&#125;_mapping.txt"</span>).exists()) &#123;</span><br><span class="line">                        ext.andResMappingFile = <span class="keyword">new</span> File(<span class="string">"$&#123;backUpVersion&#125;_mapping.txt"</span>)</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        ext.andResMappingFile = <span class="keyword">null</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    it.doLast &#123;</span><br><span class="line">                        <span class="keyword">if</span> (!isNeedBackup) &#123;</span><br><span class="line">                            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">                        &#125;</span><br><span class="line">                        def date = <span class="keyword">new</span> Date().format(<span class="string">"MMdd-HH-mm-ss"</span>)</span><br><span class="line">                        def orgAndresPrefix = <span class="string">"AndResGuard_$&#123;appName&#125;_$&#123;cfg.versionName&#125;_$&#123;releaseTime()&#125;"</span></span><br><span class="line">                        def orgApkPrefix = <span class="string">"$&#123;appName&#125;_$&#123;cfg.versionName&#125;_$&#123;releaseTime()&#125;"</span></span><br><span class="line">                        def targetApkPrefix = <span class="string">"$&#123;appName&#125;_$&#123;taskName.capitalize()&#125;_$&#123;cfg.versionName&#125;_$&#123;date&#125;"</span></span><br><span class="line"></span><br><span class="line">                        <span class="comment">//backUpVersion</span></span><br><span class="line">                        File version = <span class="keyword">new</span> File(<span class="string">"$&#123;bakResguard&#125;/version.txt"</span>)</span><br><span class="line">                        <span class="keyword">if</span> (!version.parentFile.exists()) &#123;</span><br><span class="line">                            version.parentFile.mkdir()</span><br><span class="line">                        &#125;</span><br><span class="line">                        version.write(<span class="string">"$&#123;targetApkPrefix&#125;"</span>)</span><br><span class="line"></span><br><span class="line">                        copy &#123;</span><br><span class="line">                            from <span class="string">"$&#123;buildDir&#125;/outputs/apk/$&#123;orgAndresPrefix&#125;/$&#123;orgApkPrefix&#125;_signed_7zip_aligned.apk"</span></span><br><span class="line">                            <span class="function">into <span class="title">file</span><span class="params">(bakResguard.absolutePath)</span></span><br><span class="line">                            rename </span>&#123; String fileName -&gt;</span><br><span class="line">                                <span class="keyword">try</span> &#123;</span><br><span class="line">                                    fileName.replace(<span class="string">"$&#123;orgApkPrefix&#125;_signed_7zip_aligned.apk"</span>, <span class="string">"$&#123;targetApkPrefix&#125;.apk"</span>)</span><br><span class="line">                                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                                    print <span class="string">"rename apk mapping error"</span></span><br><span class="line">                                    e.printStackTrace()</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                            from <span class="string">"$&#123;buildDir&#125;/outputs/mapping/$&#123;taskName&#125;/mapping.txt"</span></span><br><span class="line">                            <span class="function">into <span class="title">file</span><span class="params">(bakResguard.absolutePath)</span></span><br><span class="line">                            rename </span>&#123; String fileName -&gt;</span><br><span class="line">                                fileName.replace(<span class="string">"mapping.txt"</span>, <span class="string">"$&#123;targetApkPrefix&#125;_mapping.txt"</span>)</span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                            from <span class="string">"$&#123;buildDir&#125;/intermediates/symbols/$&#123;taskName&#125;/R.txt"</span></span><br><span class="line">                            <span class="function">into <span class="title">file</span><span class="params">(bakResguard.absolutePath)</span></span><br><span class="line">                            rename </span>&#123; String fileName -&gt;</span><br><span class="line">                                fileName.replace(<span class="string">"R.txt"</span>, <span class="string">"$&#123;targetApkPrefix&#125;_R.txt"</span>)</span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                            from <span class="string">"$&#123;buildDir&#125;/outputs/apk/$&#123;orgAndresPrefix&#125;/resource_mapping_$&#123;orgApkPrefix&#125;.txt"</span></span><br><span class="line">                            <span class="function">into <span class="title">file</span><span class="params">(bakResguard.absolutePath)</span></span><br><span class="line">                            rename </span>&#123; String fileName -&gt;</span><br><span class="line">                                <span class="keyword">try</span> &#123;</span><br><span class="line">                                    fileName.replace(<span class="string">"resource_mapping_$&#123;orgApkPrefix&#125;.txt"</span>, <span class="string">"resource_mapping_$&#123;targetApkPrefix&#125;.txt"</span>)</span><br><span class="line">                                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                                    print <span class="string">"rename resource mapping error"</span></span><br><span class="line">                                    e.printStackTrace()</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                            print <span class="string">"one resguard backup tinker base apk ok! \n"</span></span><br><span class="line">                        &#125;</span><br><span class="line">                        packageChannel(<span class="string">"$&#123;buildDir&#125;/outputs/apk/$&#123;orgAndresPrefix&#125;/$&#123;orgApkPrefix&#125;_signed_7zip_aligned.apk"</span>)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>配置完成。发补丁包只需执行<code>./gradlew resguardRelease</code>便会打出多渠道包以及备份tinker需要的文件。</p>
+<p>打tinker补丁不需要手动填依赖文件，包只需执行<code>./gradlew tinkerProcessRelease</code>。</p>
+<p>正好现在并行三个项目，移植过程很快，copy两个gradle配置文件就搞定了。app的build.gradle代码也只有不到200行。</p>
+<p>本文地址 <a href="http://w4lle.github.io/2017/01/22/gradle-modules/">http://w4lle.github.io/2017/01/22/gradle-modules/</a> </p>
+
+	
+	
+	
+	
+</div>
+				
+				
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用多说评论 -->
+    <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
+<style>
+    #ds-thread #ds-reset .ds-post-button{
+        background-color: #0097A7 !important;
+    }
+    #ds-wrapper #ds-reset .ds-icons-32{
+        background-color: #0097A7 !important;
+    }
+    #ds-reset .ds-highlight {
+        color: #0097A7 !important;
+    }
+</style>
+<div id="comments">
+    <!-- 多说评论框 start -->
+        <div class="ds-thread" 
+            data-thread-key="2017/01/22/gradle-modules/" 
+            data-url="http://w4lle.github.io/2017/01/22/gradle-modules/"
+            data-title="Gradle模块化配置"></div>
+    <!-- 多说评论框 end -->
+</div>
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/01/06/AndroidThings-0/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+        </div>
+    </div>
+
+				
+				
+					<!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay "></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored  sidebar-fixed-left" role="navigation">
+	<div id="sidebar-main">
+	    <!-- Sidebar Header -->
+		<div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+    <i class="material-icons">clear_all</i>
+    <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="w4lle's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        wanglinglong.me@gmail.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+		<!-- Sidebar Navigation  -->
+		<ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+			
+                <li>
+                    <a href="mailto:wanglinglong.me@gmail.com" target="_blank" title="Email Me">
+						<i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    <li id="sidebar-first-li">
+        <a href="/" target="_self">
+            <i class="material-icons sidebar-material-icons">home</i>
+             主页
+        </a>
+    </li>
+
+    <!-- I'm Feeling Lucky -->
+<!--
+    <li class="dropdown">
+        <a href="" target="_self">
+            <i class="material-icons sidebar-material-icons">explore</i>
+             sidebar.imlucky
+        </a>
+    </li>
+-->
+
+	
+    <!-- Archives  -->
+    <li class="dropdown">
+        <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+            <i class="material-icons sidebar-material-icons">inbox</i>
+             归档
+            <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+            <a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+        </ul>
+    </li>
+
+    <!-- Divider -->
+    <li class="divider"></li>
+
+
+    <!-- Pages  -->
+	
+		<li>
+			<a href="/guestbook" title="最近访客">
+				最近访客
+			</a>
+		</li>
+	
+		<li>
+			<a href="/tags" title="标签">
+				标签
+			</a>
+		</li>
+	
+
+    <!-- Article Numebr  -->
+    <li>
+        <a href="/archives">
+             文章总数
+             <span class="sidebar-badge">27</span>
+        </a>
+    </li>
+</ul>
+
+		<!-- Sidebar Divider -->
+		<div class="sidebar-divider"></div>
+
+		<!-- Sidebar Footer -->
+		<!-- 
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持。 :) 
+-->
+
+<!-- Theme Material -->
+<a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+	<div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+		主题 - Material
+		<span class="sidebar-badge badge-circle">i</span>
+	</div>
+</a>
+
+<!-- Help & Support -->
+<!--
+<a href="mailto:hiviosey@gmail.com" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+		sidebar.help
+		<span class="mdl-button__ripple-container">
+			<span class="mdl-ripple"></span>
+		</span>
+	</div>
+</a>
+-->
+
+<!-- Feedback -->
+<!--
+<a href="https://github.com/viosey/hexo-theme-material/issues" target="_blank" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+         sidebar.feedback
+                    <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></div>
+</a>
+-->
+
+<!-- Abount Theme -->
+<!--
+<a href="https://blog.viosey.com/index.php/Material.html" target="_blank" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+         sidebar.about_theme
+        <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></div>
+</a>-->
+
+	</div>
+    
+    <!-- Sidebar Sponsor -->
+    
+
+
+</aside>
+
+				
+				
+				
+					<!-- Footer Top Button -->
+					<div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+				
+				
+				<!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+	
+	
+		<!-- Paradox Footer Left Section -->
+		<div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+    
+    
+    <!-- Facebook -->
+    
+    
+    
+    <!-- Google + -->
+    
+    
+    
+    <!-- Weibo -->
+    
+    <a href="http://weibo.com/u/2274417881" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-weibo.png);">
+        <span class="visuallyhidden">Weibo</span>
+    </button></a>
+    
+    
+    <!-- Instagram -->
+    
+    
+    
+    <!-- Tumblr -->
+    
+    
+    
+    <!-- Github -->
+    
+    <a href="https://github.com/w4lle" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-github.png);">
+        <span class="visuallyhidden">Github</span>
+    </button></a>
+    
+
+    <!-- CSDN -->
+    
+    <a href="http://blog.csdn.net/hlglinglong" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-csdn.png);">
+        <span class="visuallyhidden">CSDN</span>
+    </button></a>
+    
+</div>
+
+
+		<!--Copyright-->
+		<div id="copyright">Copyright&nbsp;©&nbsp;<script type="text/javascript">var fd = new Date();document.write(fd.getFullYear());</script>&nbsp;w4lle's Notes
+
+		<div>
+	    <!-- Busuanzi -->
+		
+	    <script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+		
+		<div>
+		总访问量 <span id="busuanzi_value_site_pv"></span> 
+		你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+		</div>
+		</div>
+
+		</div>
+
+		<!-- Paradox Footer Right Section -->
+
+		<!-- 
+		I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+		It will not impact the appearance and can give developers a lot of support :)
+
+		很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+		它不会影响美观并可以给开发者很大的支持。 :) 
+		-->
+
+		<div class="mdl-mini-footer--right-section">
+			<div>
+				<div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+				<div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+			</div>
+		</div>
+	
+    
+</footer>
+                
+				<!-- Import File -->
+<script src="/js/highlight.min.js" type="text/javascript"></script>
+<script src="/js/js.min.js" type="text/javascript"></script>
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    
+    $('#nprogress .bar').css({
+        'background': '#FF4081'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#FF4081',
+        'border-left-color': '#FF4081'
+    });
+    
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <!-- 多说公共 js 代码 start -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';ds.async = true;
+            ds.src = 'https://static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0] 
+             || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+    <!-- 多说公共 js 代码 end -->
+
+
+
+
+<!-- Swiftye -->
+
+
+<!-- Local Search-->
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $(".post-toc-wrap").parent(".mdl-menu__container").css("position", "fixed");
+    });
+</script>
+
+<!-- MathJax Load-->
+
+            </main>
+        </div>
+		
+    </body>
+		
+	
+</html>
