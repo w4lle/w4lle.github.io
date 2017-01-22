@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2017-01-22T09:47:11.000Z</updated>
+  <updated>2017-01-22T09:51:34.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,9 +20,11 @@
     <link href="http://w4lle.github.io/2017/01/22/gradle-modules/"/>
     <id>http://w4lle.github.io/2017/01/22/gradle-modules/</id>
     <published>2017-01-22T01:53:37.000Z</published>
-    <updated>2017-01-22T09:47:11.000Z</updated>
+    <updated>2017-01-22T09:51:34.000Z</updated>
     
-    <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;随着项目越来越大，引用第三方库的gradle愈来愈多，app的build.gradle文件也越来越长，拿薄荷App为例已经达到了1000行左右，一大坨代码赛在一起看起来很不爽。并且将第三方库的配置移植到新项目也很困难，稍微不注意就会出错。本文以&lt;a href=&quot;https://github.com/shwenzhang/AndResGuard&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndResGuard&lt;/a&gt;和&lt;a href=&quot;https://github.com/Tencent/tinker&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker&lt;/a&gt;为例讲解下如何模块化配置Gradle。&lt;/p&gt;
+    <content type="html">&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;本文以&lt;a href=&quot;https://github.com/shwenzhang/AndResGuard&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndResGuard&lt;/a&gt;和&lt;a href=&quot;https://github.com/Tencent/tinker&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker&lt;/a&gt;为例讲解下如何模块化配置Gradle，以及一键打Tinker补丁包的实现方法。&lt;br&gt;&lt;!--more--&gt;&lt;/p&gt;
+&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;随着项目越来越大，引用第三方库的gradle愈来愈多，app的build.gradle文件也越来越长，拿薄荷App为例已经达到了1000行左右，一大坨代码赛在一起看起来很不爽。并且将第三方库的配置移植到新项目也很困难，稍微不注意就会出错。&lt;/p&gt;
 &lt;h1 id=&quot;AndResGuard配置&quot;&gt;&lt;a href=&quot;#AndResGuard配置&quot; class=&quot;headerlink&quot; title=&quot;AndResGuard配置&quot;&gt;&lt;/a&gt;AndResGuard配置&lt;/h1&gt;&lt;p&gt;首先新建resguard.gradle文件，配置内容如下：&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;apply plugin: &lt;span class=&quot;string&quot;&gt;&#39;AndResGuard&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;andResGuard &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    use7zip = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    useSign = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    keepRoot = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    whiteList&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    compressFilePattern&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    sevenzip&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;然后在主项目的build.gradle中加入&lt;/p&gt;
@@ -53,7 +55,8 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;随着项目越来越大，引用第三方库的gradle愈来愈多，app的build.gradle文件也越来越长，拿薄荷App为例已经达到了1000行左
+      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;本文以&lt;a href=&quot;https://github.com/shwenzhang/AndResGuard&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndResGuard&lt;/a&gt;和&lt;a href=&quot;https://
     
     </summary>
     
