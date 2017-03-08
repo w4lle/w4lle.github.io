@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2017-01-23T00:56:17.000Z</updated>
+  <updated>2017-03-08T12:56:41.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -14,6 +14,44 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>再见，薄荷！</title>
+    <link href="http://w4lle.github.io/2017/03/08/goodbye-boohee/"/>
+    <id>http://w4lle.github.io/2017/03/08/goodbye-boohee/</id>
+    <published>2017-03-07T16:00:00.000Z</published>
+    <updated>2017-03-08T12:56:41.000Z</updated>
+    
+    <content type="html">&lt;p&gt;2015.3.23 - 2017.3.8 &lt;/p&gt;
+&lt;p&gt;两年时光，匆匆而逝。&lt;/p&gt;
+&lt;p&gt;来到薄荷已经两年时间，说长不长，说短不短。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;两年来在公司也成长了很多，包括技术和技术以外的其他东西。&lt;/p&gt;
+&lt;p&gt;薄荷是很注重技术氛围的公司，我们的技术团队是我工作以来技术氛围最为浓厚的团队，具体体现在每周三晚的技术分享和每周末每人一篇的技术博客。坚持写作是薄荷长久以来的优秀传统，我之前一直在CSDN写博客，隔三差五写一篇有时候不够积极，但是从加入薄荷后写作的积极性也有了提高，个人博客从2016年搭建至今也持续写了一些文章，其中包括一些质量还不错的文章被广泛阅读，一年的时间博客也有了6w的访问量，虽然不多，对我来说也是一种激励，说明分享的东西也会对别人有用。&lt;/p&gt;
+&lt;p&gt;至于Android组，我们有充分自由的技术栈选择，在可用性和稳定性的前提下，都可以引入项目中使用。在这两年时间里，我也主动承担了一些基础工作，慢慢也成长为Android组的负责人，有付出就会有回报，不用着急，想要的，时光都会给你。两年时间更新了多少版本已经记不得，但是每一个版本更新都有我的付出。有过开心，有过失落，不管怎样，这段工作已经过去，付出的汗水终究没有白费。&lt;/p&gt;
+&lt;p&gt;要感谢stormzhang对我工作的信任和帮助，也要谢谢skykai、loody、ttdevs这些小伙伴们，是大家的工作态度让我们这个团队这么有凝聚力。每当别人问起你心中的理想团队是什么样子，我都会毫不犹豫的回答，我现在所在的团队就是我向往的团队。大家对技术的热情，工作的积极态度，团队足够open的氛围，遇到问题永不服输的精神，生活中的互相帮助，碰巧也有共同的爱好，我说这就是我理想的团队。&lt;/p&gt;
+&lt;p&gt;在薄荷的这两年，也完成了人生中的两件大事。结婚、生子。我很感恩。感恩有个贤惠的媳妇儿，感恩我们有健康漂亮的小jojo，自从有了jojo我们家欢笑就没断过，每天哈哈哈。男人不就是这样，妻儿老小一人扛，家庭幸福比啥都强。希望时间可以慢点走，我们的小jojo慢慢健康长大，让我们多享受小jojo成长带给我们的快乐。&lt;/p&gt;
+&lt;p&gt;由于个人原因离开公司，今天下午办的离职手续，临走之前，提交了最后一行代码，commit message是“Goodbye”。团队小伙伴们一直把我送到地铁站才离去，我的心里也是很多不舍，但是人生不就是这样么，天下没有不散的筵席，只能心中默念祝大家都好！&lt;/p&gt;
+&lt;p&gt;虽然有些不舍，但我心里更多的是对新生活的期待，期待美好的明天，期待给家人一个稳定的家，期待简单的稳稳的幸福。期待父母身体健康，期待老婆贤惠漂亮，期待jojo健康成长。期待永远年轻，永远热泪盈眶，永远相信梦想。&lt;/p&gt;
+&lt;p&gt;已经远去的，带着美好记忆挥挥手说声拜拜。&lt;/p&gt;
+&lt;p&gt;将要到来的，怀着期待张开双手迎接未来。&lt;/p&gt;
+&lt;p&gt;再见，薄荷。&lt;/p&gt;
+&lt;p&gt;你好，明天。&lt;/p&gt;
+&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2017/03/08/goodbye-boohee/&quot;&gt;http://w4lle.github.io/2017/03/08/goodbye-boohee/&lt;/a&gt; &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;2015.3.23 - 2017.3.8 &lt;/p&gt;
+&lt;p&gt;两年时光，匆匆而逝。&lt;/p&gt;
+&lt;p&gt;来到薄荷已经两年时间，说长不长，说短不短。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="其他" scheme="http://w4lle.github.io/tags/%E5%85%B6%E4%BB%96/"/>
+    
+  </entry>
   
   <entry>
     <title>Gradle模块化配置</title>
@@ -196,7 +234,7 @@
     <link href="http://w4lle.github.io/2016/12/16/tinker/"/>
     <id>http://w4lle.github.io/2016/12/16/tinker/</id>
     <published>2016-12-16T01:49:06.000Z</published>
-    <updated>2017-03-08T02:17:28.000Z</updated>
+    <updated>2017-03-08T02:17:58.000Z</updated>
     
     <content type="html">&lt;p&gt;Tinker系列文章：&lt;/p&gt;
 &lt;ul&gt;
@@ -1399,54 +1437,6 @@
     
     
       <category term="前端" scheme="http://w4lle.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Apk包瘦身笔记</title>
-    <link href="http://w4lle.github.io/2016/04/10/Apk%E5%8C%85%E7%98%A6%E8%BA%AB%E7%AC%94%E8%AE%B0/"/>
-    <id>http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/</id>
-    <published>2016-04-10T11:11:51.000Z</published>
-    <updated>2017-01-06T01:51:48.000Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;随着业务功能的不断更迭，apk安装包的体积越来越大，最新的薄荷app android版本的安装包大小已经达到了22.5M，过大的安装包对于用户的体验来说会造成不好的影响，所以减小apk包的大小就显得尤为重要。&lt;/p&gt;
-&lt;h1 id=&quot;问题原因&quot;&gt;&lt;a href=&quot;#问题原因&quot; class=&quot;headerlink&quot; title=&quot;问题原因&quot;&gt;&lt;/a&gt;问题原因&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://nimbledroid.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;NimbleDroid&lt;/a&gt;网站可以分析出apk安装包的各种大文件排行和各种依赖包的方法数，我们比较关注的是大文件的大小。上图&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uploads/large_file1.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
-&lt;p&gt;不看不知道，一看真是吓一跳，超过100k的图片文件就那么多，而且超过300k的就有7个之多。&lt;br&gt;还有两个MP3文件也很大。&lt;/p&gt;
-&lt;h1 id=&quot;解决办法&quot;&gt;&lt;a href=&quot;#解决办法&quot; class=&quot;headerlink&quot; title=&quot;解决办法&quot;&gt;&lt;/a&gt;解决办法&lt;/h1&gt;&lt;h2 id=&quot;资源混淆&quot;&gt;&lt;a href=&quot;#资源混淆&quot; class=&quot;headerlink&quot; title=&quot;资源混淆&quot;&gt;&lt;/a&gt;资源混淆&lt;/h2&gt;&lt;p&gt;资源混淆的方案采用的微信团队的&lt;a href=&quot;https://github.com/shwenzhang/AndResGuard?spm=a313e.7916648.0.0.wwht7B&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndResGuard&lt;/a&gt;。使用方法输入一个apk文件，压缩混淆后输出一个apk包，采用引用gradle插件的方式集成到项目中，但是插件并不支持，所以就需要适配多渠道打包。薄荷项目中多渠道打包使用的是美团的方案，参考&lt;a href=&quot;http://www.open-open.com/lib/view/open1418262988402.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android批量打包提速&lt;/a&gt;&lt;br&gt;方法如下&lt;/p&gt;
-&lt;figure class=&quot;highlight gradle&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;project&lt;/span&gt;.afterEvaluate &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//在Release后执行资源混淆，然后多渠道打包&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//打包命令 ./gradlew resguard&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    tasks.getByName(&lt;span class=&quot;string&quot;&gt;&quot;resguard&quot;&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        it.&lt;span class=&quot;keyword&quot;&gt;doLast&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;channel package task begin&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; fileName = &lt;span class=&quot;string&quot;&gt;&quot;one_v$&amp;#123;defaultConfig.versionName&amp;#125;_$&amp;#123;releaseTime()&amp;#125;_signed_7zip_aligned.apk&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; rApk = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;File&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;app/build/outputs/apk/AndResProguard/&quot;&lt;/span&gt; + fileName)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (rApk.exists()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;resGuard apk exits begin channel package&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                packageChannel(rApk.absolutePath)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;执行完resguard混淆压缩后生成apk文件，调用python脚本执行多渠道打包。&lt;br&gt;还有一点需要注意的是，使用该方案要注意动态查找id导致找不到id的问题。需要添加白名单，项目中有明确的说明。但是对于引用第三方项目较多的来说，挨个添加id就很不现实了。&lt;br&gt;所以在白名单中添加所有的id&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//for all id&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;           &lt;span class=&quot;string&quot;&gt;&quot;com.boohee.one.R.id.*&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;集成改方案后apk包大概较小了4M。并且资源文件也已经混淆，资源路径长路径变成段路径&lt;br&gt;&lt;code&gt;res/drawable/icon -&amp;gt; res/drawable/a&lt;/code&gt;&lt;br&gt;对于反编译apk来说难度增加了。&lt;/p&gt;
-&lt;h2 id=&quot;删除无用代码和资源&quot;&gt;&lt;a href=&quot;#删除无用代码和资源&quot; class=&quot;headerlink&quot; title=&quot;删除无用代码和资源&quot;&gt;&lt;/a&gt;删除无用代码和资源&lt;/h2&gt;&lt;p&gt;在Android Studio中使用lint分析无用的文件&lt;br&gt;Analyze -&amp;gt; Run Inspection by Name&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;unusedResources&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;会列出无用资源列表，特别是图片全部干掉。&lt;br&gt;另外一点，由于项目更新迭代快，业务功能更改比较频繁，这就导致了项目中的无用代码特别多，但是依靠lint检查就比较有限，需要我们根据项目功能手动删除。删除无用代码后又会引出很多无用的资源文件，lint检查后再删除一遍。&lt;br&gt;做完这一步大概减少了1.5M左右。但是还有好多无用的代码还没有删除，以后有时间再处理。&lt;/p&gt;
-&lt;h2 id=&quot;去除无用的语言资源&quot;&gt;&lt;a href=&quot;#去除无用的语言资源&quot; class=&quot;headerlink&quot; title=&quot;去除无用的语言资源&quot;&gt;&lt;/a&gt;去除无用的语言资源&lt;/h2&gt;&lt;p&gt;具体项目具体执行，对于没有国际化的项目比如薄荷，在build.gradle中添加一句&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;android &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    defaultConfig &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        resConfigs &lt;span class=&quot;string&quot;&gt;&quot;zh&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;只使用中文资源，不光对本项目生效，还会对依赖的项目生效，比如support包。这样打包后只会打包中文资源，大概减小了1M左右。&lt;/p&gt;
-&lt;h2 id=&quot;删除多余的so库&quot;&gt;&lt;a href=&quot;#删除多余的so库&quot; class=&quot;headerlink&quot; title=&quot;删除多余的so库&quot;&gt;&lt;/a&gt;删除多余的so库&lt;/h2&gt;&lt;p&gt;薄荷一直以来至保留armable，这一点可以根据具体项目来定。&lt;/p&gt;
-&lt;h2 id=&quot;混淆&quot;&gt;&lt;a href=&quot;#混淆&quot; class=&quot;headerlink&quot; title=&quot;混淆&quot;&gt;&lt;/a&gt;混淆&lt;/h2&gt;&lt;p&gt;Proguard是编译时对java代码进行压缩，混淆，优化，预编译等操作的集成化工具。达到删除冗余，增加安全防护，减小大小的功效。薄荷一直以来并没有加入代码混淆，一方面原因是项目越来越大，混淆的话如果测试不充分很容易出问题，另一方面，薄荷一直提倡开源，并且核心并不在app端，并且有很多初学者会反编译薄荷app学习一些开发技巧。但是，对于提升用户体验来说这些都显得微不足道。我们也在着手做相关的混淆工作。&lt;/p&gt;
-&lt;h2 id=&quot;其余一些建议&quot;&gt;&lt;a href=&quot;#其余一些建议&quot; class=&quot;headerlink&quot; title=&quot;其余一些建议&quot;&gt;&lt;/a&gt;其余一些建议&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;tiny图片处理 目前所知图片压缩效果最好的网站。蘑菇街写了tiny的gradle&lt;a href=&quot;https://github.com/mogujie/TinyPIC_Gradle_Plugin&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;插件&lt;/a&gt;，薄荷还没有实践&lt;/li&gt;
-&lt;li&gt;删除音频文件 薄荷项目中有一些音频文件，好在下个版本改业务功能即将下线，所以这些文件可以直接删除；另外一种方法是可以走网络获取，在线化。&lt;/li&gt;
-&lt;li&gt;用更小的库&lt;/li&gt;
-&lt;li&gt;png转成webp 可能会有点兼容性问题&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://jaq.alibaba.com/community/art/show?spm=a313e.7916646.24000001.3.T8AIXY&amp;amp;articleid=219&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;APK瘦身记，如何实现高达53%的压缩效果&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;amp;mid=208135658&amp;amp;idx=1&amp;amp;sn=ac9bd6b4927e9e82f9fa14e396183a8f#rd&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安装包立减1M–微信Android资源混淆打包工具&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.jayfeng.com/2015/12/29/APK%E7%98%A6%E8%BA%AB%E5%AE%9E%E8%B7%B5/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;APK瘦身实践&lt;/a&gt;]&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/UsherFor/article/details/46827587&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;如何将apk大小减少6M的&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/&quot;&gt;http://w4lle.github.io/2016/04/10/Apk包瘦身笔记/&lt;/a&gt; &lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;随着业务功能的不断更迭，apk安装包的体积越来越大，最新的薄荷app android版本的安装包大小已经达到了22.5M，过大的安装包对于用
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
     
   </entry>
   
