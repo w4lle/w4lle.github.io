@@ -3,6 +3,25 @@
 
 
     
+  <url>
+    <loc>http://w4lle.github.io/2016/12/16/tinker/</loc>
+    <lastmod>2017-03-08T02:17:28.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android热补丁之Tinker原理解析</title>
+        <pubTime>2016-12-16T01:49:06.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>热补丁</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
     
     
   <url>
@@ -118,25 +137,6 @@
         <display>
         <title>Android热补丁之AndFix原理解析</title>
         <pubTime>2016-03-03T06:43:44.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>热补丁</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://w4lle.github.io/2016/12/16/tinker/</loc>
-    <lastmod>2017-01-06T01:53:55.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android热补丁之Tinker原理解析</title>
-        <pubTime>2016-12-16T01:49:06.000Z</pubTime>
         
         <tag>Android</tag>
          
