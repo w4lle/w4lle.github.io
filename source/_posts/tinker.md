@@ -5,6 +5,14 @@ tags: [Android, 热补丁]
 thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/tinker.jpg
 ---
 
+Tinker系列文章：
+
+* [Android热补丁之Tinker原理解析](http://w4lle.github.io/2016/12/16/tinker/)
+* [一键接入Tinker](http://w4lle.github.io/2017/01/05/one-key-for-tinker/)
+* [Gradle模块化配置](http://w4lle.github.io/2017/01/22/gradle-modules/)
+
+本文是第一篇。
+
 > 本文分析版本  [93ecc9351367badc02a91fac25764bee50e6e6a6](https://github.com/Tencent/tinker/tree/93ecc9351367badc02a91fac25764bee50e6e6a6) 
 项目地址： [Tinker](https://github.com/Tencent/tinker/)
 
