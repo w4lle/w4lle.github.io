@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://w4lle.github.io/2017/03/08/goodbye-boohee/</loc>
+    <lastmod>2017-03-08T12:56:41.000Z</lastmod>
+    <data>
+        <display>
+        <title>再见，薄荷！</title>
+        <pubTime>2017-03-07T16:00:00.000Z</pubTime>
+        
+        <tag>其他</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://w4lle.github.io/2016/12/16/tinker/</loc>
-    <lastmod>2017-03-08T02:17:28.000Z</lastmod>
+    <lastmod>2017-03-08T02:17:58.000Z</lastmod>
     <data>
         <display>
         <title>Android热补丁之Tinker原理解析</title>
