@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2017-01-22T09:52:23.000Z</updated>
+  <updated>2017-01-23T00:56:17.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://w4lle.github.io/2017/01/22/gradle-modules/"/>
     <id>http://w4lle.github.io/2017/01/22/gradle-modules/</id>
     <published>2017-01-22T01:53:37.000Z</published>
-    <updated>2017-01-22T09:52:23.000Z</updated>
+    <updated>2017-01-23T00:56:17.000Z</updated>
     
     <content type="html">&lt;p&gt;本文以&lt;a href=&quot;https://github.com/shwenzhang/AndResGuard&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndResGuard&lt;/a&gt;和&lt;a href=&quot;https://github.com/Tencent/tinker&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Tinker&lt;/a&gt;为例讲解下如何模块化配置Gradle，以及一键打Tinker补丁包的实现方法。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;随着项目越来越大，引用第三方库的gradle愈来愈多，app的build.gradle文件也越来越长，拿薄荷App为例已经达到了1000行左右，一大坨代码赛在一起看起来很不爽。并且将第三方库的配置移植到新项目也很困难，稍微不注意就会出错。&lt;/p&gt;
@@ -49,6 +49,7 @@
 &lt;p&gt;配置完成。发补丁包只需执行&lt;code&gt;./gradlew resguardRelease&lt;/code&gt;便会打出多渠道包以及备份tinker需要的文件。&lt;/p&gt;
 &lt;p&gt;打tinker补丁不需要手动填依赖文件，包只需执行&lt;code&gt;./gradlew tinkerProcessRelease&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;正好现在并行三个项目，移植过程很快，copy两个gradle配置文件就搞定了。app的build.gradle代码也只有不到200行。&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;p&gt; &lt;a href=&quot;http://blog.csdn.net/innost/article/details/48228651&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;深入理解Android之Gradle&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2017/01/22/gradle-modules/&quot;&gt;http://w4lle.github.io/2017/01/22/gradle-modules/&lt;/a&gt; &lt;/p&gt;
 </content>
     

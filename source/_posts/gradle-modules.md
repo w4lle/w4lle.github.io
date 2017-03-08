@@ -251,3 +251,7 @@ ext {
 打tinker补丁不需要手动填依赖文件，包只需执行``./gradlew tinkerProcessRelease``。
 
 正好现在并行三个项目，移植过程很快，copy两个gradle配置文件就搞定了。app的build.gradle代码也只有不到200行。
+
+# 参考 
+
+ [深入理解Android之Gradle](http://blog.csdn.net/innost/article/details/48228651)
