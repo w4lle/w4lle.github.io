@@ -332,7 +332,7 @@
 <li>基础包插桩过程</li>
 <li>补丁包生成过程</li>
 </ul>
-<p>本文为第一篇，主要讲解补丁加载过程和基础包插桩过程。</p>
+<p>本文为第一篇，主要讲解补丁加载过程和基础包插桩过程，分析版本 <code>0.3.2</code>。</p>
 <a id="more"></a>
 <h1 id="从-InstantRun-说起"><a href="#从-InstantRun-说起" class="headerlink" title="从 InstantRun 说起"></a>从 InstantRun 说起</h1><p>不得不说 InstantRun 真是个好东西。目前主流的热修复框架都有或多或少的参考 InstantRun 的某些技术点，比如 <a href="https://github.com/Tencent/tinker" target="_blank" rel="external">Tinker</a> 的官方文章中明确考虑过 InstantRun 中的 Application 替换，虽然最后没有采用，但是身为其兄弟库的 <a href="http://tinkerpatch.com/Docs/intro" target="_blank" rel="external">TinkerPatch</a> 中一键接入方案就采用的该技术点。关于该技术点，可以参考我之前写的一篇文章 <a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/">一键接入Tinker</a> 。</p>
 <p>我们知道，InstantRun 对应三种更新机制：</p>
