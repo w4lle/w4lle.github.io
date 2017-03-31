@@ -384,4 +384,11 @@ class RobustTransform extends Transform implements Plugin<Project> {
 
 总的来说，Robust是可用的、高稳定性的、成功率很高（官方说99.9%）的、无侵入的一款优秀的热修复框架。
 
+# 参考 
+
+ * [Android热更新方案Robust](http://tech.meituan.com/android_robust.html)
+ * [Android热更新方案Robust开源，新增自动化补丁工具
+](http://tech.meituan.com/android_autopatch.html)
+ * [热修复框架研究之Robust原理](https://zhuanlan.zhihu.com/p/26036302)
+
 
