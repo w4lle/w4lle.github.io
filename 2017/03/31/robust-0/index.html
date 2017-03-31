@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <!-- Title -->
+    
+    <title>
+        Android热补丁之Robust原理解析(一) | w4lle&#39;s Notes
+    </title>
+    
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+    
+    <!-- Meta & INfo -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <meta name="description" content="生活不止眼前的苟且，还有诗，和远方。">
+    <meta name="keywords" content="Android">
+    
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+    
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+    
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.github.io">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Android热补丁之Robust原理解析(一) | w4lle&#39;s Notes">
+    <meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
+    
+     <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+        
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+    
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="/css/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.min.css" type="text/css">
+    <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+	body, html{
+		font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+	}
+	
+    a{
+        color: #00838F
+    }
+    
+    .mdl-card__media,
+    #search-label,
+    #search-form-label:after,
+    #scheme-Paradox .hot_tags-count,
+    #scheme-Paradox .sidebar_archives-count,
+    #scheme-Paradox .sidebar-colored .sidebar-header,
+    #scheme-Paradox .sidebar-colored .sidebar-badge{
+        background-color: #0097A7 !important
+    }
+    
+	/* Sidebar User Drop Down Menu Text Color */
+	#scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus{
+        color: #0097A7 !important
+    }
+    
+    #post_entry-right-info,
+    .sidebar-colored .sidebar-nav li:hover > a,
+    .sidebar-colored .sidebar-nav li:hover > a i,
+    .sidebar-colored .sidebar-nav li > a:hover,
+    .sidebar-colored .sidebar-nav li > a:hover i,
+    .sidebar-colored .sidebar-nav li > a:focus i,
+    .sidebar-colored .sidebar-nav > .open > a,
+    .sidebar-colored .sidebar-nav > .open > a:hover,
+    .sidebar-colored .sidebar-nav > .open > a:focus,
+    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a{
+        color: #0097A7 !important
+    }
+    
+    .toTop{
+        background: #757575 !important
+    }
+		
+	.material-layout .material-post>.material-nav,
+	.material-layout .material-index>.material-nav,
+	.material-nav a{
+		color: #757575;
+	}
+		
+	#scheme-Paradox .MD-burger-layer {
+		background-color: #757575;
+	}
+
+	#scheme-Paradox #post-toc-trigger-btn{
+		color: #757575;
+	}
+	
+	.post-toc a:hover{
+		color: #00838F;
+		text-decoration: underline;
+	}
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+        body{
+            background-color: #F5F5F5
+        }
+		
+		/* blog_info bottom background */
+        #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+            background-color: #fff;
+        }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+        .fade {
+            transition: all 800ms linear;
+            -webkit-transform: translate3d(0,0,0);
+            -moz-transform: translate3d(0,0,0);
+            -ms-transform: translate3d(0,0,0);
+            -o-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
+            opacity: 1;
+        }
+
+        .fade.out{
+            opacity: 0;
+        }
+    </style>
+
+	<script src="/js/jquery.min.js" type="text/javascript"></script>
+	
+	<link rel="stylesheet" href="/css/highlight/solarized-white.css" type="text/css">
+	
+	<!-- UC Browser Compatible-->
+	<script>
+		var agent = navigator.userAgent.toLowerCase();
+		if(agent.indexOf('ucbrowser')>0) {
+			document.write('<link rel="stylesheet" href="/css/uc.css" type="text/css">');
+		   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+		}
+	</script>
+    
+    <!-- Custom Head -->
+    
+</head>
+	
+	
+
+    <body id="scheme-Paradox">
+
+		
+        <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+				
+			
+			
+            <!-- Main Container -->
+            <main class="material-layout__content" id="main">
+				
+                <!-- Top Anchor -->
+                <div id="top"></div>
+				
+				
+                <!-- Hamburger Button -->
+                <button class="MD-burger-icon sidebar-toggle">
+                    <span class="MD-burger-layer"></span>
+                </button>
+				
+				
+                <!-- Post TOC -->
+
+    
+	<!-- Back Button -->
+<!--
+	<div class="material-back" id="backhome-div" tabindex="0">
+		<a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="#" onclick="window.history.back();return false;" target="_self" role="button" data-upgraded=",MaterialButton,MaterialRipple">
+			<i class="material-icons" role="presentation">arrow_back</i>
+			<span class="mdl-button__ripple-container">
+				<span class="mdl-ripple"></span>
+			</span>
+		</a>
+	</div>			
+-->
+	<!-- Left aligned menu below button -->
+	<button id="post-toc-trigger-btn"
+			class="mdl-button mdl-js-button mdl-button--icon">
+	  <i class="material-icons">format_list_numbered</i>
+	</button>
+
+	<ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+		for="post-toc-trigger-btn">
+			
+			<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#从-InstantRun-说起"><span class="post-toc-number">1.</span> <span class="post-toc-text">从 InstantRun 说起</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Robust-原理解析"><span class="post-toc-number">2.</span> <span class="post-toc-text">Robust 原理解析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基础概念"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">基础概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#补丁加载过程分析"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">补丁加载过程分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基础包插桩过程分析"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">基础包插桩过程分析</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+		
+<!--			<li class="mdl-menu__item">Some Action</li>-->
+	</ul>
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+		
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+	<!-- Paradox Post Header -->
+	
+		<!-- Custom Thumbnail -->
+		<div class="post_thumbnail-custom mdl-card__media mdl-color-text--grey-50" style="background-image:url(http://7xs23g.com1.z0.glb.clouddn.com/robust.png)">
+	
+        <p class="article-headline-p">
+            Android热补丁之Robust原理解析(一)
+        </p>
+    </div>
+
+	
+
+				
+				
+					<!-- Paradox Post Info -->
+					<div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+    
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>w4lle</strong>
+        <span>3月 31, 2017</span>
+    </div>
+    
+    <div class="section-spacer"></div>
+	
+    <!-- Favorite -->
+<!--
+    <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button>
+-->
+    
+    <!-- Tags (bookmark) -->
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Android/">Android</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/热补丁/">热补丁</a>
+    </ul>
+    
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+    
+    
+    
+    <!-- Busuanzi Views -->
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            阅读量 <span id="busuanzi_value_page_pv"></span>
+        </li>
+    </a>
+    
+    
+    <!-- Share Twitter -->
+    <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Android热补丁之Robust原理解析(一)&url=http://w4lle.github.io//2017/03/31/robust-0/index.html&via=w4lle" target="_blank">
+        <li class="mdl-menu__item">
+            分享到 Twitter
+        </li>
+    </a>
+    
+    <!-- Share Google+ -->
+    <a class="post_share-link" href="https://plus.google.com/share?url=http://w4lle.github.io//2017/03/31/robust-0/index.html" target="_blank">
+        <li class="mdl-menu__item">
+            分享到 Google+
+        </li>
+    </a>
+    
+    <!-- Share Weibo -->
+    <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Android热补丁之Robust原理解析(一)&url=http://w4lle.github.io//2017/03/31/robust-0/index.html&pic=&searchPic=false&style=simple" target="_blank">
+        <li class="mdl-menu__item">
+            分享到微博
+        </li>
+    </a>
+</ul>
+</div>
+				
+
+                <!-- Post Content -->
+                <div id="post-content" class="markdown-Github mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+	
+		<p>早在16年9月份，美团技术团队就写过一篇文章描述 Android 热补丁框架Robust的简单实现原理，但是并没有开源；然后在17年3月份，美团团队宣布正式开源 Robust并且配套了自动打补丁包工具。本系列文章主要解析Robust实现原理，分为几个方面</p>
+<ul>
+<li>补丁加载过程</li>
+<li>基础包插桩过程</li>
+<li>补丁包生成过程</li>
+</ul>
+<p>本文为第一篇，主要讲解补丁加载过程和基础包插桩过程。</p>
+<a id="more"></a>
+<h1 id="从-InstantRun-说起"><a href="#从-InstantRun-说起" class="headerlink" title="从 InstantRun 说起"></a>从 InstantRun 说起</h1><p>不得不说 InstantRun 真是个好东西。目前主流的热修复框架都有或多或少的参考 InstantRun 的某些技术点，比如 <a href="https://github.com/Tencent/tinker" target="_blank" rel="external">Tinker</a> 的官方文章中明确考虑过 InstantRun 中的 Application 替换，虽然最后没有采用，但是身为其兄弟库的 <a href="http://tinkerpatch.com/Docs/intro" target="_blank" rel="external">TinkerPatch</a> 中一键接入方案就采用的该技术点。关于该技术点，可以参考我之前写的一篇文章 <a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/">一键接入Tinker</a> 。</p>
+<p>我们知道，InstantRun 对应三种更新机制：</p>
+<ul>
+<li>冷插拔，我们称之为重启更新机制</li>
+<li>温插拔，我们称之为重启Activity更新机制</li>
+<li>热插拔，我们称之为热更新机制</li>
+</ul>
+<p>如果你还不熟悉 InstantRun，请参考我的这篇文章<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a></p>
+<p>而这篇文章的主角 Robust ，其热修复的关键技术点就是采用了 InstantRun 中的热更新机制，对应于多 ClassLoader 的动态加载方案，即一个 dex 文件对应一个新建 ClassLoader 。</p>
+<h1 id="Robust-原理解析"><a href="#Robust-原理解析" class="headerlink" title="Robust 原理解析"></a>Robust 原理解析</h1><p>Robust 的原理可以简单描述为：</p>
+<ol>
+<li>打基础包时插桩，在每个方法前插入一段类型为 <code>ChangeQuickRedirect</code> 静态变量的逻辑</li>
+<li>加载补丁时，从补丁包中读取要替换的类及具体替换的方法实现，新建 ClassLoader 加载补丁dex。</li>
+</ol>
+<p>我们来分别分析。</p>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p>打基础包时，Robust 为每个类新增了一个类型为 <code>ChangeQuickRedirect</code> 的静态变量，并且在每个方法前，增加判断该变量是否为空的逻辑，如果不为空，走打基础包时插桩的逻辑，否则走正常逻辑。我们反编译出基础包中的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//SecondActivity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ChangeQuickRedirect u;</span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle bundle)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (u != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (PatchProxy.isSupport(<span class="keyword">new</span> Object[]&#123;bundle&#125;, <span class="keyword">this</span>, u, <span class="keyword">false</span>, <span class="number">78</span>)) &#123;</span><br><span class="line">                PatchProxy.accessDispatchVoid(<span class="keyword">new</span> Object[]&#123;bundle&#125;, <span class="keyword">this</span>, u, <span class="keyword">false</span>, <span class="number">78</span>);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(bundle);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>对应于补丁文件，需要有三个文件</p>
+<ul>
+<li><code>PatchesInfoImpl</code> 用于记录修改的类，及其对应的 <code>ChangeQuickRedirect</code> 接口的实现，我们反编译补丁包得出以下结果，其中的类名是混淆后的。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PatchesInfoImpl</span> <span class="keyword">implements</span> <span class="title">PatchesInfo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List <span class="title">getPatchedClassesInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List arrayList = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        arrayList.add(<span class="keyword">new</span> PatchedClassInfo(<span class="string">"com.meituan.sample.robusttest.l"</span>, <span class="string">"com.meituan.robust.patch.SampleClassPatchControl"</span>));</span><br><span class="line">        arrayList.add(<span class="keyword">new</span> PatchedClassInfo(<span class="string">"com.meituan.sample.robusttest.p"</span>, <span class="string">"com.meituan.robust.patch.SuperPatchControl"</span>));</span><br><span class="line">        arrayList.add(<span class="keyword">new</span> PatchedClassInfo(<span class="string">"com.meituan.sample.SecondActivity"</span>, <span class="string">"com.meituan.robust.patch.SecondActivityPatchControl"</span>));</span><br><span class="line">        EnhancedRobustUtils.isThrowable = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">return</span> arrayList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>xxxPatchControl</code> 是 <code>ChangeQuickRedirect</code> 接口的具体实现，是一个代理，具体的替换方法是在 <code>xxxPatch</code> 类中</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecondActivityPatchControl</span> <span class="keyword">implements</span> <span class="title">ChangeQuickRedirect</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSupport</span><span class="params">(String methodName, Object[] paramArrayOfObject)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"78:79:90:"</span>.contains(methodName.split(<span class="string">":"</span>)[<span class="number">3</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">accessDispatch</span><span class="params">(String methodName, Object[] paramArrayOfObject)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            SecondActivityPatch secondActivityPatch;</span><br><span class="line">            ...</span><br><span class="line">            Object obj = methodName.split(<span class="string">":"</span>)[<span class="number">3</span>];</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">"78"</span>.equals(obj)) &#123;</span><br><span class="line">                secondActivityPatch.onCreate((Bundle) paramArrayOfObject[<span class="number">0</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">"79"</span>.equals(obj)) &#123;</span><br><span class="line">                <span class="keyword">return</span> secondActivityPatch.getTextInfo((String) paramArrayOfObject[<span class="number">0</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">"90"</span>.equals(obj)) &#123;</span><br><span class="line">                secondActivityPatch.RobustPubliclambda$onCreate$<span class="number">0</span>((View) paramArrayOfObject[<span class="number">0</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable th) &#123;</span><br><span class="line">            th.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最终调用 <code>accessDispatch</code> 方法，该方法会根据传递过来的方法签名，调用<code>xxxPatch</code>的修改过的方法。</p>
+<ul>
+<li><code>xxxPatch</code> 具体的替换实现类，代码就不贴了。</li>
+</ul>
+<p>其过程可以简单描述为，下发补丁包后，新建 DexClassLoader 加载补丁 dex 文件，反射得到 <code>PatchesInfoImpl</code> class，并创建其对象，调用 <code>getPatchedClassesInfo()</code> 方法得到哪些修改的类（比如 SecondActivity），然后再通过反射循环拿到每个修改类在当前环境中的的class，将其中类型为 <code>ChangeQuickRedirect</code> 的静态变量反射修改为 <code>xxxPatchControl.java</code> 这个class new 出来的对象。</p>
+<p>用官方的一种图很好的表达了替换原理。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/patching.png" alt="Robust"></p>
+<h2 id="补丁加载过程分析"><a href="#补丁加载过程分析" class="headerlink" title="补丁加载过程分析"></a>补丁加载过程分析</h2><p>demo中的补丁加载就一句</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> PatchExecutor(getApplicationContext(), <span class="keyword">new</span> PatchManipulateImp(),  <span class="keyword">new</span> Callback()).start();</span><br></pre></td></tr></table></figure>
+<p><code>PatchExecutor</code> 是个 Thread</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class PatchExecutor extends Thread &#123;&#10;    @Override&#10;    public void run() &#123;&#10;        ...&#10;        applyPatchList(patches);&#10;        ...&#10;    &#125;&#10;&#10;    /**&#10;     * &#24212;&#29992;&#34917;&#19969;&#21015;&#34920;&#10;     */&#10;    protected void applyPatchList(List&#60;Patch&#62; patches) &#123;&#10;        ...&#10;        for (Patch p : patches) &#123;&#10;            ...&#10;            currentPatchResult = patch(context, p);&#10;            ...&#10;            &#125;&#10;    &#125;&#10;&#10;    protected boolean patch(Context context, Patch patch) &#123;&#10;        ...&#10;        DexClassLoader classLoader = new DexClassLoader(patch.getTempPath(), context.getCacheDir().getAbsolutePath(),&#10;                null, PatchExecutor.class.getClassLoader());&#10;        patch.delete(patch.getTempPath());&#10;        ...&#10;        try &#123;&#10;            patchsInfoClass = classLoader.loadClass(patch.getPatchesInfoImplClassFullName());&#10;            patchesInfo = (PatchesInfo) patchsInfoClass.newInstance();&#10;            &#125; catch (Throwable t) &#123;&#10;             ...&#10;        &#125;&#10;        ...&#10;        for (PatchedClassInfo patchedClassInfo : patchedClasses) &#123;&#10;            ...&#10;            try &#123;&#10;                oldClass = classLoader.loadClass(patchedClassName.trim());&#10;                Field[] fields = oldClass.getDeclaredFields();&#10;                for (Field field : fields) &#123;&#10;                    if (TextUtils.equals(field.getType().getCanonicalName(), ChangeQuickRedirect.class.getCanonicalName()) &#38;&#38; TextUtils.equals(field.getDeclaringClass().getCanonicalName(), oldClass.getCanonicalName())) &#123;&#10;                        changeQuickRedirectField = field;&#10;                        break;&#10;                    &#125;&#10;                &#125;&#10;                ...&#10;                try &#123;&#10;                    patchClass = classLoader.loadClass(patchClassName);&#10;                    Object patchObject = patchClass.newInstance();&#10;                    changeQuickRedirectField.setAccessible(true);&#10;                    changeQuickRedirectField.set(null, patchObject);&#10;                    &#125; catch (Throwable t) &#123;&#10;                    ...&#10;                &#125;&#10;            &#125; catch (Throwable t) &#123;&#10;                 ...&#10;            &#125;&#10;        &#125;&#10;        return true;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>开启一个子线程，通过指定的路径去读patch文件的jar包，patch文件可以为多个，每个patch文件对应一个 DexClassLoader 去加载，每个patch文件中存在PatchInfoImp，通过遍历其中的类信息进而反射修改其中 <code>ChangeQuickRedirect</code> 对象的值。</p>
+<h2 id="基础包插桩过程分析"><a href="#基础包插桩过程分析" class="headerlink" title="基础包插桩过程分析"></a>基础包插桩过程分析</h2><p>类似 InstantRun ， Robust 也是使用 Transform API 修改字节码文件，该 API 允许第三方插件在  .class 文件打包为 dex 文件之前操作编译好的 .class 字节码文件。</p>
+<p>Robust 中的 <code>Gradle-Plugin</code> 就是操作字节码的名为 <code>robust</code> 的 gradle 插件项目。我们来简单看下实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RobustTransform</span> <span class="keyword">extends</span> <span class="title">Transform</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project target)</span> </span>&#123;</span><br><span class="line">            <span class="comment">//解析项目下robust.xml配置文件</span></span><br><span class="line">            robust = <span class="keyword">new</span> XmlSlurper().parse(<span class="keyword">new</span> File(<span class="string">"$&#123;project.projectDir&#125;/$&#123;Constants.ROBUST_XML&#125;"</span>))</span><br><span class="line">            ...</span><br><span class="line">            project.android.registerTransform(<span class="keyword">this</span>)</span><br><span class="line">            project.afterEvaluate(<span class="keyword">new</span> RobustApkHashAction())</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(Context context, Collection&lt;TransformInput&gt; inputs, Collection&lt;TransformInput&gt; referencedInputs, TransformOutputProvider outputProvider, <span class="keyword">boolean</span> isIncremental)</span> <span class="keyword">throws</span> IOException, TransformException, InterruptedException </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    ClassPool classPool = <span class="keyword">new</span> ClassPool()</span><br><span class="line">    project.android.bootClasspath.each &#123;</span><br><span class="line">        logger.debug <span class="string">"android.bootClasspath   "</span> + (String) it.absolutePath</span><br><span class="line">        classPool.appendClassPath((String) it.absolutePath)</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    def box = ConvertUtils.toCtClasses(inputs, classPool)</span><br><span class="line">    insertRobustCode(box, jarFile)</span><br><span class="line">    writeMap2File(methodMap, Constants.METHOD_MAP_OUT_PATH)</span><br><span class="line">    ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先读取 robust.xml 配置文件并初始化，可配置选项包括：</p>
+<ul>
+<li>一些开关选项</li>
+<li>需要热补丁的包名或者类名，这些包名下的所有类都被会插入代码</li>
+<li>不需要热补的包名或者类名，可以在需要热补的包中剔除指定的类或者包</li>
+</ul>
+<p>然后通过 <code>Transform</code> API 调用 <code>transform()</code> 方法，扫描所有类加入到 <code>classPool</code> 中，调用 <code>insertRobustCode()</code> 方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">def <span class="title">insertRobustCode</span><span class="params">(List&lt;CtClass&gt; box, File jarFile)</span> </span>&#123;</span><br><span class="line">    ZipOutputStream outStream=<span class="keyword">new</span> JarOutputStream(<span class="keyword">new</span> FileOutputStream(jarFile));</span><br><span class="line">    <span class="keyword">new</span> ForkJoinPool().submit &#123;</span><br><span class="line">        box.each &#123; ctClass -&gt;</span><br><span class="line">            <span class="keyword">if</span> (isNeedInsertClass(ctClass.getName())) &#123;</span><br><span class="line">               <span class="comment">//将class设置为public ctClass.setModifiers(AccessFlag.setPublic(ctClass.getModifiers()))</span></span><br><span class="line">                <span class="keyword">boolean</span> addIncrementalChange = <span class="keyword">false</span>;</span><br><span class="line">                ctClass.declaredBehaviors.findAll &#123;</span><br><span class="line">                <span class="comment">//规避接口和无方法类</span></span><br><span class="line">                    <span class="keyword">if</span> (ctClass.isInterface() || ctClass.declaredMethods.length &lt; <span class="number">1</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (!addIncrementalChange) &#123;</span><br><span class="line">                    <span class="comment">//插入 public static ChangeQuickRedirect changeQuickRedirect;</span></span><br><span class="line">                        addIncrementalChange = <span class="keyword">true</span>;</span><br><span class="line">                        ClassPool classPool = it.declaringClass.classPool</span><br><span class="line">                        CtClass type = classPool.getOrNull(Constants.INTERFACE_NAME);</span><br><span class="line">                        CtField ctField = <span class="keyword">new</span> CtField(type, Constants.INSERT_FIELD_NAME, ctClass);</span><br><span class="line">                        ctField.setModifiers(AccessFlag.PUBLIC | AccessFlag.STATIC)</span><br><span class="line">                        ctClass.addField(ctField)</span><br><span class="line">                        logger.debug <span class="string">"ctClass: "</span> + ctClass.getName();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (it.getMethodInfo().isStaticInitializer()) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// synthetic 方法暂时不aop 比如AsyncTask 会生成一些同名 synthetic方法,对synthetic 以及private的方法也插入的代码，主要是针对lambda表达式</span></span><br><span class="line">                    <span class="keyword">if</span> ((it.getModifiers() &amp; AccessFlag.SYNTHETIC) != <span class="number">0</span> &amp;&amp; !AccessFlag.isPrivate(it.getModifiers())) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//不支持构造方法</span></span><br><span class="line">                    <span class="keyword">if</span> (it.getMethodInfo().isConstructor()) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//规避抽象方法</span></span><br><span class="line">                    <span class="keyword">if</span> ((it.getModifiers() &amp; AccessFlag.ABSTRACT) != <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//规避NATIVE方法</span></span><br><span class="line">                    <span class="keyword">if</span> ((it.getModifiers() &amp; AccessFlag.NATIVE) != <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//规避接口</span></span><br><span class="line">                    <span class="keyword">if</span> ((it.getModifiers() &amp; AccessFlag.INTERFACE) != <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (it.getMethodInfo().isMethod()) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (AccessFlag.isPackage(it.modifiers)) &#123;</span><br><span class="line">                            it.setModifiers(AccessFlag.setPublic(it.modifiers))</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="comment">//判断是否有方法调用，返回是否插庄</span></span><br><span class="line">                        <span class="keyword">boolean</span> flag = modifyMethodCodeFilter(it)</span><br><span class="line">                        <span class="keyword">if</span> (!flag) &#123;</span><br><span class="line">                            <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//方法过滤</span></span><br><span class="line">                    <span class="keyword">if</span> (isExceptMethodLevel &amp;&amp; exceptMethodList != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        <span class="keyword">for</span> (String exceptMethod : exceptMethodList) &#123;</span><br><span class="line">                            <span class="keyword">if</span> (it.name.matches(exceptMethod)) &#123;</span><br><span class="line">                                <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (isHotfixMethodLevel &amp;&amp; hotfixMethodList != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        <span class="keyword">for</span> (String name : hotfixMethodList) &#123;</span><br><span class="line">                            <span class="keyword">if</span> (it.name.matches(name)) &#123;</span><br><span class="line">                                <span class="keyword">return</span> <span class="keyword">true</span></span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">return</span> !isHotfixMethodLevel</span><br><span class="line">                &#125;.each &#123; ctBehavior -&gt;</span><br><span class="line">                    <span class="comment">// methodMap must be put here</span></span><br><span class="line">                    methodMap.put(ctBehavior.longName, insertMethodCount.incrementAndGet());</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (ctBehavior.getMethodInfo().isMethod()) &#123;</span><br><span class="line">                            <span class="keyword">boolean</span> isStatic = ctBehavior.getModifiers() &amp; AccessFlag.STATIC;</span><br><span class="line">                            CtClass returnType = ctBehavior.getReturnType0();</span><br><span class="line">                            String returnTypeString = returnType.getName();</span><br><span class="line">                            def body = <span class="string">"if ($&#123;Constants.INSERT_FIELD_NAME&#125; != null) &#123;"</span></span><br><span class="line">                            body += <span class="string">"Object argThis = null;"</span></span><br><span class="line">                            <span class="keyword">if</span> (!isStatic) &#123;</span><br><span class="line">                                body += <span class="string">"argThis = \$0;"</span></span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                            body += <span class="string">"   if (com.meituan.robust.PatchProxy.isSupport(\$args, argThis, $&#123;Constants.INSERT_FIELD_NAME&#125;, $isStatic, "</span> + methodMap.get(ctBehavior.longName) + <span class="string">")) &#123;"</span></span><br><span class="line">                            body += getReturnStatement(returnTypeString, isStatic, methodMap.get(ctBehavior.longName));</span><br><span class="line">                            body += <span class="string">"   &#125;"</span></span><br><span class="line">                            body += <span class="string">"&#125;"</span></span><br><span class="line">                            ctBehavior.insertBefore(body);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (Throwable t ) &#123;</span><br><span class="line">                        logger.error <span class="string">"ctClass: "</span> + ctClass.getName() + <span class="string">" error: "</span> + t.toString();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            zipFile(ctClass.toBytecode(),outStream,ctClass.name.replaceAll(<span class="string">"\\."</span>,<span class="string">"/"</span>)+<span class="string">".class"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.get()</span><br><span class="line">    outStream.close();</span><br><span class="line">    logger.debug <span class="string">"robust insertMethodCount: "</span> + insertMethodCount.get()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法做了以下几件事：</p>
+<ul>
+<li>将class设置为public</li>
+<li>规避 接口</li>
+<li>规避 无方法类</li>
+<li>规避 构造方法</li>
+<li>规避 抽象方法</li>
+<li>规避 native方法</li>
+<li>规避 synthetic方法</li>
+<li>过滤配置文件中不需要修复的类</li>
+<li>通过 javassist 在类中插入 <code>public static ChangeQuickRedirect changeQuickRedirect;</code></li>
+<li>通过 javassist 在方法中插入逻辑代码段</li>
+<li>通过 zipFile() 方法写回class文件</li>
+</ul>
+<p>最后调用 <code>writeMap2File()</code> 将插桩的方法信息写入 robust/methodsMap.robust 文件中，此文件和混淆的mapping文件需要备份。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>到这里本篇文章结束，主要讲了下基础原理、补丁加载流程和插桩过程。我们也可以简单的对 Robust 做下总结。</p>
+<p>优点：</p>
+<ul>
+<li>由于使用多ClassLoader方案（补丁中无新增Activity，所以不算激进类型的动态加载，无需hook system），兼容性和稳定性更好，不存在preverify的问题</li>
+<li>由于采用 InstantRun 的热更新机制，所以可以即时生效，不需要重启</li>
+<li>支持Android2.3-7.X版本</li>
+<li>对性能影响较小，不需要合成patch</li>
+<li>支持方法级别的修复，支持静态方法</li>
+<li>支持新增方法和类</li>
+<li>支持ProGuard的混淆、内联、编译器优化后引起的问题(桥方法、lambda、内部类等)等操作</li>
+</ul>
+<p>当然，有优点就会有缺点：</p>
+<ul>
+<li>暂时不支持新增字段，但可以通过新增类解决</li>
+<li>暂时不支持修复构造方法，已经在内测</li>
+<li>暂时不支持资源和 so 修复，不过这个问题不大，因为独立于 dex 补丁，已经有很成熟的方案了，就看怎么打到补丁包中以及 diff 方案。</li>
+<li>对于返回值是 this 的方法支持不太好</li>
+<li><strong>没有安全校验，需要开发者在加载补丁之前自己做验证</strong></li>
+<li>可能会出现深度方法内联导致的不可预知的错误(几率很小可以忽略)</li>
+</ul>
+<p>总的来说，Robust是可用的、高稳定性的、成功率很高（官方说99.9%）的、无侵入的一款优秀的热修复框架。</p>
+<p>本文地址 <a href="http://w4lle.github.io/2017/03/31/robust-0/">http://w4lle.github.io/2017/03/31/robust-0/</a> </p>
+
+	
+	
+	
+	
+</div>
+				
+				
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用多说评论 -->
+    <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
+<style>
+    #ds-thread #ds-reset .ds-post-button{
+        background-color: #0097A7 !important;
+    }
+    #ds-wrapper #ds-reset .ds-icons-32{
+        background-color: #0097A7 !important;
+    }
+    #ds-reset .ds-highlight {
+        color: #0097A7 !important;
+    }
+</style>
+<div id="comments">
+    <!-- 多说评论框 start -->
+        <div class="ds-thread" 
+            data-thread-key="2017/03/31/robust-0/" 
+            data-url="http://w4lle.github.io/2017/03/31/robust-0/"
+            data-title="Android热补丁之Robust原理解析(一)"></div>
+    <!-- 多说评论框 end -->
+</div>
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/03/08/goodbye-boohee/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+        </div>
+    </div>
+
+				
+				
+					<!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay "></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored  sidebar-fixed-left" role="navigation">
+	<div id="sidebar-main">
+	    <!-- Sidebar Header -->
+		<div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+    <i class="material-icons">clear_all</i>
+    <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="w4lle's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        wanglinglong.me@gmail.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+		<!-- Sidebar Navigation  -->
+		<ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+			
+                <li>
+                    <a href="mailto:wanglinglong.me@gmail.com" target="_blank" title="Email Me">
+						<i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    <li id="sidebar-first-li">
+        <a href="/" target="_self">
+            <i class="material-icons sidebar-material-icons">home</i>
+             主页
+        </a>
+    </li>
+
+    <!-- I'm Feeling Lucky -->
+<!--
+    <li class="dropdown">
+        <a href="" target="_self">
+            <i class="material-icons sidebar-material-icons">explore</i>
+             sidebar.imlucky
+        </a>
+    </li>
+-->
+
+	
+    <!-- Archives  -->
+    <li class="dropdown">
+        <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+            <i class="material-icons sidebar-material-icons">inbox</i>
+             归档
+            <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+            <a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+        </ul>
+    </li>
+
+    <!-- Divider -->
+    <li class="divider"></li>
+
+
+    <!-- Pages  -->
+	
+		<li>
+			<a href="/tags" title="标签">
+				标签
+			</a>
+		</li>
+	
+		<li>
+			<a href="/guestbook" title="关于我">
+				关于我
+			</a>
+		</li>
+	
+		<li>
+			<a href="/friends" title="友情链接">
+				友情链接
+			</a>
+		</li>
+	
+
+    <!-- Article Numebr  -->
+    <li>
+        <a href="/archives">
+             文章总数
+             <span class="sidebar-badge">29</span>
+        </a>
+    </li>
+</ul>
+
+		<!-- Sidebar Divider -->
+		<div class="sidebar-divider"></div>
+
+		<!-- Sidebar Footer -->
+		<!-- 
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持。 :) 
+-->
+
+<!-- Theme Material -->
+<a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+	<div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+		主题 - Material
+		<span class="sidebar-badge badge-circle">i</span>
+	</div>
+</a>
+
+<!-- Help & Support -->
+<!--
+<a href="mailto:hiviosey@gmail.com" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+		sidebar.help
+		<span class="mdl-button__ripple-container">
+			<span class="mdl-ripple"></span>
+		</span>
+	</div>
+</a>
+-->
+
+<!-- Feedback -->
+<!--
+<a href="https://github.com/viosey/hexo-theme-material/issues" target="_blank" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+         sidebar.feedback
+                    <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></div>
+</a>
+-->
+
+<!-- Abount Theme -->
+<!--
+<a href="https://blog.viosey.com/index.php/Material.html" target="_blank" class="sidebar-footer-text-a">
+    <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+         sidebar.about_theme
+        <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></div>
+</a>-->
+
+	</div>
+    
+    <!-- Sidebar Sponsor -->
+    
+
+
+</aside>
+
+				
+				
+				
+					<!-- Footer Top Button -->
+					<div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+				
+				
+				<!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+	
+	
+		<!-- Paradox Footer Left Section -->
+		<div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+    
+    
+    <!-- Facebook -->
+    
+    
+    
+    <!-- Google + -->
+    
+    
+    
+    <!-- Weibo -->
+    
+    <a href="http://weibo.com/u/2274417881" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-weibo.png);">
+        <span class="visuallyhidden">Weibo</span>
+    </button></a>
+    
+    
+    <!-- Instagram -->
+    
+    
+    
+    <!-- Tumblr -->
+    
+    
+    
+    <!-- Github -->
+    
+    <a href="https://github.com/w4lle" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-github.png);">
+        <span class="visuallyhidden">Github</span>
+    </button></a>
+    
+
+    <!-- CSDN -->
+    
+    <a href="http://blog.csdn.net/hlglinglong" target="view_window"><button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-csdn.png);">
+        <span class="visuallyhidden">CSDN</span>
+    </button></a>
+    
+</div>
+
+
+		<!--Copyright-->
+		<div id="copyright">Copyright&nbsp;©&nbsp;<script type="text/javascript">var fd = new Date();document.write(fd.getFullYear());</script>&nbsp;w4lle's Notes
+
+		<div>
+	    <!-- Busuanzi -->
+		
+	    <script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+		
+		<div>
+		总访问量 <span id="busuanzi_value_site_pv"></span> 
+		你是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+		</div>
+		</div>
+
+		</div>
+
+		<!-- Paradox Footer Right Section -->
+
+		<!-- 
+		I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+		It will not impact the appearance and can give developers a lot of support :)
+
+		很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+		它不会影响美观并可以给开发者很大的支持。 :) 
+		-->
+
+		<div class="mdl-mini-footer--right-section">
+			<div>
+				<div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+				<div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+			</div>
+		</div>
+	
+    
+</footer>
+                
+				<!-- Import File -->
+<script src="/js/highlight.min.js" type="text/javascript"></script>
+<script src="/js/js.min.js" type="text/javascript"></script>
+<script src="/js/nprogress.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    
+    $('#nprogress .bar').css({
+        'background': '#FF4081'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #FF4081, 0 0 15px #FF4081'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#FF4081',
+        'border-left-color': '#FF4081'
+    });
+    
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    <!-- 多说公共 js 代码 start -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"w4lle"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';ds.async = true;
+            ds.src = 'https://static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0] 
+             || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+    <!-- 多说公共 js 代码 end -->
+
+
+
+
+<!-- Swiftye -->
+
+
+<!-- Local Search-->
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $(".post-toc-wrap").parent(".mdl-menu__container").css("position", "fixed");
+    });
+</script>
+
+<!-- MathJax Load-->
+
+            </main>
+        </div>
+		
+    </body>
+		
+	
+</html>
