@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2017-03-31T12:25:57.000Z</updated>
+  <updated>2017-03-31T12:32:19.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://w4lle.github.io/2017/03/31/robust-0/"/>
     <id>http://w4lle.github.io/2017/03/31/robust-0/</id>
     <published>2017-03-31T07:58:12.000Z</published>
-    <updated>2017-03-31T12:25:57.000Z</updated>
+    <updated>2017-03-31T12:32:19.000Z</updated>
     
     <content type="html">&lt;p&gt;早在16年9月份，美团技术团队就写过一篇文章描述 Android 热补丁框架Robust的简单实现原理，但是并没有开源；然后在17年3月份，美团团队宣布正式开源 Robust并且配套了自动打补丁包工具。本系列文章主要解析Robust实现原理，分为几个方面&lt;/p&gt;
 &lt;ul&gt;
@@ -115,6 +115,12 @@
 &lt;li&gt;可能会出现深度方法内联导致的不可预知的错误(几率很小可以忽略)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;总的来说，Robust是可用的、高稳定性的、成功率很高（官方说99.9%）的、无侵入的一款优秀的热修复框架。&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://tech.meituan.com/android_robust.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热更新方案Robust&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://tech.meituan.com/android_autopatch.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热更新方案Robust开源，新增自动化补丁工具
+&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/26036302&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;热修复框架研究之Robust原理&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;本文地址 &lt;a href=&quot;http://w4lle.github.io/2017/03/31/robust-0/&quot;&gt;http://w4lle.github.io/2017/03/31/robust-0/&lt;/a&gt; &lt;/p&gt;
 </content>
     
