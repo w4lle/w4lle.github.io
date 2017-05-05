@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.github.io/"/>
-  <updated>2017-05-05T02:28:31.000Z</updated>
+  <updated>2017-05-05T02:30:30.000Z</updated>
   <id>http://w4lle.github.io/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>hotpatch-summary</title>
+    <title>热修复总结</title>
     <link href="http://w4lle.github.io/2017/05/04/hotpatch-summary/"/>
     <id>http://w4lle.github.io/2017/05/04/hotpatch-summary/</id>
     <published>2017-05-04T10:45:31.000Z</published>
-    <updated>2017-05-05T02:28:31.000Z</updated>
+    <updated>2017-05-05T02:30:30.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="热修复总结"><a href="#热修复总结" class="headerlink" title="热修复总结"></a>热修复总结</h1><table>
 <thead>
