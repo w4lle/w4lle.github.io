@@ -52,8 +52,8 @@
     <![endif]-->
     
     <!-- Import CSS -->
-    <link rel="stylesheet" href="/css/material.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/style.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/material.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
     <!-- Config CSS -->
 
 
@@ -155,15 +155,15 @@
         }
     </style>
 
-	<script src="/js/jquery.min.js" type="text/javascript"></script>
+	<script src="/js/jquery.min.js"></script>
 	
-	<link rel="stylesheet" href="/css/highlight/solarized-white.css" type="text/css">
+	<link rel="stylesheet" href="/css/highlight/solarized-white.css">
 	
 	<!-- UC Browser Compatible-->
 	<script>
 		var agent = navigator.userAgent.toLowerCase();
 		if(agent.indexOf('ucbrowser')>0) {
-			document.write('<link rel="stylesheet" href="/css/uc.css" type="text/css">');
+			document.write('<link rel="stylesheet" href="/css/uc.css">');
 		   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
 		}
 	</script>
@@ -347,7 +347,7 @@
 <li>对pivot左边的序列和右边的序列分别递归的执行步骤1和步骤2</li>
 </ol>
 <p>虽然是采用分治法，但是分治法不能完全概括这个算法，因为我每次看完算法会很清楚，但是过段时间就忘了。然后看到了非常新颖的名字：“挖坑排序”。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//快速排序</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span> s[], <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (l &lt; r)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> i = l, j = r;</span><br><span class="line">        <span class="comment">//将数组中的最低位值取出，相当于挖了第一个坑</span></span><br><span class="line">        <span class="keyword">int</span> x = s[l];</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span>(i &lt; j &amp;&amp; s[j] &gt;= x) &#123;</span><br><span class="line">            <span class="comment">//从右向左找第一个小于x的数</span></span><br><span class="line">				j--;  </span><br><span class="line">			&#125;</span><br><span class="line">            <span class="keyword">if</span>(i &lt; j) &#123;</span><br><span class="line">            <span class="comment">//将s[j]的数挖坑填之前的坑</span></span><br><span class="line">				s[i++] = s[j];</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">            <span class="keyword">while</span>(i &lt; j &amp;&amp; s[i] &lt; x) &#123;</span><br><span class="line">            <span class="comment">// 从左向右找第一个大于等于x的数</span></span><br><span class="line">				i++;  </span><br><span class="line">			&#125;</span><br><span class="line">            <span class="keyword">if</span>(i &lt; j) &#123;</span><br><span class="line">            <span class="comment">//挖坑，填之前的坑</span></span><br><span class="line">				s[j--] = s[i];</span><br><span class="line">			&#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//填最后一个坑</span></span><br><span class="line">        s[i] = x;</span><br><span class="line">        quickSort(s, l, i - <span class="number">1</span>); <span class="comment">// 递归调用 </span></span><br><span class="line">        quickSort(s, i + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//快速排序</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span> s[], <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (l &lt; r)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">int</span> i = l, j = r;</div><div class="line">        <span class="comment">//将数组中的最低位值取出，相当于挖了第一个坑</span></div><div class="line">        <span class="keyword">int</span> x = s[l];</div><div class="line">        <span class="keyword">while</span> (i &lt; j)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">while</span>(i &lt; j &amp;&amp; s[j] &gt;= x) &#123;</div><div class="line">            <span class="comment">//从右向左找第一个小于x的数</span></div><div class="line">				j--;  </div><div class="line">			&#125;</div><div class="line">            <span class="keyword">if</span>(i &lt; j) &#123;</div><div class="line">            <span class="comment">//将s[j]的数挖坑填之前的坑</span></div><div class="line">				s[i++] = s[j];</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">            <span class="keyword">while</span>(i &lt; j &amp;&amp; s[i] &lt; x) &#123;</div><div class="line">            <span class="comment">// 从左向右找第一个大于等于x的数</span></div><div class="line">				i++;  </div><div class="line">			&#125;</div><div class="line">            <span class="keyword">if</span>(i &lt; j) &#123;</div><div class="line">            <span class="comment">//挖坑，填之前的坑</span></div><div class="line">				s[j--] = s[i];</div><div class="line">			&#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//填最后一个坑</span></div><div class="line">        s[i] = x;</div><div class="line">        quickSort(s, l, i - <span class="number">1</span>); <span class="comment">// 递归调用 </span></div><div class="line">        quickSort(s, i + <span class="number">1</span>, r);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>对挖坑填数进行总结</p>
 <ol>
 <li>i =L; j = R; 将基准数挖出形成第一个坑a[i]。</li>
@@ -379,7 +379,7 @@
                 
                     
     <!-- 使用多说评论 -->
-    <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/duoshuo.min.css">
 <style>
     #ds-thread #ds-reset .ds-post-button{
         background-color: #0097A7 !important;
@@ -510,7 +510,7 @@
         </a>
         <ul class="dropdown-menu">
             <li>
-            <a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+            <a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
         </ul>
     </li>
 
@@ -543,7 +543,7 @@
     <li>
         <a href="/archives">
              文章总数
-             <span class="sidebar-badge">29</span>
+             <span class="sidebar-badge">30</span>
         </a>
     </li>
 </ul>
@@ -704,9 +704,9 @@ It will not impact the appearance and can give developers a lot of support :)
 </footer>
                 
 				<!-- Import File -->
-<script src="/js/highlight.min.js" type="text/javascript"></script>
-<script src="/js/js.min.js" type="text/javascript"></script>
-<script src="/js/nprogress.js" type="text/javascript"></script>
+<script src="/js/highlight.min.js"></script>
+<script src="/js/js.min.js"></script>
+<script src="/js/nprogress.js"></script>
 
 <script type="text/javascript">
     NProgress.configure({

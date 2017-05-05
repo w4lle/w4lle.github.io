@@ -52,8 +52,8 @@
     <![endif]-->
     
     <!-- Import CSS -->
-    <link rel="stylesheet" href="/css/material.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/style.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/material.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
     <!-- Config CSS -->
 
 
@@ -155,15 +155,15 @@
         }
     </style>
 
-	<script src="/js/jquery.min.js" type="text/javascript"></script>
+	<script src="/js/jquery.min.js"></script>
 	
-	<link rel="stylesheet" href="/css/highlight/solarized-white.css" type="text/css">
+	<link rel="stylesheet" href="/css/highlight/solarized-white.css">
 	
 	<!-- UC Browser Compatible-->
 	<script>
 		var agent = navigator.userAgent.toLowerCase();
 		if(agent.indexOf('ucbrowser')>0) {
-			document.write('<link rel="stylesheet" href="/css/uc.css" type="text/css">');
+			document.write('<link rel="stylesheet" href="/css/uc.css">');
 		   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
 		}
 	</script>
@@ -340,12 +340,12 @@
 		<h1 id="Material"><a href="#Material" class="headerlink" title="Material"></a>Material</h1><p>最近把博客主题换成了<a href="https://github.com/viosey/hexo-theme-material" target="_blank" rel="external">Material</a>，该主题刚刚上线，效果还不错。</p>
 <p>需要把以前的配置迁移一下，包括留言之类的。</p>
 <h1 id="多说评论"><a href="#多说评论" class="headerlink" title="多说评论"></a>多说评论</h1><p>由于之前用的NexT主题，多说后台每篇文章的thread-key是根据NexT主题来的，现在Material主题的多说配置文件如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id="comments"&gt;</span><br><span class="line">    &lt;!-- 多说评论框 start --&gt;</span><br><span class="line">        &lt;div class="ds-thread" data-thread-key="&lt;% if(theme.comment.duoshuo_thread_key == "id")&#123; %&gt;&lt;%= page.id %&gt;&lt;% &#125; else &#123; %&gt;&lt;%= page.path %&gt;&lt;% &#125; %&gt;" data-url="&lt;%= config.url+ config.root + url_for(path) %&gt;"&gt;&lt;/div&gt;</span><br><span class="line">    &lt;!-- 多说评论框 end --&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div id="comments"&gt;</div><div class="line">    &lt;!-- 多说评论框 start --&gt;</div><div class="line">        &lt;div class="ds-thread" data-thread-key="&lt;% if(theme.comment.duoshuo_thread_key == "id")&#123; %&gt;&lt;%= page.id %&gt;&lt;% &#125; else &#123; %&gt;&lt;%= page.path %&gt;&lt;% &#125; %&gt;" data-url="&lt;%= config.url+ config.root + url_for(path) %&gt;"&gt;&lt;/div&gt;</div><div class="line">    &lt;!-- 多说评论框 end --&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
 <p>duoshuo_thread_key配成了page.title，就导致我们找不到多说后台的数据。</p>
 <p>所以要找到NexT主题相关多说的配置。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd themes/next/layout</span><br><span class="line">grep -ri <span class="string">"thread-key"</span> .<span class="comment">/*</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd themes/next/layout</div><div class="line">grep -ri <span class="string">"thread-key"</span> .<span class="comment">/*</span></div></pre></td></tr></table></figure>
 <p>结果：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./_macro/post.swig:                  &lt;span class="post-comments-count ds-thread-count" data-thread-key="&#123;&#123; post.path &#125;&#125;" itemprop="commentsCount"&gt;&lt;/span&gt;</span><br><span class="line">./_partials/comments.swig:      &lt;div class="ds-thread" data-thread-key="&#123;&#123; page.path &#125;&#125;"</span><br><span class="line">./_partials/share/duoshuo_share.swig:&lt;div class="ds-share flat" data-thread-key="&#123;&#123; page.path &#125;&#125;"</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">./_macro/post.swig:                  &lt;span class="post-comments-count ds-thread-count" data-thread-key="&#123;&#123; post.path &#125;&#125;" itemprop="commentsCount"&gt;&lt;/span&gt;</div><div class="line">./_partials/comments.swig:      &lt;div class="ds-thread" data-thread-key="&#123;&#123; page.path &#125;&#125;"</div><div class="line">./_partials/share/duoshuo_share.swig:&lt;div class="ds-share flat" data-thread-key="&#123;&#123; page.path &#125;&#125;"</div></pre></td></tr></table></figure>
 <p>可以看到NexT配置的是page.path。那么我们找到Material主题的thread-key替换下就好了。主要就是两个地方:</p>
 <ul>
 <li>./layout/_widget/duoshuo.ejs 文章评论内容</li>
@@ -354,16 +354,16 @@
 <p>都修改下就能正常显示以前的评论了。</p>
 <h1 id="每日一图"><a href="#每日一图" class="headerlink" title="每日一图"></a>每日一图</h1><p>Material主题首页有个每日图片，默认是写死的。我们可以改为动态的，使用了bing的每日图片，是一位开发者抓取的然后提供的一个api，地址：<a href="https://i-meto.com/bing-api/" target="_blank" rel="external">必应美图 API</a></p>
 <p>使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./_partial/daily_pic.ejs</span><br><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"mdl-card__media mdl-color-text--grey-50"</span> style=<span class="string">"background-image:url(https://api.i-meto.com/bing)"</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">./_partial/daily_pic.ejs</div><div class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"mdl-card__media mdl-color-text--grey-50"</span> style=<span class="string">"background-image:url(https://api.i-meto.com/bing)"</span>&gt;</div></pre></td></tr></table></figure>
 <h1 id="backgroud"><a href="#backgroud" class="headerlink" title="backgroud"></a>backgroud</h1><p>同上背景图也可以设置成bing的图片。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">config_css.ejs</span><br><span class="line">&lt;% if(theme.background.bing.enable == true)&#123; %&gt;</span><br><span class="line">	&lt;style&gt;</span><br><span class="line">		body&#123;</span><br><span class="line">            background-image: url(https://api.i-meto.com/bing?&lt;%= theme.background.bing.parameter %&gt;);</span><br><span class="line">        &#125;</span><br><span class="line">	&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">config_css.ejs</div><div class="line">&lt;% if(theme.background.bing.enable == true)&#123; %&gt;</div><div class="line">	&lt;style&gt;</div><div class="line">		body&#123;</div><div class="line">            background-image: url(https://api.i-meto.com/bing?&lt;%= theme.background.bing.parameter %&gt;);</div><div class="line">        &#125;</div><div class="line">	&lt;/style&gt;</div></pre></td></tr></table></figure>
 <p>config配置文件</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Background Settings</span><br><span class="line"># bing available parameter:</span><br><span class="line">#     new | color= | type=</span><br><span class="line">#         color available value: black, blue, brown, green, multi, orange, pink, purple, red, white, yellow</span><br><span class="line">#         type available value: A (animal), C (culture), N (nature), S (space), T (travel)</span><br><span class="line">background:</span><br><span class="line">    purecolor: "#F5F5F5"</span><br><span class="line">    bgimg: blur</span><br><span class="line">    bing:</span><br><span class="line">        parameter: color=white</span><br><span class="line">        enable: true</span><br></pre></td></tr></table></figure>
-<h1 id="不算子统计"><a href="#不算子统计" class="headerlink" title="不算子统计"></a>不算子统计</h1><p>站点统计<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">footer.ejs</span><br><span class="line">		&lt;div&gt;</span><br><span class="line">		&lt;script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"&gt;&lt;/script&gt;</span><br><span class="line">		&lt;div&gt;</span><br><span class="line">		本站总访问量 &lt;span id="busuanzi_value_site_pv"&gt;&lt;/span&gt; &amp;nbsp&amp;nbsp&amp;nbsp</span><br><span class="line">		你是第&lt;span id="busuanzi_value_site_uv"&gt;&lt;/span&gt;个来到的小伙伴</span><br><span class="line">		&lt;/div&gt;</span><br><span class="line">		&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># Background Settings</div><div class="line"># bing available parameter:</div><div class="line">#     new | color= | type=</div><div class="line">#         color available value: black, blue, brown, green, multi, orange, pink, purple, red, white, yellow</div><div class="line">#         type available value: A (animal), C (culture), N (nature), S (space), T (travel)</div><div class="line">background:</div><div class="line">    purecolor: "#F5F5F5"</div><div class="line">    bgimg: blur</div><div class="line">    bing:</div><div class="line">        parameter: color=white</div><div class="line">        enable: true</div></pre></td></tr></table></figure>
+<h1 id="不算子统计"><a href="#不算子统计" class="headerlink" title="不算子统计"></a>不算子统计</h1><p>站点统计<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">footer.ejs</div><div class="line">		&lt;div&gt;</div><div class="line">		&lt;script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"&gt;&lt;/script&gt;</div><div class="line">		&lt;div&gt;</div><div class="line">		本站总访问量 &lt;span id="busuanzi_value_site_pv"&gt;&lt;/span&gt; &amp;nbsp&amp;nbsp&amp;nbsp</div><div class="line">		你是第&lt;span id="busuanzi_value_site_uv"&gt;&lt;/span&gt;个来到的小伙伴</div><div class="line">		&lt;/div&gt;</div><div class="line">		&lt;/div&gt;</div></pre></td></tr></table></figure></p>
 <h1 id="文章摘要"><a href="#文章摘要" class="headerlink" title="文章摘要"></a>文章摘要</h1><p>有两种方式设置：</p>
 <ol>
 <li>写死固定大小</li>
-<li>more标签<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">以上是摘要</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line">以下是余下全文</span><br></pre></td></tr></table></figure>
+<li>more标签<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">以上是摘要</div><div class="line">&lt;!--more--&gt;</div><div class="line">以下是余下全文</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>推荐第二种</p>
@@ -381,7 +381,7 @@
                 
                     
     <!-- 使用多说评论 -->
-    <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/duoshuo.min.css">
 <style>
     #ds-thread #ds-reset .ds-post-button{
         background-color: #0097A7 !important;
@@ -512,7 +512,7 @@
         </a>
         <ul class="dropdown-menu">
             <li>
-            <a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+            <a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
         </ul>
     </li>
 
@@ -545,7 +545,7 @@
     <li>
         <a href="/archives">
              文章总数
-             <span class="sidebar-badge">29</span>
+             <span class="sidebar-badge">30</span>
         </a>
     </li>
 </ul>
@@ -706,9 +706,9 @@ It will not impact the appearance and can give developers a lot of support :)
 </footer>
                 
 				<!-- Import File -->
-<script src="/js/highlight.min.js" type="text/javascript"></script>
-<script src="/js/js.min.js" type="text/javascript"></script>
-<script src="/js/nprogress.js" type="text/javascript"></script>
+<script src="/js/highlight.min.js"></script>
+<script src="/js/js.min.js"></script>
+<script src="/js/nprogress.js"></script>
 
 <script type="text/javascript">
     NProgress.configure({

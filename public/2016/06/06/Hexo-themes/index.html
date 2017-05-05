@@ -52,8 +52,8 @@
     <![endif]-->
     
     <!-- Import CSS -->
-    <link rel="stylesheet" href="/css/material.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/style.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/material.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
     <!-- Config CSS -->
 
 
@@ -155,15 +155,15 @@
         }
     </style>
 
-	<script src="/js/jquery.min.js" type="text/javascript"></script>
+	<script src="/js/jquery.min.js"></script>
 	
-	<link rel="stylesheet" href="/css/highlight/solarized-white.css" type="text/css">
+	<link rel="stylesheet" href="/css/highlight/solarized-white.css">
 	
 	<!-- UC Browser Compatible-->
 	<script>
 		var agent = navigator.userAgent.toLowerCase();
 		if(agent.indexOf('ucbrowser')>0) {
-			document.write('<link rel="stylesheet" href="/css/uc.css" type="text/css">');
+			document.write('<link rel="stylesheet" href="/css/uc.css">');
 		   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
 		}
 	</script>
@@ -338,7 +338,7 @@
                 <div id="post-content" class="markdown-Github mdl-color-text--grey-700 mdl-card__supporting-text fade out">
 	
 		<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>由于升级<code>Node.js</code>导致要重新安装<code>Hexo</code>，安装完新版的<code>Hexo</code>发现有些东西不能用，搞来搞去把本地仓库搞乱了，就想着把本地的仓库删掉吧，在从远程<code>clone</code>一份下来。<br>博客用的是<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next主题</a>，结果之前的主题配置<code>themes/next/</code>目录根本就没有上传到远程分支，导致主题所有的定制化修改全部丢失。此问题已经提交到<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next主题</a>的<a href="https://github.com/iissnan/hexo-theme-next/issues/932" target="_blank" rel="external">Issues</a>中。</p>
-<h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>先看下<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next主题</a>的使用方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p>
+<h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>先看下<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next主题</a>的使用方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</div></pre></td></tr></table></figure></p>
 <p>这样配置完其实<code>thems/next/</code>就是一个包含<code>.git/</code>的子项目仓库。所以在<code>push</code>主项目的时候不会上传子项目，子项目的文件夹是灰的，并且里面是空的。如图<br><img src="https://cloud.githubusercontent.com/assets/7310246/15810485/b86f642a-2bd1-11e6-9bea-c8c603e9ba35.png" alt="此处输入图片的描述"></p>
 <p>所以从远程仓库拉取的项目中是没有<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">Next主题</a>的。</p>
 <h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>解决方法在<a href="https://github.com/iissnan/hexo-theme-next/issues/932" target="_blank" rel="external">Issues</a>里也说了，用<code>fork + subtree</code>。</p>
@@ -346,16 +346,16 @@
 <p>具体步骤：</p>
 <ol>
 <li><p>删除<code>themes/next/</code>并<code>push</code>到远程</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rm -rf themes/next</span><br><span class="line">gst</span><br><span class="line">ga .</span><br><span class="line">git add --all</span><br><span class="line">gcmsg <span class="string">"delete next"</span></span><br><span class="line">ggpush</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">rm -rf themes/next</div><div class="line">gst</div><div class="line">ga .</div><div class="line">git add --all</div><div class="line">gcmsg <span class="string">"delete next"</span></div><div class="line">ggpush</div></pre></td></tr></table></figure>
 </li>
 <li><p>绑定子项目</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote add -f next git<span class="annotation">@github</span>.com:w4lle/hexo-theme-next.git</span><br><span class="line">git subtree add --prefix=themes/next next master --squash</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git remote add -f next git<span class="meta">@github</span>.com:w4lle/hexo-theme-next.git</div><div class="line">git subtree add --prefix=themes/next next master --squash</div></pre></td></tr></table></figure>
 </li>
 <li><p>更新子项目</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch next master</span><br><span class="line">git subtree pull --prefix=themes/next next master --squash</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git fetch next master</div><div class="line">git subtree pull --prefix=themes/next next master --squash</div></pre></td></tr></table></figure>
 </li>
 <li><p>从子目录push到远程仓库</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git subtree push --prefix=themes/next next master</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git subtree push --prefix=themes/next next master</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>现在再去远程仓库看<code>themes/next/</code>就有内容了，并且跟子项目的远程仓库可以保持更新，在主项目中修改也可以<code>push</code>到子项目的远程。再也不用担心主题配置丢失了。</p>
@@ -377,7 +377,7 @@
                 
                     
     <!-- 使用多说评论 -->
-    <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/duoshuo.min.css">
 <style>
     #ds-thread #ds-reset .ds-post-button{
         background-color: #0097A7 !important;
@@ -508,7 +508,7 @@
         </a>
         <ul class="dropdown-menu">
             <li>
-            <a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+            <a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
         </ul>
     </li>
 
@@ -541,7 +541,7 @@
     <li>
         <a href="/archives">
              文章总数
-             <span class="sidebar-badge">29</span>
+             <span class="sidebar-badge">30</span>
         </a>
     </li>
 </ul>
@@ -702,9 +702,9 @@ It will not impact the appearance and can give developers a lot of support :)
 </footer>
                 
 				<!-- Import File -->
-<script src="/js/highlight.min.js" type="text/javascript"></script>
-<script src="/js/js.min.js" type="text/javascript"></script>
-<script src="/js/nprogress.js" type="text/javascript"></script>
+<script src="/js/highlight.min.js"></script>
+<script src="/js/js.min.js"></script>
+<script src="/js/nprogress.js"></script>
 
 <script type="text/javascript">
     NProgress.configure({
