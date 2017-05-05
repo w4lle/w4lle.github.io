@@ -52,8 +52,8 @@
     <![endif]-->
     
     <!-- Import CSS -->
-    <link rel="stylesheet" href="/css/material.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/style.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/material.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
     <!-- Config CSS -->
 
 
@@ -155,15 +155,15 @@
         }
     </style>
 
-	<script src="/js/jquery.min.js" type="text/javascript"></script>
+	<script src="/js/jquery.min.js"></script>
 	
-	<link rel="stylesheet" href="/css/highlight/solarized-white.css" type="text/css">
+	<link rel="stylesheet" href="/css/highlight/solarized-white.css">
 	
 	<!-- UC Browser Compatible-->
 	<script>
 		var agent = navigator.userAgent.toLowerCase();
 		if(agent.indexOf('ucbrowser')>0) {
-			document.write('<link rel="stylesheet" href="/css/uc.css" type="text/css">');
+			document.write('<link rel="stylesheet" href="/css/uc.css">');
 		   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
 		}
 	</script>
@@ -349,19 +349,19 @@
 <p>以上说的这几种是常用的方法，对于原生和没有深度定制的ROM有一定作用，但是对于像小米、魅族等这类深度定制的系统来说效果不是很好。</p>
 <h2 id="绑定系统服务"><a href="#绑定系统服务" class="headerlink" title="绑定系统服务"></a>绑定系统服务</h2><p>系统提供一些系统级的Service，比如AccessibilityService辅助服务、NotificationListenerService用于监听通知消息。这篇文章主要讲下怎样利用NotificationListenerService用于监听通知消息实现进程保活。</p>
 <p>首先，如果想使用系统service，必须要用户手动点开权限。我们可以添加一个设置的入口直接跳到系统设置通知权限的界面，显示提示用户需要开启权限。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">goNLPermission</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(<span class="string">"android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"</span>);</span><br><span class="line">        context.startActivity(intent);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">goNLPermission</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Intent intent = <span class="keyword">new</span> Intent(<span class="string">"android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"</span>);</div><div class="line">        context.startActivity(intent);</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>界面就不截图了，然后我们app中要有一个权限的状态检查用于提示用户是否开启了通知显示权。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 检查通知使用权</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">checkNotificationPermission</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    String pkg = context.getPackageName();</span><br><span class="line">    String flat = Settings.Secure.getString(context.getContentResolver(), <span class="string">"enabled_notification_listeners"</span>);</span><br><span class="line">    <span class="keyword">boolean</span> enabled = flat != <span class="keyword">null</span> &amp;&amp; flat.contains(pkg);</span><br><span class="line">    <span class="keyword">return</span> enabled;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 检查通知使用权</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">checkNotificationPermission</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    String pkg = context.getPackageName();</div><div class="line">    String flat = Settings.Secure.getString(context.getContentResolver(), <span class="string">"enabled_notification_listeners"</span>);</div><div class="line">    <span class="keyword">boolean</span> enabled = flat != <span class="keyword">null</span> &amp;&amp; flat.contains(pkg);</div><div class="line">    <span class="keyword">return</span> enabled;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>注册，声明运行在com.package.pedometer进程中</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;service</span><br><span class="line">    android:name=".service.MyListenerService"</span><br><span class="line">    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"</span><br><span class="line">    android:process=":pedometer"&gt;</span><br><span class="line">    &lt;intent-filter&gt;</span><br><span class="line">        &lt;action android:name="android.service.notification.NotificationListenerService"/&gt;</span><br><span class="line">    &lt;/intent-filter&gt;</span><br><span class="line">&lt;/service&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;service</div><div class="line">    android:name=".service.MyListenerService"</div><div class="line">    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"</div><div class="line">    android:process=":pedometer"&gt;</div><div class="line">    &lt;intent-filter&gt;</div><div class="line">        &lt;action android:name="android.service.notification.NotificationListenerService"/&gt;</div><div class="line">    &lt;/intent-filter&gt;</div><div class="line">&lt;/service&gt;</div></pre></td></tr></table></figure>
 <p>然后需要继承NotificationListenerService实现两个方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 监听系统通知，需要用户手动开启权限，那么该进程可以不死</span><br><span class="line"> */</span></span><br><span class="line"><span class="annotation">@TargetApi</span>(Build.VERSION_CODES.JELLY_BEAN_MR2)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyListenerService</span> <span class="keyword">extends</span> <span class="title">NotificationListenerService</span> </span>&#123;</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotificationPosted</span><span class="params">(StatusBarNotification sbn)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotificationRemoved</span><span class="params">(StatusBarNotification sbn)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>方法中什么都不用实现，MyListenerService所在的进程就拥有了跟NotificationListenerService一样的权限。可以试下手动强制停止进程会发现怎么都结束不掉，强制停止的按钮一直可以点击。可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell ps | grep ***</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 监听系统通知，需要用户手动开启权限，那么该进程可以不死</div><div class="line"> */</div><div class="line"><span class="meta">@TargetApi</span>(Build.VERSION_CODES.JELLY_BEAN_MR2)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyListenerService</span> <span class="keyword">extends</span> <span class="title">NotificationListenerService</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotificationPosted</span><span class="params">(StatusBarNotification sbn)</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotificationRemoved</span><span class="params">(StatusBarNotification sbn)</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>方法中什么都不用实现，MyListenerService所在的进程就拥有了跟NotificationListenerService一样的权限。可以试下手动强制停止进程会发现怎么都结束不掉，强制停止的按钮一直可以点击。可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell ps | grep ***</div></pre></td></tr></table></figure></p>
 <p>命令查看进程是否存活。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/<span class="number">12869</span>/oom_adj</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cat /proc/<span class="number">12869</span>/oom_adj</div><div class="line"><span class="number">0</span></div></pre></td></tr></table></figure>
 <p>查看进程的oom_adj的值为0，那么我们知道在灰色保活手段上基本就是提高oom_adj的值，越小越不容易被杀死，这种方法一步到位。</p>
 <p>那么怎么应用到我们自己的service中呢？很简单，将service跟MyListenerService运行在同一个进程就可以了。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;service</span><br><span class="line">    android:name=".service.StepCounterService"</span><br><span class="line">    android:exported="true"</span><br><span class="line">    android:process=":pedometer"&gt;</span><br><span class="line">&lt;/service&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;service</div><div class="line">    android:name=".service.StepCounterService"</div><div class="line">    android:exported="true"</div><div class="line">    android:process=":pedometer"&gt;</div><div class="line">&lt;/service&gt;</div></pre></td></tr></table></figure>
 <p>这样基本就可以保证service所在的进程不被杀死了。当然，如果ROM厂商在系统级别拦截掉了，这种方法也会无效了。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>如果要用这种方法进程保活，那么你的app肯定是有显示通知栏的通知，不然用户谁这么傻去给你开这么权限呢。其次，显示通知栏消息就是前台进程了，用户始终可以看到，再配合service自启的几种方法，基本就可以保证我们的进程不死了。当然，这种方法也不能说绝对管用，在深度定制面前，一切都是渣渣。验证下来，魅族基本都好用，小米4c不太好用，小米其他机型没有测试。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://blog.csdn.net/aigestudio/article/details/51348408" target="_blank" rel="external">论Android应用进程长存的可行性</a><br><a href="http://www.jianshu.com/p/63aafe3c12af#" target="_blank" rel="external">关于 Android 进程保活，你所需要知道的一切</a></p>
@@ -379,7 +379,7 @@
                 
                     
     <!-- 使用多说评论 -->
-    <link rel="stylesheet" href="/css/duoshuo.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/duoshuo.min.css">
 <style>
     #ds-thread #ds-reset .ds-post-button{
         background-color: #0097A7 !important;
@@ -510,7 +510,7 @@
         </a>
         <ul class="dropdown-menu">
             <li>
-            <a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
+            <a class="sidebar_archives-link" href="/archives/2017/05/">五月 2017<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">1</span></a>
         </ul>
     </li>
 
@@ -543,7 +543,7 @@
     <li>
         <a href="/archives">
              文章总数
-             <span class="sidebar-badge">29</span>
+             <span class="sidebar-badge">30</span>
         </a>
     </li>
 </ul>
@@ -704,9 +704,9 @@ It will not impact the appearance and can give developers a lot of support :)
 </footer>
                 
 				<!-- Import File -->
-<script src="/js/highlight.min.js" type="text/javascript"></script>
-<script src="/js/js.min.js" type="text/javascript"></script>
-<script src="/js/nprogress.js" type="text/javascript"></script>
+<script src="/js/highlight.min.js"></script>
+<script src="/js/js.min.js"></script>
+<script src="/js/nprogress.js"></script>
 
 <script type="text/javascript">
     NProgress.configure({
