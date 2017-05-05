@@ -1,5 +1,5 @@
 ﻿---
-title: hotpatch-summary
+title: 热修复总结
 date: 2017-05-04 18:45:31
 tags: [Android, 热补丁]
 thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/android.jpg
