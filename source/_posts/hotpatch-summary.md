@@ -31,3 +31,12 @@ thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/android.jpg
 Slider 中大概总结了各种方案的实现方式，以及常见的问题。
 
 Slider 地址： [http://w4lle.github.io/sliders/hot-fix/index.html](http://w4lle.github.io/sliders/hot-fix/index.html)
+
+详细的各种方案分析：
+
+- [Android热补丁之AndFix原理解析](http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/)
+- [从Instant run谈Android替换Application和动态加载机制](http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/)
+- [Android热补丁之Tinker原理解析](http://w4lle.github.io/2016/12/16/tinker/)
+- [Android热补丁之Robust原理解析(一)](http://w4lle.github.io/2017/03/31/robust-0/)
+
+水平有限，难免有写的不对的地方，欢迎交流。
