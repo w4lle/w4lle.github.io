@@ -4,9 +4,9 @@
   <subtitle>Eeeee... va?</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://w4lle.github.io/"/>
-  <updated>2017-05-15T02:11:12.000Z</updated>
-  <id>http://w4lle.github.io/</id>
+  <link href="http://w4lle.com/"/>
+  <updated>2017-05-15T02:51:33.000Z</updated>
+  <id>http://w4lle.com/</id>
   
   <author>
     <name>w4lle</name>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>热修复总结</title>
-    <link href="http://w4lle.github.io/2017/05/04/hotpatch-summary/"/>
-    <id>http://w4lle.github.io/2017/05/04/hotpatch-summary/</id>
+    <link href="http://w4lle.com/2017/05/04/hotpatch-summary/"/>
+    <id>http://w4lle.com/2017/05/04/hotpatch-summary/</id>
     <published>2017-05-04T10:45:31.000Z</published>
-    <updated>2017-05-15T02:11:12.000Z</updated>
+    <updated>2017-05-15T02:51:33.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="热修复总结"><a href="#热修复总结" class="headerlink" title="热修复总结"></a>热修复总结</h1><table>
 <thead>
@@ -183,16 +183,16 @@
 </table>
 <p>上表基本涵盖了具有代表性的各种热修复方案，涉及到的各种关键指标的横向对比。</p>
 <p>Slider 中大概总结了各种方案的实现方式，以及常见的问题。</p>
-<p>Slider 地址： <a href="http://w4lle.github.io/sliders/hot-fix/index.html">http://w4lle.github.io/sliders/hot-fix/index.html</a></p>
+<p>Slider 地址： <a href="http://w4lle.github.io/sliders/hot-fix/index.html" target="_blank" rel="external">http://w4lle.github.io/sliders/hot-fix/index.html</a></p>
 <p>详细的各种方案分析：</p>
 <ul>
-<li><a href="http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/">Android热补丁之AndFix原理解析</a></li>
-<li><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a></li>
-<li><a href="http://w4lle.github.io/2016/12/16/tinker/">Android热补丁之Tinker原理解析</a></li>
-<li><a href="http://w4lle.github.io/2017/03/31/robust-0/">Android热补丁之Robust原理解析(一)</a></li>
+<li><a href="http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" target="_blank" rel="external">Android热补丁之AndFix原理解析</a></li>
+<li><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">从Instant run谈Android替换Application和动态加载机制</a></li>
+<li><a href="http://w4lle.github.io/2016/12/16/tinker/" target="_blank" rel="external">Android热补丁之Tinker原理解析</a></li>
+<li><a href="http://w4lle.github.io/2017/03/31/robust-0/" target="_blank" rel="external">Android热补丁之Robust原理解析(一)</a></li>
 </ul>
 <p>水平有限，难免有写的不对的地方，欢迎交流。</p>
-<p>本文地址 <a href="http://w4lle.github.io/2017/05/04/hotpatch-summary/">http://w4lle.github.io/2017/05/04/hotpatch-summary/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2017/05/04/hotpatch-summary/">http://w4lle.com/2017/05/04/hotpatch-summary/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -206,16 +206,16 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
-      <category term="热补丁" scheme="http://w4lle.github.io/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
+      <category term="热补丁" scheme="http://w4lle.com/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
     
   </entry>
   
   <entry>
     <title>Android热补丁之Robust原理解析(一)</title>
-    <link href="http://w4lle.github.io/2017/03/31/robust-0/"/>
-    <id>http://w4lle.github.io/2017/03/31/robust-0/</id>
+    <link href="http://w4lle.com/2017/03/31/robust-0/"/>
+    <id>http://w4lle.com/2017/03/31/robust-0/</id>
     <published>2017-03-31T07:58:12.000Z</published>
     <updated>2017-03-31T12:32:19.000Z</updated>
     
@@ -227,14 +227,14 @@
 </ul>
 <p>本文为第一篇，主要讲解补丁加载过程和基础包插桩过程，分析版本 <code>0.3.2</code>。</p>
 <a id="more"></a>
-<h1 id="从-InstantRun-说起"><a href="#从-InstantRun-说起" class="headerlink" title="从 InstantRun 说起"></a>从 InstantRun 说起</h1><p>不得不说 InstantRun 真是个好东西。目前主流的热修复框架都有或多或少的参考 InstantRun 的某些技术点，比如 <a href="https://github.com/Tencent/tinker" target="_blank" rel="external">Tinker</a> 的官方文章中明确考虑过 InstantRun 中的 Application 替换，虽然最后没有采用，但是身为其兄弟库的 <a href="http://tinkerpatch.com/Docs/intro" target="_blank" rel="external">TinkerPatch</a> 中一键接入方案就采用的该技术点。关于该技术点，可以参考我之前写的一篇文章 <a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/">一键接入Tinker</a> 。</p>
+<h1 id="从-InstantRun-说起"><a href="#从-InstantRun-说起" class="headerlink" title="从 InstantRun 说起"></a>从 InstantRun 说起</h1><p>不得不说 InstantRun 真是个好东西。目前主流的热修复框架都有或多或少的参考 InstantRun 的某些技术点，比如 <a href="https://github.com/Tencent/tinker" target="_blank" rel="external">Tinker</a> 的官方文章中明确考虑过 InstantRun 中的 Application 替换，虽然最后没有采用，但是身为其兄弟库的 <a href="http://tinkerpatch.com/Docs/intro" target="_blank" rel="external">TinkerPatch</a> 中一键接入方案就采用的该技术点。关于该技术点，可以参考我之前写的一篇文章 <a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/" target="_blank" rel="external">一键接入Tinker</a> 。</p>
 <p>我们知道，InstantRun 对应三种更新机制：</p>
 <ul>
 <li>冷插拔，我们称之为重启更新机制</li>
 <li>温插拔，我们称之为重启Activity更新机制</li>
 <li>热插拔，我们称之为热更新机制</li>
 </ul>
-<p>如果你还不熟悉 InstantRun，请参考我的这篇文章<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a></p>
+<p>如果你还不熟悉 InstantRun，请参考我的这篇文章<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">从Instant run谈Android替换Application和动态加载机制</a></p>
 <p>而这篇文章的主角 Robust ，其热修复的关键技术点就是采用了 InstantRun 中的热更新机制，对应于多 ClassLoader 的动态加载方案，即一个 dex 文件对应一个新建 ClassLoader 。</p>
 <h1 id="Robust-原理解析"><a href="#Robust-原理解析" class="headerlink" title="Robust 原理解析"></a>Robust 原理解析</h1><p>Robust 的原理可以简单描述为：</p>
 <ol>
@@ -318,7 +318,7 @@
 </a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/26036302" target="_blank" rel="external">热修复框架研究之Robust原理</a></li>
 </ul>
-<p>本文地址 <a href="http://w4lle.github.io/2017/03/31/robust-0/">http://w4lle.github.io/2017/03/31/robust-0/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2017/03/31/robust-0/">http://w4lle.com/2017/03/31/robust-0/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -334,16 +334,16 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
-      <category term="热补丁" scheme="http://w4lle.github.io/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
+      <category term="热补丁" scheme="http://w4lle.com/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
     
   </entry>
   
   <entry>
     <title>再见，薄荷！</title>
-    <link href="http://w4lle.github.io/2017/03/08/goodbye-boohee/"/>
-    <id>http://w4lle.github.io/2017/03/08/goodbye-boohee/</id>
+    <link href="http://w4lle.com/2017/03/08/goodbye-boohee/"/>
+    <id>http://w4lle.com/2017/03/08/goodbye-boohee/</id>
     <published>2017-03-07T16:00:00.000Z</published>
     <updated>2017-03-08T12:56:41.000Z</updated>
     
@@ -362,7 +362,7 @@
 <p>将要到来的，怀着期待张开双手迎接未来。</p>
 <p>再见，薄荷。</p>
 <p>你好，明天。</p>
-<p>本文地址 <a href="http://w4lle.github.io/2017/03/08/goodbye-boohee/">http://w4lle.github.io/2017/03/08/goodbye-boohee/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2017/03/08/goodbye-boohee/">http://w4lle.com/2017/03/08/goodbye-boohee/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -374,14 +374,14 @@
     </summary>
     
     
-      <category term="其他" scheme="http://w4lle.github.io/tags/%E5%85%B6%E4%BB%96/"/>
+      <category term="其他" scheme="http://w4lle.com/tags/%E5%85%B6%E4%BB%96/"/>
     
   </entry>
   
   <entry>
     <title>Gradle模块化配置</title>
-    <link href="http://w4lle.github.io/2017/01/22/gradle-modules/"/>
-    <id>http://w4lle.github.io/2017/01/22/gradle-modules/</id>
+    <link href="http://w4lle.com/2017/01/22/gradle-modules/"/>
+    <id>http://w4lle.com/2017/01/22/gradle-modules/</id>
     <published>2017-01-22T01:53:37.000Z</published>
     <updated>2017-01-23T00:56:17.000Z</updated>
     
@@ -413,7 +413,7 @@
 <p>打tinker补丁不需要手动填依赖文件，包只需执行<code>./gradlew tinkerProcessRelease</code>。</p>
 <p>正好现在并行三个项目，移植过程很快，copy两个gradle配置文件就搞定了。app的build.gradle代码也只有不到200行。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p> <a href="http://blog.csdn.net/innost/article/details/48228651" target="_blank" rel="external">深入理解Android之Gradle</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2017/01/22/gradle-modules/">http://w4lle.github.io/2017/01/22/gradle-modules/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2017/01/22/gradle-modules/">http://w4lle.com/2017/01/22/gradle-modules/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -423,14 +423,14 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>Android Things初探</title>
-    <link href="http://w4lle.github.io/2017/01/06/AndroidThings-0/"/>
-    <id>http://w4lle.github.io/2017/01/06/AndroidThings-0/</id>
+    <link href="http://w4lle.com/2017/01/06/AndroidThings-0/"/>
+    <id>http://w4lle.com/2017/01/06/AndroidThings-0/</id>
     <published>2017-01-06T09:26:47.000Z</published>
     <updated>2017-01-08T08:57:51.000Z</updated>
     
@@ -482,7 +482,7 @@
 <h1 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h1><p>说到物联网就不得不说安全，在软件层面盗个号，个人信息被窃取可能感觉问题不大，但是对于联网的硬件来说就很可怕了，比如说门锁被破解，你家的煤气被远程控制，半夜你家电视突然响了，就问你怕不怕。</p>
 <p>Google既然想统一IoT标准，那么IoT的安全性必须重视，因为在标准未统一之前破解某一款硬件设备性意义不大，而标准统一之后，只要破解这个平台就搞定了一切。真心希望Google可以做到让人满意的安全性。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://developer.android.com/things/hardware/index.html" target="_blank" rel="external">Android Things</a><br><a href="https://github.com/androidthings" target="_blank" rel="external">Android Things Sample</a><br><a href="http://www.jianshu.com/nb/3704305" target="_blank" rel="external">ttdevs的树莓派专题</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2017/01/06/AndroidThings-0/">http://w4lle.github.io/2017/01/06/AndroidThings-0/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2017/01/06/AndroidThings-0/">http://w4lle.com/2017/01/06/AndroidThings-0/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -492,20 +492,20 @@
     </summary>
     
     
-      <category term="Android Things" scheme="http://w4lle.github.io/tags/Android-Things/"/>
+      <category term="Android Things" scheme="http://w4lle.com/tags/Android-Things/"/>
     
   </entry>
   
   <entry>
     <title>一键接入Tinker</title>
-    <link href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/"/>
-    <id>http://w4lle.github.io/2017/01/05/one-key-for-tinker/</id>
+    <link href="http://w4lle.com/2017/01/05/one-key-for-tinker/"/>
+    <id>http://w4lle.com/2017/01/05/one-key-for-tinker/</id>
     <published>2017-01-05T06:15:49.000Z</published>
     <updated>2017-01-06T02:52:26.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>Tinker开源挺长时间了，使用的开发者也越来越多，对于一些小白开发者来说对接Tinker的成本还是挺高的，其中主要因素还是不能理解为什么Application要修改成ApplicationLike，以及改造后对项目中使用Application的地方也要同步修改。</p>
-<p>在上篇文章<a href="http://w4lle.github.io/2016/12/16/tinker/">Android热补丁之Tinker原理解析</a>中我们已经讲解了这样做的目的以及Tinker的加载补丁的流程，本篇文章主要讲一下一键接入Tinker的实现思路。</p>
-<h1 id="InstantRun"><a href="#InstantRun" class="headerlink" title="InstantRun"></a>InstantRun</h1><p>我们的目的是要实现不修改Application达到替换Application的效果，在这篇文章<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a>中，详细讲述了如何动态替换Application，总结起来就两步：</p>
+<p>在上篇文章<a href="http://w4lle.github.io/2016/12/16/tinker/" target="_blank" rel="external">Android热补丁之Tinker原理解析</a>中我们已经讲解了这样做的目的以及Tinker的加载补丁的流程，本篇文章主要讲一下一键接入Tinker的实现思路。</p>
+<h1 id="InstantRun"><a href="#InstantRun" class="headerlink" title="InstantRun"></a>InstantRun</h1><p>我们的目的是要实现不修改Application达到替换Application的效果，在这篇文章<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">从Instant run谈Android替换Application和动态加载机制</a>中，详细讲述了如何动态替换Application，总结起来就两步：</p>
 <ol>
 <li>打包时替换Application标签，插入BootstrapApplication</li>
 <li>运行时hook系统api，将BootstrapApplication换回MyApplication</li>
@@ -530,15 +530,15 @@
 </li>
 <li>替换mLoadedApk对象，代码4处</li>
 </ol>
-<p>详细请查看<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a></p>
+<p>详细请查看<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">从Instant run谈Android替换Application和动态加载机制</a></p>
 <p>做完上面这两步这样就可以实现一键接入了。</p>
 <h1 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h1><p>在上篇文章中我们提到，由于该方案大量hook系统api，在国内Android碎片化如此严重的市场环境下，该方案兼容性有一些问题，大概有 1/1w的概率会出现替换失败的问题，如果替换失败，那么在系统中运行的Application还是BootstrapApplication，而我们App中的Application已经没有了Application的生命周期和作用。</p>
 <p>所以我们要在失败catch中调用下Application的生命周期方法以保证程序能够正常初始化启动起来。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">  ...</div><div class="line">&#125; <span class="keyword">catch</span> &#123;</div><div class="line">  e = <span class="keyword">true</span>;</div><div class="line">  realApplication.onCreate();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConfigurationChanged</span><span class="params">(Configuration paramConfiguration)</span></span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">if</span> (e &amp;&amp; realApplication != <span class="keyword">null</span>) &#123;</div><div class="line">    realApplication.onConfigurationChanged(paramConfiguration);</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">super</span>.onConfigurationChanged(paramConfiguration);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLowMemory</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">if</span> (e &amp;&amp; realApplication != <span class="keyword">null</span>) &#123;</div><div class="line">    realApplication.onLowMemory();</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">super</span>.onLowMemory();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@TargetApi</span>(<span class="number">14</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTrimMemory</span><span class="params">(<span class="keyword">int</span> paramInt)</span></span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">if</span> (e &amp;&amp; realApplication != <span class="keyword">null</span>) &#123;</div><div class="line">    realApplication.onTrimMemory(paramInt);</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">super</span>.onTrimMemory(paramInt);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTerminate</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">if</span> (e &amp;&amp; realApplication != <span class="keyword">null</span>) &#123;</div><div class="line">    realApplication.onTerminate();</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">super</span>.onTerminate();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这么做虽然能保证App能启动，但是实际上还会有隐性问题存在。比如App中有如下代码<code>((App) getApplication()).xxx();</code>，那么在替换失败的情况下可能就会崩了， 因为<code>getApplication()</code>得到的是BootstrapApplication，强转为<code>App</code>类型肯定就挂了。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>整体思路大概讲清楚了，虽然这种方案接入成本低，但是兼容性问题是个很麻烦的事情，说不定啥时候就崩了。推荐大家还是使用Tinker自有的接入方案。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a><br><a href="http://www.tinkerpatch.com/" target="_blank" rel="external">TinkerPatch</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/">http://w4lle.github.io/2017/01/05/one-key-for-tinker/</a> </p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">从Instant run谈Android替换Application和动态加载机制</a><br><a href="http://www.tinkerpatch.com/" target="_blank" rel="external">TinkerPatch</a></p>
+<p>本文链接： <a href="http://w4lle.com/2017/01/05/one-key-for-tinker/">http://w4lle.com/2017/01/05/one-key-for-tinker/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -548,24 +548,24 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
-      <category term="热补丁" scheme="http://w4lle.github.io/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
+      <category term="热补丁" scheme="http://w4lle.com/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
     
   </entry>
   
   <entry>
     <title>Android热补丁之Tinker原理解析</title>
-    <link href="http://w4lle.github.io/2016/12/16/tinker/"/>
-    <id>http://w4lle.github.io/2016/12/16/tinker/</id>
+    <link href="http://w4lle.com/2016/12/16/tinker/"/>
+    <id>http://w4lle.com/2016/12/16/tinker/</id>
     <published>2016-12-16T01:49:06.000Z</published>
     <updated>2017-03-08T02:17:58.000Z</updated>
     
     <content type="html"><![CDATA[<p>Tinker系列文章：</p>
 <ul>
-<li><a href="http://w4lle.github.io/2016/12/16/tinker/">Android热补丁之Tinker原理解析</a></li>
-<li><a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/">一键接入Tinker</a></li>
-<li><a href="http://w4lle.github.io/2017/01/22/gradle-modules/">Gradle模块化配置</a></li>
+<li><a href="http://w4lle.github.io/2016/12/16/tinker/" target="_blank" rel="external">Android热补丁之Tinker原理解析</a></li>
+<li><a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/" target="_blank" rel="external">一键接入Tinker</a></li>
+<li><a href="http://w4lle.github.io/2017/01/22/gradle-modules/" target="_blank" rel="external">Gradle模块化配置</a></li>
 </ul>
 <p>本文是第一篇。</p>
 <blockquote>
@@ -586,7 +586,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">TinkerApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</div><div class="line">...</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">TinkerApplication</span><span class="params">(<span class="keyword">int</span> tinkerFlags, String delegateClassName,</span></span></div><div class="line">                                String loaderClassName, <span class="keyword">boolean</span> tinkerLoadVerifyFlag) &#123;</div><div class="line">        <span class="keyword">this</span>.tinkerFlags = tinkerFlags;</div><div class="line">        <span class="keyword">this</span>.delegateClassName = delegateClassName;</div><div class="line">        <span class="keyword">this</span>.loaderClassName = loaderClassName;</div><div class="line">        <span class="keyword">this</span>.tinkerLoadVerifyFlag = tinkerLoadVerifyFlag;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> Object <span class="title">createDelegate</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">// Use reflection to create the delegate so it doesn't need to go into the primary dex.</span></div><div class="line">            <span class="comment">// And we can also patch it</span></div><div class="line">            Class&lt;?&gt; delegateClass = Class.forName(delegateClassName, <span class="keyword">false</span>, getClassLoader());</div><div class="line">            Constructor&lt;?&gt; constructor = delegateClass.getConstructor(Application.class, <span class="keyword">int</span>.class, <span class="keyword">boolean</span>.class, <span class="keyword">long</span>.class, <span class="keyword">long</span>.class,</div><div class="line">                Intent.class, Resources[].class, ClassLoader[].class, AssetManager[].class);</div><div class="line">            <span class="keyword">return</span> constructor.newInstance(<span class="keyword">this</span>, tinkerFlags, tinkerLoadVerifyFlag,</div><div class="line">                applicationStartElapsedTime, applicationStartMillisTime,</div><div class="line">                tinkerResultIntent, resources, classLoader, assetManager);</div><div class="line">        &#125; <span class="keyword">catch</span> (Throwable e) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(<span class="string">"createDelegate failed"</span>, e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">ensureDelegate</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (delegate == <span class="keyword">null</span>) &#123;</div><div class="line">            delegate = createDelegate();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Hook for sub-classes to run logic after the &#123;<span class="doctag">@link</span> Application#attachBaseContext&#125; has been</div><div class="line">     * called but before the delegate is created. Implementors should be very careful what they do</div><div class="line">     * here since &#123;<span class="doctag">@link</span> android.app.Application#onCreate&#125; will not have yet been called.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onBaseContextAttached</span><span class="params">(Context base)</span> </span>&#123;</div><div class="line">        applicationStartElapsedTime = SystemClock.elapsedRealtime();</div><div class="line">        applicationStartMillisTime = System.currentTimeMillis();</div><div class="line">        loadTinker();</div><div class="line">        ensureDelegate();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Method method = ShareReflectUtil.findMethod(delegate, <span class="string">"onBaseContextAttached"</span>, Context.class);</div><div class="line">            method.invoke(delegate, base);</div><div class="line">        &#125; <span class="keyword">catch</span> (Throwable t) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(<span class="string">"onBaseContextAttached method not found"</span>, t);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//重置安全模式次数，大于等于三次会进入安全模式不再加载</span></div><div class="line">        <span class="keyword">if</span> (useSafeMode) &#123;</div><div class="line">            String processName = ShareTinkerInternals.getProcessName(<span class="keyword">this</span>);</div><div class="line">            String preferName = ShareConstants.TINKER_OWN_PREFERENCE_CONFIG + processName;</div><div class="line">            SharedPreferences sp = getSharedPreferences(preferName, Context.MODE_PRIVATE);</div><div class="line">            sp.edit().putInt(ShareConstants.TINKER_SAFE_MODE_COUNT, <span class="number">0</span>).commit();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">attachBaseContext</span><span class="params">(Context base)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.attachBaseContext(base);</div><div class="line">        onBaseContextAttached(base);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">delegateMethod</span><span class="params">(String methodName)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (delegate != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                Method method = ShareReflectUtil.findMethod(delegate, methodName, <span class="keyword">new</span> Class[<span class="number">0</span>]);</div><div class="line">                method.invoke(delegate, <span class="keyword">new</span> Object[<span class="number">0</span>]);</div><div class="line">            &#125; <span class="keyword">catch</span> (Throwable t) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(String.format(<span class="string">"%s method not found"</span>, methodName), t);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate();</div><div class="line">        ensureDelegate();</div><div class="line">        delegateMethod(<span class="string">"onCreate"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>TinkerApplication继承自Application，说明它是正经的Application，而且在manifest文件中声明的也必须是它。然后在Application的各个声明周期方法中反射调用<code>delegate</code>同步Application的周期方法回调，其中的<code>delegate</code>是我们传过来的我们项目中的Application <code>MyApplication</code>。</p>
 <p>其中的loaderTinker()方法是Tinker的加载流程，我们稍后会讲到，在反射调用MyApplication的attachBaseContext之前，loaderTinker()已经被调用完成，也就是说，Tinker是在加载完整个流程之后才去调用的app中的Application的attachBaseContext开始真正的整个App的生命周期。说白了就是采用了代理。</p>
-<p>看到这里，如果你看过我之前写的<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a>，就会发现跟这个好像。区别在于，InstantRun是在编译器修改manifest插入IncrementalClassLoader，运行时动态替换成项目中实际使用的MyApplication，进而替换了ClassLoader和资源等，开发者在毫不知情的情况下就完成了替换。</p>
+<p>看到这里，如果你看过我之前写的<a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">从Instant run谈Android替换Application和动态加载机制</a>，就会发现跟这个好像。区别在于，InstantRun是在编译器修改manifest插入IncrementalClassLoader，运行时动态替换成项目中实际使用的MyApplication，进而替换了ClassLoader和资源等，开发者在毫不知情的情况下就完成了替换。</p>
 <p>其中大量使用了反射，hook系统api，替换运行时系统中保有的Application的引用，最终完成替换，Tinker团队之前做过测试，100w人会有几十个在替换的时候出现问题，而且如果反射替换Application的问题，那么这个过程是不可逆的。Tinker为了兼容性问题考虑，采用了工程代理的方式，避免进入兼容性的坑。虽然可以用注解的方式生成，但是这种方式相比InstantRun的那一套接入成本还是增大不少，不过为了线上的稳定，这一切都是值得的。</p>
 <p>还有一点需要注意的是，TinkerApplication是采用反射调用的MyApplication，为什么一定是反射，我们直接传过去MyApplication的引用直接调用不就好了吗？关于这一点，我们后面会详细说明。</p>
 <h1 id="补丁加载"><a href="#补丁加载" class="headerlink" title="补丁加载"></a>补丁加载</h1><p>在补丁加载之前，我们需要知道补丁文件现在已经下发到app中，并且通过dexDiff合成并且校验然后push到<code>/data/data/package_name/tinker/</code>下。大概的文件目录：</p>
@@ -710,17 +710,17 @@
 <li>对加固支持不太好</li>
 </ul>
 <p>总结下来Tinker是一种基于单ClassLoader加载多dex方案的热补丁框架，兼容性做的比较好，功能强大。如果你正在考虑接入热补丁，那么强烈推荐你使用Tinker，地精修补匠，带你无限刷新！</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286384&amp;idx=1&amp;sn=f1aff31d6a567674759be476bcd12549&amp;scene=4#wechat_redirect" target="_blank" rel="external">微信Tinker的一切都在这里，包括源码(一)</a><br><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286341&amp;idx=1&amp;sn=054d595af6e824cbe4edd79427fc2706&amp;scene=0" target="_blank" rel="external">Android N混合编译与对热补丁影响解析</a><br><a href="https://www.zybuluo.com/dodola/note/554061" target="_blank" rel="external">Tinker Dexdiff算法解析</a><br><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">从Instant run谈Android替换Application和动态加载机制</a><br><a href="https://segmentfault.com/a/1190000004062880" target="_blank" rel="external">Android动态加载基础 ClassLoader工作机制</a><br><a href="http://blog.csdn.net/luoshengyang/article/details/8791064" target="_blank" rel="external">Android应用程序资源管理器（Asset Manager）的创建过程分析</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/12/16/tinker/">http://w4lle.github.io/2016/12/16/tinker/</a> </p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286384&amp;idx=1&amp;sn=f1aff31d6a567674759be476bcd12549&amp;scene=4#wechat_redirect" target="_blank" rel="external">微信Tinker的一切都在这里，包括源码(一)</a><br><a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=2649286341&amp;idx=1&amp;sn=054d595af6e824cbe4edd79427fc2706&amp;scene=0" target="_blank" rel="external">Android N混合编译与对热补丁影响解析</a><br><a href="https://www.zybuluo.com/dodola/note/554061" target="_blank" rel="external">Tinker Dexdiff算法解析</a><br><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">从Instant run谈Android替换Application和动态加载机制</a><br><a href="https://segmentfault.com/a/1190000004062880" target="_blank" rel="external">Android动态加载基础 ClassLoader工作机制</a><br><a href="http://blog.csdn.net/luoshengyang/article/details/8791064" target="_blank" rel="external">Android应用程序资源管理器（Asset Manager）的创建过程分析</a></p>
+<p>本文链接： <a href="http://w4lle.com/2016/12/16/tinker/">http://w4lle.com/2016/12/16/tinker/</a> </p>
 ]]></content>
     
     <summary type="html">
     
       &lt;p&gt;Tinker系列文章：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://w4lle.github.io/2016/12/16/tinker/&quot;&gt;Android热补丁之Tinker原理解析&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://w4lle.github.io/2017/01/05/one-key-for-tinker/&quot;&gt;一键接入Tinker&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://w4lle.github.io/2017/01/22/gradle-modules/&quot;&gt;Gradle模块化配置&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://w4lle.github.io/2016/12/16/tinker/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热补丁之Tinker原理解析&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://w4lle.github.io/2017/01/05/one-key-for-tinker/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;一键接入Tinker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://w4lle.github.io/2017/01/22/gradle-modules/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gradle模块化配置&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;本文是第一篇。&lt;/p&gt;
 &lt;blockquote&gt;
@@ -731,16 +731,16 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
-      <category term="热补丁" scheme="http://w4lle.github.io/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
+      <category term="热补丁" scheme="http://w4lle.com/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
     
   </entry>
   
   <entry>
     <title>AndroidStudio 常用快捷键</title>
-    <link href="http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/"/>
-    <id>http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/</id>
+    <link href="http://w4lle.com/2016/12/14/AndroidStudio-shotcurts-md/"/>
+    <id>http://w4lle.com/2016/12/14/AndroidStudio-shotcurts-md/</id>
     <published>2016-12-14T10:47:01.000Z</published>
     <updated>2017-01-06T01:51:38.000Z</updated>
     
@@ -822,8 +822,8 @@
 <li>cmd + shift + a </li>
 </ul>
 <p>ppt:</p>
-<p><a href="http://w4lle.github.io/sliders/androidstudio-shortcurts/index.html">http://w4lle.github.io/sliders/androidstudio-shortcurts/index.html</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/">http://w4lle.github.io/2016/12/14/AndroidStudio-shotcurts-md/</a> </p>
+<p><a href="http://w4lle.github.io/sliders/androidstudio-shortcurts/index.html" target="_blank" rel="external">http://w4lle.github.io/sliders/androidstudio-shortcurts/index.html</a></p>
+<p>本文链接： <a href="http://w4lle.com/2016/12/14/AndroidStudio-shotcurts-md/">http://w4lle.com/2016/12/14/AndroidStudio-shotcurts-md/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -834,14 +834,14 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>OkHttp3 源码浅析</title>
-    <link href="http://w4lle.github.io/2016/12/06/OkHttp/"/>
-    <id>http://w4lle.github.io/2016/12/06/OkHttp/</id>
+    <link href="http://w4lle.com/2016/12/06/OkHttp/"/>
+    <id>http://w4lle.com/2016/12/06/OkHttp/</id>
     <published>2016-12-06T08:20:52.000Z</published>
     <updated>2017-01-06T01:53:45.000Z</updated>
     
@@ -914,7 +914,7 @@
 <li><a href="http://blog.piasy.com/2016/07/11/Understand-OkHttp/" target="_blank" rel="external">拆轮子系列：拆 OkHttp</a></li>
 <li><a href="http://blog.csdn.net/liudong8510/article/details/7908093" target="_blank" rel="external">一次完整的Http请求过程</a></li>
 </ul>
-<p>本文地址 <a href="http://w4lle.github.io/2016/12/06/OkHttp/">http://w4lle.github.io/2016/12/06/OkHttp/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/12/06/OkHttp/">http://w4lle.com/2016/12/06/OkHttp/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -924,14 +924,14 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>Retrofit Multipart多文件上传</title>
-    <link href="http://w4lle.github.io/2016/11/28/retrofit-multipart/"/>
-    <id>http://w4lle.github.io/2016/11/28/retrofit-multipart/</id>
+    <link href="http://w4lle.com/2016/11/28/retrofit-multipart/"/>
+    <id>http://w4lle.com/2016/11/28/retrofit-multipart/</id>
     <published>2016-11-28T01:03:43.000Z</published>
     <updated>2017-01-06T01:53:41.000Z</updated>
     
@@ -978,7 +978,7 @@
 <li><a href="http://www.chenkaihua.com/2016/04/02/retrofit2-upload-multipart-files/" target="_blank" rel="external">Retrofit2 multpart多文件上传详解</a></li>
 <li><a href="https://my.oschina.net/cnlw/blog/168466" target="_blank" rel="external">HTTP协议之multipart/form-data请求分析</a></li>
 </ul>
-<p>本文地址 <a href="http://w4lle.github.io/2016/11/28/retrofit-multipart/">http://w4lle.github.io/2016/11/28/retrofit-multipart/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/11/28/retrofit-multipart/">http://w4lle.com/2016/11/28/retrofit-multipart/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -993,14 +993,14 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>Hexo Material主题</title>
-    <link href="http://w4lle.github.io/2016/11/17/hexo-theme-material/"/>
-    <id>http://w4lle.github.io/2016/11/17/hexo-theme-material/</id>
+    <link href="http://w4lle.com/2016/11/17/hexo-theme-material/"/>
+    <id>http://w4lle.com/2016/11/17/hexo-theme-material/</id>
     <published>2016-11-17T02:41:20.000Z</published>
     <updated>2016-11-28T14:24:29.000Z</updated>
     
@@ -1034,7 +1034,7 @@
 </li>
 </ol>
 <p>推荐第二种</p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/11/17/hexo-theme-material/">http://w4lle.github.io/2016/11/17/hexo-theme-material/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/11/17/hexo-theme-material/">http://w4lle.com/2016/11/17/hexo-theme-material/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1044,14 +1044,14 @@
     </summary>
     
     
-      <category term="Hexo" scheme="http://w4lle.github.io/tags/Hexo/"/>
+      <category term="Hexo" scheme="http://w4lle.com/tags/Hexo/"/>
     
   </entry>
   
   <entry>
     <title>AsyncTask解析</title>
-    <link href="http://w4lle.github.io/2016/07/29/AsyncTask/"/>
-    <id>http://w4lle.github.io/2016/07/29/AsyncTask/</id>
+    <link href="http://w4lle.com/2016/07/29/AsyncTask/"/>
+    <id>http://w4lle.com/2016/07/29/AsyncTask/</id>
     <published>2016-07-29T07:44:19.000Z</published>
     <updated>2016-07-31T11:12:31.000Z</updated>
     
@@ -1075,7 +1075,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">finish</span><span class="params">(Result result)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (isCancelled()) &#123;</div><div class="line">        onCancelled(result);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        onPostExecute(result);</div><div class="line">    &#125;</div><div class="line">    mStatus = Status.FINISHED;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>如果取消了执行onCancelled(result)回调，否则执行onPostExecute(result)。并把状态置为FINISHED。整个流程也就走完了。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文分析了AsyncTask的原理，一句话概括，AsyncTask封装了线程池和Handler，线程池跑耗时任务、Handler向主线程发消息。如果不是很多任务的话就用HandlerThread来做就行了；任务多并且不是那么耗时的可以考虑用用AsyncTask，不过还是建议自己写线程池。</p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/07/29/AsyncTask/">http://w4lle.github.io/2016/07/29/AsyncTask/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/07/29/AsyncTask/">http://w4lle.com/2016/07/29/AsyncTask/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1085,14 +1085,14 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>Android进程保活之绑定系统服务</title>
-    <link href="http://w4lle.github.io/2016/07/24/Android%E8%BF%9B%E7%A8%8B%E4%BF%9D%E6%B4%BB%E4%B9%8B%E7%BB%91%E5%AE%9A%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1/"/>
-    <id>http://w4lle.github.io/2016/07/24/Android进程保活之绑定系统服务/</id>
+    <link href="http://w4lle.com/2016/07/24/Android%E8%BF%9B%E7%A8%8B%E4%BF%9D%E6%B4%BB%E4%B9%8B%E7%BB%91%E5%AE%9A%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1/"/>
+    <id>http://w4lle.com/2016/07/24/Android进程保活之绑定系统服务/</id>
     <published>2016-07-24T12:25:32.000Z</published>
     <updated>2017-01-06T01:51:30.000Z</updated>
     
@@ -1124,7 +1124,7 @@
 <p>这样基本就可以保证service所在的进程不被杀死了。当然，如果ROM厂商在系统级别拦截掉了，这种方法也会无效了。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>如果要用这种方法进程保活，那么你的app肯定是有显示通知栏的通知，不然用户谁这么傻去给你开这么权限呢。其次，显示通知栏消息就是前台进程了，用户始终可以看到，再配合service自启的几种方法，基本就可以保证我们的进程不死了。当然，这种方法也不能说绝对管用，在深度定制面前，一切都是渣渣。验证下来，魅族基本都好用，小米4c不太好用，小米其他机型没有测试。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://blog.csdn.net/aigestudio/article/details/51348408" target="_blank" rel="external">论Android应用进程长存的可行性</a><br><a href="http://www.jianshu.com/p/63aafe3c12af#" target="_blank" rel="external">关于 Android 进程保活，你所需要知道的一切</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/07/24/Android进程保活之绑定系统服务/">http://w4lle.github.io/2016/07/24/Android进程保活之绑定系统服务/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/07/24/Android进程保活之绑定系统服务/">http://w4lle.com/2016/07/24/Android进程保活之绑定系统服务/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1135,14 +1135,14 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>快速排序</title>
-    <link href="http://w4lle.github.io/2016/07/03/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"/>
-    <id>http://w4lle.github.io/2016/07/03/快速排序/</id>
+    <link href="http://w4lle.com/2016/07/03/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"/>
+    <id>http://w4lle.com/2016/07/03/快速排序/</id>
     <published>2016-07-03T12:55:44.000Z</published>
     <updated>2017-01-06T01:56:50.000Z</updated>
     
@@ -1174,7 +1174,7 @@
 <li>取位于low和high之间的随机数k(low≤k≤high)，用R[k]作为基准， 随机化的快速排序与一般的快速排序算法差别很小。但随机化后，算法的性能大大地提高了，尤其是对初始有序的文件，一般不可能导致最坏情况的发生。</li>
 </ol>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://blog.csdn.net/morewindows/article/details/6684558" target="_blank" rel="external">白话经典算法系列之六 快速排序 快速搞定</a><br><a href="http://harttle.com/2015/09/27/quick-sort.html" target="_blank" rel="external">快速排序的时间和空间复杂度</a><br><a href="http://student.zjzk.cn/course_ware/data_structure/web/paixu/paixu8.3.2.4.htm" target="_blank" rel="external">快速排序算法分析</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/07/03/快速排序/">http://w4lle.github.io/2016/07/03/快速排序/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/07/03/快速排序/">http://w4lle.com/2016/07/03/快速排序/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1185,14 +1185,14 @@
     </summary>
     
     
-      <category term="其他" scheme="http://w4lle.github.io/tags/%E5%85%B6%E4%BB%96/"/>
+      <category term="其他" scheme="http://w4lle.com/tags/%E5%85%B6%E4%BB%96/"/>
     
   </entry>
   
   <entry>
     <title>Android计步</title>
-    <link href="http://w4lle.github.io/2016/06/26/step-counter/"/>
-    <id>http://w4lle.github.io/2016/06/26/step-counter/</id>
+    <link href="http://w4lle.com/2016/06/26/step-counter/"/>
+    <id>http://w4lle.com/2016/06/26/step-counter/</id>
     <published>2016-06-26T02:35:39.000Z</published>
     <updated>2016-06-26T12:17:21.000Z</updated>
     
@@ -1246,7 +1246,7 @@
 </ul>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总结来说，如果用g-sensor来实现计步会保证良好的兼容性，排除锁屏自动关闭sensor的定制系统除外，基本所有的Android手机都可以使用，但是需要一定时间的算法调试和后台保活机制的健全保证，开发周期较长；如果项目需求开发周期较短，并且没有强制性的全机型兼容，那么可以考虑使用step-sensor，优点比较明显，而且使用协处理器代替纯软件计算实现计步监测已经是大势所趋。另外以上两种方案都需要开机自启权限。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.wujiame.com/blog/2013/12/27/pedometer/" target="_blank" rel="external">如何在手机上实现高精度及自适应多种场景的计步器算法</a><br><a href="https://github.com/johnjohndoe/Android-Developers-Samples/tree/master/BatchStepSensor" target="_blank" rel="external">Android-Developers-Samples-BatchStepSensor</a><br><a href="http://www.analog.com/library/analogDialogue/china/archives/44-06/pedometer.html" target="_blank" rel="external">利用3轴数字加速度计实现功能全面的计步器设计</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/06/26/step-counter/">http://w4lle.github.io/2016/06/26/step-counter/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/06/26/step-counter/">http://w4lle.com/2016/06/26/step-counter/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1257,14 +1257,14 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>Hexo主题同步</title>
-    <link href="http://w4lle.github.io/2016/06/06/Hexo-themes/"/>
-    <id>http://w4lle.github.io/2016/06/06/Hexo-themes/</id>
+    <link href="http://w4lle.com/2016/06/06/Hexo-themes/"/>
+    <id>http://w4lle.com/2016/06/06/Hexo-themes/</id>
     <published>2016-06-06T10:48:22.000Z</published>
     <updated>2016-06-06T12:41:08.000Z</updated>
     
@@ -1294,7 +1294,7 @@
 <li><a href="http://aoxuis.me/post/2013-08-06-git-subtree" target="_blank" rel="external">使用GIT SUBTREE集成项目到子目录</a></li>
 <li><a href="http://tidus.xyz/2016/01/29/hexo%E7%94%A8subtree%E5%90%8C%E6%AD%A5%E4%B8%BB%E9%A2%98/" target="_blank" rel="external">hexo用subtree同步主题</a></li>
 </ul>
-<p>本文地址 <a href="http://w4lle.github.io/2016/06/06/Hexo-themes/">http://w4lle.github.io/2016/06/06/Hexo-themes/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/06/06/Hexo-themes/">http://w4lle.com/2016/06/06/Hexo-themes/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1304,14 +1304,14 @@
     </summary>
     
     
-      <category term="Hexo" scheme="http://w4lle.github.io/tags/Hexo/"/>
+      <category term="Hexo" scheme="http://w4lle.com/tags/Hexo/"/>
     
   </entry>
   
   <entry>
     <title>前端基础（三）-- JavaScript</title>
-    <link href="http://w4lle.github.io/2016/05/31/JavaScript/"/>
-    <id>http://w4lle.github.io/2016/05/31/JavaScript/</id>
+    <link href="http://w4lle.com/2016/05/31/JavaScript/"/>
+    <id>http://w4lle.com/2016/05/31/JavaScript/</id>
     <published>2016-05-31T07:34:31.000Z</published>
     <updated>2017-01-06T01:56:52.000Z</updated>
     
@@ -1377,7 +1377,7 @@
 <p>是不是炒鸡简单，跟<code>Java</code>的类继承基本一模一样。这样写跟原型继承的写法在<code>JavaScript</code>引擎看来完全一样。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这篇基本描述了<code>JavaScript</code>的一些注意容易踩坑的点和与<code>Java</code>面向对象实现不同的点。像一些基础的集合、字符串等都没写。当然还有一些前端用的比较多的比如<code>DOM</code>、<code>AJAX</code>、<code>jQuery</code>就不写了，大概浏览下就好了。<br>另外一点要说的就是，对于我们这些非前端工程师来说，ES6中定义了的一律用ES6的，而且像<code>Node.js</code>这种脱离了浏览器引擎的框架已经完全支持ES6的写法。<br>学完<code>JavaScript</code>就得学<code>Node.js</code>啊。下一篇带来<code>Node.js</code>基础和实战。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《JavaScript面向对象编程指南(第二版)》<br><a href="http://www.ruanyifeng.com/blog/javascript/" target="_blank" rel="external">阮一峰的网络日志</a><br><a href="http://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000" target="_blank" rel="external">廖雪峰 JavaScript教程</a><br><a href="http://bonsaiden.github.io/JavaScript-Garden/zh/" target="_blank" rel="external">JavaScript秘密花园</a></p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/05/31/JavaScript/">http://w4lle.github.io/2016/05/31/JavaScript/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/05/31/JavaScript/">http://w4lle.com/2016/05/31/JavaScript/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1387,14 +1387,14 @@
     </summary>
     
     
-      <category term="前端" scheme="http://w4lle.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
+      <category term="前端" scheme="http://w4lle.com/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   
   <entry>
     <title>Android Color位移操作</title>
-    <link href="http://w4lle.github.io/2016/05/22/Android-Color/"/>
-    <id>http://w4lle.github.io/2016/05/22/Android-Color/</id>
+    <link href="http://w4lle.com/2016/05/22/Android-Color/"/>
+    <id>http://w4lle.com/2016/05/22/Android-Color/</id>
     <published>2016-05-22T09:53:01.000Z</published>
     <updated>2016-06-06T10:13:15.000Z</updated>
     
@@ -1436,7 +1436,7 @@
 <li><a href="http://m.oschina.net/blog/104123" target="_blank" rel="external">位操作也疯狂</a></li>
 <li><a href="https://developer.android.com/reference/android/graphics/Color.html" target="_blank" rel="external">Color</a></li>
 </ul>
-<p>本文地址 <a href="http://w4lle.github.io/2016/05/22/Android-Color/">http://w4lle.github.io/2016/05/22/Android-Color/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/05/22/Android-Color/">http://w4lle.com/2016/05/22/Android-Color/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1446,14 +1446,14 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>Android自定义View之刻度尺</title>
-    <link href="http://w4lle.github.io/2016/05/15/Android%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E5%88%BB%E5%BA%A6%E5%B0%BA/"/>
-    <id>http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/</id>
+    <link href="http://w4lle.com/2016/05/15/Android%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E5%88%BB%E5%BA%A6%E5%B0%BA/"/>
+    <id>http://w4lle.com/2016/05/15/Android自定义View之刻度尺/</id>
     <published>2016-05-15T08:23:43.000Z</published>
     <updated>2017-01-06T01:51:27.000Z</updated>
     
@@ -1486,7 +1486,7 @@
 <blockquote>
 <p>转载请注明地址 w4lle.github.io</p>
 </blockquote>
-<p>本文地址 <a href="http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/">http://w4lle.github.io/2016/05/15/Android自定义View之刻度尺/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/05/15/Android自定义View之刻度尺/">http://w4lle.com/2016/05/15/Android自定义View之刻度尺/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1496,18 +1496,18 @@
     </summary>
     
     
-      <category term="Android" scheme="http://w4lle.github.io/tags/Android/"/>
+      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>前端基础(二)--快速布局神器Flexbox布局</title>
-    <link href="http://w4lle.github.io/2016/05/08/Flexbox/"/>
-    <id>http://w4lle.github.io/2016/05/08/Flexbox/</id>
+    <link href="http://w4lle.com/2016/05/08/Flexbox/"/>
+    <id>http://w4lle.com/2016/05/08/Flexbox/</id>
     <published>2016-05-08T12:38:35.000Z</published>
     <updated>2017-01-06T01:52:08.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="什么是Flexbox"><a href="#什么是Flexbox" class="headerlink" title="什么是Flexbox"></a>什么是Flexbox</h1><p>在<a href="http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/">上一篇文章</a>中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。<br>2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的布局计算依赖于块和内联的流方向。<br>并且React Native也是使用的Flex布局，对于客户端开发来说学习Flex大有裨益。</p>
+    <content type="html"><![CDATA[<h1 id="什么是Flexbox"><a href="#什么是Flexbox" class="headerlink" title="什么是Flexbox"></a>什么是Flexbox</h1><p>在<a href="http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/" target="_blank" rel="external">上一篇文章</a>中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。<br>2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的布局计算依赖于块和内联的流方向。<br>并且React Native也是使用的Flex布局，对于客户端开发来说学习Flex大有裨益。</p>
 <h1 id="基本概念和属性"><a href="#基本概念和属性" class="headerlink" title="基本概念和属性"></a>基本概念和属性</h1><p><code>Flexbox</code>布局依赖于<code>flex directions</code>，简单的说：<code>Flexbox</code>是布局模块，而不是一个简单的属性。采用Flex布局的元素，称为<code>Flex容器</code>（flex container），它的所有<code>子元素</code>（flex item）自动成为容器成员。<br><code>Flexbox</code>布局很像<code>Android</code>开发中的<code>LinearLayout</code>布局，但是要比<code>LinearLayout</code>要强大。跟<code>LinearLayout</code>类似，<code>Flexbox</code>也存在两个方向的布局–主轴（main axis）和副轴（cross axis），可以简单的理解为<code>LinearLayout</code>的水平布局和垂直布局。主轴的开始位置（与边框的交叉点）叫做<code>main start</code>，结束位置叫做<code>main end</code>；交叉轴的开始位置叫做<code>cross start</code>，结束位置叫做<code>cross end</code>。项目默认沿主轴排列。单个项目占据的主轴空间叫做<code>main size</code>，占据的交叉轴空间叫做<code>cross size</code>。<br><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png" alt="image"></p>
 <h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>属性分为<code>flex container</code>属性和<code>flex item</code>属性。对应父容器和子元素。</p>
 <h2 id="flex-container属性"><a href="#flex-container属性" class="headerlink" title="flex container属性"></a>flex container属性</h2><p>以下几个属于<code>flex container</code>属性</p>
@@ -1605,14 +1605,14 @@
 <li>屏幕宽度小于640px时，调整主轴对齐方式justify-content属性为space-between，在副轴对齐方式align-items为center</li>
 <li>屏幕宽度大于640px，要有换行，并且动态调整<code>order</code>属性，调整第四个子元素的排列位置。并且调整align-items为flex-start;</li>
 </ol>
-<p><a href="http://w4lle.github.io/ife_baidu/task10/index.html">效果图</a>和<a href="https://github.com/w4lle/ife_baidu/tree/master/task10" target="_blank" rel="external">代码</a></p>
+<p><a href="http://w4lle.github.io/ife_baidu/task10/index.html" target="_blank" rel="external">效果图</a>和<a href="https://github.com/w4lle/ife_baidu/tree/master/task10" target="_blank" rel="external">代码</a></p>
 <h1 id="Android开发者的福音"><a href="#Android开发者的福音" class="headerlink" title="Android开发者的福音"></a>Android开发者的福音</h1><p>大概在一个月前，Google开源了<a href="https://github.com/google/flexbox-layout" target="_blank" rel="external">flexbox-layout</a>项目，用以支持<code>Flexbox</code>布局在Android开发中使用，支持源生的<code>Flexbox</code>属性。<br>官方例子，在xml布局文件中使用</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">com.google.android.flexbox.FlexboxLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">app:flexWrap</span>=<span class="string">"wrap"</span></div><div class="line">    <span class="attr">app:alignItems</span>=<span class="string">"stretch"</span></div><div class="line">    <span class="attr">app:alignContent</span>=<span class="string">"stretch"</span> &gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/textview1"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"120dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">app:layout_flexBasisPercent</span>=<span class="string">"50%"</span></div><div class="line">        /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/textview2"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">app:layout_alignSelf</span>=<span class="string">"center"</span></div><div class="line">        /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/textview3"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"160dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">app:layout_alignSelf</span>=<span class="string">"flex_end"</span></div><div class="line">        /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">com.google.android.flexbox.FlexboxLayout</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>在java代码中使用</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">FlexboxLayout flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout);</div><div class="line">flexboxLayout.setFlexDirection(FlexboxLayout.FLEX_DIRECTION_COLUMN);</div><div class="line"></div><div class="line">View view = flexboxLayout.getChildAt(<span class="number">0</span>);</div><div class="line">FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) view.getLayoutParams();</div><div class="line">lp.order = -<span class="number">1</span>;</div><div class="line">lp.flexGrow = <span class="number">2</span>;</div><div class="line">view.setLayoutParams(lp);</div></pre></td></tr></table></figure>
 <p>可以看到使用非常方便，对于熟悉<code>Flexbox</code>的开发者来说对于<code>Android</code>app也可以快速上手。<br>Google开发这个开源库我猜想可能一方面看到<code>React Native</code>使用<code>Flexbox</code>对于前端工程师开发Android app布局的无缝切换；另一方面，<code>Flexbox</code>也确实要比Android开发中经常使用的<code>LinearLayout</code>和<code>RelativeLayout</code>要方便很多，灵活性较两者有大幅提高，特别在动态变化这一块。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>Flexbox</code>布局方式相比传统的盒模型布局方式要快速很多，对于一些复杂的页面也可以很快速的开发。而且由于Google和Facebook的支持和使用，相信会有越来越多的开发者使用这种布局方式进行开发，在跨平台开发框架越来越成熟的现在，<code>Flexbox</code>赶紧学起来！</p>
-<p>本文地址 <a href="http://w4lle.github.io/2016/05/08/Flexbox/">http://w4lle.github.io/2016/05/08/Flexbox/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2016/05/08/Flexbox/">http://w4lle.com/2016/05/08/Flexbox/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1622,7 +1622,7 @@
     </summary>
     
     
-      <category term="前端" scheme="http://w4lle.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
+      <category term="前端" scheme="http://w4lle.com/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   

@@ -14,7 +14,7 @@ avatar: https://raw.githubusercontent.com/w4lle/w4lle.github.io/post/source/uplo
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://w4lle.github.io/
+url: http://w4lle.com/
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -106,8 +106,8 @@ baidusitemap:
 
 #Addlink
 addlink:
-  domain: w4lle.github.io # the domain of your site
-  before_text: 本文地址   # text before the post link
+  domain: w4lle.com # the domain of your site
+  before_text: 本文链接：   # text before the post link
   #after_text: # text after the post link
 
 
