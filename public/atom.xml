@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2017-05-15T02:51:33.000Z</updated>
+  <updated>2018-02-05T01:33:08.000Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -14,6 +14,146 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Python 处理 pdf</title>
+    <link href="http://w4lle.com/2018/02/02/python-pdf/"/>
+    <id>http://w4lle.com/2018/02/02/python-pdf/</id>
+    <published>2018-02-02T01:34:45.000Z</published>
+    <updated>2018-02-05T01:33:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近老婆工作中碰到一些困难，总是跟我抱怨工作好烦，不开心。<br>主要是是因为要处理一些报告，这些 pdf 格式的样本报告比较多，基本都是人工操作比较容易出错，也比较琐碎，好心情都被磨没了。</p>
+<p>然后我说要么写个小程序吧，帮你处理这些琐碎的工作，然后就大概梳理了一下主要需求：</p>
+<a id="more"></a>
+<p>内部报告：</p>
+<ol>
+<li>首先需要从系统出导出一个大的 pdf，包含很多小的 pdf</li>
+<li>每个小的 pdf 报告中包含一些信息，比如 报告标题、姓名、编号、医院、总页数</li>
+<li>拿到这些信息之后，分割大的 pdf，将小的 pdf 报告剥离处理</li>
+<li>然后重命名这些报告，格式为 <code>姓名-编号.pdf</code></li>
+<li>将这些报告移动到对应医院的目录下，然后将这些医院目录压缩</li>
+</ol>
+<p>外部报告：</p>
+<ol>
+<li>外部会发过来压缩包，其中包含单个的 pdf 报告</li>
+<li>解压缩后将报告拿出来，提取其中的信息，信息基本同内部报告</li>
+<li>重命名</li>
+<li>移动到对应的医院目录下，并压缩</li>
+</ol>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>人生苦短，我用python。<br>嗯，python大法好，处理这些琐碎的事情写个 python 脚本跑一下不就好了吗。<br>python 版本使用的python 3.x。</p>
+<p>梳理了下输球，首先需要解析大 pdf 中的一些关键信息，转化为我们需要的报告信息，首先写个Model叫做 <code>Sample</code>，包含 title、number、name、total_page、hospital 等等，然后依次解析 pdf 生成组成 samples 列表，最后根据报告列表分割处理pdf 就好了。</p>
+<h2 id="解析-pdf"><a href="#解析-pdf" class="headerlink" title="解析 pdf"></a>解析 pdf</h2><p>有个 python 库叫做 <a href="https://github.com/euske/pdfminer" target="_blank" rel="external">pdfminer</a>，这个库已经不支持python 3.x 版本了，该项目注明了可以使用 <a href="https://github.com/pdfminer/pdfminer.six" target="_blank" rel="external">pdfminer.six</a>来支持3.x的版本。</p>
+<p>基本语法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_samples</span><span class="params">()</span>:</span></div><div class="line">    fp = open(get_origin_report_path(), <span class="string">'rb'</span>)  <span class="comment"># 以二进制读模式打开</span></div><div class="line">    <span class="comment"># 用文件对象来创建一个pdf文档分析器</span></div><div class="line">    praser = PDFParser(fp)</div><div class="line">    <span class="comment"># 创建一个PDF文档</span></div><div class="line">    doc = PDFDocument()</div><div class="line">    <span class="comment"># 连接分析器 与文档对象</span></div><div class="line">    praser.set_document(doc)</div><div class="line">    doc.set_parser(praser)</div><div class="line"></div><div class="line">    <span class="comment"># 提供初始化密码</span></div><div class="line">    <span class="comment"># 如果没有密码 就创建一个空的字符串</span></div><div class="line">    doc.initialize()</div><div class="line"></div><div class="line">    <span class="comment"># 检测文档是否提供txt转换，不提供就忽略</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> doc.is_extractable:</div><div class="line">        <span class="keyword">raise</span> PDFTextExtractionNotAllowed</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="comment"># 创建PDf 资源管理器 来管理共享资源</span></div><div class="line">        rsrcmgr = PDFResourceManager()</div><div class="line">        <span class="comment"># 创建一个PDF设备对象</span></div><div class="line">        laparams = LAParams()</div><div class="line">        device = PDFPageAggregator(rsrcmgr, laparams=laparams)</div><div class="line">        <span class="comment"># 创建一个PDF解释器对象</span></div><div class="line">        interpreter = PDFPageInterpreter(rsrcmgr, device)</div><div class="line"></div><div class="line">        <span class="comment"># 循环遍历列表，每次处理一个page的内容</span></div><div class="line">        <span class="keyword">for</span> page <span class="keyword">in</span> doc.get_pages():  <span class="comment"># doc.get_pages() 获取page列表</span></div><div class="line">            number_index = <span class="number">0</span></div><div class="line">            name_index = <span class="number">0</span></div><div class="line">            sample = Sample()</div><div class="line">            interpreter.process_page(page)</div><div class="line">            <span class="comment"># 接受该页面的LTPage对象</span></div><div class="line">            layout = device.get_result()</div><div class="line">            <span class="comment"># 这里layout是一个LTPage对象 里面存放着 这个page解析出的各种对象 一般包括LTTextBox, LTFigure, LTImage, LTTextBoxHorizontal 等等 想要获取文本就获得对象的text属性，</span></div><div class="line">            <span class="keyword">for</span> index, out <span class="keyword">in</span> enumerate(layout):</div><div class="line">                <span class="comment"># if hasattr(out, "get_text"):</span></div><div class="line">                <span class="comment"># if (isinstance(out, LTTextBoxHorizontal)):</span></div><div class="line">                <span class="keyword">if</span> (isinstance(out, LTTextBox)):</div><div class="line">                    <span class="keyword">with</span> open(get_log_path(), <span class="string">'a'</span>) <span class="keyword">as</span> outfile:</div><div class="line">                        results = out.get_text().replace(<span class="string">u'\xa0'</span>, <span class="string">u' '</span>)</div><div class="line">                        parse()</div><div class="line">                        ...</div><div class="line">                        ....</div></pre></td></tr></table></figure>
+<p>官网给出的 layout 布局</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/pdfminer_layout.png" alt="layout"></p>
+<p>我们主要拿其中的文本信息，所以拿到每一页 pdf 的LTPage后，遍历其中的包含 text 属性的控件就好了，拿到文本信息，根据正则匹配到关心的文本信息，赋值给新建的<code>sample</code>，依次循环，最后组成 <code>samples</code> 报告列表给后面使用。<br>解析完了后就需要处理 pdf 了。</p>
+<h3 id="分割-pdf"><a href="#分割-pdf" class="headerlink" title="分割 pdf"></a>分割 pdf</h3><p>首先要做的是将大的 pdf 分割成小的 pdf，搜了下分割 pdf 有个python 库叫做 <a href="https://pythonhosted.org/PyPDF2/" target="_blank" rel="external">PyPDF2</a>，参考API 写了一个工具方法用来分割 pdf。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">split_pdf</span><span class="params">(infn, outfn, start_page, end_page)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    分割pdf文档，如果需要的话</div><div class="line"></div><div class="line">    :param infn: 源报告目录</div><div class="line">    :param outfn: 分割后输出文档目录</div><div class="line">    :param start_page:</div><div class="line">    :param end_page:</div><div class="line">    :return:</div><div class="line">    """</div><div class="line">    pdf_output = PdfFileWriter()</div><div class="line">    pdf_input = PdfFileReader(open(infn, <span class="string">'rb'</span>))</div><div class="line">    <span class="comment"># 获取 pdf 共用多少页</span></div><div class="line">    page_count = pdf_input.getNumPages()</div><div class="line">    <span class="comment"># 将 pdf 的分割页面，输出到一个新的文件</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(start_page, end_page):</div><div class="line">        pdf_output.addPage(pdf_input.getPage(i))</div><div class="line">    pdf_output.write(open(outfn, <span class="string">'wb'</span>))</div><div class="line">    print(<span class="string">'---分割pdf完毕--'</span>)</div></pre></td></tr></table></figure>
+<p>根据第一步得出的 samples，循环一下拿出其中的total_page，依次分割就好了。</p>
+<p>最后就是重命名、移动、压缩，不写了。</p>
+<h1 id="打包成-exe-可执行文件"><a href="#打包成-exe-可执行文件" class="headerlink" title="打包成 exe 可执行文件"></a>打包成 exe 可执行文件</h1><p>老婆使用的是 Windowns，所以最后要打包成 <code>.exe</code> 可执行文件，搜了下 pyinstaller 可以解决，但是还是需要在对应的平台才能打出对应平台的可执行文件，可就是说想要打出 <code>.exe</code> 必须在 Windows 下打包，这就有点蛋疼了。然后弄了一下，发现 Windows 用来做开发真的是难用无比。<br>最后也没打 <code>.exe</code>，直接在 Windows 下装了python，双击 <code>.py</code> 文件好了，有bug的话替换一下文件好了，不用重新打包。</p>
+<h1 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h1><p>项目交付老婆使用后，极其的好用，大幅提升了工作效率，减少出错概率，老婆甚至发了个朋友圈夸奖了一番，感觉美滋滋。</p>
+<p>美了不到两天就出 bug 了。</p>
+<p>bug是这样的，比如有个编号<code>编号：G201802020108</code> 正常解析出来 <code>sample.number = G201802020108</code> 才对，但是结果可能是这样的<code>G20180202</code>，后面少了几位。拿到原始的大 pdf 跑了一遍发现确实是这样，每个 pdf 在解析时我都把文本信息存了下来以便查问题用，这时派上了用场，打开看了下文本信息被这样处理了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">编号：G20180202</div><div class="line"><span class="number">0108</span></div></pre></td></tr></table></figure>
+<p>本来在一行或者说在一个 <code>LTTextBox</code> 中的内容被分割成了两个，所以出现了内容少的问题。</p>
+<p>找到了问题原因就好处理了。<br>首先想到了一个方案，每个 <code>LTxx</code> 控件在当页 pdf 中的位置由坐标表示，左上角坐标是 <code>{x0:0,y0:0, x1:0,y1:0}</code>，只要框住了编号信息所在的坐标范围，只要在该范围内的，所有文本信息 append 一下然后再正则匹配就好了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">in_number_area</span><span class="params">(text_box)</span>:</span></div><div class="line">    <span class="comment"># x0,y0,x1,y1</span></div><div class="line">    scope = (<span class="number">370</span>, <span class="number">700</span>, <span class="number">560</span>, <span class="number">740</span>)</div><div class="line">    <span class="keyword">if</span> in_area(text_box.bbox, scope):</div><div class="line">        print(<span class="string">'样本编号匹配！坐标点：'</span>, text_box.bbox)</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">    </div><div class="line"></div><div class="line"><span class="comment"># 判断TextBox坐标范围是否在规定范围内</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">in_area</span><span class="params">(bbox, scope)</span>:</span></div><div class="line">    <span class="keyword">if</span> bbox[<span class="number">0</span>] &gt; scope[<span class="number">0</span>] <span class="keyword">and</span> bbox[<span class="number">1</span>] &gt; scope[<span class="number">1</span>] <span class="keyword">and</span> bbox[<span class="number">2</span>] &lt; scope[<span class="number">2</span>] <span class="keyword">and</span> bbox[<span class="number">3</span>] &lt; scope[<span class="number">3</span>]:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">False</span></div></pre></td></tr></table></figure>
+<p>给定固定坐标范围，找到在该坐标范围内的控件，然后再去匹配。</p>
+<p>跑了一下确实生效了，但是问题依然没有解决，为什么呢？因为报告种类不一，导致格式就不一样，坐标范围也不一样，也就是说不能动态的找到坐标范围。该方案失败。</p>
+<p>于是又想到了第二个方案，直接看代码吧</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 解析编号</span></div><div class="line"><span class="keyword">if</span> <span class="keyword">not</span> utils.number_legal_for_internal(sample.number):</div><div class="line">    num = utils.parse_sample_num(results)</div><div class="line">    <span class="keyword">if</span> num:</div><div class="line">        number_index = index</div><div class="line">        sample.number = num</div><div class="line">        <span class="keyword">continue</span></div><div class="line">    <span class="comment"># 解决编号被分成两段的问题</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> utils.number_legal_for_internal(sample.number) <span class="keyword">and</span> number_index <span class="keyword">and</span> (</div><div class="line">            index == number_index + <span class="number">1</span> <span class="keyword">or</span> index == number_index + <span class="number">2</span>):</div><div class="line">        print(<span class="string">'修正后的编号：'</span>)</div><div class="line">        num = utils.parse_sample_num(<span class="string">'样本编号：'</span> + sample.number + results)</div><div class="line">        sample.number = num</div><div class="line">        <span class="keyword">if</span> utils.number_legal_for_internal(num):</div><div class="line">            number_index = <span class="number">0</span></div><div class="line">            <span class="keyword">continue</span></div><div class="line">    ...</div></pre></td></tr></table></figure>
+<p>基本解决。</p>
+<p>其实第二个方案也不太完美，为什么呢？编号还好说，一般都是字母加数字，如果出现这个bug一般都能比较好判断是否合法，比如编号长度 &gt;=11，但是，如果是名字呢，就没有很好的合法规则来判断，比如<code>名字：张三丰</code>，<code>丰</code>字被分割了，而合法判断是名字长度 &gt;=2，那最后结果就是<code>张三</code>而不是<code>张三丰</code>。</p>
+<p>所以，其实还有一个优化方案，在方案一和方案二的基础上，第一步先匹配关键字，比如<code>姓名：</code>，匹配到了以后再框定坐标范围，一般名字都是6字以内，编号是20位以内，划定坐标范围后将范围内的匹配控件文本信息都拿出来再一起解析。基本做到了动态判断坐标范围。</p>
+<p>外部报告跟内部报告基本是一样的，区别是首先需要解压一下，然后解析、处理，不写了。</p>
+<h1 id="还有哪些可以做"><a href="#还有哪些可以做" class="headerlink" title="还有哪些可以做"></a>还有哪些可以做</h1><p>前面写了怎么解析处理pdf，其实还有一部分工作也可以用脚本来处理，比如，大的pdf 下载可以通过脚本处理；处理好的 pdf 报告要通过邮件法发送给客户，也可以通过脚本处理；有时还需要把解析出的信息填到表格中，也是可以用脚本处理的。</p>
+<p>总结下来一共有这几个功能：</p>
+<ul>
+<li>爬虫，从系统中导出大的 pdf 报告</li>
+<li>pdf 解析和分割</li>
+<li>归类，压缩</li>
+<li>生成表格</li>
+<li>发送邮件</li>
+</ul>
+<p>目前只做了2 和3 ，其余的有时间慢慢写。</p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>为什么写这篇文章呢？<br>其实用到的东西很简单，看几分钟 python 入门然后再找两个开源库就搞定了，也没必要记录什么技术知识点。<br>我真正想说的是一些感悟，程序员碰到这种问题一般都会想办法写一些脚本处理，没什么稀奇的。但是对于不会写程序的人来说，有这个程序和没有这个程序简直就是不一样的工作，就拿这件事来说，用了这个程序之后，我老婆的工作效率明显提升，每天能节省出1-2小时时间做别的事情，从交付那天起，基本没听过老婆再抱怨工作了。简直开心。</p>
+<p>还有就是以前总感觉程序员这个工作对生活的帮助简直就是没啥用，比如，你看谁谁现在是医生，去医院都不用挂号，直接就能看病；谁谁是老师，孩子上学的事情根本不用愁等等诸如此类，职业除了能养活自己之外能够反哺生活，在生活中提供一些价值。反观程序员对生活上的帮助简直就是0，甚至可以说是负数。</p>
+<p>现在是高速发展的信息时代，干什么工作都离不开手机、电脑，甚至人工智能在某些方面都开始取代人力去做一些工作，所以我觉得越来越能体现出程序员的价值，可以控制机器取代人工去做一些重复性的、机械性的工作，所以在有能力的前提下学习一些开发知识会大有裨益。就像每个人都学英语一样，在未来，编程也有可能是一门基础学科，每个人都应该掌握。</p>
+<p>回到现在，简单的用一些简单的脚本提升生活幸福感，把这些烦人的工作交给机器去做，人类最擅长的是浪费时间，恩。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/machine_time1.jpg" alt=""></p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/machine_time2.jpg" alt=""></p>
+<p>本文链接： <a href="http://w4lle.com/2018/02/02/python-pdf/">http://w4lle.com/2018/02/02/python-pdf/</a> </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;最近老婆工作中碰到一些困难，总是跟我抱怨工作好烦，不开心。&lt;br&gt;主要是是因为要处理一些报告，这些 pdf 格式的样本报告比较多，基本都是人工操作比较容易出错，也比较琐碎，好心情都被磨没了。&lt;/p&gt;
+&lt;p&gt;然后我说要么写个小程序吧，帮你处理这些琐碎的工作，然后就大概梳理了一下主要需求：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="http://w4lle.com/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="其他" scheme="http://w4lle.com/tags/%E5%85%B6%E4%BB%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>区块链（一）区块链和以太坊</title>
+    <link href="http://w4lle.com/2017/10/27/ethereum-0/"/>
+    <id>http://w4lle.com/2017/10/27/ethereum-0/</id>
+    <published>2017-10-27T11:37:06.000Z</published>
+    <updated>2017-10-27T13:59:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="区块链是什么"><a href="#区块链是什么" class="headerlink" title="区块链是什么"></a>区块链是什么</h1><blockquote>
+<p>区块链（英语：blockchain 或 block chain）是用分布式数据库识别、传播和记载信息的智能化对等网络, 也称为价值互联网。中本聪在2008年，于《比特币白皮书》中提出“区块链”概念，并在2009年创立了比特币社会网络，开发出第一个区块，即“创世区块”。</p>
+</blockquote>
+<a id="more"></a>
+<p>区块链，简单的讲就是一个分布式存储的一个大账本，由一条条的交易记录（block）组成，并且任何人都可以拥有这个账本并且可以存储交易记录，几乎在同一时间这条记录就会被同步到全世界的副本上，这就使得没有人能够修改本地账本中的记录，使其拥有了去中心化的能力。可以理解为这就是区块链技术的基本内容，比特币和以太坊和其他代币都是以此为基础。最有名气的就属比特币了。</p>
+<p>考虑现实生活，比如想去找一个陌生人借钱，那么就必须有一个双方都认可的第三方存在，比如银行。由于区块链的存在，这个第三方就可以不需要了。比如，我要借给 A 一块钱，我要在账本上写一条，我要借给 A 一块钱，首先会去检查你有没有一块钱，如果有的话就会记录下来，并且同时在你的账户中扣掉一块钱同时在 A 的账户中增加一块钱，同时同步到所有持有该账本的账户上。</p>
+<p>因此，区块链具有以下特点：</p>
+<ul>
+<li>去中心化</li>
+<li>分布式</li>
+<li>密码性安全</li>
+</ul>
+<h1 id="以太坊是什么"><a href="#以太坊是什么" class="headerlink" title="以太坊是什么"></a>以太坊是什么</h1><blockquote>
+<p>以太坊是一个全新开放的区块链平台，它允许任何人在平台中建立和使用通过区块链技术运行的去中心化应用。</p>
+</blockquote>
+<p>以太坊相比于区块链有了更进一步的发展，它可以在链上创建一些自动运行的程序称之为智能合约，只要这个智能合约发布到了链上，任何人都无法修改它，并且它是对任何人透明的，任何人都可以看到其代码。任何人都可以发布智能合约，编写智能合约所使用的高级语言也是图灵完备的（意味着语言可以使用计图灵机完成任何图灵机可以完成的任务），这就使得这是可编程的，任何人支付一笔费用 (Gas) 都可以部署编写的智能合约供其他人使用。</p>
+<p>考虑现实生活，比如说使用基于以太坊的智能合约存钱，该合约约定月利率1%，那么假如我存了100块钱进去，一个月后来取，那么我能取到的金额必然是 100 + 100 * 0.01。</p>
+<p>所以相对于区块链，以太坊多了两个特点：</p>
+<ul>
+<li>智能合约</li>
+<li>图灵完备</li>
+</ul>
+<h1 id="挖矿是怎么回事？"><a href="#挖矿是怎么回事？" class="headerlink" title="挖矿是怎么回事？"></a>挖矿是怎么回事？</h1><p>以太坊的本质就是一个基于交易的状态机(transaction-based state machine)。以太坊的状态包含很多交易，这些交易被打包到区块中（block），也就是说每个 block 包含了一系列的交易，每个区块与它的前一个区块链接起来组成区块链。<br><img src="http://7xs23g.com1.z0.glb.clouddn.com/blockchain.png" alt="blockchain"><br>为了让交易被认为是有效的，都必须要经历一个验证的过程，这个过程其实就是挖矿。挖矿实际上就是矿工用他们的计算资源来创建一个包含有效交易的区块出来。然而当你在计算区块的时候别的矿工同样也在计算，如果大家同时提交的话，怎么证明谁的区块是有效的？所以在提交区块到区块链上时，都需要提供一个数学机制的证明，称之为工作量证明（proof of work），所以一个矿工必须要比其他矿工更快的提供出这个证明来抢占区块的有效性将之合并到区块两上，与此同时，别的矿工会及时的将区块链的状态更新至最新。证实了一个新区块的矿工都会被奖励一定价值的奖赏。奖赏就是以太坊使的用一种内在数字代币—以太币(Ether)。</p>
+<p>另外，以太坊和区块链的架构不同在于，以太坊区块不仅包含交易记录和最近的状态，还包含区块序号和难度值。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ethereum-blockchain.png" alt=""></p>
+<h1 id="我们能用来干嘛"><a href="#我们能用来干嘛" class="headerlink" title="我们能用来干嘛"></a>我们能用来干嘛</h1><p>我们公司 1024 程序员节当天搞了个 HackathonDay 活动，我们报名参加了下，并且选题就是基于区块链的实际应用，虽然基本只有一天的时间来学习区块链的相关知识，我们还是做出了一些 Demo，基本算是入门。<br>所以接下来的文章会写到基于以太坊搭建一个私有链、创建账户、进行挖矿、进行转账交易、基于 Solidity 语言编写智能合约、部署到区块链上、编写 DApp 来使用智能合约等等。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://github.com/ethereum/wiki/wiki/%5B%E4%B8%AD%E6%96%87%5D-%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%99%BD%E7%9A%AE%E4%B9%A6" target="_blank" rel="external">以太坊白皮书</a></li>
+<li><a href="http://ethfans.org/posts/how-does-ethereum-work-anyway" target="_blank" rel="external">以太坊的工作原理</a></li>
+<li><a href="http://wangxiaoming.com/blog/2016/05/05/blockchain-tech-what-is-blockchain/" target="_blank" rel="external">区块链是什么？</a></li>
+</ul>
+<p>本文链接： <a href="http://w4lle.com/2017/10/27/ethereum-0/">http://w4lle.com/2017/10/27/ethereum-0/</a> </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;区块链是什么&quot;&gt;&lt;a href=&quot;#区块链是什么&quot; class=&quot;headerlink&quot; title=&quot;区块链是什么&quot;&gt;&lt;/a&gt;区块链是什么&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;区块链（英语：blockchain 或 block chain）是用分布式数据库识别、传播和记载信息的智能化对等网络, 也称为价值互联网。中本聪在2008年，于《比特币白皮书》中提出“区块链”概念，并在2009年创立了比特币社会网络，开发出第一个区块，即“创世区块”。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="区块链" scheme="http://w4lle.com/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
+    
+  </entry>
   
   <entry>
     <title>热修复总结</title>
@@ -501,7 +641,7 @@
     <link href="http://w4lle.com/2017/01/05/one-key-for-tinker/"/>
     <id>http://w4lle.com/2017/01/05/one-key-for-tinker/</id>
     <published>2017-01-05T06:15:49.000Z</published>
-    <updated>2017-01-06T02:52:26.000Z</updated>
+    <updated>2018-02-05T01:32:17.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>Tinker开源挺长时间了，使用的开发者也越来越多，对于一些小白开发者来说对接Tinker的成本还是挺高的，其中主要因素还是不能理解为什么Application要修改成ApplicationLike，以及改造后对项目中使用Application的地方也要同步修改。</p>
 <p>在上篇文章<a href="http://w4lle.github.io/2016/12/16/tinker/" target="_blank" rel="external">Android热补丁之Tinker原理解析</a>中我们已经讲解了这样做的目的以及Tinker的加载补丁的流程，本篇文章主要讲一下一键接入Tinker的实现思路。</p>
@@ -1447,182 +1587,6 @@
     
     
       <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android自定义View之刻度尺</title>
-    <link href="http://w4lle.com/2016/05/15/Android%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E5%88%BB%E5%BA%A6%E5%B0%BA/"/>
-    <id>http://w4lle.com/2016/05/15/Android自定义View之刻度尺/</id>
-    <published>2016-05-15T08:23:43.000Z</published>
-    <updated>2017-01-06T01:51:27.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目中之前用的纵向滚轮用于选择身高体重之类的需求，新版设计要求用横向刻度尺控件来实现，效果图，上面的字不在刻度尺范围内，是一个<code>TextView</code>。</p>
-<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ruler" alt="刻度尺"></p>
-<p>自定义控件对于Android开发者来说是必备技能，这篇文章就不讲自定义View的基础知识了，主要谈谈绘制逻辑。</p>
-<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>遵循自定义View的开发流程，<code>onMeasure()</code> –&gt; <code>onSizeChanged()</code> –&gt; <code>onLayout()</code> –&gt; <code>onDraw()</code>。由于我们要自定义的是View而不是ViewGroup，所以onLayout()就不用实现了。</p>
-<h2 id="onMeasure-测量"><a href="#onMeasure-测量" class="headerlink" title="onMeasure() 测量"></a>onMeasure() 测量</h2><p><code>onMeasure()</code>用于测量<code>View</code>的大小，<code>View</code>的大小不仅由自身决定，同时也受父控件的影响，为了我们的控件能更好的适应各种情况，一般会自己进行测量。刻度尺<code>View</code>左右是满屏的，偷个懒宽度就不适配了，只做高度测试就好了。高度包括长刻度的高度，加上字和底部间距</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">    setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">measureHeight</span><span class="params">(<span class="keyword">int</span> heightMeasure)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> measureMode = View.MeasureSpec.getMode(heightMeasure);</div><div class="line">    <span class="keyword">int</span> measureSize = View.MeasureSpec.getSize(heightMeasure);</div><div class="line">    <span class="keyword">int</span> result = (<span class="keyword">int</span>) (bottomPadding + longLineHeight * <span class="number">2</span>);</div><div class="line">    <span class="keyword">switch</span> (measureMode) &#123;</div><div class="line">        <span class="keyword">case</span> View.MeasureSpec.EXACTLY:</div><div class="line">            result = Math.max(result, measureSize);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> View.MeasureSpec.AT_MOST:</div><div class="line">            result = Math.min(result, measureSize);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">    height = result;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="onDraw-绘制"><a href="#onDraw-绘制" class="headerlink" title="onDraw() 绘制"></a>onDraw() 绘制</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onDraw(canvas);</div><div class="line">    canvas.setDrawFilter(pfdf);</div><div class="line">    drawBg(canvas);</div><div class="line">    drawIndicator(canvas);</div><div class="line">    drawRuler(canvas);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>绘制做了三件事情：</p>
-<ol>
-<li>绘制背景色</li>
-<li>绘制指示器</li>
-<li>绘制刻度</li>
-</ol>
-<p>只看下怎么画刻度，难点在于怎么确定刻度的坐标。首先高度的坐标是一样的，刻度指示器是在屏幕正中，指示某个值，那么该刻度值的x坐标就是确定的。根据这个值去画其他坐标，包括长刻度和短刻度。</p>
-<p>首先要确定每个长刻度（和短刻度，如果有的话）的坐标宽度和单位，确定基础单位和基础单位宽度（如果有短刻度以短刻度为基础单位）。那么</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">第i个刻度x坐标 = 中间刻度x坐标 + i * 基础单位宽度</div></pre></td></tr></table></figure>
-<p>其中i的取值范围在正负屏幕可绘制多少个基础单位，第0位就是屏幕正中的刻度值。以该值为基础一次画出可以在屏幕中显示的剩余刻度，如果是长刻度单位的整数倍就画长刻度，刻度值只在长刻度下画。<br>这样就有一个问题，正中刻度值必须是可以整除基础单位，比如，长刻度 = 1，中间两个短刻度，这样基础单位值就是0.5，currentValue = 0.3，那么下一个值就是0.8，但是这样显示并不是我们想要的，我们想要0、0.5、1、1.5这样的值。所以就是在初始化的时候格式化这些值，使得所有可显示的值都可以整除基础单位值，也就是余数为0。<br>由于使用float计算，所以要用到float精确计算，否则取余操作会出现不等于0的误差导致画不出长刻度。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//精度支持2位小数</span></div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">float</span> <span class="title">format</span><span class="params">(<span class="keyword">float</span> vallue)</span> </span>&#123;</div><div class="line">       <span class="keyword">float</span> result = <span class="number">0</span>;</div><div class="line">       <span class="keyword">if</span> (getBaseUnit() &lt; <span class="number">0.1</span>) &#123;</div><div class="line">           <span class="comment">//0.01</span></div><div class="line">           result = ArithmeticUtil.round(vallue, <span class="number">2</span>);</div><div class="line">           <span class="comment">//float精确计算 取余</span></div><div class="line">           <span class="keyword">if</span> (ArithmeticUtil.remainder(result, getBaseUnit(), <span class="number">2</span>) != <span class="number">0</span>) &#123;</div><div class="line">               result += <span class="number">0.01</span>;</div><div class="line">               result = format(result);</div><div class="line">           &#125;</div><div class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getBaseUnit() &lt; <span class="number">1</span>) &#123;</div><div class="line">           <span class="comment">//0.1</span></div><div class="line">           result = ArithmeticUtil.round(vallue, <span class="number">1</span>);</div><div class="line">           <span class="keyword">if</span> (ArithmeticUtil.remainder(result, getBaseUnit(), <span class="number">1</span>) != <span class="number">0</span>) &#123;</div><div class="line">               result += <span class="number">0.1</span>;</div><div class="line">               result = format(result);</div><div class="line">           &#125;</div><div class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getBaseUnit() &lt; <span class="number">10</span>) &#123;</div><div class="line">           <span class="comment">//1</span></div><div class="line">           result = ArithmeticUtil.round(vallue, <span class="number">0</span>);</div><div class="line">           <span class="keyword">if</span> (ArithmeticUtil.remainder(result, getBaseUnit(), <span class="number">0</span>) != <span class="number">0</span>) &#123;</div><div class="line">               result += <span class="number">1</span>;</div><div class="line">               result = format(result);</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> result;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<h2 id="处理滑动操作"><a href="#处理滑动操作" class="headerlink" title="处理滑动操作"></a>处理滑动操作</h2><p>滑动处理比较简单，以初始化为基础，每次move操作累加x坐标，以此值绘制偏移量，停止滑动时以基础单位宽度为基准四舍五入，开始动画滑动到相应的刻度值上。<br>主要方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">drawRuler</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (moveX &lt; maxRightOffset) &#123;</div><div class="line">            moveX = maxRightOffset;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (moveX &gt; maxLeftOffset) &#123;</div><div class="line">            moveX = maxLeftOffset;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> halfCount = (<span class="keyword">int</span>) (width / <span class="number">2</span> / getBaseUnitWidth());</div><div class="line">        <span class="keyword">float</span> moveValue = (<span class="keyword">int</span>) (moveX / getBaseUnitWidth()) * getBaseUnit();</div><div class="line">        currentValue = originValue - moveValue;</div><div class="line">        <span class="comment">//剩余偏移量</span></div><div class="line">        offset = moveX - (<span class="keyword">int</span>) (moveX / getBaseUnitWidth()) * getBaseUnitWidth();</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = -halfCount - <span class="number">1</span>; i &lt;= halfCount + <span class="number">1</span>; i++) &#123;</div><div class="line">            <span class="keyword">float</span> value = ArithmeticUtil.addWithScale(currentValue, ArithmeticUtil.mulWithScale(i, getBaseUnit(), <span class="number">2</span>), <span class="number">2</span>);</div><div class="line">            <span class="comment">//只绘出范围内的图形</span></div><div class="line">            <span class="keyword">if</span> (value &gt;= startValue &amp;&amp; value &lt;= endValue) &#123;</div><div class="line">                <span class="comment">//画长的刻度</span></div><div class="line">                <span class="keyword">float</span> startx = width / <span class="number">2</span> + offset + i * getBaseUnitWidth();</div><div class="line">                <span class="keyword">if</span> (startx &gt; <span class="number">0</span> &amp;&amp; startx &lt; width) &#123;</div><div class="line">                    <span class="keyword">if</span> (microUnitCount != <span class="number">0</span>) &#123;</div><div class="line">                        <span class="keyword">if</span> (ArithmeticUtil.remainder(value, unit, <span class="number">2</span>) == <span class="number">0</span>) &#123;</div><div class="line">                            drawLongLine(canvas, i, value);</div><div class="line">                        &#125; <span class="keyword">else</span> &#123;</div><div class="line">                            <span class="comment">//画短线</span></div><div class="line">                            drawShortLine(canvas, i);</div><div class="line">                        &#125;</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        <span class="comment">//画长线</span></div><div class="line">                        drawLongLine(canvas, i, value);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">		<span class="comment">//通知结果</span></div><div class="line">        notifyValueChange();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<p>关于刻度的单位，需要给出长刻度单位和中间的短刻度个数，这样中间的短刻度单位就确定了，所以理论上不管中间有几个短刻度计算都是一样的。我在里面封装了三个常用的，2、5、10三种。<br>支持的<code>styleable</code></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;declare-styleable name="BooheeRulerView"&gt;</div><div class="line">    &lt;attr name="ruler_bg_color" format="color|reference"/&gt;</div><div class="line">    &lt;attr name="ruler_line_color" format="color|reference"/&gt;</div><div class="line">    &lt;attr name="ruler_text_size" format="dimension"/&gt;</div><div class="line">    &lt;attr name="ruler_text_color" format="color|reference"/&gt;</div><div class="line">    &lt;attr name="ruler_width_per_unit" format="dimension"/&gt;</div><div class="line">&lt;/declare-styleable&gt;</div></pre></td></tr></table></figure>
-<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ruler_gif.gif" alt="效果图"></p>
-<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/ruler1.gif" alt="image"></p>
-<p><a href="https://gist.github.com/w4lle/2f676f0f2005f6a24ca6c122b7e214b4" target="_blank" rel="external">代码在这里</a></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>实现的效果比较单一，没有做太多的扩展，有时间再完善下。</p>
-<blockquote>
-<p>转载请注明地址 w4lle.github.io</p>
-</blockquote>
-<p>本文链接： <a href="http://w4lle.com/2016/05/15/Android自定义View之刻度尺/">http://w4lle.com/2016/05/15/Android自定义View之刻度尺/</a> </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;项目中之前用的纵向滚轮用于选择身高体重之类的需求，新版设计要求用横向刻度尺控件来实现，效果图，上面的字不在刻度尺范围内，是一个&lt;code&gt;T
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>前端基础(二)--快速布局神器Flexbox布局</title>
-    <link href="http://w4lle.com/2016/05/08/Flexbox/"/>
-    <id>http://w4lle.com/2016/05/08/Flexbox/</id>
-    <published>2016-05-08T12:38:35.000Z</published>
-    <updated>2017-01-06T01:52:08.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="什么是Flexbox"><a href="#什么是Flexbox" class="headerlink" title="什么是Flexbox"></a>什么是Flexbox</h1><p>在<a href="http://w4lle.github.io/2016/04/17/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80-%E4%B8%80-CSS%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80/" target="_blank" rel="external">上一篇文章</a>中，我们知道CSS布局传统的布局方式是基于盒模型，主要依赖 display属性 + position属性 + float属性。这种盒模型对于一些复杂的布局解决起来比较麻烦，所以一种新的布局方式应运而生。<br>2009年，W3C提出了一种新的方案–Flexbox布局(弹性布局)，可以简便、完整、响应式地实现各种页面布局。Flex布局模型不同于块和内联模型布局，块和内联模型的布局计算依赖于块和内联的流方向。<br>并且React Native也是使用的Flex布局，对于客户端开发来说学习Flex大有裨益。</p>
-<h1 id="基本概念和属性"><a href="#基本概念和属性" class="headerlink" title="基本概念和属性"></a>基本概念和属性</h1><p><code>Flexbox</code>布局依赖于<code>flex directions</code>，简单的说：<code>Flexbox</code>是布局模块，而不是一个简单的属性。采用Flex布局的元素，称为<code>Flex容器</code>（flex container），它的所有<code>子元素</code>（flex item）自动成为容器成员。<br><code>Flexbox</code>布局很像<code>Android</code>开发中的<code>LinearLayout</code>布局，但是要比<code>LinearLayout</code>要强大。跟<code>LinearLayout</code>类似，<code>Flexbox</code>也存在两个方向的布局–主轴（main axis）和副轴（cross axis），可以简单的理解为<code>LinearLayout</code>的水平布局和垂直布局。主轴的开始位置（与边框的交叉点）叫做<code>main start</code>，结束位置叫做<code>main end</code>；交叉轴的开始位置叫做<code>cross start</code>，结束位置叫做<code>cross end</code>。项目默认沿主轴排列。单个项目占据的主轴空间叫做<code>main size</code>，占据的交叉轴空间叫做<code>cross size</code>。<br><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png" alt="image"></p>
-<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>属性分为<code>flex container</code>属性和<code>flex item</code>属性。对应父容器和子元素。</p>
-<h2 id="flex-container属性"><a href="#flex-container属性" class="headerlink" title="flex container属性"></a>flex container属性</h2><p>以下几个属于<code>flex container</code>属性</p>
-<ul>
-<li>flex container 属性</li>
-<li>order</li>
-<li>flex-wrap</li>
-<li>flex-flow</li>
-<li>justify-content</li>
-<li>align-content</li>
-<li>align-items</li>
-</ul>
-<h3 id="flex-direction属性"><a href="#flex-direction属性" class="headerlink" title="flex-direction属性"></a>flex-direction属性</h3><p>flex-direction属性决定主轴的方向（即项目的排列方向）。类似<code>LinearLayout</code>的<code>vertical</code>or<code>Horizontal</code>。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">flex-direction: row | row-reverse | column | column-reverse</div></pre></td></tr></table></figure>
-<p>有四个值可以选择：</p>
-<ul>
-<li>row（默认值）：主轴为水平方向，起点在左端。</li>
-<li>row-reverse：主轴为水平方向，起点在右端。</li>
-<li>column：主轴为垂直方向，起点在上沿。</li>
-<li>column-reverse：主轴为垂直方向，起点在下沿。</li>
-</ul>
-<h3 id="order属性"><a href="#order属性" class="headerlink" title="order属性"></a>order属性</h3><p>默认情况下子元素的排列方式按照文档流的顺序依次排序，而<code>order</code>属性可以控制排列的顺序，负值在前，正值灾后，按照从小到大的顺序依次排列。我们说之所以<code>flex box</code>相对<code>LinearLayout</code>强就是因为一些属性比较给力，<code>order</code>就是其中之一。</p>
-<p><img src="https://sfault-image.b0.upaiyun.com/318/287/3182877863-56fde345ba339_articlex" alt="image"></p>
-<h3 id="flex-wrap属性"><a href="#flex-wrap属性" class="headerlink" title="flex-wrap属性"></a>flex-wrap属性</h3><p>默认情况下<code>Flex</code>跟<code>LinearLayout</code>一样，都是不带换行排列的，但是<code>flex-wrap</code>属性可以支持换行排列。这个也比<code>LinearLayout</code>吊啊有三个值：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">flex-wrap: nowrap | wrap | wrap-reverse;</div></pre></td></tr></table></figure>
-<p><img src="https://sfault-image.b0.upaiyun.com/159/596/15959628-56fde3489ff74_articlex" alt="image"></p>
-<ul>
-<li>nowrap ：不换行</li>
-<li>wrap：按正常方向换行</li>
-<li>wrap-reverse：按反方向换行</li>
-</ul>
-<h3 id="flex-flow属性"><a href="#flex-flow属性" class="headerlink" title="flex-flow属性"></a>flex-flow属性</h3><p><code>flex-flow</code>属性是<code>flex-direction</code>属性和<code>flex-wrap</code>属性的简写形式，默认值为<code>row nowrap</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">flex-flow: &lt;flex-direction&gt; || &lt;flex-wrap&gt;;</div></pre></td></tr></table></figure>
-<h3 id="justify-content属性"><a href="#justify-content属性" class="headerlink" title="justify-content属性"></a>justify-content属性</h3><p><code>justify-content</code>属性定义了项目在主轴上的对齐方式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">justify-content: flex-start | flex-end | center | space-between | space-around;</div></pre></td></tr></table></figure>
-<ul>
-<li>flex-start（默认值）：左对齐</li>
-<li>flex-end：右对齐</li>
-<li>center： 居中</li>
-<li>space-between：两端对齐，项目之间的间隔都相等。</li>
-<li>space-around：每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。</li>
-</ul>
-<p><img src="https://sfault-image.b0.upaiyun.com/421/275/4212753174-56fde6083157c_articlex" alt="image"></p>
-<h3 id="align-items属性"><a href="#align-items属性" class="headerlink" title="align-items属性"></a>align-items属性</h3><p><code>align-items</code>属性定义项目在副轴轴上如何对齐。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">align-items: flex-start | flex-end | center | baseline | stretch;</div></pre></td></tr></table></figure>
-<ul>
-<li>flex-start：交叉轴的起点对齐。</li>
-<li>flex-end：交叉轴的终点对齐。</li>
-<li>center：交叉轴的中点对齐。</li>
-<li>baseline: 项目的第一行文字的基线对齐。</li>
-<li>stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。</li>
-</ul>
-<p><img src="http://img.blog.csdn.net/20150616152600533" alt="image"></p>
-<h3 id="align-content属性"><a href="#align-content属性" class="headerlink" title="align-content属性"></a>align-content属性</h3><p><code>align-content</code>属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">align-content: flex-start | flex-end | center | space-between | space-around | stretch;</div></pre></td></tr></table></figure>
-<ul>
-<li>flex-start：与交叉轴的起点对齐。</li>
-<li>flex-end：与交叉轴的终点对齐。</li>
-<li>center：与交叉轴的中点对齐。</li>
-<li>space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。</li>
-<li>space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。</li>
-<li>stretch（默认值）：轴线占满整个交叉轴。</li>
-</ul>
-<h2 id="子元素属性"><a href="#子元素属性" class="headerlink" title="子元素属性"></a>子元素属性</h2><p>以下几个属性设置在子元素上。</p>
-<ul>
-<li>flex-grow</li>
-<li>flex-shrink</li>
-<li>flex-basis</li>
-<li>flex</li>
-<li>align-self</li>
-</ul>
-<h3 id="flex-grow属性"><a href="#flex-grow属性" class="headerlink" title="flex-grow属性"></a>flex-grow属性</h3><p><code>flex-grow</code>属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。一张图看懂。跟<code>LinearLayout</code>中的<code>weight</code>属性一样。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">.item &#123;</div><div class="line">  flex-grow: &lt;number&gt;; /* default 0 */</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="https://sfault-image.b0.upaiyun.com/271/846/2718468848-56fde60740335_articlex" alt="image"></p>
-<p>如果所有项目的<code>flex-grow</code>属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的<code>flex-grow</code>属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍。</p>
-<h3 id="flex-shrink属性"><a href="#flex-shrink属性" class="headerlink" title="flex-shrink属性"></a>flex-shrink属性</h3><p><code>flex-shrink</code>属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">.item &#123;</div><div class="line">  flex-shrink: &lt;number&gt;; /* default 1 */</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果所有项目的<code>flex-shrink</code>属性都为1，当空间不足时，都将等比例缩小。如果一个项目的<code>flex-shrink</code>属性为0，其他项目都为1，则空间不足时，前者不缩小。<br>负值对该属性无效。</p>
-<h3 id="flex-basis属性"><a href="#flex-basis属性" class="headerlink" title="flex-basis属性"></a>flex-basis属性</h3><p><code>flex-basis</code>属性定义了在分配多余空间之前，子元素占据的<code>main size</code>主轴空间，浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为<code>auto</code>，即子元素的本来大小。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">.item &#123;</div><div class="line">  flex-basis: &lt;length&gt; | auto; /* default auto */</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="flex属性"><a href="#flex属性" class="headerlink" title="flex属性"></a>flex属性</h3><p><code>flex</code>属性是<code>flex-grow</code>, <code>flex-shrink</code> 和 <code>flex-basis</code>的简写，默认值为0 1 auto。后两个属性可选。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">.item &#123;</div><div class="line">  flex: none | [ &lt;&apos;flex-grow&apos;&gt; &lt;&apos;flex-shrink&apos;&gt;? || &lt;&apos;flex-basis&apos;&gt; ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。</p>
-<h3 id="align-self属性"><a href="#align-self属性" class="headerlink" title="align-self属性"></a>align-self属性</h3><p><code>align-self</code>属性允许单个子元素有与其他子元素不一样的对齐方式，可覆盖<code>align-items</code>属性。默认值为<code>auto</code>，表示继承父元素的<code>align-items</code>属性，如果没有父元素，则等同于<code>stretch</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">.item &#123;</div><div class="line">  align-self: auto | flex-start | flex-end | center | baseline | stretch;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>该属性可能取6个值，除了<code>auto</code>，其他都与<code>align-items</code>属性完全一致。</p>
-<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><p>属性基本都讲完了，下面进入实战。<br>百度前端学院的其中一个任务：</p>
-<ul>
-<li>学习如何flex进行布局，学习如何根据屏幕宽度调整布局策略。</li>
-<li>屏幕宽度小于 640px 时，调整 Flexbox 的属性以实现第四个元素移动到最前面的效果，而不要改动第一个元素的边框颜色与高度实现效果图。</li>
-</ul>
-<p><a href="http://7xrp04.com1.z0.glb.clouddn.com/task_1_10_1.png" target="_blank" rel="external">效果图</a></p>
-<p>分析：</p>
-<ol>
-<li>屏幕宽度小于640px时，调整主轴对齐方式justify-content属性为space-between，在副轴对齐方式align-items为center</li>
-<li>屏幕宽度大于640px，要有换行，并且动态调整<code>order</code>属性，调整第四个子元素的排列位置。并且调整align-items为flex-start;</li>
-</ol>
-<p><a href="http://w4lle.github.io/ife_baidu/task10/index.html" target="_blank" rel="external">效果图</a>和<a href="https://github.com/w4lle/ife_baidu/tree/master/task10" target="_blank" rel="external">代码</a></p>
-<h1 id="Android开发者的福音"><a href="#Android开发者的福音" class="headerlink" title="Android开发者的福音"></a>Android开发者的福音</h1><p>大概在一个月前，Google开源了<a href="https://github.com/google/flexbox-layout" target="_blank" rel="external">flexbox-layout</a>项目，用以支持<code>Flexbox</code>布局在Android开发中使用，支持源生的<code>Flexbox</code>属性。<br>官方例子，在xml布局文件中使用</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">com.google.android.flexbox.FlexboxLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">app:flexWrap</span>=<span class="string">"wrap"</span></div><div class="line">    <span class="attr">app:alignItems</span>=<span class="string">"stretch"</span></div><div class="line">    <span class="attr">app:alignContent</span>=<span class="string">"stretch"</span> &gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/textview1"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"120dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">app:layout_flexBasisPercent</span>=<span class="string">"50%"</span></div><div class="line">        /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/textview2"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">app:layout_alignSelf</span>=<span class="string">"center"</span></div><div class="line">        /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/textview3"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"160dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"80dp"</span></div><div class="line">        <span class="attr">app:layout_alignSelf</span>=<span class="string">"flex_end"</span></div><div class="line">        /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">com.google.android.flexbox.FlexboxLayout</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>在java代码中使用</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">FlexboxLayout flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout);</div><div class="line">flexboxLayout.setFlexDirection(FlexboxLayout.FLEX_DIRECTION_COLUMN);</div><div class="line"></div><div class="line">View view = flexboxLayout.getChildAt(<span class="number">0</span>);</div><div class="line">FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) view.getLayoutParams();</div><div class="line">lp.order = -<span class="number">1</span>;</div><div class="line">lp.flexGrow = <span class="number">2</span>;</div><div class="line">view.setLayoutParams(lp);</div></pre></td></tr></table></figure>
-<p>可以看到使用非常方便，对于熟悉<code>Flexbox</code>的开发者来说对于<code>Android</code>app也可以快速上手。<br>Google开发这个开源库我猜想可能一方面看到<code>React Native</code>使用<code>Flexbox</code>对于前端工程师开发Android app布局的无缝切换；另一方面，<code>Flexbox</code>也确实要比Android开发中经常使用的<code>LinearLayout</code>和<code>RelativeLayout</code>要方便很多，灵活性较两者有大幅提高，特别在动态变化这一块。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>Flexbox</code>布局方式相比传统的盒模型布局方式要快速很多，对于一些复杂的页面也可以很快速的开发。而且由于Google和Facebook的支持和使用，相信会有越来越多的开发者使用这种布局方式进行开发，在跨平台开发框架越来越成熟的现在，<code>Flexbox</code>赶紧学起来！</p>
-<p>本文链接： <a href="http://w4lle.com/2016/05/08/Flexbox/">http://w4lle.com/2016/05/08/Flexbox/</a> </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;什么是Flexbox&quot;&gt;&lt;a href=&quot;#什么是Flexbox&quot; class=&quot;headerlink&quot; title=&quot;什么是Flexbox&quot;&gt;&lt;/a&gt;什么是Flexbox&lt;/h1&gt;&lt;p&gt;在&lt;a href=&quot;http://w4lle.github.io/2016/
-    
-    </summary>
-    
-    
-      <category term="前端" scheme="http://w4lle.com/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   

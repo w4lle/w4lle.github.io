@@ -37,7 +37,7 @@
     
     <title>
         
-            热修复总结 | 
+            归档: 2018 | 
         
         w4lle&#39;s Notes
     </title>
@@ -49,7 +49,7 @@
     <meta name="theme-color" content="#0097A7">
     <meta name="author" content="w4lle">
     <meta name="description" itemprop="description" content="生活不止眼前的苟且，还有诗，和远方。">
-    <meta name="keywords" content="Android,Android,热补丁">
+    <meta name="keywords" content="Android">
 
     <!-- Import lsloader -->
     <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
@@ -239,18 +239,15 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://w4lle.com">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="热修复总结 | w4lle&#39;s Notes">
+    <meta property="og:title" content="归档: 2018 | w4lle&#39;s Notes">
     <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
     <meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
-    <meta property="og:article:tag" content="Android"> <meta property="og:article:tag" content="热补丁"> 
-
     
-        <meta property="article:published_time" content="Thu May 04 2017 18:45:31 GMT+0800" />
-        <meta property="article:modified_time" content="Mon May 15 2017 10:51:33 GMT+0800" />
+
     
 
     <!-- The Twitter Card protocol -->
-    <meta name="twitter:title" content="热修复总结 | w4lle&#39;s Notes">
+    <meta name="twitter:title" content="归档: 2018 | w4lle&#39;s Notes">
     <meta name="twitter:description" content="生活不止眼前的苟且，还有诗，和远方。">
     <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
     <meta name="twitter:card" content="summary_large_image" />
@@ -258,43 +255,13 @@
 
     <!-- Add canonical link for SEO -->
     
-        <link rel="canonical" href="http://w4lle.com/2017/05/04/hotpatch-summary/index.html" />
+        <link rel="canonical" href="http://w4lle.com/archives/2018/index.html" />
     
 
     <!-- Structured-data for SEO -->
     
         
 
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "http://w4lle.com/2017/05/04/hotpatch-summary/index.html",
-    "headline": "热修复总结",
-    "datePublished": "Thu May 04 2017 18:45:31 GMT+0800",
-    "dateModified": "Mon May 15 2017 10:51:33 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "w4lle",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/avatar.png"
-        },
-        "description": "人生如逆旅，我亦是行人。"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "w4lle&#39;s Notes",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",Android,热补丁Android",
-    "description": "生活不止眼前的苟且，还有诗，和远方。",
-}
-</script>
 
 
     
@@ -426,29 +393,25 @@
 
                     
 
-                    <!-- Post TOC -->
+                    <!-- Index Module -->
+<div class="material-index mdl-grid">
+    
+    <div class="locate-thumbnail-symbol"></div>
 
+    <!-- Pin on top -->
     
 
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-
-
-    <!-- Isolation Post Header -->
-    <!-- Post thumbnail -->
+    <!-- Normal Post -->
+    
+        
+            
+            
+                <!-- Isolation Thumbnail -->
+                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
+    <!-- Post_entry Header -->
     
         <!-- Post Header Info -->
-        <div class="post-header_info with-thumbnail">
+        <div class="post_entry-header_info with-thumbnail">
             <!-- Author Avatar & Name -->
             <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
             <span class="name-span">w4lle</span>
@@ -456,279 +419,56 @@
 
         <!-- Custom thumbnail -->
         <div class="post_thumbnail-custom">
-            <img src="http://7xs23g.com1.z0.glb.clouddn.com/android.jpg">
+            <img src="http://7xs23g.com1.z0.glb.clouddn.com/Python.png">
     
         </div>
 
+    <!-- Post_entry Content -->
+    <div class="post_entry-content mdl-color-text--grey-600 mdl-card__supporting-text">
+        <!-- Post Title -->
+        <p class="post_entry-title">
+            <a href="/2018/02/02/python-pdf/">使用 Python 处理 pdf</a>
+        </p>
 
-
-                
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-
-    
-        <div class="post-content_wrapper">
-            <p class="post-title">
-                热修复总结
-            </p>
-            <h1 id="热修复总结"><a href="#热修复总结" class="headerlink" title="热修复总结"></a>热修复总结</h1><table>
-<thead>
-<tr>
-<th style="text-align:center">平台</th>
-<th style="text-align:center">阿里 AndFix</th>
-<th style="text-align:center">阿里 HotFix1.x</th>
-<th style="text-align:center">Nuwa</th>
-<th style="text-align:center">微信Tinker</th>
-<th style="text-align:center">美团Robust</th>
-<th style="text-align:center">阿里 HotFix2.x</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">即时生效</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">看情况</td>
-</tr>
-<tr>
-<td style="text-align:center">性能损耗</td>
-<td style="text-align:center">较小</td>
-<td style="text-align:center">较小</td>
-<td style="text-align:center">较大</td>
-<td style="text-align:center">较小</td>
-<td style="text-align:center">较小</td>
-<td style="text-align:center">较小</td>
-</tr>
-<tr>
-<td style="text-align:center">补丁包大小</td>
-<td style="text-align:center">一般</td>
-<td style="text-align:center">一般</td>
-<td style="text-align:center">较大</td>
-<td style="text-align:center">较小</td>
-<td style="text-align:center">较小</td>
-<td style="text-align:center">较小</td>
-</tr>
-<tr>
-<td style="text-align:center">占Rom体积</td>
-<td style="text-align:center">较小</td>
-<td style="text-align:center">较小</td>
-<td style="text-align:center">一般</td>
-<td style="text-align:center">较大</td>
-<td style="text-align:center">较小</td>
-<td style="text-align:center">看情况</td>
-</tr>
-<tr>
-<td style="text-align:center">接入复杂度</td>
-<td style="text-align:center">简单</td>
-<td style="text-align:center">简单</td>
-<td style="text-align:center">简单</td>
-<td style="text-align:center">复杂</td>
-<td style="text-align:center">简单</td>
-<td style="text-align:center">简单</td>
-</tr>
-<tr>
-<td style="text-align:center">安全校验</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-</tr>
-<tr>
-<td style="text-align:center">类替换</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-</tr>
-<tr>
-<td style="text-align:center">资源替换</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">即将支持</td>
-<td style="text-align:center">yes</td>
-</tr>
-<tr>
-<td style="text-align:center">so替换</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">即将支持</td>
-<td style="text-align:center">yes</td>
-</tr>
-<tr>
-<td style="text-align:center">全平台支持</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">yes</td>
-</tr>
-<tr>
-<td style="text-align:center">开发透明</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-</tr>
-<tr>
-<td style="text-align:center">gradle支持</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">no</td>
-</tr>
-<tr>
-<td style="text-align:center">接口文档</td>
-<td style="text-align:center">较少</td>
-<td style="text-align:center">丰富</td>
-<td style="text-align:center">较少</td>
-<td style="text-align:center">丰富</td>
-<td style="text-align:center">丰富</td>
-<td style="text-align:center">丰富</td>
-</tr>
-<tr>
-<td style="text-align:center">成功率</td>
-<td style="text-align:center">较低</td>
-<td style="text-align:center">一般</td>
-<td style="text-align:center">一般</td>
-<td style="text-align:center">较高</td>
-<td style="text-align:center">最高</td>
-<td style="text-align:center">较高</td>
-</tr>
-<tr>
-<td style="text-align:center">后台管理</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">yes</td>
-</tr>
-<tr>
-<td style="text-align:center">加固兼容</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">no</td>
-<td style="text-align:center">部分兼容</td>
-<td style="text-align:center">yes</td>
-<td style="text-align:center">不确定</td>
-</tr>
-</tbody>
-</table>
-<p>上表基本涵盖了具有代表性的各种热修复方案，涉及到的各种关键指标的横向对比。</p>
-<p>Slider 中大概总结了各种方案的实现方式，以及常见的问题。</p>
-<p>Slider 地址： <a href="http://w4lle.github.io/sliders/hot-fix/index.html" target="_blank" rel="external">http://w4lle.github.io/sliders/hot-fix/index.html</a></p>
-<p>详细的各种方案分析：</p>
-<ul>
-<li><a href="http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" target="_blank" rel="external">Android热补丁之AndFix原理解析</a></li>
-<li><a href="http://w4lle.github.io/2016/05/02/%E4%BB%8EInstant%20run%E8%B0%88Android%E6%9B%BF%E6%8D%A2Application%E5%92%8C%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">从Instant run谈Android替换Application和动态加载机制</a></li>
-<li><a href="http://w4lle.github.io/2016/12/16/tinker/" target="_blank" rel="external">Android热补丁之Tinker原理解析</a></li>
-<li><a href="http://w4lle.github.io/2017/03/31/robust-0/" target="_blank" rel="external">Android热补丁之Robust原理解析(一)</a></li>
-</ul>
-<p>水平有限，难免有写的不对的地方，欢迎交流。</p>
-<p>本文链接： <a href="http://w4lle.com/2017/05/04/hotpatch-summary/">http://w4lle.com/2017/05/04/hotpatch-summary/</a> </p>
-
+        <!-- Post Excerpt -->
+        <p class="post_entry-excerpt">
             
-                <blockquote>
-                    <p>
-                         
-                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
-                        
-                        <br>
-                        本文链接： http://w4lle.com/2017/05/04/hotpatch-summary/
-                    </p>
-                </blockquote>
+                背景最近老婆工作中碰到一些困难，总是跟我抱怨工作好烦，不开心。主要是是因为要处理一些报告，这些 pdf 格式的样本报告比较多，基本都是人工操作比较容易出错，也比较琐碎，好心情都被磨没了。
+然后我说要么写个小程序吧，帮你处理这些琐碎的工作，然后就大概梳理了一下主要需求：
             
-        </div>
-    
-</div>
+            &nbsp;&nbsp;&nbsp;
+            <span>
+                <a href="/2018/02/02/python-pdf/" target="_self">阅读全文</a>
+            </span>
+        </p>
 
-
-                
-                    <!-- Paradox Post Info -->
-                    
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 gitcoment -->
-<div id="gitment-comment">
-    <!-- Gitment 评论框 -->
-<div id="container"></div>
-</div>
-<style>
-    #gitment-comment{
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
-<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-<script>
-    var gitment = new Gitment({
-        //id: '页面 ID', // 可选。默认为 location.href
-        owner: 'w4lle',
-        repo: 'w4lle.github.io',
-        oauth: {
-            client_id: '88a4cc6214c9567625a7',
-            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
-        },
-    })
-    gitment.render('container')
-</script>
-
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-        <a href="/2017/10/27/ethereum-0/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/2017/03/31/robust-0/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
+        <!-- Post Tags -->
+        <ul class="post_entry-tags-list"><li class="post_entry-tags-list-item"><a class="post_entry-tags-list-link" href="/tags/其他/">其他</a></li><li class="post_entry-tags-list-item"><a class="post_entry-tags-list-link" href="/tags/工具/">工具</a></li></ul>
     </div>
 
+    <!-- Post_entry Footer -->
+    <div class="post_entry-footer">
+        <div class="post_entry-footer-border"></div>
+        <div class="post_entry-footer-info">
+            <div class="post_entry-footer-date">
+                2月 02, 2018
+            </div>
+            <div class="post_entry-footer-comment">
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+            
+        
+    
+
+    
+
+    
+</div>
 
 
                     
