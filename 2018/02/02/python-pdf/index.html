@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            使用 Python 处理 pdf | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <meta name="description" itemprop="description" content="背景最近老婆工作中碰到一些困难，总是跟我抱怨工作好烦，不开心。主要是是因为要处理一些报告，这些 pdf 格式的样本报告比较多，基本都是人工操作比较容易出错，也比较琐碎，好心情都被磨没了。
+然后我说要么写个小程序吧，帮你处理这些琐碎的工作，然后就大概梳理了一下主要需求：">
+    <meta name="keywords" content="Android,工具,其他">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="使用 Python 处理 pdf | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="背景最近老婆工作中碰到一些困难，总是跟我抱怨工作好烦，不开心。主要是是因为要处理一些报告，这些 pdf 格式的样本报告比较多，基本都是人工操作比较容易出错，也比较琐碎，好心情都被磨没了。
+然后我说要么写个小程序吧，帮你处理这些琐碎的工作，然后就大概梳理了一下主要需求：">
+    <meta property="og:article:tag" content="工具"> <meta property="og:article:tag" content="其他"> 
+
+    
+        <meta property="article:published_time" content="Fri Feb 02 2018 09:34:45 GMT+0800" />
+        <meta property="article:modified_time" content="Mon Feb 05 2018 09:33:08 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="使用 Python 处理 pdf | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="背景最近老婆工作中碰到一些困难，总是跟我抱怨工作好烦，不开心。主要是是因为要处理一些报告，这些 pdf 格式的样本报告比较多，基本都是人工操作比较容易出错，也比较琐碎，好心情都被磨没了。
+然后我说要么写个小程序吧，帮你处理这些琐碎的工作，然后就大概梳理了一下主要需求：">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2018/02/02/python-pdf/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2018/02/02/python-pdf/index.html",
+    "headline": "使用 Python 处理 pdf",
+    "datePublished": "Fri Feb 02 2018 09:34:45 GMT+0800",
+    "dateModified": "Mon Feb 05 2018 09:33:08 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",工具,其他Android",
+    "description": "背景最近老婆工作中碰到一些困难，总是跟我抱怨工作好烦，不开心。主要是是因为要处理一些报告，这些 pdf 格式的样本报告比较多，基本都是人工操作比较容易出错，也比较琐碎，好心情都被磨没了。
+然后我说要么写个小程序吧，帮你处理这些琐碎的工作，然后就大概梳理了一下主要需求：",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="http://7xs23g.com1.z0.glb.clouddn.com/Python.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                使用 Python 处理 pdf
+            </p>
+            <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近老婆工作中碰到一些困难，总是跟我抱怨工作好烦，不开心。<br>主要是是因为要处理一些报告，这些 pdf 格式的样本报告比较多，基本都是人工操作比较容易出错，也比较琐碎，好心情都被磨没了。</p>
+<p>然后我说要么写个小程序吧，帮你处理这些琐碎的工作，然后就大概梳理了一下主要需求：</p>
+<a id="more"></a>
+<p>内部报告：</p>
+<ol>
+<li>首先需要从系统出导出一个大的 pdf，包含很多小的 pdf</li>
+<li>每个小的 pdf 报告中包含一些信息，比如 报告标题、姓名、编号、医院、总页数</li>
+<li>拿到这些信息之后，分割大的 pdf，将小的 pdf 报告剥离处理</li>
+<li>然后重命名这些报告，格式为 <code>姓名-编号.pdf</code></li>
+<li>将这些报告移动到对应医院的目录下，然后将这些医院目录压缩</li>
+</ol>
+<p>外部报告：</p>
+<ol>
+<li>外部会发过来压缩包，其中包含单个的 pdf 报告</li>
+<li>解压缩后将报告拿出来，提取其中的信息，信息基本同内部报告</li>
+<li>重命名</li>
+<li>移动到对应的医院目录下，并压缩</li>
+</ol>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>人生苦短，我用python。<br>嗯，python大法好，处理这些琐碎的事情写个 python 脚本跑一下不就好了吗。<br>python 版本使用的python 3.x。</p>
+<p>梳理了下输球，首先需要解析大 pdf 中的一些关键信息，转化为我们需要的报告信息，首先写个Model叫做 <code>Sample</code>，包含 title、number、name、total_page、hospital 等等，然后依次解析 pdf 生成组成 samples 列表，最后根据报告列表分割处理pdf 就好了。</p>
+<h2 id="解析-pdf"><a href="#解析-pdf" class="headerlink" title="解析 pdf"></a>解析 pdf</h2><p>有个 python 库叫做 <a href="https://github.com/euske/pdfminer" target="_blank" rel="external">pdfminer</a>，这个库已经不支持python 3.x 版本了，该项目注明了可以使用 <a href="https://github.com/pdfminer/pdfminer.six" target="_blank" rel="external">pdfminer.six</a>来支持3.x的版本。</p>
+<p>基本语法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_samples</span><span class="params">()</span>:</span></div><div class="line">    fp = open(get_origin_report_path(), <span class="string">'rb'</span>)  <span class="comment"># 以二进制读模式打开</span></div><div class="line">    <span class="comment"># 用文件对象来创建一个pdf文档分析器</span></div><div class="line">    praser = PDFParser(fp)</div><div class="line">    <span class="comment"># 创建一个PDF文档</span></div><div class="line">    doc = PDFDocument()</div><div class="line">    <span class="comment"># 连接分析器 与文档对象</span></div><div class="line">    praser.set_document(doc)</div><div class="line">    doc.set_parser(praser)</div><div class="line"></div><div class="line">    <span class="comment"># 提供初始化密码</span></div><div class="line">    <span class="comment"># 如果没有密码 就创建一个空的字符串</span></div><div class="line">    doc.initialize()</div><div class="line"></div><div class="line">    <span class="comment"># 检测文档是否提供txt转换，不提供就忽略</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> doc.is_extractable:</div><div class="line">        <span class="keyword">raise</span> PDFTextExtractionNotAllowed</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="comment"># 创建PDf 资源管理器 来管理共享资源</span></div><div class="line">        rsrcmgr = PDFResourceManager()</div><div class="line">        <span class="comment"># 创建一个PDF设备对象</span></div><div class="line">        laparams = LAParams()</div><div class="line">        device = PDFPageAggregator(rsrcmgr, laparams=laparams)</div><div class="line">        <span class="comment"># 创建一个PDF解释器对象</span></div><div class="line">        interpreter = PDFPageInterpreter(rsrcmgr, device)</div><div class="line"></div><div class="line">        <span class="comment"># 循环遍历列表，每次处理一个page的内容</span></div><div class="line">        <span class="keyword">for</span> page <span class="keyword">in</span> doc.get_pages():  <span class="comment"># doc.get_pages() 获取page列表</span></div><div class="line">            number_index = <span class="number">0</span></div><div class="line">            name_index = <span class="number">0</span></div><div class="line">            sample = Sample()</div><div class="line">            interpreter.process_page(page)</div><div class="line">            <span class="comment"># 接受该页面的LTPage对象</span></div><div class="line">            layout = device.get_result()</div><div class="line">            <span class="comment"># 这里layout是一个LTPage对象 里面存放着 这个page解析出的各种对象 一般包括LTTextBox, LTFigure, LTImage, LTTextBoxHorizontal 等等 想要获取文本就获得对象的text属性，</span></div><div class="line">            <span class="keyword">for</span> index, out <span class="keyword">in</span> enumerate(layout):</div><div class="line">                <span class="comment"># if hasattr(out, "get_text"):</span></div><div class="line">                <span class="comment"># if (isinstance(out, LTTextBoxHorizontal)):</span></div><div class="line">                <span class="keyword">if</span> (isinstance(out, LTTextBox)):</div><div class="line">                    <span class="keyword">with</span> open(get_log_path(), <span class="string">'a'</span>) <span class="keyword">as</span> outfile:</div><div class="line">                        results = out.get_text().replace(<span class="string">u'\xa0'</span>, <span class="string">u' '</span>)</div><div class="line">                        parse()</div><div class="line">                        ...</div><div class="line">                        ....</div></pre></td></tr></table></figure>
+<p>官网给出的 layout 布局</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/pdfminer_layout.png" alt="layout"></p>
+<p>我们主要拿其中的文本信息，所以拿到每一页 pdf 的LTPage后，遍历其中的包含 text 属性的控件就好了，拿到文本信息，根据正则匹配到关心的文本信息，赋值给新建的<code>sample</code>，依次循环，最后组成 <code>samples</code> 报告列表给后面使用。<br>解析完了后就需要处理 pdf 了。</p>
+<h3 id="分割-pdf"><a href="#分割-pdf" class="headerlink" title="分割 pdf"></a>分割 pdf</h3><p>首先要做的是将大的 pdf 分割成小的 pdf，搜了下分割 pdf 有个python 库叫做 <a href="https://pythonhosted.org/PyPDF2/" target="_blank" rel="external">PyPDF2</a>，参考API 写了一个工具方法用来分割 pdf。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">split_pdf</span><span class="params">(infn, outfn, start_page, end_page)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    分割pdf文档，如果需要的话</div><div class="line"></div><div class="line">    :param infn: 源报告目录</div><div class="line">    :param outfn: 分割后输出文档目录</div><div class="line">    :param start_page:</div><div class="line">    :param end_page:</div><div class="line">    :return:</div><div class="line">    """</div><div class="line">    pdf_output = PdfFileWriter()</div><div class="line">    pdf_input = PdfFileReader(open(infn, <span class="string">'rb'</span>))</div><div class="line">    <span class="comment"># 获取 pdf 共用多少页</span></div><div class="line">    page_count = pdf_input.getNumPages()</div><div class="line">    <span class="comment"># 将 pdf 的分割页面，输出到一个新的文件</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(start_page, end_page):</div><div class="line">        pdf_output.addPage(pdf_input.getPage(i))</div><div class="line">    pdf_output.write(open(outfn, <span class="string">'wb'</span>))</div><div class="line">    print(<span class="string">'---分割pdf完毕--'</span>)</div></pre></td></tr></table></figure>
+<p>根据第一步得出的 samples，循环一下拿出其中的total_page，依次分割就好了。</p>
+<p>最后就是重命名、移动、压缩，不写了。</p>
+<h1 id="打包成-exe-可执行文件"><a href="#打包成-exe-可执行文件" class="headerlink" title="打包成 exe 可执行文件"></a>打包成 exe 可执行文件</h1><p>老婆使用的是 Windowns，所以最后要打包成 <code>.exe</code> 可执行文件，搜了下 pyinstaller 可以解决，但是还是需要在对应的平台才能打出对应平台的可执行文件，可就是说想要打出 <code>.exe</code> 必须在 Windows 下打包，这就有点蛋疼了。然后弄了一下，发现 Windows 用来做开发真的是难用无比。<br>最后也没打 <code>.exe</code>，直接在 Windows 下装了python，双击 <code>.py</code> 文件好了，有bug的话替换一下文件好了，不用重新打包。</p>
+<h1 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h1><p>项目交付老婆使用后，极其的好用，大幅提升了工作效率，减少出错概率，老婆甚至发了个朋友圈夸奖了一番，感觉美滋滋。</p>
+<p>美了不到两天就出 bug 了。</p>
+<p>bug是这样的，比如有个编号<code>编号：G201802020108</code> 正常解析出来 <code>sample.number = G201802020108</code> 才对，但是结果可能是这样的<code>G20180202</code>，后面少了几位。拿到原始的大 pdf 跑了一遍发现确实是这样，每个 pdf 在解析时我都把文本信息存了下来以便查问题用，这时派上了用场，打开看了下文本信息被这样处理了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">编号：G20180202</div><div class="line"><span class="number">0108</span></div></pre></td></tr></table></figure>
+<p>本来在一行或者说在一个 <code>LTTextBox</code> 中的内容被分割成了两个，所以出现了内容少的问题。</p>
+<p>找到了问题原因就好处理了。<br>首先想到了一个方案，每个 <code>LTxx</code> 控件在当页 pdf 中的位置由坐标表示，左上角坐标是 <code>{x0:0,y0:0, x1:0,y1:0}</code>，只要框住了编号信息所在的坐标范围，只要在该范围内的，所有文本信息 append 一下然后再正则匹配就好了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">in_number_area</span><span class="params">(text_box)</span>:</span></div><div class="line">    <span class="comment"># x0,y0,x1,y1</span></div><div class="line">    scope = (<span class="number">370</span>, <span class="number">700</span>, <span class="number">560</span>, <span class="number">740</span>)</div><div class="line">    <span class="keyword">if</span> in_area(text_box.bbox, scope):</div><div class="line">        print(<span class="string">'样本编号匹配！坐标点：'</span>, text_box.bbox)</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">    </div><div class="line"></div><div class="line"><span class="comment"># 判断TextBox坐标范围是否在规定范围内</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">in_area</span><span class="params">(bbox, scope)</span>:</span></div><div class="line">    <span class="keyword">if</span> bbox[<span class="number">0</span>] &gt; scope[<span class="number">0</span>] <span class="keyword">and</span> bbox[<span class="number">1</span>] &gt; scope[<span class="number">1</span>] <span class="keyword">and</span> bbox[<span class="number">2</span>] &lt; scope[<span class="number">2</span>] <span class="keyword">and</span> bbox[<span class="number">3</span>] &lt; scope[<span class="number">3</span>]:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">False</span></div></pre></td></tr></table></figure>
+<p>给定固定坐标范围，找到在该坐标范围内的控件，然后再去匹配。</p>
+<p>跑了一下确实生效了，但是问题依然没有解决，为什么呢？因为报告种类不一，导致格式就不一样，坐标范围也不一样，也就是说不能动态的找到坐标范围。该方案失败。</p>
+<p>于是又想到了第二个方案，直接看代码吧</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 解析编号</span></div><div class="line"><span class="keyword">if</span> <span class="keyword">not</span> utils.number_legal_for_internal(sample.number):</div><div class="line">    num = utils.parse_sample_num(results)</div><div class="line">    <span class="keyword">if</span> num:</div><div class="line">        number_index = index</div><div class="line">        sample.number = num</div><div class="line">        <span class="keyword">continue</span></div><div class="line">    <span class="comment"># 解决编号被分成两段的问题</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> utils.number_legal_for_internal(sample.number) <span class="keyword">and</span> number_index <span class="keyword">and</span> (</div><div class="line">            index == number_index + <span class="number">1</span> <span class="keyword">or</span> index == number_index + <span class="number">2</span>):</div><div class="line">        print(<span class="string">'修正后的编号：'</span>)</div><div class="line">        num = utils.parse_sample_num(<span class="string">'样本编号：'</span> + sample.number + results)</div><div class="line">        sample.number = num</div><div class="line">        <span class="keyword">if</span> utils.number_legal_for_internal(num):</div><div class="line">            number_index = <span class="number">0</span></div><div class="line">            <span class="keyword">continue</span></div><div class="line">    ...</div></pre></td></tr></table></figure>
+<p>基本解决。</p>
+<p>其实第二个方案也不太完美，为什么呢？编号还好说，一般都是字母加数字，如果出现这个bug一般都能比较好判断是否合法，比如编号长度 &gt;=11，但是，如果是名字呢，就没有很好的合法规则来判断，比如<code>名字：张三丰</code>，<code>丰</code>字被分割了，而合法判断是名字长度 &gt;=2，那最后结果就是<code>张三</code>而不是<code>张三丰</code>。</p>
+<p>所以，其实还有一个优化方案，在方案一和方案二的基础上，第一步先匹配关键字，比如<code>姓名：</code>，匹配到了以后再框定坐标范围，一般名字都是6字以内，编号是20位以内，划定坐标范围后将范围内的匹配控件文本信息都拿出来再一起解析。基本做到了动态判断坐标范围。</p>
+<p>外部报告跟内部报告基本是一样的，区别是首先需要解压一下，然后解析、处理，不写了。</p>
+<h1 id="还有哪些可以做"><a href="#还有哪些可以做" class="headerlink" title="还有哪些可以做"></a>还有哪些可以做</h1><p>前面写了怎么解析处理pdf，其实还有一部分工作也可以用脚本来处理，比如，大的pdf 下载可以通过脚本处理；处理好的 pdf 报告要通过邮件法发送给客户，也可以通过脚本处理；有时还需要把解析出的信息填到表格中，也是可以用脚本处理的。</p>
+<p>总结下来一共有这几个功能：</p>
+<ul>
+<li>爬虫，从系统中导出大的 pdf 报告</li>
+<li>pdf 解析和分割</li>
+<li>归类，压缩</li>
+<li>生成表格</li>
+<li>发送邮件</li>
+</ul>
+<p>目前只做了2 和3 ，其余的有时间慢慢写。</p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>为什么写这篇文章呢？<br>其实用到的东西很简单，看几分钟 python 入门然后再找两个开源库就搞定了，也没必要记录什么技术知识点。<br>我真正想说的是一些感悟，程序员碰到这种问题一般都会想办法写一些脚本处理，没什么稀奇的。但是对于不会写程序的人来说，有这个程序和没有这个程序简直就是不一样的工作，就拿这件事来说，用了这个程序之后，我老婆的工作效率明显提升，每天能节省出1-2小时时间做别的事情，从交付那天起，基本没听过老婆再抱怨工作了。简直开心。</p>
+<p>还有就是以前总感觉程序员这个工作对生活的帮助简直就是没啥用，比如，你看谁谁现在是医生，去医院都不用挂号，直接就能看病；谁谁是老师，孩子上学的事情根本不用愁等等诸如此类，职业除了能养活自己之外能够反哺生活，在生活中提供一些价值。反观程序员对生活上的帮助简直就是0，甚至可以说是负数。</p>
+<p>现在是高速发展的信息时代，干什么工作都离不开手机、电脑，甚至人工智能在某些方面都开始取代人力去做一些工作，所以我觉得越来越能体现出程序员的价值，可以控制机器取代人工去做一些重复性的、机械性的工作，所以在有能力的前提下学习一些开发知识会大有裨益。就像每个人都学英语一样，在未来，编程也有可能是一门基础学科，每个人都应该掌握。</p>
+<p>回到现在，简单的用一些简单的脚本提升生活幸福感，把这些烦人的工作交给机器去做，人类最擅长的是浪费时间，恩。</p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/machine_time1.jpg" alt=""></p>
+<p><img src="http://7xs23g.com1.z0.glb.clouddn.com/machine_time2.jpg" alt=""></p>
+<p>本文链接： <a href="http://w4lle.com/2018/02/02/python-pdf/">http://w4lle.com/2018/02/02/python-pdf/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2018/02/02/python-pdf/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/10/27/ethereum-0/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
