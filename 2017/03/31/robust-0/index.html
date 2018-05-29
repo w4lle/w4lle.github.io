@@ -258,7 +258,7 @@
 
     
         <meta property="article:published_time" content="Fri Mar 31 2017 15:58:12 GMT+0800" />
-        <meta property="article:modified_time" content="Fri Mar 31 2017 20:32:19 GMT+0800" />
+        <meta property="article:modified_time" content="Tue May 29 2018 16:32:58 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
@@ -291,7 +291,7 @@
     "mainEntityOfPage": "http://w4lle.com/2017/03/31/robust-0/index.html",
     "headline": "Android热补丁之Robust原理解析(一)",
     "datePublished": "Fri Mar 31 2017 15:58:12 GMT+0800",
-    "dateModified": "Fri Mar 31 2017 20:32:19 GMT+0800",
+    "dateModified": "Tue May 29 2018 16:32:58 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "w4lle",
@@ -505,6 +505,12 @@
 </ul>
 <p>本文为第一篇，主要讲解补丁加载过程和基础包插桩过程，分析版本 <code>0.3.2</code>。</p>
 <a id="more"></a>
+<p>系列文章:</p>
+<ul>
+<li><a href="http://w4lle.com/2017/03/31/robust-0/">Android热补丁之Robust原理解析(一)</a></li>
+<li><a href="http://w4lle.com/2018/05/28/robust-1/">Android热补丁之Robust（二）自动化补丁原理解析</a></li>
+<li><a href="http://w4lle.com/2018/05/29/robust-3/">Android热补丁之Robust（三）坑和解</a></li>
+</ul>
 <h1 id="从-InstantRun-说起"><a href="#从-InstantRun-说起" class="headerlink" title="从 InstantRun 说起"></a>从 InstantRun 说起</h1><p>不得不说 InstantRun 真是个好东西。目前主流的热修复框架都有或多或少的参考 InstantRun 的某些技术点，比如 <a href="https://github.com/Tencent/tinker" target="_blank" rel="external">Tinker</a> 的官方文章中明确考虑过 InstantRun 中的 Application 替换，虽然最后没有采用，但是身为其兄弟库的 <a href="http://tinkerpatch.com/Docs/intro" target="_blank" rel="external">TinkerPatch</a> 中一键接入方案就采用的该技术点。关于该技术点，可以参考我之前写的一篇文章 <a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/" target="_blank" rel="external">一键接入Tinker</a> 。</p>
 <p>我们知道，InstantRun 对应三种更新机制：</p>
 <ul>

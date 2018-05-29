@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            Android热补丁之Robust（二）自动化补丁原理解析 | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <meta name="description" itemprop="description" content="在 Android 热补丁框架 Robust 中，几个重要的流程包括：
+
+补丁加载过程
+基础包插桩过程
+补丁包生成过程
+
+在上一篇文章Android热补丁之Robust原理解析(一)中，我们分析了前两个，补丁加载过程和基础包插桩过程，分析的版本为 0.3.2。该篇文章为该系列的第二篇文章，主要分析补丁自动化生成的过程，分析的版本为0.4.82。">
+    <meta name="keywords" content="Android,Android,热补丁">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Android热补丁之Robust（二）自动化补丁原理解析 | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="在 Android 热补丁框架 Robust 中，几个重要的流程包括：
+
+补丁加载过程
+基础包插桩过程
+补丁包生成过程
+
+在上一篇文章Android热补丁之Robust原理解析(一)中，我们分析了前两个，补丁加载过程和基础包插桩过程，分析的版本为 0.3.2。该篇文章为该系列的第二篇文章，主要分析补丁自动化生成的过程，分析的版本为0.4.82。">
+    <meta property="og:article:tag" content="Android"> <meta property="og:article:tag" content="热补丁"> 
+
+    
+        <meta property="article:published_time" content="Mon May 28 2018 19:47:06 GMT+0800" />
+        <meta property="article:modified_time" content="Tue May 29 2018 16:33:16 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="Android热补丁之Robust（二）自动化补丁原理解析 | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="在 Android 热补丁框架 Robust 中，几个重要的流程包括：
+
+补丁加载过程
+基础包插桩过程
+补丁包生成过程
+
+在上一篇文章Android热补丁之Robust原理解析(一)中，我们分析了前两个，补丁加载过程和基础包插桩过程，分析的版本为 0.3.2。该篇文章为该系列的第二篇文章，主要分析补丁自动化生成的过程，分析的版本为0.4.82。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2018/05/28/robust-1/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2018/05/28/robust-1/index.html",
+    "headline": "Android热补丁之Robust（二）自动化补丁原理解析",
+    "datePublished": "Mon May 28 2018 19:47:06 GMT+0800",
+    "dateModified": "Tue May 29 2018 16:33:16 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",Android,热补丁Android",
+    "description": "在 Android 热补丁框架 Robust 中，几个重要的流程包括：
+
+补丁加载过程
+基础包插桩过程
+补丁包生成过程
+
+在上一篇文章Android热补丁之Robust原理解析(一)中，我们分析了前两个，补丁加载过程和基础包插桩过程，分析的版本为 0.3.2。该篇文章为该系列的第二篇文章，主要分析补丁自动化生成的过程，分析的版本为0.4.82。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="http://7xs23g.com1.z0.glb.clouddn.com/robust.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                Android热补丁之Robust（二）自动化补丁原理解析
+            </p>
+            <p>在 Android 热补丁框架 Robust 中，几个重要的流程包括：</p>
+<ul>
+<li>补丁加载过程</li>
+<li>基础包插桩过程</li>
+<li>补丁包生成过程</li>
+</ul>
+<p>在上一篇文章<a href="http://w4lle.com/2017/03/31/robust-0/">Android热补丁之Robust原理解析(一)</a>中，我们分析了前两个，补丁加载过程和基础包插桩过程，分析的版本为 <code>0.3.2</code>。<br>该篇文章为该系列的第二篇文章，主要分析补丁自动化生成的过程，分析的版本为<code>0.4.82</code>。<br><a id="more"></a><br>时间跨度有点大…</p>
+<p>系列文章:</p>
+<ul>
+<li><a href="http://w4lle.com/2017/03/31/robust-0/">Android热补丁之Robust原理解析(一)</a></li>
+<li><a href="http://w4lle.com/2018/05/28/robust-1/">Android热补丁之Robust（二）自动化补丁原理解析</a></li>
+<li><a href="http://w4lle.com/2018/05/29/robust-3/">Android热补丁之Robust（三）坑和解</a></li>
+</ul>
+<h1 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h1><p>首先在 Gradle 插件中注册了一个名为 AutoPatchTranform 的 Tranform </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AutoPatchTransform</span> <span class="keyword">extends</span> <span class="title">Transform</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project target)</span> </span>&#123;</div><div class="line">    initConfig();</div><div class="line">    project.android.registerTransform(<span class="keyword">this</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">def <span class="title">initConfig</span><span class="params">()</span> </span>&#123;</div><div class="line">    NameManger.init();</div><div class="line">    InlineClassFactory.init();</div><div class="line">    ReadMapping.init();</div><div class="line">    Config.init();</div><div class="line">    ...</div><div class="line">    ReadXML.readXMl(project.projectDir.path);</div><div class="line">    Config.methodMap = JavaUtils.getMapFromZippedFile(project.projectDir.path + Constants.METHOD_MAP_PATH)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>该类为插件的入口，实现了 GradlePlugin 并继承自 Transform，在入口处初始化配置并注册 Transform。配置主要是读取 Robust xml 配置、混淆优化后的 mapping 文件、插庄过程中生成的 methodsMap.robust 文件、初始化内联工厂类等等。<br>然后最主要的是<code>transform</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(Context context, Collection&lt;TransformInput&gt; inputs, Collection&lt;TransformInput&gt; referencedInputs, TransformOutputProvider outputProvider, <span class="keyword">boolean</span> isIncremental)</span> <span class="keyword">throws</span> IOException, TransformException, InterruptedException </span>&#123;</div><div class="line">    project.android.bootClasspath.each &#123;</div><div class="line">        Config.classPool.appendClassPath((String) it.absolutePath)</div><div class="line">    &#125;</div><div class="line">    def box = ReflectUtils.toCtClasses(inputs, Config.classPool)</div><div class="line">    ...</div><div class="line">    autoPatch(box)</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">def <span class="title">autoPatch</span><span class="params">(List&lt;CtClass&gt; box)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    ReadAnnotation.readAnnotation(box, logger);</div><div class="line">    <span class="keyword">if</span>(Config.supportProGuard) &#123;</div><div class="line">        ReadMapping.getInstance().initMappingInfo();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    generatPatch(box,patchPath);</div><div class="line"></div><div class="line">    zipPatchClassesFile()</div><div class="line">    executeCommand(jar2DexCommand)</div><div class="line">    executeCommand(dex2SmaliCommand)</div><div class="line">    SmaliTool.getInstance().dealObscureInSmali();</div><div class="line">    executeCommand(smali2DexCommand)</div><div class="line">    <span class="comment">//package patch.dex to patch.jar</span></div><div class="line">    packagePatchDex2Jar()</div><div class="line">    deleteTmpFiles()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 <code>transform</code> 方法中，使用 javassist API 把所有需要处理的类加载到待扫描队列中，然后调用<code>autoPatch</code>方法自动生成补丁。<br>在 <code>autoPatch</code>方法中，主要做了这么几件事情：</p>
+<ol>
+<li>读取被 @Add、@Modify、RobustModify.modify() 标注的方法或类并记录</li>
+<li>解析 mapping 文件并记录每个类和类中方法混淆前后对应的信息，其中方法存储的信息有：返回值，方法名，参数列表，混淆后的名字；字段存储的信息有：字段名，混淆后的名字</li>
+<li>根据得到的信息，<code>generatPatch</code> 方法实际生成补丁</li>
+<li>将生成的补丁class打包成jar包</li>
+<li>jar -&gt; dex</li>
+<li>dex -&gt; smali</li>
+<li>处理 smali，主要是处理 super 方法和处理混淆关系</li>
+<li>smali -&gt; dex</li>
+<li>dex -&gt; jar</li>
+</ol>
+<p>1、2 比较好懂就不逐步分析了，主要看3；后面的5、6、7、8、9 都是为了 7 中处理 smali，所以只要搞懂smali处理就好了。下面我们分步来看。</p>
+<h1 id="生成补丁"><a href="#生成补丁" class="headerlink" title="生成补丁"></a>生成补丁</h1><p>主要逻辑在 <code>generatPatch</code> 方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function">def  <span class="title">generatPatch</span><span class="params">(List&lt;CtClass&gt; box,String patchPath)</span></span>&#123;</div><div class="line">...</div><div class="line">    InlineClassFactory.dealInLineClass(patchPath, Config.newlyAddedClassNameList)</div><div class="line">    initSuperMethodInClass(Config.modifiedClassNameList);</div><div class="line">    <span class="comment">//auto generate all class</span></div><div class="line">    <span class="keyword">for</span> (String fullClassName : Config.modifiedClassNameList) &#123;</div><div class="line">        CtClass ctClass = Config.classPool.get(fullClassName)</div><div class="line">        CtClass patchClass = PatchesFactory.createPatch(patchPath, ctClass, <span class="keyword">false</span>, NameManger.getInstance().getPatchName(ctClass.name), Config.patchMethodSignatureSet)</div><div class="line">        patchClass.writeFile(patchPath)</div><div class="line">        patchClass.defrost();</div><div class="line">        createControlClass(patchPath, ctClass)</div><div class="line">    &#125;</div><div class="line">    createPatchesInfoClass(patchPath);</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>分为两个部分</p>
+<h2 id="逐步翻译"><a href="#逐步翻译" class="headerlink" title="逐步翻译"></a>逐步翻译</h2><p>首先调用<code>InlineClassFactory.dealInLineClass(patchPath, Config.newlyAddedClassNameList)</code>识别被优化过的方法，这里的优化是泛指，包括被优化、内联、新增过的类和方法，具体的逻辑为扫描修改后的所有类和类中的方法，如果这些类和方法不在 mapping 文件中存在，那么可以定义为被优化过，其中包括<code>@Add</code>新增的类或方法。<br>然后调用<code>initSuperMethodInClass</code>方法识别修改后的所有类和类中的方法中，分析是否如包含 <code>super</code> 方法，如果有那么缓存下来。<br>然后调用 <code>PatchesFactory.createPatch</code> 反射翻译修改的类和方法，具体的实现在</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> CtClass <span class="title">createPatchClass</span><span class="params">(CtClass modifiedClass, <span class="keyword">boolean</span> isInline, String patchName, Set patchMethodSignureSet, String patchPath)</span> <span class="keyword">throws</span> CannotCompileException, IOException, NotFoundException </span>&#123;</div><div class="line">    <span class="comment">//清洗需要处理的方法，略..</span></div><div class="line"></div><div class="line">    CtClass temPatchClass = cloneClass(modifiedClass, patchName, methodNoNeedPatchList);</div><div class="line">    </div><div class="line">    JavaUtils.addPatchConstruct(temPatchClass, modifiedClass);</div><div class="line">    CtMethod reaLParameterMethod = CtMethod.make(JavaUtils.getRealParamtersBody(), temPatchClass);</div><div class="line">    temPatchClass.addMethod(reaLParameterMethod);</div><div class="line"></div><div class="line">    dealWithSuperMethod(temPatchClass, modifiedClass, patchPath);</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (CtMethod method : temPatchClass.getDeclaredMethods()) &#123;</div><div class="line">        <span class="comment">//  shit !!too many situations need take into  consideration</span></div><div class="line">        <span class="comment">//   methods has methodid   and in  patchMethodSignatureSet</span></div><div class="line">        <span class="keyword">if</span> (!Config.addedSuperMethodList.contains(method) &amp;&amp; reaLParameterMethod != method &amp;&amp; !method.getName().startsWith(Constants.ROBUST_PUBLIC_SUFFIX)) &#123;</div><div class="line">            method.instrument(</div><div class="line">                    <span class="keyword">new</span> ExprEditor() &#123;</div><div class="line">                        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">edit</span><span class="params">(FieldAccess f)</span> <span class="keyword">throws</span> CannotCompileException </span>&#123;</div><div class="line">                            ...</div><div class="line">                                <span class="keyword">if</span> (f.isReader()) &#123; f.replace(ReflectUtils.getFieldString(f.getField(), memberMappingInfo, temPatchClass.getName(), modifiedClass.getName()));</div><div class="line">                                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (f.isWriter()) &#123;</div><div class="line">                                    f.replace(ReflectUtils.setFieldString(f.getField(), memberMappingInfo, temPatchClass.getName(), modifiedClass.getName()));</div><div class="line">                                &#125;</div><div class="line">                            ...</div><div class="line">                        &#125;</div><div class="line"></div><div class="line"></div><div class="line">                        <span class="meta">@Override</span></div><div class="line">                        <span class="function"><span class="keyword">void</span> <span class="title">edit</span><span class="params">(NewExpr e)</span> <span class="keyword">throws</span> CannotCompileException </span>&#123;</div><div class="line">                            <span class="comment">//inner class in the patched class ,not all inner class</span></div><div class="line">                            ...</div><div class="line">                                <span class="keyword">if</span> (!ReflectUtils.isStatic(Config.classPool.get(e.getClassName()).getModifiers()) &amp;&amp; JavaUtils.isInnerClassInModifiedClass(e.getClassName(), modifiedClass)) &#123;</div><div class="line">                                    e.replace(ReflectUtils.getNewInnerClassString(e.getSignature(), temPatchClass.getName(), ReflectUtils.isStatic(Config.classPool.get(e.getClassName()).getModifiers()), getClassValue(e.getClassName())));</div><div class="line">                                    <span class="keyword">return</span>;</div><div class="line">                                &#125;</div><div class="line">                            ...</div><div class="line"></div><div class="line">                        <span class="meta">@Override</span></div><div class="line">                        <span class="function"><span class="keyword">void</span> <span class="title">edit</span><span class="params">(Cast c)</span> <span class="keyword">throws</span> CannotCompileException </span>&#123;</div><div class="line">                            MethodInfo thisMethod = ReflectUtils.readField(c, <span class="string">"thisMethod"</span>);</div><div class="line">                            CtClass thisClass = ReflectUtils.readField(c, <span class="string">"thisClass"</span>);</div><div class="line"></div><div class="line">                            def isStatic = ReflectUtils.isStatic(thisMethod.getAccessFlags());</div><div class="line">                            <span class="keyword">if</span> (!isStatic) &#123;</div><div class="line">                                <span class="comment">//inner class in the patched class ,not all inner class</span></div><div class="line">                                <span class="keyword">if</span> (Config.newlyAddedClassNameList.contains(thisClass.getName()) || Config.noNeedReflectClassSet.contains(thisClass.getName())) &#123;</div><div class="line">                                    <span class="keyword">return</span>;</div><div class="line">                                &#125;</div><div class="line">                                <span class="comment">// static函数是没有this指令的，直接会报错。</span></div><div class="line">                                c.replace(ReflectUtils.getCastString(c, temPatchClass))</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line"></div><div class="line">                        <span class="meta">@Override</span></div><div class="line">                        <span class="function"><span class="keyword">void</span> <span class="title">edit</span><span class="params">(MethodCall m)</span> <span class="keyword">throws</span> CannotCompileException </span>&#123;</div><div class="line">                            ...</div><div class="line">                                <span class="keyword">if</span> (!repalceInlineMethod(m, method, <span class="keyword">false</span>)) &#123;</div><div class="line">                                    Map memberMappingInfo = getClassMappingInfo(m.getMethod().getDeclaringClass().getName());</div><div class="line">                                    <span class="keyword">if</span> (invokeSuperMethodList.contains(m.getMethod())) &#123;</div><div class="line">                                        <span class="keyword">int</span> index = invokeSuperMethodList.indexOf(m.getMethod());</div><div class="line">                                        CtMethod superMethod = invokeSuperMethodList.get(index);</div><div class="line">                                        <span class="keyword">if</span> (superMethod.getLongName() != <span class="keyword">null</span> &amp;&amp; superMethod.getLongName() == m.getMethod().getLongName()) &#123;</div><div class="line">                                            String firstVariable = <span class="string">""</span>;</div><div class="line">                                            <span class="keyword">if</span> (ReflectUtils.isStatic(method.getModifiers())) &#123;</div><div class="line">                                                <span class="comment">//修复static 方法中含有super的问题，比如Aspectj处理后的方法</span></div><div class="line">                                                MethodInfo methodInfo = method.getMethodInfo();</div><div class="line">                                                LocalVariableAttribute table = methodInfo.getCodeAttribute().getAttribute(LocalVariableAttribute.tag);</div><div class="line">                                                <span class="keyword">int</span> numberOfLocalVariables = table.tableLength();</div><div class="line">                                                <span class="keyword">if</span> (numberOfLocalVariables &gt; <span class="number">0</span>) &#123;</div><div class="line">                                                    <span class="keyword">int</span> frameWithNameAtConstantPool = table.nameIndex(<span class="number">0</span>);</div><div class="line">                                                    firstVariable = methodInfo.getConstPool().getUtf8Info(frameWithNameAtConstantPool)</div><div class="line">                                                &#125;</div><div class="line">                                            &#125;</div><div class="line">                                            m.replace(ReflectUtils.invokeSuperString(m, firstVariable));</div><div class="line">                                            <span class="keyword">return</span>;</div><div class="line">                                        &#125;</div><div class="line">                                    &#125;</div><div class="line">                                    m.replace(ReflectUtils.getMethodCallString(m, memberMappingInfo, temPatchClass, ReflectUtils.isStatic(method.getModifiers()), isInline));</div><div class="line">                                &#125;</div><div class="line">                            ...</div><div class="line">                        &#125;</div><div class="line">                    &#125;);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//remove static code block,pay attention to the  class created by cloneClassWithoutFields which construct's</span></div><div class="line">    CtClass patchClass = cloneClassWithoutFields(temPatchClass, patchName, <span class="keyword">null</span>);</div><div class="line">    patchClass = JavaUtils.addPatchConstruct(patchClass, modifiedClass);</div><div class="line">    <span class="keyword">return</span> patchClass;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段代码其实是这个插件的核心部分，总体来说就是将修改后的代码全部翻译成反射调用生成 xxxPatch 类。<br>我们先只关注<code>method.instrument()</code>这个方法，这个Javassist的API，作用是遍历方法中的代码逻辑，包括：</p>
+<ul>
+<li>FieldAccess，字段访问操作。分为字段读和写两种，分别调用<code>ReflectUtils.getFieldString</code>方法，将代码逻辑使用Javassist翻译成反射调用，然后替换。</li>
+<li>NewExpr，new 对象操作。也分为两种<ul>
+<li>非静态内部类，调用<code>ReflectUtils.getNewInnerClassString</code>翻译成反射，然后替换</li>
+<li>外部类，调用<code>ReflectUtils.getCreateClassString</code>翻译成反射，然后替换</li>
+</ul>
+</li>
+<li>Cast，强转操作。调用<code>ReflectUtils.getCastString</code>翻译成反射，然后替换</li>
+<li>MethodCall，方法调用操作。情况比较复杂，以下几种情形<ul>
+<li>lamda表达式，调用<code>ReflectUtils.getNewInnerClassString</code>生成内部类的方法并翻译成反射，然后替换</li>
+<li>修改的方法是内联方法，调用<code>ReflectUtils.getInLineMemberString</code>方法生成占位内联类<code>xxInLinePatch</code>，并在改类中把修改的方法翻译成反射，然后替换调用，这方法中又有一些其他情况判断，感兴趣的读者可以自行阅读</li>
+<li>如果是super方法，这个情况后面单独拎出来说</li>
+<li>正常方法，调用<code>ReflectUtils.getMethodCallString</code>方法翻译成反射，然后替换</li>
+</ul>
+</li>
+<li>生成补丁类并增加构造方法</li>
+</ul>
+<p>请注意，以上所有方法和需要处理的方法都需要特别注意方法签名！</p>
+<h2 id="控制补丁行为"><a href="#控制补丁行为" class="headerlink" title="控制补丁行为"></a>控制补丁行为</h2><p>最后调用 <code>createControlClass(patchPath, ctClass)</code>、<code>createPatchesInfoClass(patchPath);</code>生成 PatchesInfoImpl、xxxPatchControl 写入补丁信息和控制补丁行为。</p>
+<p>其中，<code>PatchesInfoImpl</code>中包含所有补丁类的一一对应关系，比如 <code>MainActivity -&gt; MainActivityPatch</code>，不清楚的可以参考该系列的上一篇文章。生成的<code>xxxPatchControl</code>类用于生成<code>xxPatch</code>类，并判断补丁中的方法是否和methods.robust中的方法id匹配，如果匹配才会去调用补丁中方法。</p>
+<p>至此整体流程基本梳理完成。后面会针对具体的复杂情况加以解析。</p>
+<h1 id="this-如何处理"><a href="#this-如何处理" class="headerlink" title="this 如何处理"></a>this 如何处理</h1><p>首先，在补丁类中 xxPatch 中，<code>this</code>指代的是xxPatch类的对象，而我们是想要的对象是被补丁的类的对象。</p>
+<p>在<code>PatchesFactory.createPatchClass()</code>方法中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">CtMethod reaLParameterMethod = CtMethod.make(JavaUtils.getRealParamtersBody(), temPatchClass);</div><div class="line">temPatchClass.addMethod(reaLParameterMethod);</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getRealParamtersBody</span><span class="params">()</span> </span>&#123;</div><div class="line">    StringBuilder realParameterBuilder = <span class="keyword">new</span> StringBuilder();</div><div class="line">    realParameterBuilder.append(<span class="string">"public  Object[] "</span> + Constants.GET_REAL_PARAMETER + <span class="string">" (Object[] args)&#123;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">"if (args == null || args.length &lt; 1) &#123;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">" return args;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">"&#125;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">" Object[] realParameter = new Object[args.length];"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">"for (int i = 0; i &lt; args.length; i++) &#123;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">"if (args[i] instanceof Object[]) &#123;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">"realParameter[i] ="</span> + Constants.GET_REAL_PARAMETER + <span class="string">"((Object[]) args[i]);"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">"&#125; else &#123;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">"if (args[i] ==this) &#123;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">" realParameter[i] =this."</span> + ORIGINCLASS + <span class="string">";"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">"&#125; else &#123;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">" realParameter[i] = args[i];"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">" &#125;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">" &#125;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">" &#125;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">"  return realParameter;"</span>);</div><div class="line">    realParameterBuilder.append(<span class="string">" &#125;"</span>);</div><div class="line">    <span class="keyword">return</span> realParameterBuilder.toString();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段的作用是，在每个xxPatch补丁类中都插入一个<code>getRealParameter()</code>方法，反编译出来最终的结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> Object[] getRealParameter(Object[] objArr) &#123;</div><div class="line">    <span class="keyword">if</span> (objArr == <span class="keyword">null</span> || objArr.length &lt; <span class="number">1</span>) &#123;</div><div class="line">        <span class="keyword">return</span> objArr;</div><div class="line">    &#125;</div><div class="line">    Object[] objArr2 = <span class="keyword">new</span> Object[objArr.length];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; objArr.length; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (objArr[i] <span class="keyword">instanceof</span> Object[]) &#123;</div><div class="line">            objArr2[i] = getRealParameter((Object[]) objArr[i]);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (objArr[i] == <span class="keyword">this</span>) &#123;</div><div class="line">            objArr2[i] = <span class="keyword">this</span>.originClass;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            objArr2[i] = objArr[i];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> objArr2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>它的作用是，在每个xxPatch中使用的<code>this</code>，都转换成xx被补丁类的对象。其中的<code>originClass</code>就是补丁类的对象。</p>
+<h1 id="super-如何处理"><a href="#super-如何处理" class="headerlink" title="super 如何处理"></a>super 如何处理</h1><p>同<code>this</code>类似，xxPatch中调用 <code>super</code> 方法同样需要转为调用被补丁类中相关方法的<code>super</code>调用。</p>
+<p>还是在<code>PatchesFactory.createPatchClass()</code>方法中有<code>dealWithSuperMethod(temPatchClass, modifiedClass, patchPath);</code>调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dealWithSuperMethod</span><span class="params">(CtClass patchClass, CtClass modifiedClass, String patchPath)</span> <span class="keyword">throws</span> NotFoundException, CannotCompileException, IOException </span>&#123;</div><div class="line">    ...</div><div class="line">    methodBuilder.append(<span class="string">"public  static "</span> + invokeSuperMethodList.get(index).getReturnType().getName() + <span class="string">"  "</span> + ReflectUtils.getStaticSuperMethodName(invokeSuperMethodList.get(index).getName()) + <span class="string">"("</span> + patchClass.getName() + <span class="string">" patchInstance,"</span> + modifiedClass.getName() + <span class="string">" modifiedInstance,"</span> + JavaUtils.getParameterSignure(invokeSuperMethodList.get(index)) + <span class="string">")&#123;"</span>);</div><div class="line">    ...</div><div class="line">    CtClass assistClass = PatchesAssistFactory.createAssistClass(modifiedClass, patchClass.getName(), invokeSuperMethodList.get(index));</div><div class="line">    ...</div><div class="line">    methodBuilder.append(NameManger.getInstance().getAssistClassName(patchClass.getName()) + <span class="string">"."</span> + ReflectUtils.getStaticSuperMethodName(invokeSuperMethodList.get(index).getName())  + <span class="string">"(patchInstance,modifiedInstance"</span>);</div><div class="line">    ...</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>保留主要代码，根据方法签名生成了一个新的方法，以<code>staticRobust+methodName</code>命名，方法中调用以<code>RobustAssist</code>结尾的类中的同名方法，并调用 <code>PatchesAssistFactory.createAssistClass</code> 方法生成该类，这个类的父类是被补丁类的父类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">PatchesAssistFactory.createAssistClass:</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">createAssistClass</span><span class="params">(CtClass modifiedClass, String patchClassName, CtMethod removeMethod)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    staticMethodBuidler.append(<span class="string">"public static  "</span> + removeMethod.returnType.name + <span class="string">"   "</span> + ReflectUtils.getStaticSuperMethodName(removeMethod.getName())</div><div class="line">            + <span class="string">"("</span> + patchClassName + <span class="string">" patchInstance,"</span> + modifiedClass.getName() + <span class="string">" modifiedInstance)&#123;"</span>);</div><div class="line">                </div><div class="line">    staticMethodBuidler.append(<span class="string">" return patchInstance."</span> + removeMethod.getName() + <span class="string">"("</span> + JavaUtils.getParameterValue(removeMethod.getParameterTypes().length) + <span class="string">");"</span>);</div><div class="line">    staticMethodBuidler.append(<span class="string">"&#125;"</span>);</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后在遍历<code>MethodCall</code>过程中，处理方法调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">m.replace(ReflectUtils.invokeSuperString(m, firstVariable));</div><div class="line">...</div><div class="line"><span class="function">def <span class="keyword">static</span> String <span class="title">invokeSuperString</span><span class="params">(MethodCall m, String originClass)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    stringBuilder.append(getStaticSuperMethodName(m.methodName) + <span class="string">"(this,"</span> + Constants.ORIGINCLASS + <span class="string">",\$\$);"</span>);</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>传递的参数，patch、originClass（被补丁类对象）、方法实际参数列表。</p>
+<p>反编译出的结果实际是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">MainFragmentActivity:</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle bundle)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onCreate(bundle);</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line">MainFragmentActivityPatch:</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">staticRobustonCreate</span><span class="params">(MainFragmentActivityPatch mainFragmentActivityPatch, MainFragmentActivity mainFragmentActivity, Bundle bundle)</span> </span>&#123;</div><div class="line">    MainFragmentActivityPatchRobustAssist.staticRobustonCreate(mainFragmentActivityPatch, mainFragmentActivity, bundle);</div><div class="line">&#125;</div><div class="line"></div><div class="line">MainFragmentActivityPatchRobustAssist:</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainFragmentActivityPatchRobustAssist</span> <span class="keyword">extends</span> <span class="title">WrapperAppCompatFragmentActivity</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">staticRobustonCreate</span><span class="params">(MainFragmentActivityPatch mainFragmentActivityPatch, MainFragmentActivity mainFragmentActivity, Bundle bundle)</span> </span>&#123;</div><div class="line">        mainFragmentActivityPatch.onCreate(bundler);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>参数是按照实际的方法参数传进去的，最后调用了xxPatch.superMethod方法。但是这样也并没有实现<code>super</code>方法的转义啊，再往下看。</p>
+<p>在处理smali过程中，有这么一段：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> String <span class="title">invokeSuperMethodInSmali</span><span class="params">(<span class="keyword">final</span> String line, String fullClassName)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    result = line.replace(Constants.SMALI_INVOKE_VIRTUAL_COMMAND, Constants.SMALI_INVOKE_SUPER_COMMAND);</div><div class="line">    ...</div><div class="line">    result = result.replace(<span class="string">"p0"</span>, <span class="string">"p1"</span>);</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在处理之前，smali是长这样的：<code>invoke-invoke-virtual {p0, p2}, Lcom/meituan/robust/patch/SecondActivityPatch;-&gt;onCreate(Landroid/os/Bundle;)V</code>,<br>处理之后是这样的：<code>invoke-super {p1, p2}, Landroid/support/v7/app/AppCompatActivity;-&gt;onCreate(Landroid/os/Bundle;)V</code>，意思就是本来是调用正常方法，现在转为调用super方法，并且把参数换了一下，把p0(补丁类对象)换成了p1（被补丁类对象），这样就完成了<code>super</code>的处理。反编译后最终结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainFragmentActivityPatchRobustAssist</span> <span class="keyword">extends</span> <span class="title">WrapperAppCompatFragmentActivity</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">staticRobustonCreate</span><span class="params">(MainFragmentActivityPatch mainFragmentActivityPatch, MainFragmentActivity mainFragmentActivity, Bundle bundle)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(bundle);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="内联怎么处理"><a href="#内联怎么处理" class="headerlink" title="内联怎么处理"></a>内联怎么处理</h1><p>内联是个广义的概念，包括了混淆过程中的优化(修改方法签名、删除方法等)、内联。在上面的分析中处理zi方法基本也提到了，缺啥补啥：就是把内联掉的方法再补回来。<br>对于内联的方法，不能用<code>@Modify</code>注解标注，只能使用<code>RobustModify.modify()</code>标注，因为在基础包中方法都没了，打了l补丁方法也没用。</p>
+<p>主要逻辑在遍历<code>MethodCall</code> -&gt; <code>repalceInlineMethod()</code> -&gt; <code>ReflectUtils.getInLineMemberString()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">stringBuilder.append(<span class="string">" instance=new "</span> + NameManger.getInstance().getInlinePatchName(method.declaringClass.name) + <span class="string">"(\$0);"</span>)</div><div class="line">stringBuilder.append(<span class="string">"\$_=(\$r)instance."</span> + getInLineMethodName(method) + <span class="string">"("</span> + parameterBuilder.toString() + <span class="string">");"</span>)</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>作用就是把内联掉的方法调用替换为InLine类中的新增方法。</p>
+<p>结果就是这样的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> String first=<span class="keyword">null</span>;</div><div class="line">    <span class="comment">//privateMethod被内联了</span></div><div class="line">    <span class="comment">// private void privateMethod(String fir)&#123;</span></div><div class="line">    <span class="comment">//    System.out.println(fir);</span></div><div class="line">    <span class="comment">//&#125;</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(String fir)</span></span>&#123;</div><div class="line">        first=fir;</div><div class="line">        Parent children=<span class="keyword">new</span> Children();</div><div class="line">        <span class="comment">//children.privateMethod("Robust");</span></div><div class="line">        <span class="comment">//内联替换的逻辑</span></div><div class="line">        ParentInline inline= <span class="keyword">new</span> ParentInline(children);</div><div class="line">        inline.privateMethod(<span class="string">"Robust"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ParentInline</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> Parent children ;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ParentInline</span><span class="params">(Parent p)</span></span>&#123;</div><div class="line">       children=p;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//混淆为c</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">privateMethod</span><span class="params">(String fir)</span></span>&#123;</div><div class="line">        System.out.println(fir);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Robust 的核心其实就是自动化生成补丁这块，至于插庄、补丁加载这些都是很好实现的，因为没有很多的特殊情况需要处理。<br>这篇文章主要分析了自动化补丁插件的主要工作流程，和一些特殊情况的处理，文章有限，当然还有很多特殊情况没有分析，这里只是提供一些分析源码的思路，碰到特殊情况可以按照这个思路排查解决问题。</p>
+<p>就像代码中有一行注释，我觉得特别能概括自动化生成补丁的团队的心里路程，在此也再次感谢美团团队对开源做出的贡献。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//  shit !!too many situations need take into  consideration</span></div></pre></td></tr></table></figure></p>
+<p>总体来说，Robust 坑是有的，但是它也是高可用性、高兼容性的热修复框架，尤其是在Android 系统开放性越来越收紧的趋势下，Robust  作为不 hook 系统 API 的热修复框架优势更加突出。虽然其中可能有一些坑，只要我们对原理熟悉掌握，才有信心能搞定这些问题。</p>
+<p>下一篇文章，主要就讲下Robust与其他框架搭配使用出现的一些坑。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://tech.meituan.com/android_autopatch.html" target="_blank" rel="external">Android热更新方案Robust开源，新增自动化补丁工具</a></li>
+<li><a href="https://www.jianshu.com/p/b9b3ff0e1bf8" target="_blank" rel="external">Javassist 使用指南（二）</a></li>
+<li><a href="https://juejin.im/entry/579ef6e37db2a2005a6350d8" target="_blank" rel="external">[转] 深入理解 Dalvik 字节码指令及 Smali 文件</a></li>
+</ul>
+<p>本文链接： <a href="http://w4lle.com/2018/05/28/robust-1/">http://w4lle.com/2018/05/28/robust-1/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2018/05/28/robust-1/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2018/05/29/robust-2/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2018/02/02/python-pdf/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
