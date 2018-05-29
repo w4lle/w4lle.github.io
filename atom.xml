@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2018-05-29T08:34:12.000Z</updated>
+  <updated>2018-05-29T08:38:23.000Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -20,13 +20,13 @@
     <link href="http://w4lle.com/2018/05/29/robust-2/"/>
     <id>http://w4lle.com/2018/05/29/robust-2/</id>
     <published>2018-05-29T08:18:16.000Z</published>
-    <updated>2018-05-29T08:34:12.000Z</updated>
+    <updated>2018-05-29T08:38:23.000Z</updated>
     
     <content type="html"><![CDATA[<p>系列文章:</p>
 <ul>
 <li><a href="http://w4lle.com/2017/03/31/robust-0/">Android热补丁之Robust原理解析(一)</a></li>
 <li><a href="http://w4lle.com/2018/05/28/robust-1/">Android热补丁之Robust（二）自动化补丁原理解析</a></li>
-<li><a href="http://w4lle.com/2018/05/29/robust-3/">Android热补丁之Robust（三）坑和解</a></li>
+<li><a href="http://w4lle.com/2018/05/29/robust-2/">Android热补丁之Robust（三）坑和解</a></li>
 </ul>
 <h1 id="占坑"><a href="#占坑" class="headerlink" title="占坑"></a>占坑</h1><p>本文链接： <a href="http://w4lle.com/2018/05/29/robust-2/">http://w4lle.com/2018/05/29/robust-2/</a> </p>
 ]]></content>
@@ -52,7 +52,7 @@
     <link href="http://w4lle.com/2018/05/28/robust-1/"/>
     <id>http://w4lle.com/2018/05/28/robust-1/</id>
     <published>2018-05-28T11:47:06.000Z</published>
-    <updated>2018-05-29T08:33:16.000Z</updated>
+    <updated>2018-05-29T08:38:13.000Z</updated>
     
     <content type="html"><![CDATA[<p>在 Android 热补丁框架 Robust 中，几个重要的流程包括：</p>
 <ul>
@@ -65,7 +65,7 @@
 <ul>
 <li><a href="http://w4lle.com/2017/03/31/robust-0/">Android热补丁之Robust原理解析(一)</a></li>
 <li><a href="http://w4lle.com/2018/05/28/robust-1/">Android热补丁之Robust（二）自动化补丁原理解析</a></li>
-<li><a href="http://w4lle.com/2018/05/29/robust-3/">Android热补丁之Robust（三）坑和解</a></li>
+<li><a href="http://w4lle.com/2018/05/29/robust-2/">Android热补丁之Robust（三）坑和解</a></li>
 </ul>
 <h1 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h1><p>首先在 Gradle 插件中注册了一个名为 AutoPatchTranform 的 Tranform </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AutoPatchTransform</span> <span class="keyword">extends</span> <span class="title">Transform</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project target)</span> </span>&#123;</div><div class="line">    initConfig();</div><div class="line">    project.android.registerTransform(<span class="keyword">this</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">def <span class="title">initConfig</span><span class="params">()</span> </span>&#123;</div><div class="line">    NameManger.init();</div><div class="line">    InlineClassFactory.init();</div><div class="line">    ReadMapping.init();</div><div class="line">    Config.init();</div><div class="line">    ...</div><div class="line">    ReadXML.readXMl(project.projectDir.path);</div><div class="line">    Config.methodMap = JavaUtils.getMapFromZippedFile(project.projectDir.path + Constants.METHOD_MAP_PATH)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -510,7 +510,7 @@
     <link href="http://w4lle.com/2017/03/31/robust-0/"/>
     <id>http://w4lle.com/2017/03/31/robust-0/</id>
     <published>2017-03-31T07:58:12.000Z</published>
-    <updated>2018-05-29T08:32:58.000Z</updated>
+    <updated>2018-05-29T08:38:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>早在16年9月份，美团技术团队就写过一篇文章描述 Android 热补丁框架Robust的简单实现原理，但是并没有开源；然后在17年3月份，美团团队宣布正式开源 Robust并且配套了自动打补丁包工具。本系列文章主要解析Robust实现原理，分为几个方面</p>
 <ul>
@@ -524,7 +524,7 @@
 <ul>
 <li><a href="http://w4lle.com/2017/03/31/robust-0/">Android热补丁之Robust原理解析(一)</a></li>
 <li><a href="http://w4lle.com/2018/05/28/robust-1/">Android热补丁之Robust（二）自动化补丁原理解析</a></li>
-<li><a href="http://w4lle.com/2018/05/29/robust-3/">Android热补丁之Robust（三）坑和解</a></li>
+<li><a href="http://w4lle.com/2018/05/29/robust-2/">Android热补丁之Robust（三）坑和解</a></li>
 </ul>
 <h1 id="从-InstantRun-说起"><a href="#从-InstantRun-说起" class="headerlink" title="从 InstantRun 说起"></a>从 InstantRun 说起</h1><p>不得不说 InstantRun 真是个好东西。目前主流的热修复框架都有或多或少的参考 InstantRun 的某些技术点，比如 <a href="https://github.com/Tencent/tinker" target="_blank" rel="external">Tinker</a> 的官方文章中明确考虑过 InstantRun 中的 Application 替换，虽然最后没有采用，但是身为其兄弟库的 <a href="http://tinkerpatch.com/Docs/intro" target="_blank" rel="external">TinkerPatch</a> 中一键接入方案就采用的该技术点。关于该技术点，可以参考我之前写的一篇文章 <a href="http://w4lle.github.io/2017/01/05/one-key-for-tinker/" target="_blank" rel="external">一键接入Tinker</a> 。</p>
 <p>我们知道，InstantRun 对应三种更新机制：</p>

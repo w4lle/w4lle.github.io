@@ -258,7 +258,7 @@
 
     
         <meta property="article:published_time" content="Mon May 28 2018 19:47:06 GMT+0800" />
-        <meta property="article:modified_time" content="Tue May 29 2018 16:33:16 GMT+0800" />
+        <meta property="article:modified_time" content="Tue May 29 2018 16:38:13 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
@@ -291,7 +291,7 @@
     "mainEntityOfPage": "http://w4lle.com/2018/05/28/robust-1/index.html",
     "headline": "Android热补丁之Robust（二）自动化补丁原理解析",
     "datePublished": "Mon May 28 2018 19:47:06 GMT+0800",
-    "dateModified": "Tue May 29 2018 16:33:16 GMT+0800",
+    "dateModified": "Tue May 29 2018 16:38:13 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "w4lle",
@@ -508,7 +508,7 @@
 <ul>
 <li><a href="http://w4lle.com/2017/03/31/robust-0/">Android热补丁之Robust原理解析(一)</a></li>
 <li><a href="http://w4lle.com/2018/05/28/robust-1/">Android热补丁之Robust（二）自动化补丁原理解析</a></li>
-<li><a href="http://w4lle.com/2018/05/29/robust-3/">Android热补丁之Robust（三）坑和解</a></li>
+<li><a href="http://w4lle.com/2018/05/29/robust-2/">Android热补丁之Robust（三）坑和解</a></li>
 </ul>
 <h1 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h1><p>首先在 Gradle 插件中注册了一个名为 AutoPatchTranform 的 Tranform </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AutoPatchTransform</span> <span class="keyword">extends</span> <span class="title">Transform</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project target)</span> </span>&#123;</div><div class="line">    initConfig();</div><div class="line">    project.android.registerTransform(<span class="keyword">this</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">def <span class="title">initConfig</span><span class="params">()</span> </span>&#123;</div><div class="line">    NameManger.init();</div><div class="line">    InlineClassFactory.init();</div><div class="line">    ReadMapping.init();</div><div class="line">    Config.init();</div><div class="line">    ...</div><div class="line">    ReadXML.readXMl(project.projectDir.path);</div><div class="line">    Config.methodMap = JavaUtils.getMapFromZippedFile(project.projectDir.path + Constants.METHOD_MAP_PATH)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
