@@ -37,7 +37,7 @@
     
     <title>
         
-            归档: 2018/5 | 
+            归档: 2018/6 | 
         
         w4lle&#39;s Notes
     </title>
@@ -239,7 +239,7 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://w4lle.com">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="归档: 2018/5 | w4lle&#39;s Notes">
+    <meta property="og:title" content="归档: 2018/6 | w4lle&#39;s Notes">
     <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
     <meta property="og:description" content="生活不止眼前的苟且，还有诗，和远方。">
     
@@ -247,7 +247,7 @@
     
 
     <!-- The Twitter Card protocol -->
-    <meta name="twitter:title" content="归档: 2018/5 | w4lle&#39;s Notes">
+    <meta name="twitter:title" content="归档: 2018/6 | w4lle&#39;s Notes">
     <meta name="twitter:description" content="生活不止眼前的苟且，还有诗，和远方。">
     <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
     <meta name="twitter:card" content="summary_large_image" />
@@ -255,7 +255,7 @@
 
     <!-- Add canonical link for SEO -->
     
-        <link rel="canonical" href="http://w4lle.com/archives/2018/05/index.html" />
+        <link rel="canonical" href="http://w4lle.com/archives/2018/06/index.html" />
     
 
     <!-- Structured-data for SEO -->
@@ -427,23 +427,30 @@
     <div class="post_entry-content mdl-color-text--grey-600 mdl-card__supporting-text">
         <!-- Post Title -->
         <p class="post_entry-title">
-            <a href="/2018/05/28/robust-1/">Android热补丁之Robust（二）自动化补丁原理解析</a>
+            <a href="/2018/06/20/robust-2/">Android热补丁之Robust（三）坑和解</a>
         </p>
 
         <!-- Post Excerpt -->
         <p class="post_entry-excerpt">
             
-                在 Android 热补丁框架 Robust 中，几个重要的流程包括：
+                在前两篇文章中，分析了 Android 热补丁框架 Robust 中，几个重要的流程包括：
 
 补丁加载过程
 基础包插桩过程
-补丁包生成过程
+补丁包自动化生成过程
 
-在上一篇文章Android热补丁之Robust原理解析(一)中，我们分析了前两个，补丁加载过程和基础包插桩过程，分析的版本为 0.3.2。该篇文章为该系列的第二篇文章，主要分析补丁自动化生成的过程，分析的版本为0.4.82。
+本篇文章主要分析下集成过程中遇到的坑以及分析问题的思路和最终的解决方案。包含：
+
+打补丁包出错？
+Robust 定义的 API 不够用怎么办？
+插件 Plugin Transform 的顺序问题？
+与 Aspectj 冲突怎么办？
+static 方法中包含 super 方法怎么办？
+
             
             &nbsp;&nbsp;&nbsp;
             <span>
-                <a href="/2018/05/28/robust-1/" target="_self">阅读全文</a>
+                <a href="/2018/06/20/robust-2/" target="_self">阅读全文</a>
             </span>
         </p>
 
@@ -456,7 +463,7 @@
         <div class="post_entry-footer-border"></div>
         <div class="post_entry-footer-info">
             <div class="post_entry-footer-date">
-                5月 28, 2018
+                6月 20, 2018
             </div>
             <div class="post_entry-footer-comment">
                 

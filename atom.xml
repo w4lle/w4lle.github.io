@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2018-06-20T13:06:14.000Z</updated>
+  <updated>2018-06-20T13:12:53.000Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>Android热补丁之Robust（三）坑和解</title>
-    <link href="http://w4lle.com/2018/05/29/robust-2/"/>
-    <id>http://w4lle.com/2018/05/29/robust-2/</id>
-    <published>2018-05-29T08:18:16.000Z</published>
-    <updated>2018-06-20T13:06:14.000Z</updated>
+    <link href="http://w4lle.com/2018/06/20/robust-2/"/>
+    <id>http://w4lle.com/2018/06/20/robust-2/</id>
+    <published>2018-06-20T08:18:16.000Z</published>
+    <updated>2018-06-20T13:12:53.000Z</updated>
     
     <content type="html"><![CDATA[<p>在前两篇文章中，分析了 Android 热补丁框架 Robust 中，几个重要的流程包括：</p>
 <ul>
@@ -124,7 +124,7 @@
 <p>到这里这个问题就分析完了，详细解决方发见 <a href="https://github.com/Meituan-Dianping/Robust/pull/265" target="_blank" rel="external">merge request #265</a></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这个系列到这里基本就结束了。这篇文章主要介绍了在接入 Robust 过程中碰到的一些坑以及解决思路，其实根本还是熟读源码，碰到问题学习从源码中找答案。要坚信，坑踩的多了，也就不怕坑了。最后福利一张。</p>
 <p><img src="http://wx3.sinaimg.cn/large/0078WU5Lgy1fsgrhhx37tj30o31040zf.jpg" alt=""></p>
-<p>本文链接： <a href="http://w4lle.com/2018/05/29/robust-2/">http://w4lle.com/2018/05/29/robust-2/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2018/06/20/robust-2/">http://w4lle.com/2018/06/20/robust-2/</a> </p>
 ]]></content>
     
     <summary type="html">
