@@ -4,6 +4,25 @@
 
     
   <url>
+    <loc>http://w4lle.com/2018/05/29/robust-2/</loc>
+    <lastmod>2018-06-20T13:06:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android热补丁之Robust（三）坑和解</title>
+        <pubTime>2018-05-29T08:18:16.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>热补丁</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://w4lle.com/2017/03/31/robust-0/</loc>
     <lastmod>2018-05-29T08:40:26.000Z</lastmod>
     <data>
@@ -29,25 +48,6 @@
         <display>
         <title>Android热补丁之Robust（二）自动化补丁原理解析</title>
         <pubTime>2018-05-28T11:47:06.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>热补丁</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://w4lle.com/2018/05/29/robust-2/</loc>
-    <lastmod>2018-05-29T08:39:57.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android热补丁之Robust（三）坑和解</title>
-        <pubTime>2018-05-29T08:18:16.000Z</pubTime>
         
         <tag>Android</tag>
          

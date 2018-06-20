@@ -453,9 +453,20 @@
         <!-- Post Excerpt -->
         <p class="post_entry-excerpt">
             
-                系列文章:
+                在前两篇文章中，分析了 Android 热补丁框架 Robust 中，几个重要的流程包括：
 
-Android...
+补丁加载过程
+基础包插桩过程
+补丁包自动化生成过程
+
+本篇文章主要分析下集成过程中遇到的坑以及分析问题的思路和最终的解决方案。包含：
+
+打补丁包出错？
+Robust 定义的 API 不够用怎么办？
+插件 Plugin Transform 的顺序问题？
+与 Aspectj 冲突怎么办？
+static 方法中包含 super 方法怎么办？
+
             
             &nbsp;&nbsp;&nbsp;
             <span>
