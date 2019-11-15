@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2019-11-15T12:59:44.041Z</updated>
+  <updated>2019-11-15T13:15:44.494Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://w4lle.com/2019/04/08/UI2Code-2/"/>
     <id>http://w4lle.com/2019/04/08/UI2Code-2/</id>
     <published>2019-04-08T11:30:15.000Z</published>
-    <updated>2019-11-15T12:59:44.041Z</updated>
+    <updated>2019-11-15T13:15:44.494Z</updated>
     
     <content type="html"><![CDATA[<p>imgcook是阿里实现的基于sketch或Ps设计稿，自动生成布局代码的工具，支持生成支持flexbox布局的代码，包括JARVIS、Vue、微信小程序、React、H5、Rax等等。由两部分组成，一个是sketch(Ps)插件，另外一部分是<a href="https://imgcook.taobao.org/" target="_blank" rel="external">imgcook平台</a>。</p>
 <a id="more"></a>
