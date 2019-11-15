@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://w4lle.com/2019/03/22/UI2Code-1/</loc>
-    <lastmod>2019-11-15T11:22:19.038Z</lastmod>
+    <loc>http://w4lle.com/2019/04/08/UI2Code-2/</loc>
+    <lastmod>2019-11-15T12:59:44.041Z</lastmod>
     <data>
         <display>
-        <title>UI2Code（二）pixeltoapp</title>
-        <pubTime>2019-03-22T09:36:57.000Z</pubTime>
+        <title>UI2Code（三）imgcook</title>
+        <pubTime>2019-04-08T11:30:15.000Z</pubTime>
         
         <tag>机器学习</tag>
          
@@ -22,11 +22,28 @@
     
   <url>
     <loc>http://w4lle.com/2019/03/13/UI2Code-0/</loc>
-    <lastmod>2019-11-15T11:21:11.298Z</lastmod>
+    <lastmod>2019-11-15T11:30:51.837Z</lastmod>
     <data>
         <display>
         <title>UI2Code（一）pix2code</title>
         <pubTime>2019-03-13T08:27:22.000Z</pubTime>
+        
+        <tag>机器学习</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.com/2019/03/22/UI2Code-1/</loc>
+    <lastmod>2019-11-15T11:29:54.509Z</lastmod>
+    <data>
+        <display>
+        <title>UI2Code（二）pixeltoapp</title>
+        <pubTime>2019-03-22T09:36:57.000Z</pubTime>
         
         <tag>机器学习</tag>
          

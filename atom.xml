@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2019-11-15T11:22:19.038Z</updated>
+  <updated>2019-11-15T12:59:44.041Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -16,13 +16,178 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>UI2Code（三）imgcook</title>
+    <link href="http://w4lle.com/2019/04/08/UI2Code-2/"/>
+    <id>http://w4lle.com/2019/04/08/UI2Code-2/</id>
+    <published>2019-04-08T11:30:15.000Z</published>
+    <updated>2019-11-15T12:59:44.041Z</updated>
+    
+    <content type="html"><![CDATA[<p>imgcook是阿里实现的基于sketch或Ps设计稿，自动生成布局代码的工具，支持生成支持flexbox布局的代码，包括JARVIS、Vue、微信小程序、React、H5、Rax等等。由两部分组成，一个是sketch(Ps)插件，另外一部分是<a href="https://imgcook.taobao.org/" target="_blank" rel="external">imgcook平台</a>。</p>
+<a id="more"></a>
+<p>经过前面的研究，我们知道，UI2Code作为可以从UI截图生成布局代码的工作，其构建流程大致如下：</p>
+<ol>
+<li>版面分析，包含背景分析和前景分析</li>
+<li>提取GUI元素</li>
+<li>组件识别</li>
+<li>属性提取</li>
+<li>布局推导</li>
+<li>DSL 推导</li>
+<li>编译，得到目标平台代码</li>
+</ol>
+<p>其中难点是版面分析和布局推导。</p>
+<p>版面分析，目的是得到相对准确的背景和前景，通过传统的计算机图像计算和机器学习，将UI图片拆分并分层，得到相对独立的控件，为下一步控件识别和属性提取做准备。可以说，这部分做的好坏直接影响到后面所有的流程。</p>
+<p>而对于线上业务逻辑来说，UI图千变万化，背景和前景可能存在很复杂的耦合关系，没有统一的规则约束，这就导致版面分析的难度较大。</p>
+<ol>
+<li>通过纯图像计算，版面分析不准确，组件间的提取不够独立或被隔断，泛化能力不够</li>
+<li>通过机器学习识别，控件属性信息不全，没有坐标、宽度等信息，且准确度不够</li>
+</ol>
+<p>所以将图像计算与机器学习相结合，通过上述1、2、3、4步骤得到一定泛化能力且相对准确的版面结构和控件信息。</p>
+<p>而对于我们来说，1、2、3、4步想要得到的内容，在Sketch设计稿里面都是有提供的，我们只需要想办法将其提取处理就可以，然后进行下一步操作。</p>
+<p>所以经过优化后，整个流程如下：</p>
+<ol>
+<li>提取 Sketch 设计稿信息</li>
+<li>布局推导</li>
+<li>DSL 推导</li>
+<li>编译</li>
+</ol>
+<p>imgcook 做的就是这样的事情。</p>
+<h1 id="实际效果"><a href="#实际效果" class="headerlink" title="实际效果"></a>实际效果</h1><p>页面级别 ：</p>
+<p>设计稿 </p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bpzqptv3j30k2120wh6.jpg" alt=""> </p>
+<p>运行效果 </p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1gfnovz73j30u01rcmys.jpg" alt=""> </p>
+<p>卡片级别 ：</p>
+<p>设计稿 </p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g1gfb9ubk6j30ku098my0.jpg" alt=""> </p>
+<p>运行效果 </p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1gfe6muckj30tu0glmz3.jpg" alt=""></p>
+<h1 id="实现拆解"><a href="#实现拆解" class="headerlink" title="实现拆解"></a>实现拆解</h1><p>主要分为几个大的过程：</p>
+<ol>
+<li>Sketch -&gt; Json</li>
+<li>Json -&gt; DSL</li>
+<li>DSL -&gt; Code</li>
+</ol>
+<p>分别来看下。</p>
+<h2 id="sketchToJson"><a href="#sketchToJson" class="headerlink" title="sketchToJson"></a>sketchToJson</h2><p>在sketch中选中图层，或者symbol，选中imgcook插件导出，当从sketch导出时，会产生一个json文件，以上面第二个卡片为例，信息如下 </p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g1gg7w0xdqj31440u0wk9.jpg" alt=""> </p>
+<p>其中包含的信息包括： </p>
+<ul>
+<li><p>artboardImg，选中symbol的渲染图，如<a href="https://ai-sample.oss-cn-hangzhou.aliyuncs.com/test/b4dd75404f6e11e9b26815c07ac4b122.png" target="_blank" rel="external">https://ai-sample.oss-cn-hangzhou.aliyuncs.com/test/b4dd75404f6e11e9b26815c07ac4b122.png</a> </p>
+</li>
+<li><p>控件唯一id </p>
+</li>
+<li><p>控件类型，比如Text、Image、Shape、Repeat </p>
+</li>
+<li><p>控件属性props，包括xy坐标、宽高、背景色、背景圆角、溢出处理(overflow)、图片内容、文字内容、字体和大小、字体颜色、行高、行数等等 </p>
+</li>
+<li><p>children属性，这个一般都是铺平的，当时Type是Repeat时会有该值 </p>
+</li>
+</ul>
+<p>而在插件处理过程中，可能会有以下过程：</p>
+<ul>
+<li><p>没有图层信息，图层信息都被过滤掉 </p>
+</li>
+<li><p>平铺的数组，没有层级关系和兄弟关系 </p>
+</li>
+<li><p>Repeat包含多个children，内容是Text </p>
+</li>
+<li><p>完全被遮挡或者不可见的控件被过滤 </p>
+</li>
+<li><p>复杂的mask计算，对于遮罩的处理 </p>
+</li>
+<li><p>控件类型和属性都是依次解析 </p>
+</li>
+</ul>
+<p>相当于把sketch文件中的所有信息都处理过后，得到一份期望的json文件，其中基本没有布局层次属性，仅有控件属性，包括大小、位置、控件特有属性等。</p>
+<p>布局层次关系及位置关系由下一步来具体确定。</p>
+<h2 id="JsonToDSL"><a href="#JsonToDSL" class="headerlink" title="JsonToDSL"></a>JsonToDSL</h2><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1ghk5j5h0j31iw0u0aim.jpg" alt=""> </p>
+<p>把上面的json复制到imgcook平台，会发起gen-layout-process请求，该请求会把json文件当做请求参数上传，并返回一个dsl的Response，请求抓包文件结果经过缩减后大概如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"type"</span>: <span class="string">"Block"</span>,</div><div class="line">  <span class="attr">"id"</span>: <span class="string">"Block-661077"</span>,</div><div class="line">  <span class="attr">"__VERSION__"</span>: <span class="string">"2.0"</span>,</div><div class="line">  <span class="attr">"mask"</span>: <span class="literal">true</span>,</div><div class="line">  <span class="attr">"props"</span>: &#123;</div><div class="line">    <span class="attr">"style"</span>: &#123;</div><div class="line">      <span class="attr">"display"</span>: <span class="string">"flex"</span>,</div><div class="line">      <span class="attr">"alignItems"</span>: <span class="string">"flex-start"</span>,</div><div class="line">      <span class="attr">"flexDirection"</span>: <span class="string">"column"</span>,</div><div class="line">      <span class="attr">"width"</span>: <span class="number">375</span>,</div><div class="line">      <span class="attr">"height"</span>: <span class="number">164</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">"attrs"</span>: &#123;</div><div class="line">      <span class="attr">"x"</span>: <span class="number">0</span>,</div><div class="line">      <span class="attr">"y"</span>: <span class="number">0</span>,</div><div class="line">      <span class="attr">"className"</span>: <span class="string">"block-661077"</span></div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"children"</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">"__VERSION__"</span>: <span class="string">"2.0"</span>,</div><div class="line">      <span class="attr">"props"</span>: &#123;</div><div class="line">        <span class="attr">"style"</span>: &#123;</div><div class="line">          <span class="attr">"display"</span>: <span class="string">"flex"</span>,</div><div class="line">          <span class="attr">"alignItems"</span>: <span class="string">"flex-start"</span>,</div><div class="line">          <span class="attr">"flexDirection"</span>: <span class="string">"row"</span>,</div><div class="line">          <span class="attr">"backgroundColor"</span>: <span class="string">"#ffffff"</span>,</div><div class="line">          <span class="attr">"width"</span>: <span class="number">375</span>,</div><div class="line">          <span class="attr">"height"</span>: <span class="number">68</span></div><div class="line">        &#125;,</div><div class="line">        <span class="attr">"attrs"</span>: &#123;</div><div class="line">          <span class="attr">"x"</span>: <span class="number">0</span>,</div><div class="line">          <span class="attr">"y"</span>: <span class="number">0</span>,</div><div class="line">          <span class="attr">"className"</span>: <span class="string">"shape-0"</span></div><div class="line">        &#125;</div><div class="line">      &#125;,</div><div class="line">      <span class="attr">"children"</span>: [</div><div class="line">        &#123;</div><div class="line">          <span class="attr">"__VERSION__"</span>: <span class="string">"2.0"</span>,</div><div class="line">          <span class="attr">"props"</span>: &#123;</div><div class="line">            <span class="attr">"style"</span>: &#123;</div><div class="line">              <span class="attr">"marginTop"</span>: <span class="number">6</span>,</div><div class="line">              <span class="attr">"marginLeft"</span>: <span class="number">6</span>,</div><div class="line">              <span class="attr">"width"</span>: <span class="number">23</span>,</div><div class="line">              <span class="attr">"height"</span>: <span class="number">23</span></div><div class="line">            &#125;,</div><div class="line">            <span class="attr">"attrs"</span>: &#123;</div><div class="line">              <span class="attr">"x"</span>: <span class="number">22</span>,</div><div class="line">              <span class="attr">"y"</span>: <span class="number">22</span>,</div><div class="line">              <span class="attr">"source"</span>: <span class="string">"https://ai-sample.oss-cn-hangzhou.aliyuncs.com/test/b46d27404f6e11e98785ebe830f6201d.png"</span>,</div><div class="line">              <span class="attr">"src"</span>: <span class="string">"https://ai-sample.oss-cn-hangzhou.aliyuncs.com/test/b46d27404f6e11e98785ebe830f6201d.png"</span>,</div><div class="line">              <span class="attr">"className"</span>: <span class="string">"image-7"</span></div><div class="line">            &#125;</div><div class="line">          &#125;,</div><div class="line">          <span class="attr">"children"</span>: [],</div><div class="line">          <span class="attr">"type"</span>: <span class="string">"Image"</span>,</div><div class="line">          <span class="attr">"id"</span>: <span class="string">"Image-7"</span>,</div><div class="line">          <span class="attr">"componentType"</span>: <span class="string">"picture"</span>,</div><div class="line">          <span class="attr">"_jsonId"</span>: <span class="string">"Image-7"</span>,</div><div class="line">          <span class="attr">"_jsonElementId"</span>: <span class="string">"Image-7"</span>,</div><div class="line">          <span class="attr">"title"</span>: <span class="string">"Image"</span>,</div><div class="line">          <span class="attr">"semantic"</span>: &#123;</div><div class="line">            <span class="attr">"dvc_default"</span>: [</div><div class="line">              &#123;</div><div class="line">                <span class="attr">"name"</span>: <span class="string">"dvc_default"</span>,</div><div class="line">                <span class="attr">"level"</span>: <span class="number">100</span>,</div><div class="line">                <span class="attr">"result"</span>: <span class="string">"img"</span>,</div><div class="line">                <span class="attr">"prefix"</span>: <span class="string">""</span>,</div><div class="line">                <span class="attr">"id"</span>: <span class="number">262862</span></div><div class="line">              &#125;</div><div class="line">            ],</div><div class="line">            <span class="attr">"dvc_picture"</span>: [</div><div class="line">              &#123;</div><div class="line">                <span class="attr">"name"</span>: <span class="string">"dvc_picture"</span>,</div><div class="line">                <span class="attr">"level"</span>: <span class="number">88</span>,</div><div class="line">                <span class="attr">"result"</span>: <span class="string">"zhaoshangbank"</span>,</div><div class="line">                <span class="attr">"prefix"</span>: <span class="string">""</span>,</div><div class="line">                <span class="attr">"id"</span>: <span class="number">953603</span>,</div><div class="line">                <span class="attr">"choose"</span>: <span class="literal">true</span></div><div class="line">              &#125;</div><div class="line">            ]</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      ],</div><div class="line">      <span class="attr">"type"</span>: <span class="string">"Shape"</span>,</div><div class="line">      <span class="attr">"id"</span>: <span class="string">"Shape-0"</span>,</div><div class="line">      <span class="attr">"__ADAPT__"</span>: <span class="literal">true</span>,</div><div class="line">      <span class="attr">"componentType"</span>: <span class="string">"view"</span>,</div><div class="line">      <span class="attr">"_jsonId"</span>: <span class="string">"Shape-0"</span>,</div><div class="line">      <span class="attr">"_jsonElementId"</span>: <span class="string">"Shape-0"</span>,</div><div class="line">      <span class="attr">"title"</span>: <span class="string">"Shape"</span>,</div><div class="line">      <span class="attr">"semantic"</span>: &#123;</div><div class="line">        <span class="attr">"dvc_layout"</span>: []</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  ],</div><div class="line">  <span class="attr">"artboardImg"</span>: <span class="string">"https://ai-sample.oss-cn-hangzhou.aliyuncs.com/test/b4dd75404f6e11e9b26815c07ac4b122.png"</span>,</div><div class="line">  <span class="attr">"name"</span>: <span class="string">"可提1 copy"</span>,</div><div class="line">  <span class="attr">"componentType"</span>: <span class="string">"view"</span>,</div><div class="line">  <span class="attr">"_jsonId"</span>: <span class="string">"Block-661077"</span>,</div><div class="line">  <span class="attr">"_jsonElementId"</span>: <span class="string">"Block-661077"</span>,</div><div class="line">  <span class="attr">"title"</span>: <span class="string">"Block"</span>,</div><div class="line">  <span class="attr">"semantic"</span>: &#123;</div><div class="line">    <span class="attr">"dvc_default"</span>: [</div><div class="line">      &#123;</div><div class="line">        <span class="attr">"name"</span>: <span class="string">"dvc_default"</span>,</div><div class="line">        <span class="attr">"level"</span>: <span class="number">100</span>,</div><div class="line">        <span class="attr">"result"</span>: <span class="string">"block"</span>,</div><div class="line">        <span class="attr">"prefix"</span>: <span class="string">""</span>,</div><div class="line">        <span class="attr">"id"</span>: <span class="number">613351</span></div><div class="line">      &#125;</div><div class="line">    ],</div><div class="line">    <span class="attr">"dvc_layout"</span>: [</div><div class="line">      &#123;</div><div class="line">        <span class="attr">"name"</span>: <span class="string">"dvc_layout"</span>,</div><div class="line">        <span class="attr">"level"</span>: <span class="number">100</span>,</div><div class="line">        <span class="attr">"result"</span>: <span class="string">"box"</span>,</div><div class="line">        <span class="attr">"prefix"</span>: <span class="string">""</span>,</div><div class="line">        <span class="attr">"id"</span>: <span class="number">803050</span>,</div><div class="line">        <span class="attr">"choose"</span>: <span class="literal">true</span></div><div class="line">      &#125;</div><div class="line">    ]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>仔细观察该json文件，得出信息： </p>
+<ul>
+<li><p>完整的DomTree，嵌套关系明确 </p>
+</li>
+<li><p>控件属性props中多了一些信息，包括布局方式(“display”: “flex”)、flex布局方向(flexDirection)、主轴对齐方式(justifyContent)、副轴对齐方式(alignItems)、文本过长处理(text-overflow)、className、margin定位信息(marginTop、marginLeft) </p>
+</li>
+<li><p>语义semantic，是一个数组，最终产生一个className </p>
+</li>
+<li><p>组件类型componentType，包括view、text、picture </p>
+</li>
+</ul>
+<p>这一步完成后，基本就得到了完整可用的布局DSL。</p>
+<p>下一步就是compile的过程。</p>
+<h2 id="DSL2Code"><a href="#DSL2Code" class="headerlink" title="DSL2Code"></a>DSL2Code</h2><p>DSL compile目标代码的过程，imgcook支持比较多的代码模板，JARVIS、Vue、微信小程序、React、H5、Rax。 </p>
+<p>以Vue为例，发起请求，Response 结果这里不再列出，感兴趣的读者可以自行查看。</p>
+<p>其中renderCode包含3部分内容： </p>
+<ul>
+<li><p>template，DOMTree，完整的布局信息，支持动态数据绑定 </p>
+</li>
+<li><p>script，需要绑定的方法逻辑</p>
+</li>
+<li><p>style，需要绑定的css样式</p>
+</li>
+</ul>
+<p>分别对应vue中的代码块 </p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g1ghaq0z2wj315e068401.jpg" alt=""> </p>
+<p>实际的vue代码： </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">&lt;template&gt;</div><div class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span></span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"bd"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"zhaoshangbank-wrap"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">img</span></span></div><div class="line">          <span class="attr">class</span>=<span class="string">"zhaoshangbank"</span></div><div class="line">          <span class="attr">src</span>=<span class="string">"https://ai-sample.oss-cn-hangzhou.aliyuncs.com/test/b46d27404f6e11e98785ebe830f6201d.png"</span></div><div class="line">          @<span class="attr">click</span>=<span class="string">"onClick_2"</span></div><div class="line">        /&gt;</div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"organization"</span>&gt;</span>招商银行 6889 <span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrap"</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"info"</span>&gt;</span>当前额度 <span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"text"</span>&gt;</span>110,000<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">      ...</div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">"DvcComponent"</span>,</div><div class="line">  <span class="attr">methods</span>: &#123;</div><div class="line">    onClick_2()&#123;</div><div class="line">    	<span class="built_in">console</span>.log(<span class="string">"test"</span>)</div><div class="line">    &#125;,</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">scoped</span>&gt;</span><span class="undefined"></span></div><div class="line">.box &#123;</div><div class="line">  display: flex;</div><div class="line">  align-items: flex-start;</div><div class="line">  flex-direction: column;</div><div class="line">  width: 375px;</div><div class="line">  height: 164px;</div><div class="line">...</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>从生成的代码中可以看出，div一般使用flex布局。 这里的图片也已经被上传的图床，虽然不可线上使用，但是可以即时的预览。后面可以通过插件导出到本地。</p>
+<p>到这里生成的代码基本是可用的，并且在imgcook平台上可以调整样式，绑定方法等操作。</p>
+<p>这里的分析是很早以前进行的，数据结构可能已经变更，但大体上应该是相同的。</p>
+<h1 id="实现难点"><a href="#实现难点" class="headerlink" title="实现难点"></a>实现难点</h1><p>经过上面的分析，基本知道了imgcook的大致流程，个人其中的难点在如下几个方面：</p>
+<p>一是布局推导的过程，这块也是整个UI2Code的核心内容。</p>
+<p>从准确性和还原过程中的可选项来看，应该是通过计算得到的，其中的布局细节较多，这块也是最重要的点，其结果直接导致页面布局的好坏。</p>
+<p>imgcook平台对于这块的实现猜测是基于切割规则加算法来实现flex布局的，整体上来说基本能够实现设计稿上所体现的布局变化，但是有时候也会显得不够灵活，下面会详细说到。</p>
+<p>具体如何实现布局推导，可以期待imgcook官方后续有没有说明。</p>
+<p>这里只是引用一下闲鱼之前关于切割方面的论述，基本就是先横切再竖切，递归这个过程，在切割之前可以处理坐标嵌套，得到父子信息，然后在父布局中递归切割过程，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="string">'''</span></div><div class="line">切割方法</div><div class="line">---------------------------|</div><div class="line">|                          | </div><div class="line">|    --------- 30          | </div><div class="line">|    |        |            | </div><div class="line">|    --------- 60          | </div><div class="line">|                          | </div><div class="line">|    —————————— 120        | </div><div class="line">|    |         |           | </div><div class="line">|    ---------- 130        | </div><div class="line">|                          | </div><div class="line">|__________________________|</div><div class="line"></div><div class="line">如上图所示，第一个切线是60，第二个切线是130</div><div class="line">'''</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">cut_by_col</span><span class="params">(cut_num, _im_mask)</span>:</span></div><div class="line">    zero_start = <span class="keyword">None</span></div><div class="line">    zero_end = <span class="keyword">None</span></div><div class="line">    end_range = len(_im_mask)</div><div class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>, end_range):</div><div class="line">        im = _im_mask[x]</div><div class="line">        <span class="keyword">if</span> len(np.where(im == <span class="number">255</span>)[<span class="number">0</span>]) == len(im):</div><div class="line">            <span class="comment"># 判断是否贯穿整个区域</span></div><div class="line">            <span class="keyword">if</span> zero_start == <span class="keyword">None</span>:</div><div class="line">                zero_start = x</div><div class="line">        <span class="keyword">elif</span> zero_start != <span class="keyword">None</span> <span class="keyword">and</span> zero_end == <span class="keyword">None</span>:</div><div class="line">            zero_end = x</div><div class="line">        <span class="keyword">if</span> zero_start != <span class="keyword">None</span> <span class="keyword">and</span> zero_end != <span class="keyword">None</span>:</div><div class="line">            start = zero_start</div><div class="line">            <span class="keyword">if</span> start &gt; <span class="number">0</span>:</div><div class="line">                <span class="comment"># 首次非联通区域过滤掉</span></div><div class="line">                cut_num.append(start)</div><div class="line">            zero_start = <span class="keyword">None</span></div><div class="line">            zero_end = <span class="keyword">None</span></div><div class="line">        <span class="keyword">if</span> x == end_range - <span class="number">1</span> <span class="keyword">and</span> zero_start != <span class="keyword">None</span> <span class="keyword">and</span> zero_end == <span class="keyword">None</span> <span class="keyword">and</span> zero_start &gt; <span class="number">0</span>:</div><div class="line">            zero_end = x</div><div class="line">            start = zero_start</div><div class="line">            <span class="keyword">if</span> start &gt; <span class="number">0</span>:</div><div class="line">                cut_num.append(start)</div><div class="line">            zero_start = <span class="keyword">None</span></div><div class="line">            zero_end = <span class="keyword">None</span></div></pre></td></tr></table></figure>
+<p>切割过后，根据各种优化算法得到实际的布局信息。</p>
+<p>当然，实际生产过程肯定要比我猜测的要复杂的多得多。比如什么时候适合flex布局，什么时候适合相对布局，以及谁是优先级更高的，还有是否可以阈值控制来使相对布局变成flex布局等等。</p>
+<p>第二个难点是ClassName的语义分析。</p>
+<p>猜测是通过机器学习进行OCR图片识别和NLP自然语言处理翻译，这块属于易用性方面的优化。</p>
+<p>第三个难点是配套设施，上面分析的都是如何得到一个相对准确的布局DSL，imgcook平台除了这个核心之外，平台给开发者提供了更好的拓展，根据得到的DSL信息，开发者可以根据自己的喜好编译成各种平台、各种语言。另外还有工程化配套的工具，比如导出插件，可以把生成的文件全部导出到本地，不依赖线上图床服务等等。</p>
+<h1 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h1><ul>
+<li><p>数据绑定，需要手动绑定数据，并且data名字要先想好 </p>
+</li>
+<li><p>图床问题，默认是上传至阿里的图床，不可以直接使用，可以使用导出的zip包中包含所有的icon </p>
+</li>
+<li><p>界面布局，简版 flex，基本只有方向，默认margin定位 </p>
+</li>
+<li><p>flex 的对齐方式，比如justify-content: space-between属性阈值较低，大概2个像素，不容易被触发 </p>
+</li>
+</ul>
+<p>不过imgcook团队一直在做优化工作，相信可以做的越来越好用，造福开发者。</p>
+<h1 id="u51-weex"><a href="#u51-weex" class="headerlink" title="u51-weex"></a>u51-weex</h1><p>基于以上的分析，和imgcook平台的开放能力，我这边第一时间体验了自定义DSL的功能，由于我们团队内使用weex较多，所以做了一个自定义weex DSL的功能，地址在：<a href="https://github.com/imgcook-dsl/u51-weex" target="_blank" rel="external">https://github.com/imgcook-dsl/u51-weex</a></p>
+<p>具体的使用方式可以参考官方文档：<a href="https://imgcook.taobao.org/docs?slug=dsl-dev" target="_blank" rel="external">https://imgcook.taobao.org/docs?slug=dsl-dev</a></p>
+<p>理论上来说可以对任意平台的布局进行拓展。</p>
+<p>这块也在团队内部做了一些推广，整体上来说可以提高UI方面的开发效率，当然也存在着一些问题，这里就不具体展开了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>整体来讲imgcook是一个基本可用的布局代码生成平台，对于提升工作效率方面有一些帮助。</p>
+<p>同时，对于拓展平台支持的兼容性也比较不错。</p>
+<p>虽然对于页面级别也可以生成，但是对于代码层级关系、后期代码维护上都不太建议直接上页面级别；比较建议的方式是生成卡片item的布局，导出作为一个component使用。 </p>
+<p>最后希望更多开发者可以使用imgcook，提出一些建议，使得他们团队可以进行更多的优化。</p>
+<p>这篇文章写的时间比较久，当文章发布的时候发现imgcook平台又新添加了<a href="https://imgcook.taobao.org/labs" target="_blank" rel="external">Lab</a>，期待更多有意思的产品。</p>
+<p>本文链接： <a href="http://w4lle.com/2019/04/08/UI2Code-2/">http://w4lle.com/2019/04/08/UI2Code-2/</a> </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;imgcook是阿里实现的基于sketch或Ps设计稿，自动生成布局代码的工具，支持生成支持flexbox布局的代码，包括JARVIS、Vue、微信小程序、React、H5、Rax等等。由两部分组成，一个是sketch(Ps)插件，另外一部分是&lt;a href=&quot;https://imgcook.taobao.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;imgcook平台&lt;/a&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://w4lle.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>UI2Code（二）pixeltoapp</title>
     <link href="http://w4lle.com/2019/03/22/UI2Code-1/"/>
     <id>http://w4lle.com/2019/03/22/UI2Code-1/</id>
     <published>2019-03-22T09:36:57.000Z</published>
-    <updated>2019-11-15T11:22:19.038Z</updated>
+    <updated>2019-11-15T11:29:54.509Z</updated>
     
-    <content type="html"><![CDATA[<p><a href="http://pixeltoapp.com/" target="_blank" rel="external">pixeltoapp</a> 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，项目源码地址：<a href="https://github.com/soumikmohianuta/pixtoapp" target="_blank" rel="external">https://github.com/soumikmohianuta/pixtoapp</a></p>
+    <content type="html"><![CDATA[<p><a href="http://pixeltoapp.com/" target="_blank" rel="external">pixeltoapp</a> 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，提供在线服务，具体实现在<a href="https://github.com/soumikmohianuta/pixtoapp" target="_blank" rel="external">项目源码地址</a></p>
 <a id="more"></a>
 <h1 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h1><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bjfidsnoj30ku1940wr.jpg" alt="原图"> </p>
 <p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1bjglum9yj30ly118wgz.jpg" alt="代码渲染图"> </p>
@@ -112,7 +277,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;http://pixeltoapp.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;pixeltoapp&lt;/a&gt; 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，项目源码地址：&lt;a href=&quot;https://github.com/soumikmohianuta/pixtoapp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/soumikmohianuta/pixtoapp&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;http://pixeltoapp.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;pixeltoapp&lt;/a&gt; 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，提供在线服务，具体实现在&lt;a href=&quot;https://github.com/soumikmohianuta/pixtoapp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;项目源码地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -126,7 +291,7 @@
     <link href="http://w4lle.com/2019/03/13/UI2Code-0/"/>
     <id>http://w4lle.com/2019/03/13/UI2Code-0/</id>
     <published>2019-03-13T08:27:22.000Z</published>
-    <updated>2019-11-15T11:21:11.298Z</updated>
+    <updated>2019-11-15T11:30:51.837Z</updated>
     
     <content type="html"><![CDATA[<p>pix2code 项目通过机器学习，支持输入一张图片输出实际的布局代码，同时支持生成三端(Android、iOS、web)布局代码。</p>
 <p>pix2code作为UI2Code的先驱项目，后续的相关项目或多或少的都有参考该项目的实现。</p>
@@ -1835,56 +2000,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;AsyncTask用法&quot;&gt;&lt;a href=&quot;#AsyncTask用法&quot; class=&quot;headerlink&quot; title=&quot;AsyncTask用法&quot;&gt;&lt;/a&gt;AsyncTask用法&lt;/h1&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android进程保活之绑定系统服务</title>
-    <link href="http://w4lle.com/2016/07/24/Android%E8%BF%9B%E7%A8%8B%E4%BF%9D%E6%B4%BB%E4%B9%8B%E7%BB%91%E5%AE%9A%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1/"/>
-    <id>http://w4lle.com/2016/07/24/Android进程保活之绑定系统服务/</id>
-    <published>2016-07-24T12:25:32.000Z</published>
-    <updated>2017-01-06T01:51:30.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="进程保活"><a href="#进程保活" class="headerlink" title="进程保活"></a>进程保活</h1><p>有些业务需要service在后台持续的运行，所以就要有后台保活机制，包括lowMemory防杀和自启。</p>
-<h2 id="防杀机制"><a href="#防杀机制" class="headerlink" title="防杀机制"></a>防杀机制</h2><p>基本就是提高进程优先级，保证在低内存时进程不被有限杀死，常用的方法就是利用系统bug提高进程优先级，灰色保活手段。</p>
-<h2 id="后台自启"><a href="#后台自启" class="headerlink" title="后台自启"></a>后台自启</h2><p>大概包括</p>
-<ul>
-<li>Receiver拉起</li>
-<li>AlarmManager拉起</li>
-<li>双进程互相守护</li>
-<li>利用推送SDK拉起进程</li>
-</ul>
-<p>以上说的这几种是常用的方法，对于原生和没有深度定制的ROM有一定作用，但是对于像小米、魅族等这类深度定制的系统来说效果不是很好。</p>
-<h2 id="绑定系统服务"><a href="#绑定系统服务" class="headerlink" title="绑定系统服务"></a>绑定系统服务</h2><p>系统提供一些系统级的Service，比如AccessibilityService辅助服务、NotificationListenerService用于监听通知消息。这篇文章主要讲下怎样利用NotificationListenerService用于监听通知消息实现进程保活。</p>
-<p>首先，如果想使用系统service，必须要用户手动点开权限。我们可以添加一个设置的入口直接跳到系统设置通知权限的界面，显示提示用户需要开启权限。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">goNLPermission</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Intent intent = <span class="keyword">new</span> Intent(<span class="string">"android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"</span>);</div><div class="line">        context.startActivity(intent);</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>界面就不截图了，然后我们app中要有一个权限的状态检查用于提示用户是否开启了通知显示权。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 检查通知使用权</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">checkNotificationPermission</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    String pkg = context.getPackageName();</div><div class="line">    String flat = Settings.Secure.getString(context.getContentResolver(), <span class="string">"enabled_notification_listeners"</span>);</div><div class="line">    <span class="keyword">boolean</span> enabled = flat != <span class="keyword">null</span> &amp;&amp; flat.contains(pkg);</div><div class="line">    <span class="keyword">return</span> enabled;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>注册，声明运行在com.package.pedometer进程中</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;service</div><div class="line">    android:name=".service.MyListenerService"</div><div class="line">    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"</div><div class="line">    android:process=":pedometer"&gt;</div><div class="line">    &lt;intent-filter&gt;</div><div class="line">        &lt;action android:name="android.service.notification.NotificationListenerService"/&gt;</div><div class="line">    &lt;/intent-filter&gt;</div><div class="line">&lt;/service&gt;</div></pre></td></tr></table></figure>
-<p>然后需要继承NotificationListenerService实现两个方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 监听系统通知，需要用户手动开启权限，那么该进程可以不死</div><div class="line"> */</div><div class="line"><span class="meta">@TargetApi</span>(Build.VERSION_CODES.JELLY_BEAN_MR2)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyListenerService</span> <span class="keyword">extends</span> <span class="title">NotificationListenerService</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotificationPosted</span><span class="params">(StatusBarNotification sbn)</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotificationRemoved</span><span class="params">(StatusBarNotification sbn)</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>方法中什么都不用实现，MyListenerService所在的进程就拥有了跟NotificationListenerService一样的权限。可以试下手动强制停止进程会发现怎么都结束不掉，强制停止的按钮一直可以点击。可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell ps | grep ***</div></pre></td></tr></table></figure></p>
-<p>命令查看进程是否存活。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cat /proc/<span class="number">12869</span>/oom_adj</div><div class="line"><span class="number">0</span></div></pre></td></tr></table></figure>
-<p>查看进程的oom_adj的值为0，那么我们知道在灰色保活手段上基本就是提高oom_adj的值，越小越不容易被杀死，这种方法一步到位。</p>
-<p>那么怎么应用到我们自己的service中呢？很简单，将service跟MyListenerService运行在同一个进程就可以了。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;service</div><div class="line">    android:name=".service.StepCounterService"</div><div class="line">    android:exported="true"</div><div class="line">    android:process=":pedometer"&gt;</div><div class="line">&lt;/service&gt;</div></pre></td></tr></table></figure>
-<p>这样基本就可以保证service所在的进程不被杀死了。当然，如果ROM厂商在系统级别拦截掉了，这种方法也会无效了。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>如果要用这种方法进程保活，那么你的app肯定是有显示通知栏的通知，不然用户谁这么傻去给你开这么权限呢。其次，显示通知栏消息就是前台进程了，用户始终可以看到，再配合service自启的几种方法，基本就可以保证我们的进程不死了。当然，这种方法也不能说绝对管用，在深度定制面前，一切都是渣渣。验证下来，魅族基本都好用，小米4c不太好用，小米其他机型没有测试。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://blog.csdn.net/aigestudio/article/details/51348408" target="_blank" rel="external">论Android应用进程长存的可行性</a><br><a href="http://www.jianshu.com/p/63aafe3c12af#" target="_blank" rel="external">关于 Android 进程保活，你所需要知道的一切</a></p>
-<p>本文链接： <a href="http://w4lle.com/2016/07/24/Android进程保活之绑定系统服务/">http://w4lle.com/2016/07/24/Android进程保活之绑定系统服务/</a> </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;进程保活&quot;&gt;&lt;a href=&quot;#进程保活&quot; class=&quot;headerlink&quot; title=&quot;进程保活&quot;&gt;&lt;/a&gt;进程保活&lt;/h1&gt;&lt;p&gt;有些业务需要service在后台持续的运行，所以就要有后台保活机制，包括lowMemory防杀和自启。&lt;/p&gt;
-&lt;h2 id
     
     </summary>
     
