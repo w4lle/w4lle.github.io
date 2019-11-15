@@ -4,12 +4,29 @@
 
     
   <url>
-    <loc>http://w4lle.com/2019/05/22/UI2Code-0/</loc>
-    <lastmod>2019-11-15T09:18:08.222Z</lastmod>
+    <loc>http://w4lle.com/2019/03/22/UI2Code-1/</loc>
+    <lastmod>2019-11-15T11:22:19.038Z</lastmod>
+    <data>
+        <display>
+        <title>UI2Code（二）pixeltoapp</title>
+        <pubTime>2019-03-22T09:36:57.000Z</pubTime>
+        
+        <tag>机器学习</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.com/2019/03/13/UI2Code-0/</loc>
+    <lastmod>2019-11-15T11:21:11.298Z</lastmod>
     <data>
         <display>
         <title>UI2Code（一）pix2code</title>
-        <pubTime>2019-05-22T08:27:22.000Z</pubTime>
+        <pubTime>2019-03-13T08:27:22.000Z</pubTime>
         
         <tag>机器学习</tag>
          
@@ -607,15 +624,13 @@
 
     
   <url>
-    <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>
+    <loc>http://w4lle.com/2016/01/28/hello-world/</loc>
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     <data>
         <display>
-        <title>Android Color位移操作</title>
-        <pubTime>2016-05-22T09:53:01.000Z</pubTime>
+        <title>Hello World</title>
+        <pubTime>2016-01-27T16:00:00.000Z</pubTime>
         
-        <tag>Android</tag>
-         
          
            
         </display>
@@ -625,13 +640,15 @@
     
     
   <url>
-    <loc>http://w4lle.com/2016/01/28/hello-world/</loc>
+    <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     <data>
         <display>
-        <title>Hello World</title>
-        <pubTime>2016-01-27T16:00:00.000Z</pubTime>
+        <title>Android Color位移操作</title>
+        <pubTime>2016-05-22T09:53:01.000Z</pubTime>
         
+        <tag>Android</tag>
+         
          
            
         </display>

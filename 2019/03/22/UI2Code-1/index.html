@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            UI2Code（二）pixeltoapp | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="pixeltoapp 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，项目源码地址：https://github.com/soumikmohianuta/pixtoapp">
+    <meta name="keywords" content="Android,机器学习">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="UI2Code（二）pixeltoapp | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="pixeltoapp 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，项目源码地址：https://github.com/soumikmohianuta/pixtoapp">
+    <meta property="og:article:tag" content="机器学习"> 
+
+    
+        <meta property="article:published_time" content="Fri Mar 22 2019 17:36:57 GMT+0800" />
+        <meta property="article:modified_time" content="Fri Nov 15 2019 19:22:19 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="UI2Code（二）pixeltoapp | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="pixeltoapp 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，项目源码地址：https://github.com/soumikmohianuta/pixtoapp">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2019/03/22/UI2Code-1/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2019/03/22/UI2Code-1/index.html",
+    "headline": "UI2Code（二）pixeltoapp",
+    "datePublished": "Fri Mar 22 2019 17:36:57 GMT+0800",
+    "dateModified": "Fri Nov 15 2019 19:22:19 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",机器学习Android",
+    "description": "pixeltoapp 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，项目源码地址：https://github.com/soumikmohianuta/pixtoapp",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bmgzbb4rj31o90u00z4.jpg">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                UI2Code（二）pixeltoapp
+            </p>
+            <p><a href="http://pixeltoapp.com/" target="_blank" rel="external">pixeltoapp</a> 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，项目源码地址：<a href="https://github.com/soumikmohianuta/pixtoapp" target="_blank" rel="external">https://github.com/soumikmohianuta/pixtoapp</a></p>
+<a id="more"></a>
+<h1 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h1><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bjfidsnoj30ku1940wr.jpg" alt="原图"> </p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1bjglum9yj30ly118wgz.jpg" alt="代码渲染图"> </p>
+<p>生成的布局代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div></pre></td><td class="code"><pre><div class="line">&lt;FrameLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</div><div class="line">             android:layout_width=&quot;250.0dip&quot;</div><div class="line">             android:layout_height=&quot;541.3333333333334dip&quot;</div><div class="line">             android:layout_gravity=&quot;center_vertical|center_horizontal&quot;</div><div class="line">             android:background=&quot;@color/color_0&quot;&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_0&quot;</div><div class="line">        android:layout_width=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_height=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;74.33333333333333dip&quot;</div><div class="line">        android:layout_marginTop=&quot;499.3333333333333dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_0&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_1&quot;</div><div class="line">        android:layout_width=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_height=&quot;10.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;41.333333333333336dip&quot;</div><div class="line">        android:layout_marginTop=&quot;499.3333333333333dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_2&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_2&quot;</div><div class="line">        android:layout_width=&quot;31.666666666666668dip&quot;</div><div class="line">        android:layout_height=&quot;18.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;198.0dip&quot;</div><div class="line">        android:layout_marginTop=&quot;491.3333333333333dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_5&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_3&quot;</div><div class="line">        android:layout_width=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_height=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;52.666666666666664dip&quot;</div><div class="line">        android:layout_marginTop=&quot;499.0dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_6&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_4&quot;</div><div class="line">        android:layout_width=&quot;9.333333333333334dip&quot;</div><div class="line">        android:layout_height=&quot;11.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;188.0dip&quot;</div><div class="line">        android:layout_marginTop=&quot;498.6666666666667dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_7&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_5&quot;</div><div class="line">        android:layout_width=&quot;10.666666666666666dip&quot;</div><div class="line">        android:layout_height=&quot;11.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;176.33333333333334dip&quot;</div><div class="line">        android:layout_marginTop=&quot;498.6666666666667dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_8&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_6&quot;</div><div class="line">        android:layout_width=&quot;10.666666666666666dip&quot;</div><div class="line">        android:layout_height=&quot;10.666666666666666dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;165.33333333333334dip&quot;</div><div class="line">        android:layout_marginTop=&quot;498.6666666666667dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_9&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_7&quot;</div><div class="line">        android:layout_width=&quot;1.6666666666666667dip&quot;</div><div class="line">        android:layout_height=&quot;14.666666666666666dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;124.33333333333333dip&quot;</div><div class="line">        android:layout_marginTop=&quot;496.6666666666667dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_10&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_8&quot;</div><div class="line">        android:layout_width=&quot;250.0dip&quot;</div><div class="line">        android:layout_height=&quot;1.6666666666666667dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;0.0dip&quot;</div><div class="line">        android:layout_marginTop=&quot;489.0dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_11&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;FrameLayout</div><div class="line">        android:id=&quot;@+id/FrameLayout_9&quot;</div><div class="line">        android:layout_width=&quot;229.66666666666666dip&quot;</div><div class="line">        android:layout_height=&quot;101.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;10.0dip&quot;</div><div class="line">        android:layout_marginTop=&quot;383.3333333333333dip&quot;</div><div class="line">        android:background=&quot;@color/color_0&quot;&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_9&quot;</div><div class="line">            android:layout_width=&quot;22.0dip&quot;</div><div class="line">            android:layout_height=&quot;7.666666666666667dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;70.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_12&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_10&quot;</div><div class="line">            android:layout_width=&quot;22.0dip&quot;</div><div class="line">            android:layout_height=&quot;7.666666666666667dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;48.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_13&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_11&quot;</div><div class="line">            android:layout_width=&quot;7.0dip&quot;</div><div class="line">            android:layout_height=&quot;7.333333333333333dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;40.666666666666664dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_14&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_12&quot;</div><div class="line">            android:layout_width=&quot;14.666666666666666dip&quot;</div><div class="line">            android:layout_height=&quot;7.333333333333333dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;26.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_15&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_13&quot;</div><div class="line">            android:layout_width=&quot;14.666666666666666dip&quot;</div><div class="line">            android:layout_height=&quot;7.666666666666667dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;11.333333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_16&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_14&quot;</div><div class="line">            android:layout_width=&quot;44.666666666666664dip&quot;</div><div class="line">            android:layout_height=&quot;20.0dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;174.33333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;72.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_18&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_15&quot;</div><div class="line">            android:layout_width=&quot;49.0dip&quot;</div><div class="line">            android:layout_height=&quot;8.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;24.333333333333332dip&quot;</div><div class="line">            android:layout_marginTop=&quot;40.333333333333336dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_21&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_16&quot;</div><div class="line">            android:layout_width=&quot;12.333333333333334dip&quot;</div><div class="line">            android:layout_height=&quot;7.0dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;11.666666666666666dip&quot;</div><div class="line">            android:layout_marginTop=&quot;41.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_22&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_17&quot;</div><div class="line">            android:layout_width=&quot;8.666666666666666dip&quot;</div><div class="line">            android:layout_height=&quot;8.0dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;210.33333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;40.666666666666664dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_23&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_18&quot;</div><div class="line">            android:layout_width=&quot;24.0dip&quot;</div><div class="line">            android:layout_height=&quot;8.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;184.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;40.333333333333336dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_24&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_19&quot;</div><div class="line">            android:layout_width=&quot;8.0dip&quot;</div><div class="line">            android:layout_height=&quot;5.666666666666667dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;210.66666666666666dip&quot;</div><div class="line">            android:layout_marginTop=&quot;29.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_25&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_20&quot;</div><div class="line">            android:layout_width=&quot;37.333333333333336dip&quot;</div><div class="line">            android:layout_height=&quot;9.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;49.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;25.333333333333332dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_26&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_21&quot;</div><div class="line">            android:layout_width=&quot;37.333333333333336dip&quot;</div><div class="line">            android:layout_height=&quot;9.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;11.333333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;25.333333333333332dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_27&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_22&quot;</div><div class="line">            android:layout_width=&quot;7.666666666666667dip&quot;</div><div class="line">            android:layout_height=&quot;12.666666666666666dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;200.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;22.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_28&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_23&quot;</div><div class="line">            android:layout_width=&quot;4.333333333333333dip&quot;</div><div class="line">            android:layout_height=&quot;12.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;193.33333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;22.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_29&quot;/&gt;</div><div class="line">    &lt;/FrameLayout&gt;</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bmgzbb4rj31o90u00z4.jpg" alt=""> </p>
+<p>整体处理过程： </p>
+<p>原图 -&gt; 灰度处理 - 降噪 - 边缘探测，提取边缘轮廓 - 膨胀处理 - 框选边缘轮廓 - 遍历轮廓构建ViewTree - 删除重复元素，合并Layout布局，梳理ViewTree - 判断控件类型，目前支持Text和Image - 切割图像、文本识别，绑定控件属性 - 构建XML布局 </p>
+<p>整体分为三个大的过程：背景分析、前景分析和布局构建 </p>
+<p>- 背景分析：通过机器视觉算法，得到图像轮廓 </p>
+<p>- 前景分析：对轮廓碎片进行整理，合并，识别 </p>
+<p>- 布局构建：基于以上信息构建布局 </p>
+<p>下面依次看下 </p>
+<h2 id="背景分析"><a href="#背景分析" class="headerlink" title="背景分析"></a>背景分析</h2><p>包含 灰度处理、降噪、边缘探测、膨胀处理、框选边缘轮廓等几个步骤 </p>
+<h3 id="灰度处理"><a href="#灰度处理" class="headerlink" title="灰度处理"></a>灰度处理</h3><p>二值化处理，作用是得到相对干净的背景底色 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">img_gray = cv2.cvtColor(img_color, cv2.COLOR_BGR2GRAY)</div></pre></td></tr></table></figure>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bkowh846j30ku194q53.jpg" alt=""> </p>
+<h3 id="降噪"><a href="#降噪" class="headerlink" title="降噪"></a>降噪</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cv2.fastNlMeansDenoising(img_gray)</div></pre></td></tr></table></figure>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bkraa5qfj30ku194jtm.jpg" alt=""> </p>
+<h3 id="边缘探测"><a href="#边缘探测" class="headerlink" title="边缘探测"></a>边缘探测</h3><p>使用Canny进行边缘探测，Canny算子是一种经典的边缘检测算子，它能得到精确的边缘位置。</p>
+<p>Canny检测的一般步骤为：</p>
+<ol>
+<li>用高斯滤波进行降噪</li>
+<li>用一阶偏导的有限差分计算梯度的幅值和方向 </li>
+<li>对梯度幅值进行非极大值抑制</li>
+<li>用双阈值检测和连接边缘。实验过程中，需要多次尝试选择较好的双阈值参数。 </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cv2.Canny(imgData,self.lowThreshold,self.highThreshold)</div></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1bksbdqhgj30ku194dgj.jpg" alt=""> #20-40 </p>
+<h3 id="形态学膨胀"><a href="#形态学膨胀" class="headerlink" title="形态学膨胀"></a>形态学膨胀</h3><p>检测出来的边缘在某些局部地方会断开，可以采用特定形状和尺寸的结构元素对二值化图像进行形态学膨胀处理来连接断开的边缘。 </p>
+<p>使用大小为(3，3)的十字线进行膨胀处理 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ratio =<span class="number">2</span>; </div><div class="line"></div><div class="line">kernel = np.ones((<span class="number">2</span> * dilationSize + <span class="number">1</span>, <span class="number">2</span> * dilationSize + <span class="number">1</span>), np.uint8) </div><div class="line"></div><div class="line">img_dilation = cv2.dilate(imgData, kernel, iterations=<span class="number">1</span>)</div></pre></td></tr></table></figure>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g1bkvi7ng4j30ku194t9b.jpg" alt=""> </p>
+<h3 id="框选轮廓"><a href="#框选轮廓" class="headerlink" title="框选轮廓"></a>框选轮廓</h3><p>为了直观的看到轮廓形状，我们用红色把轮廓框起来，其中可以看到很多相同控件内的文字并没有联通，所以上一步的膨胀处理的参数仍然有调整空间 </p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g1bkz5o1mbj30ku194jyb.jpg" alt=""> </p>
+<p>背景分析基本就这些，下面看前景分析。</p>
+<h2 id="前景分析"><a href="#前景分析" class="headerlink" title="前景分析"></a>前景分析</h2><p>前景分析包括对轮廓碎片进行整理并构建ViewTree、ViewTree优化合并、控件识别。</p>
+<h3 id="构建ViewTree"><a href="#构建ViewTree" class="headerlink" title="构建ViewTree"></a>构建ViewTree</h3><p>得到轮廓参数后遍历操作，contours自带层级关系，按照该层级关系依次递归遍历，得到粗糙的ViewTree </p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g1bl2vf5naj31lm0u0gv0.jpg" alt=""> </p>
+<h3 id="ViewTree优化"><a href="#ViewTree优化" class="headerlink" title="ViewTree优化"></a>ViewTree优化</h3><p>包括如下几个方面：</p>
+<ul>
+<li>删除重叠区域view </li>
+<li>合理划分父子关系 </li>
+<li>合并无意义的Layout控件 </li>
+</ul>
+<h3 id="控件识别"><a href="#控件识别" class="headerlink" title="控件识别"></a>控件识别</h3><p>到这一步就得到了每一个View的坐标属性及轮廓属性了，根据这些数据进行抠图并识别控件类型，<strong>这里只支持两种控件</strong>：TextView 和 ImageView，但是生成的代码只包含ImageView，猜测是因为OCR识别中文有问题，所以控件类型识别错误导致。 </p>
+<ul>
+<li><p>控件识别 </p>
+</li>
+<li><p>属性提取，图像、文字、颜色 </p>
+</li>
+</ul>
+<p>这里作者还提供了ListView的实现，但是应该不是完整的，所以被注释掉了。</p>
+<p>到这一步，根据上面的工作，就可以得到整个ViewTree的描述信息了，相当于得到了布局的DSL，但是这里并没有输出DSL，仅仅是在内存中数据结构的表现。</p>
+<h1 id="布局构建"><a href="#布局构建" class="headerlink" title="布局构建"></a>布局构建</h1><p>背景分析和前景分析都做完之后，就可以根据以上信息进行布局生成工作 ：</p>
+<ul>
+<li><p>根布局是FrameLayout </p>
+</li>
+<li><p>子布局有两种FrameLayout和RelativeLayout </p>
+</li>
+<li><p>控件都是相对父布局的绝对布局，layout_marginLeft，layout_marginTop </p>
+</li>
+<li><p>代码中看 RelativeLayout 中有相对布局，不过看生成的代码没有看到 </p>
+</li>
+</ul>
+<p>这一步处理之后就可以得到布局代码了，生成布局代码后，这里也有一个compile的过程，根据提供的template工程，将布局代码带入，就可以得到可以运行的Android工程了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>由于设计稿是iOS，宽度750px的设计稿，所以出来的布局代码在Android上是没有适配的，不过这个关系都不大。 </p>
+<p>这个项目提供了通过传统的机器视觉图像算法生成布局的思路。但是也存在一些问题： </p>
+<ul>
+<li>对于复杂界面处理能力有限</li>
+<li>传统图像处理的方式，对于不同场景阈值可能需要频繁的调整，典型的如膨胀参数</li>
+<li>泛化能力较弱，支持控件类型太少，并且识别准确率确实不行</li>
+<li>布局能力有限，基本都是绝对坐标，布局比较死板 </li>
+</ul>
+<p>现在回过头来翻看闲鱼关于<a href="https://www.jiqizhixin.com/articles/2019-02-27-14" target="_blank" rel="external">版面分析的文章</a>，其中的主要流程跟pixtoapp基本一致，并且一些参数都是一样的，比如膨胀参数，猜测闲鱼团队应该也是参考过这个项目，并在这基础上做了一些优化。 </p>
+<p>结合pix2code项目，pixtoapp进行版面分析，切割控件、得到布局，pix2code使用ML进行控件识别，最后进行组装，得到一个完整的布局，这种思路是可行的，猜测闲鱼也是基于这样的思路来做的。 </p>
+<p>这种方案其中的一个最重要的点，也是最难的点，就是布局能力太弱，闲鱼文中提到的布局方式也是规则实现，那么就是类似pixtoapp中的实现方式，但是有一点不同的是，切割方式不同，所以闲鱼有row和col，而pixtoapp没有，RNN前置反馈这个还没有了解到，后面再看下。 </p>
+<blockquote>
+<p>前期我们采用4层LSTM网络进行训练学习，由于样本量比较小，我们改为规则实现。规则实现也比较简单，我们在第一步切图时5刀切割的顺序就是row和col。缺点是布局比较死板，需要结合RNN进行前置反馈。 </p>
+</blockquote>
+<p>通过两篇文章的分析，UI2Code的大体思路是通了的，但是核心点构建布局还没有很好的解决方案，还需要再详细思考下实现方案。 </p>
+<p>参考 ：</p>
+<p><a href="https://www.jiqizhixin.com/articles/2018-12-29-5" target="_blank" rel="external">基于AI的移动端自动化测试框架的设计</a> </p>
+<p><a href="https://www.jiqizhixin.com/articles/2019-02-27-14" target="_blank" rel="external">UI2Code智能生成Flutter代码——版面分析篇</a></p>
+<p>本文链接： <a href="http://w4lle.com/2019/03/22/UI2Code-1/">http://w4lle.com/2019/03/22/UI2Code-1/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2019/03/22/UI2Code-1/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2019/03/13/UI2Code-0/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

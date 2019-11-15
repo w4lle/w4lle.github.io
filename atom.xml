@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2019-11-15T09:18:08.222Z</updated>
+  <updated>2019-11-15T11:22:19.038Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -16,11 +16,117 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>UI2Code（二）pixeltoapp</title>
+    <link href="http://w4lle.com/2019/03/22/UI2Code-1/"/>
+    <id>http://w4lle.com/2019/03/22/UI2Code-1/</id>
+    <published>2019-03-22T09:36:57.000Z</published>
+    <updated>2019-11-15T11:22:19.038Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="http://pixeltoapp.com/" target="_blank" rel="external">pixeltoapp</a> 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，项目源码地址：<a href="https://github.com/soumikmohianuta/pixtoapp" target="_blank" rel="external">https://github.com/soumikmohianuta/pixtoapp</a></p>
+<a id="more"></a>
+<h1 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h1><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bjfidsnoj30ku1940wr.jpg" alt="原图"> </p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1bjglum9yj30ly118wgz.jpg" alt="代码渲染图"> </p>
+<p>生成的布局代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div></pre></td><td class="code"><pre><div class="line">&lt;FrameLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</div><div class="line">             android:layout_width=&quot;250.0dip&quot;</div><div class="line">             android:layout_height=&quot;541.3333333333334dip&quot;</div><div class="line">             android:layout_gravity=&quot;center_vertical|center_horizontal&quot;</div><div class="line">             android:background=&quot;@color/color_0&quot;&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_0&quot;</div><div class="line">        android:layout_width=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_height=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;74.33333333333333dip&quot;</div><div class="line">        android:layout_marginTop=&quot;499.3333333333333dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_0&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_1&quot;</div><div class="line">        android:layout_width=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_height=&quot;10.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;41.333333333333336dip&quot;</div><div class="line">        android:layout_marginTop=&quot;499.3333333333333dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_2&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_2&quot;</div><div class="line">        android:layout_width=&quot;31.666666666666668dip&quot;</div><div class="line">        android:layout_height=&quot;18.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;198.0dip&quot;</div><div class="line">        android:layout_marginTop=&quot;491.3333333333333dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_5&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_3&quot;</div><div class="line">        android:layout_width=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_height=&quot;10.333333333333334dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;52.666666666666664dip&quot;</div><div class="line">        android:layout_marginTop=&quot;499.0dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_6&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_4&quot;</div><div class="line">        android:layout_width=&quot;9.333333333333334dip&quot;</div><div class="line">        android:layout_height=&quot;11.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;188.0dip&quot;</div><div class="line">        android:layout_marginTop=&quot;498.6666666666667dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_7&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_5&quot;</div><div class="line">        android:layout_width=&quot;10.666666666666666dip&quot;</div><div class="line">        android:layout_height=&quot;11.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;176.33333333333334dip&quot;</div><div class="line">        android:layout_marginTop=&quot;498.6666666666667dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_8&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_6&quot;</div><div class="line">        android:layout_width=&quot;10.666666666666666dip&quot;</div><div class="line">        android:layout_height=&quot;10.666666666666666dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;165.33333333333334dip&quot;</div><div class="line">        android:layout_marginTop=&quot;498.6666666666667dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_9&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_7&quot;</div><div class="line">        android:layout_width=&quot;1.6666666666666667dip&quot;</div><div class="line">        android:layout_height=&quot;14.666666666666666dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;124.33333333333333dip&quot;</div><div class="line">        android:layout_marginTop=&quot;496.6666666666667dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_10&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;ImageView</div><div class="line">        android:id=&quot;@+id/ImageView_8&quot;</div><div class="line">        android:layout_width=&quot;250.0dip&quot;</div><div class="line">        android:layout_height=&quot;1.6666666666666667dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;0.0dip&quot;</div><div class="line">        android:layout_marginTop=&quot;489.0dip&quot;</div><div class="line">        android:scaleType=&quot;fitXY&quot;</div><div class="line">        android:src=&quot;@drawable/img_11&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;FrameLayout</div><div class="line">        android:id=&quot;@+id/FrameLayout_9&quot;</div><div class="line">        android:layout_width=&quot;229.66666666666666dip&quot;</div><div class="line">        android:layout_height=&quot;101.0dip&quot;</div><div class="line">        android:layout_marginLeft=&quot;10.0dip&quot;</div><div class="line">        android:layout_marginTop=&quot;383.3333333333333dip&quot;</div><div class="line">        android:background=&quot;@color/color_0&quot;&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_9&quot;</div><div class="line">            android:layout_width=&quot;22.0dip&quot;</div><div class="line">            android:layout_height=&quot;7.666666666666667dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;70.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_12&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_10&quot;</div><div class="line">            android:layout_width=&quot;22.0dip&quot;</div><div class="line">            android:layout_height=&quot;7.666666666666667dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;48.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_13&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_11&quot;</div><div class="line">            android:layout_width=&quot;7.0dip&quot;</div><div class="line">            android:layout_height=&quot;7.333333333333333dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;40.666666666666664dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_14&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_12&quot;</div><div class="line">            android:layout_width=&quot;14.666666666666666dip&quot;</div><div class="line">            android:layout_height=&quot;7.333333333333333dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;26.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_15&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_13&quot;</div><div class="line">            android:layout_width=&quot;14.666666666666666dip&quot;</div><div class="line">            android:layout_height=&quot;7.666666666666667dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;11.333333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;78.33333333333333dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_16&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_14&quot;</div><div class="line">            android:layout_width=&quot;44.666666666666664dip&quot;</div><div class="line">            android:layout_height=&quot;20.0dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;174.33333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;72.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_18&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_15&quot;</div><div class="line">            android:layout_width=&quot;49.0dip&quot;</div><div class="line">            android:layout_height=&quot;8.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;24.333333333333332dip&quot;</div><div class="line">            android:layout_marginTop=&quot;40.333333333333336dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_21&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_16&quot;</div><div class="line">            android:layout_width=&quot;12.333333333333334dip&quot;</div><div class="line">            android:layout_height=&quot;7.0dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;11.666666666666666dip&quot;</div><div class="line">            android:layout_marginTop=&quot;41.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_22&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_17&quot;</div><div class="line">            android:layout_width=&quot;8.666666666666666dip&quot;</div><div class="line">            android:layout_height=&quot;8.0dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;210.33333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;40.666666666666664dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_23&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_18&quot;</div><div class="line">            android:layout_width=&quot;24.0dip&quot;</div><div class="line">            android:layout_height=&quot;8.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;184.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;40.333333333333336dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_24&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_19&quot;</div><div class="line">            android:layout_width=&quot;8.0dip&quot;</div><div class="line">            android:layout_height=&quot;5.666666666666667dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;210.66666666666666dip&quot;</div><div class="line">            android:layout_marginTop=&quot;29.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_25&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_20&quot;</div><div class="line">            android:layout_width=&quot;37.333333333333336dip&quot;</div><div class="line">            android:layout_height=&quot;9.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;49.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;25.333333333333332dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_26&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_21&quot;</div><div class="line">            android:layout_width=&quot;37.333333333333336dip&quot;</div><div class="line">            android:layout_height=&quot;9.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;11.333333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;25.333333333333332dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_27&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_22&quot;</div><div class="line">            android:layout_width=&quot;7.666666666666667dip&quot;</div><div class="line">            android:layout_height=&quot;12.666666666666666dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;200.0dip&quot;</div><div class="line">            android:layout_marginTop=&quot;22.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_28&quot;/&gt;</div><div class="line"></div><div class="line">        &lt;ImageView</div><div class="line">            android:id=&quot;@+id/ImageView_23&quot;</div><div class="line">            android:layout_width=&quot;4.333333333333333dip&quot;</div><div class="line">            android:layout_height=&quot;12.333333333333334dip&quot;</div><div class="line">            android:layout_marginLeft=&quot;193.33333333333334dip&quot;</div><div class="line">            android:layout_marginTop=&quot;22.0dip&quot;</div><div class="line">            android:scaleType=&quot;fitXY&quot;</div><div class="line">            android:src=&quot;@drawable/img_29&quot;/&gt;</div><div class="line">    &lt;/FrameLayout&gt;</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bmgzbb4rj31o90u00z4.jpg" alt=""> </p>
+<p>整体处理过程： </p>
+<p>原图 -&gt; 灰度处理 - 降噪 - 边缘探测，提取边缘轮廓 - 膨胀处理 - 框选边缘轮廓 - 遍历轮廓构建ViewTree - 删除重复元素，合并Layout布局，梳理ViewTree - 判断控件类型，目前支持Text和Image - 切割图像、文本识别，绑定控件属性 - 构建XML布局 </p>
+<p>整体分为三个大的过程：背景分析、前景分析和布局构建 </p>
+<p>- 背景分析：通过机器视觉算法，得到图像轮廓 </p>
+<p>- 前景分析：对轮廓碎片进行整理，合并，识别 </p>
+<p>- 布局构建：基于以上信息构建布局 </p>
+<p>下面依次看下 </p>
+<h2 id="背景分析"><a href="#背景分析" class="headerlink" title="背景分析"></a>背景分析</h2><p>包含 灰度处理、降噪、边缘探测、膨胀处理、框选边缘轮廓等几个步骤 </p>
+<h3 id="灰度处理"><a href="#灰度处理" class="headerlink" title="灰度处理"></a>灰度处理</h3><p>二值化处理，作用是得到相对干净的背景底色 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">img_gray = cv2.cvtColor(img_color, cv2.COLOR_BGR2GRAY)</div></pre></td></tr></table></figure>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bkowh846j30ku194q53.jpg" alt=""> </p>
+<h3 id="降噪"><a href="#降噪" class="headerlink" title="降噪"></a>降噪</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cv2.fastNlMeansDenoising(img_gray)</div></pre></td></tr></table></figure>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bkraa5qfj30ku194jtm.jpg" alt=""> </p>
+<h3 id="边缘探测"><a href="#边缘探测" class="headerlink" title="边缘探测"></a>边缘探测</h3><p>使用Canny进行边缘探测，Canny算子是一种经典的边缘检测算子，它能得到精确的边缘位置。</p>
+<p>Canny检测的一般步骤为：</p>
+<ol>
+<li>用高斯滤波进行降噪</li>
+<li>用一阶偏导的有限差分计算梯度的幅值和方向 </li>
+<li>对梯度幅值进行非极大值抑制</li>
+<li>用双阈值检测和连接边缘。实验过程中，需要多次尝试选择较好的双阈值参数。 </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cv2.Canny(imgData,self.lowThreshold,self.highThreshold)</div></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1bksbdqhgj30ku194dgj.jpg" alt=""> #20-40 </p>
+<h3 id="形态学膨胀"><a href="#形态学膨胀" class="headerlink" title="形态学膨胀"></a>形态学膨胀</h3><p>检测出来的边缘在某些局部地方会断开，可以采用特定形状和尺寸的结构元素对二值化图像进行形态学膨胀处理来连接断开的边缘。 </p>
+<p>使用大小为(3，3)的十字线进行膨胀处理 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ratio =<span class="number">2</span>; </div><div class="line"></div><div class="line">kernel = np.ones((<span class="number">2</span> * dilationSize + <span class="number">1</span>, <span class="number">2</span> * dilationSize + <span class="number">1</span>), np.uint8) </div><div class="line"></div><div class="line">img_dilation = cv2.dilate(imgData, kernel, iterations=<span class="number">1</span>)</div></pre></td></tr></table></figure>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g1bkvi7ng4j30ku194t9b.jpg" alt=""> </p>
+<h3 id="框选轮廓"><a href="#框选轮廓" class="headerlink" title="框选轮廓"></a>框选轮廓</h3><p>为了直观的看到轮廓形状，我们用红色把轮廓框起来，其中可以看到很多相同控件内的文字并没有联通，所以上一步的膨胀处理的参数仍然有调整空间 </p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g1bkz5o1mbj30ku194jyb.jpg" alt=""> </p>
+<p>背景分析基本就这些，下面看前景分析。</p>
+<h2 id="前景分析"><a href="#前景分析" class="headerlink" title="前景分析"></a>前景分析</h2><p>前景分析包括对轮廓碎片进行整理并构建ViewTree、ViewTree优化合并、控件识别。</p>
+<h3 id="构建ViewTree"><a href="#构建ViewTree" class="headerlink" title="构建ViewTree"></a>构建ViewTree</h3><p>得到轮廓参数后遍历操作，contours自带层级关系，按照该层级关系依次递归遍历，得到粗糙的ViewTree </p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g1bl2vf5naj31lm0u0gv0.jpg" alt=""> </p>
+<h3 id="ViewTree优化"><a href="#ViewTree优化" class="headerlink" title="ViewTree优化"></a>ViewTree优化</h3><p>包括如下几个方面：</p>
+<ul>
+<li>删除重叠区域view </li>
+<li>合理划分父子关系 </li>
+<li>合并无意义的Layout控件 </li>
+</ul>
+<h3 id="控件识别"><a href="#控件识别" class="headerlink" title="控件识别"></a>控件识别</h3><p>到这一步就得到了每一个View的坐标属性及轮廓属性了，根据这些数据进行抠图并识别控件类型，<strong>这里只支持两种控件</strong>：TextView 和 ImageView，但是生成的代码只包含ImageView，猜测是因为OCR识别中文有问题，所以控件类型识别错误导致。 </p>
+<ul>
+<li><p>控件识别 </p>
+</li>
+<li><p>属性提取，图像、文字、颜色 </p>
+</li>
+</ul>
+<p>这里作者还提供了ListView的实现，但是应该不是完整的，所以被注释掉了。</p>
+<p>到这一步，根据上面的工作，就可以得到整个ViewTree的描述信息了，相当于得到了布局的DSL，但是这里并没有输出DSL，仅仅是在内存中数据结构的表现。</p>
+<h1 id="布局构建"><a href="#布局构建" class="headerlink" title="布局构建"></a>布局构建</h1><p>背景分析和前景分析都做完之后，就可以根据以上信息进行布局生成工作 ：</p>
+<ul>
+<li><p>根布局是FrameLayout </p>
+</li>
+<li><p>子布局有两种FrameLayout和RelativeLayout </p>
+</li>
+<li><p>控件都是相对父布局的绝对布局，layout_marginLeft，layout_marginTop </p>
+</li>
+<li><p>代码中看 RelativeLayout 中有相对布局，不过看生成的代码没有看到 </p>
+</li>
+</ul>
+<p>这一步处理之后就可以得到布局代码了，生成布局代码后，这里也有一个compile的过程，根据提供的template工程，将布局代码带入，就可以得到可以运行的Android工程了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>由于设计稿是iOS，宽度750px的设计稿，所以出来的布局代码在Android上是没有适配的，不过这个关系都不大。 </p>
+<p>这个项目提供了通过传统的机器视觉图像算法生成布局的思路。但是也存在一些问题： </p>
+<ul>
+<li>对于复杂界面处理能力有限</li>
+<li>传统图像处理的方式，对于不同场景阈值可能需要频繁的调整，典型的如膨胀参数</li>
+<li>泛化能力较弱，支持控件类型太少，并且识别准确率确实不行</li>
+<li>布局能力有限，基本都是绝对坐标，布局比较死板 </li>
+</ul>
+<p>现在回过头来翻看闲鱼关于<a href="https://www.jiqizhixin.com/articles/2019-02-27-14" target="_blank" rel="external">版面分析的文章</a>，其中的主要流程跟pixtoapp基本一致，并且一些参数都是一样的，比如膨胀参数，猜测闲鱼团队应该也是参考过这个项目，并在这基础上做了一些优化。 </p>
+<p>结合pix2code项目，pixtoapp进行版面分析，切割控件、得到布局，pix2code使用ML进行控件识别，最后进行组装，得到一个完整的布局，这种思路是可行的，猜测闲鱼也是基于这样的思路来做的。 </p>
+<p>这种方案其中的一个最重要的点，也是最难的点，就是布局能力太弱，闲鱼文中提到的布局方式也是规则实现，那么就是类似pixtoapp中的实现方式，但是有一点不同的是，切割方式不同，所以闲鱼有row和col，而pixtoapp没有，RNN前置反馈这个还没有了解到，后面再看下。 </p>
+<blockquote>
+<p>前期我们采用4层LSTM网络进行训练学习，由于样本量比较小，我们改为规则实现。规则实现也比较简单，我们在第一步切图时5刀切割的顺序就是row和col。缺点是布局比较死板，需要结合RNN进行前置反馈。 </p>
+</blockquote>
+<p>通过两篇文章的分析，UI2Code的大体思路是通了的，但是核心点构建布局还没有很好的解决方案，还需要再详细思考下实现方案。 </p>
+<p>参考 ：</p>
+<p><a href="https://www.jiqizhixin.com/articles/2018-12-29-5" target="_blank" rel="external">基于AI的移动端自动化测试框架的设计</a> </p>
+<p><a href="https://www.jiqizhixin.com/articles/2019-02-27-14" target="_blank" rel="external">UI2Code智能生成Flutter代码——版面分析篇</a></p>
+<p>本文链接： <a href="http://w4lle.com/2019/03/22/UI2Code-1/">http://w4lle.com/2019/03/22/UI2Code-1/</a> </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;http://pixeltoapp.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;pixeltoapp&lt;/a&gt; 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，项目源码地址：&lt;a href=&quot;https://github.com/soumikmohianuta/pixtoapp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/soumikmohianuta/pixtoapp&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://w4lle.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>UI2Code（一）pix2code</title>
-    <link href="http://w4lle.com/2019/05/22/UI2Code-0/"/>
-    <id>http://w4lle.com/2019/05/22/UI2Code-0/</id>
-    <published>2019-05-22T08:27:22.000Z</published>
-    <updated>2019-11-15T09:18:08.222Z</updated>
+    <link href="http://w4lle.com/2019/03/13/UI2Code-0/"/>
+    <id>http://w4lle.com/2019/03/13/UI2Code-0/</id>
+    <published>2019-03-13T08:27:22.000Z</published>
+    <updated>2019-11-15T11:21:11.298Z</updated>
     
     <content type="html"><![CDATA[<p>pix2code 项目通过机器学习，支持输入一张图片输出实际的布局代码，同时支持生成三端(Android、iOS、web)布局代码。</p>
 <p>pix2code作为UI2Code的先驱项目，后续的相关项目或多或少的都有参考该项目的实现。</p>
@@ -30,7 +136,7 @@
 <p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191115164209.png" alt=""></p>
 <p>然后使用验证集生成DSL，比对原始DSL</p>
 <p>对比1：</p>
-<p><img src="assets/images03BC80FA-5959-4432-9622-19958492D0E7.png" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images03BC80FA-5959-4432-9622-19958492D0E7.png" alt=""></p>
 <p>对比2：</p>
 <p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images61B2D439-EC8E-4574-8BB9-D7D427B1BDF0.png" alt=""></p>
 <p>对比3：</p>
@@ -69,15 +175,17 @@
 <p>基于以上调研分析，pix2code项目仅仅作为一个研究性项目进行开源，并不能实际使用在生产环境中，作者明确表述该项目和论文仅仅作为实验，并且不会再进行进一步的平台拓展。 </p>
 <p>我们可以探索在pix2code基础上，通过图像分析+pix2code控件识别 来进行UI2Code的工作。 </p>
 <p>后面会去调研下pixelToApp这个项目，其基于传统的计算机视觉识别技术进行代码生成。 </p>
-<p>参考：</p>
+<p>论文：</p>
+<p><a href="https://cs.anu.edu.au/courses/CSPROJECTS/18S2/initialTalks/u6013787.pdf" target="_blank" rel="external">UI Design to Code Skeleton</a></p>
+<p>参考文章：</p>
 <ul>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;mid=2650728064&amp;idx=1&amp;sn=adb744e599299916faa23545c2ab436e&amp;chksm=871b22feb06cabe83ba0e3268a7a8c0c486cf6f42427ab41814e69242f919b25bc7de06ea258&amp;scene=21#wechat_redirect" target="_blank" rel="external">https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;mid=2650728064&amp;idx=1&amp;sn=adb744e599299916faa23545c2ab436e&amp;chksm=871b22feb06cabe83ba0e3268a7a8c0c486cf6f42427ab41814e69242f919b25bc7de06ea258&amp;scene=21#wechat_redirect</a></li>
-<li><a href="http://www.zhuanzhi.ai/document/1be2e6712acd7e17ee46b66010be6cd8" target="_blank" rel="external">http://www.zhuanzhi.ai/document/1be2e6712acd7e17ee46b66010be6cd8</a></li>
-<li><a href="https://www.jiqizhixin.com/articles/2018-11-05-12?from=synced&amp;keyword=pix2Code" target="_blank" rel="external">https://www.jiqizhixin.com/articles/2018-11-05-12?from=synced&amp;keyword=pix2Code</a></li>
-<li><a href="https://www.leiphone.com/news/201702/qahhwz9mtCRPHEM3.html?uniqueCode=ZwcjmiJ45aW27ULB" target="_blank" rel="external">https://www.leiphone.com/news/201702/qahhwz9mtCRPHEM3.html?uniqueCode=ZwcjmiJ45aW27ULB</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzIzNjc1NzUzMw==&amp;mid=2247496681&amp;idx=3&amp;sn=885b227400bdc8c81d74feffcb1b6c5c&amp;scene=0#wechat_redirect" target="_blank" rel="external">https://mp.weixin.qq.com/s?__biz=MzIzNjc1NzUzMw==&amp;mid=2247496681&amp;idx=3&amp;sn=885b227400bdc8c81d74feffcb1b6c5c&amp;scene=0#wechat_redirect</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;mid=2650728064&amp;idx=1&amp;sn=adb744e599299916faa23545c2ab436e&amp;chksm=871b22feb06cabe83ba0e3268a7a8c0c486cf6f42427ab41814e69242f919b25bc7de06ea258&amp;scene=21#wechat_redirect" target="_blank" rel="external">深度学习助力前端开发：自动生成GUI图代码</a></li>
+<li><a href="https://www.jiqizhixin.com/articles/2018-12-29-5" target="_blank" rel="external">基于AI的移动端自动化测试框架的设计</a> </li>
+<li><a href="https://www.jiqizhixin.com/articles/2018-11-05-12?from=synced&amp;keyword=pix2Code" target="_blank" rel="external">前端设计图转代码，西安交大表示复杂界面也能一步步搞定</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzIzNjc1NzUzMw==&amp;mid=2247496681&amp;idx=3&amp;sn=885b227400bdc8c81d74feffcb1b6c5c&amp;scene=0#wechat_redirect" target="_blank" rel="external">前端利器！让AI根据手绘原型生成HTML | 教程+代码</a></li>
+<li><a href="https://medium.freecodecamp.org/how-you-can-train-an-ai-to-convert-your-design-mockups-into-html-and-css-cc7afd82fed4" target="_blank" rel="external">How you can train an AI to convert your design mockups into HTML and CSS</a></li>
 </ul>
-<p>本文链接： <a href="http://w4lle.com/2019/05/22/UI2Code-0/">http://w4lle.com/2019/05/22/UI2Code-0/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2019/03/13/UI2Code-0/">http://w4lle.com/2019/03/13/UI2Code-0/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -1782,56 +1890,6 @@
     
     
       <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>快速排序</title>
-    <link href="http://w4lle.com/2016/07/03/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"/>
-    <id>http://w4lle.com/2016/07/03/快速排序/</id>
-    <published>2016-07-03T12:55:44.000Z</published>
-    <updated>2017-01-06T01:56:50.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote>
-<p>Wikipedia: 快速排序是由东尼霍尔所发展的一种排序算法。在平均状况下，排序n个项目要Ο(n log n)次比较。 在最坏状况下则需要Ο(n2)次比较，但这种状况并不常见。事实上，快速排序通常明显比其他Ο(n log )算法更快， 因为它的内部循环（inner loop）可以在大部分的架构上很有效率地被实现出来。</p>
-</blockquote>
-<h1 id="快排的思路"><a href="#快排的思路" class="headerlink" title="快排的思路"></a>快排的思路</h1><p>快速排序采用了分治的策略，通常称其为分治法(Divide-and-ConquerMethod)。<br>该方法的基本思想是：</p>
-<ol>
-<li>选取一个基准元素（pivot）</li>
-<li>分区过程，比pivot小的放到pivot左边，比pivot大的放到pivot右边</li>
-<li>对pivot左边的序列和右边的序列分别递归的执行步骤1和步骤2</li>
-</ol>
-<p>虽然是采用分治法，但是分治法不能完全概括这个算法，因为我每次看完算法会很清楚，但是过段时间就忘了。然后看到了非常新颖的名字：“挖坑排序”。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//快速排序</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span> s[], <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (l &lt; r)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">int</span> i = l, j = r;</div><div class="line">        <span class="comment">//将数组中的最低位值取出，相当于挖了第一个坑</span></div><div class="line">        <span class="keyword">int</span> x = s[l];</div><div class="line">        <span class="keyword">while</span> (i &lt; j)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">while</span>(i &lt; j &amp;&amp; s[j] &gt;= x) &#123;</div><div class="line">            <span class="comment">//从右向左找第一个小于x的数</span></div><div class="line">				j--;  </div><div class="line">			&#125;</div><div class="line">            <span class="keyword">if</span>(i &lt; j) &#123;</div><div class="line">            <span class="comment">//将s[j]的数挖坑填之前的坑</span></div><div class="line">				s[i++] = s[j];</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">            <span class="keyword">while</span>(i &lt; j &amp;&amp; s[i] &lt; x) &#123;</div><div class="line">            <span class="comment">// 从左向右找第一个大于等于x的数</span></div><div class="line">				i++;  </div><div class="line">			&#125;</div><div class="line">            <span class="keyword">if</span>(i &lt; j) &#123;</div><div class="line">            <span class="comment">//挖坑，填之前的坑</span></div><div class="line">				s[j--] = s[i];</div><div class="line">			&#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//填最后一个坑</span></div><div class="line">        s[i] = x;</div><div class="line">        quickSort(s, l, i - <span class="number">1</span>); <span class="comment">// 递归调用 </span></div><div class="line">        quickSort(s, i + <span class="number">1</span>, r);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>对挖坑填数进行总结</p>
-<ol>
-<li>i =L; j = R; 将基准数挖出形成第一个坑a[i]。</li>
-<li>j–由后向前找比它小的数，找到后挖出此数填前一个坑a[i]中。</li>
-<li>i++由前向后找比它大的数，找到后也挖出此数填到前一个坑a[j]中。</li>
-<li>再重复执行2，3二步，直到i==j，将基准数填入a[i]中。</li>
-</ol>
-<h1 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h1><p>平均情况下快速排序的时间复杂度是O(n\lgn)O(n\lgn)，最坏情况是O(n2)O(n2)。</p>
-<h2 id="最坏时间复杂度"><a href="#最坏时间复杂度" class="headerlink" title="最坏时间复杂度"></a>最坏时间复杂度</h2><p>当划分产生的两个子问题分别包含 n-1 和 0个元素时，最坏情况发生。因此，快速排序必须做n-1次划分，第i次划分开始时区间长度为n-i+1，所需的比较次数为n-i(1≤i≤n-1)，故总的比较次数达到最大值：<br><code>Cmax = n(n-1)/2=O(n^2)</code></p>
-<h2 id="最好时间复杂度"><a href="#最好时间复杂度" class="headerlink" title="最好时间复杂度"></a>最好时间复杂度</h2><p>当划分产生的两个子问题分别包含⌊n/2⌋⌊n/2⌋和⌈n/2⌉−1⌈n/2⌉−1个元素时，最好情况发生。用递归树来分析最好情况下的比较次数更简单。因为每次划分后左、右子区间长度大致相等，故递归树的高度为O(lgn)，而递归树每一层上各结点所对应的划分过程中所需要的关键字比较次数总和不超过n，故整个排序过程所需要的关键字比较总次数C(n)=O(nlgn)。</p>
-<p>因为快速排序的记录移动次数不大于比较的次数，所以快速排序的最坏时间复杂度应为0(n2)，最好时间复杂度为O(nlgn)。事实上只要划分是常数比例的，算法的运行时间总是O(nlgn)。 假设按照 9:1 划分，每层代价最多为 cn，递归深度为 log(10/9, n)=O(lgn)，故排序的总代价为O(nlgn)。平均情况下，比如一次坏的划分接着一次好的划分，坏的划分那一项可以合并到好的划分里，统计上来讲平均情况下的时间复杂度仍然是O(nlgn)。</p>
-<h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><p>在当前无序区中选取划分的基准关键字是决定算法性能的关键。</p>
-<ol>
-<li>“三者取中”规则，即在当前区间里，将该区间首、尾和中间位置上的关键字比较，取三者之中值所对应的记录作为基准</li>
-<li>取位于low和high之间的随机数k(low≤k≤high)，用R[k]作为基准， 随机化的快速排序与一般的快速排序算法差别很小。但随机化后，算法的性能大大地提高了，尤其是对初始有序的文件，一般不可能导致最坏情况的发生。</li>
-</ol>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://blog.csdn.net/morewindows/article/details/6684558" target="_blank" rel="external">白话经典算法系列之六 快速排序 快速搞定</a><br><a href="http://harttle.com/2015/09/27/quick-sort.html" target="_blank" rel="external">快速排序的时间和空间复杂度</a><br><a href="http://student.zjzk.cn/course_ware/data_structure/web/paixu/paixu8.3.2.4.htm" target="_blank" rel="external">快速排序算法分析</a></p>
-<p>本文链接： <a href="http://w4lle.com/2016/07/03/快速排序/">http://w4lle.com/2016/07/03/快速排序/</a> </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;Wikipedia: 快速排序是由东尼霍尔所发展的一种排序算法。在平均状况下，排序n个项目要Ο(n log n)次比较。 在最坏状况下则需要Ο(n2)次比较，但这种状况并不常见。事实上，快速排序通常明显比其他Ο(n log )算法更快， 因为它的内
-    
-    </summary>
-    
-    
-      <category term="其他" scheme="http://w4lle.com/tags/%E5%85%B6%E4%BB%96/"/>
     
   </entry>
   
