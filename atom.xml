@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2018-11-16T03:36:21.000Z</updated>
+  <updated>2019-11-15T09:18:08.222Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -16,11 +16,88 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>UI2Code（一）pix2code</title>
+    <link href="http://w4lle.com/2019/05/22/UI2Code-0/"/>
+    <id>http://w4lle.com/2019/05/22/UI2Code-0/</id>
+    <published>2019-05-22T08:27:22.000Z</published>
+    <updated>2019-11-15T09:18:08.222Z</updated>
+    
+    <content type="html"><![CDATA[<p>pix2code 项目通过机器学习，支持输入一张图片输出实际的布局代码，同时支持生成三端(Android、iOS、web)布局代码。</p>
+<p>pix2code作为UI2Code的先驱项目，后续的相关项目或多或少的都有参考该项目的实现。</p>
+<a id="more"></a>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><a href="https://github.com/tonybeltramelli/pix2code" target="_blank" rel="external">项目地址</a><br><a href="https://arxiv.org/abs/1705.07962" target="_blank" rel="external">论文地址</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;mid=2650728064&amp;idx=1&amp;sn=adb744e599299916faa23545c2ab436e&amp;chksm=871b22feb06cabe83ba0e3268a7a8c0c486cf6f42427ab41814e69242f919b25bc7de06ea258&amp;scene=21#wechat_redirect" target="_blank" rel="external">论文翻译</a></p>
+<p>使用双显卡服务器跑出模型，耗时大概1.5小时，模型数量1500张图片，1500个对应DSL，模型大小450M左右</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191115164209.png" alt=""></p>
+<p>然后使用验证集生成DSL，比对原始DSL</p>
+<p>对比1：</p>
+<p><img src="assets/images03BC80FA-5959-4432-9622-19958492D0E7.png" alt=""></p>
+<p>对比2：</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images61B2D439-EC8E-4574-8BB9-D7D427B1BDF0.png" alt=""></p>
+<p>对比3：</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images77658E09-48B9-489D-B69A-69C6DB57AD75.png" alt=""></p>
+<p>验证集共生成了250张图片对应的DSL，总体来看不能做到100%还原DSL，作者称可以做到77%左右的准确率。</p>
+<p>以其中一个图片为例</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesCD7F3D19-3D1B-4070-833C-54AE57B6AC9E.png" alt=""></p>
+<p>生成的DSL </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">stack&#123; </div><div class="line"></div><div class="line">  row&#123; </div><div class="line"></div><div class="line">    label,slider,label </div><div class="line"></div><div class="line">  &#125; </div><div class="line">&#125; </div><div class="line"></div><div class="line">footer&#123; </div><div class="line"></div><div class="line">	btn-search,btn-search,btn-search,btn-search </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编译compile后生成的Android xml 布局文件</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images7B1049AC-A185-4F64-945D-32CDB2EF7C57.png" alt=""></p>
+<p>结果是有10个控件，其中的8个是正确的，2个是识别错误的。</p>
+<h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><p>基于图像标记（image caption）构建一种把图像和文本连接在一起的模型，用于生成源图像内容的描述。 </p>
+<p>pix2code是一个基于卷及神经网络(CNN)和循环神经网络(LSTM，长短时神经单元)能够由单个GUI屏幕截图生成源代码的项目。 </p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191115163604.png" alt=""></p>
+<p>模型采用监督学习，有连个输入，一个数GUI截图，另外一个是对应的布局DSL。这些布局文件都足够简单，DSL也仅仅对控件进行了描述，不涉及位置信息和控件属性。<br>首先将GUI图像 I 通过CNN网络生成特征向量P，然后DSL 符号T 描述切割成一个序列 X（xt, t ∈ {0 . . . T − 1}）通过第一个语言模型得到特征向量qt（该语言模型由两个 LSTM 层、每层带有128个神经单元来实现），视觉编码向量 p 和语言编码向量 qt 可以级联为单一向量 rt，该级联向量 rt 随后可以投送到基于 LSTM 的模型来解码。因此解码器就学到了输入 GUI 图像中的对象和 DSL 代码中的符号间的关系，因此也就可以对这一关系进行建模。我们的解码器由两个 LSTM 层、每层带有 512 个单元的堆栈而实现。最后通过一个softmax进行一个分类对当前项进行预测，并把结果作为下一项的输入。</p>
+<p>核心代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">image_model = Sequential()</div><div class="line">image_model.add(Conv2D(32, (3, 3), padding=&apos;valid&apos;, activation=&apos;relu&apos;, input_shape=input_shape))</div><div class="line">image_model.add(Conv2D(32, (3, 3), padding=&apos;valid&apos;, activation=&apos;relu&apos;))</div><div class="line">image_model.add(MaxPooling2D(pool_size=(2, 2)))</div><div class="line">image_model.add(Dropout(0.25))</div><div class="line"></div><div class="line">image_model.add(Conv2D(64, (3, 3), padding=&apos;valid&apos;, activation=&apos;relu&apos;))</div><div class="line">image_model.add(Conv2D(64, (3, 3), padding=&apos;valid&apos;, activation=&apos;relu&apos;))</div><div class="line">image_model.add(MaxPooling2D(pool_size=(2, 2)))</div><div class="line">image_model.add(Dropout(0.25))</div><div class="line"></div><div class="line">image_model.add(Conv2D(128, (3, 3), padding=&apos;valid&apos;, activation=&apos;relu&apos;))</div><div class="line">image_model.add(Conv2D(128, (3, 3), padding=&apos;valid&apos;, activation=&apos;relu&apos;))</div><div class="line">image_model.add(MaxPooling2D(pool_size=(2, 2)))</div><div class="line">image_model.add(Dropout(0.25))</div><div class="line"></div><div class="line">image_model.add(Flatten())</div><div class="line">image_model.add(Dense(1024, activation=&apos;relu&apos;))</div><div class="line">image_model.add(Dropout(0.3))</div><div class="line">image_model.add(Dense(1024, activation=&apos;relu&apos;))</div><div class="line">image_model.add(Dropout(0.3))</div><div class="line"></div><div class="line">image_model.add(RepeatVector(CONTEXT_LENGTH))</div><div class="line"></div><div class="line">visual_input = Input(shape=input_shape)</div><div class="line">encoded_image = image_model(visual_input)</div><div class="line"></div><div class="line">language_model = Sequential()</div><div class="line">language_model.add(LSTM(128, return_sequences=True, input_shape=(CONTEXT_LENGTH, output_size)))</div><div class="line">language_model.add(LSTM(128, return_sequences=True))</div><div class="line"></div><div class="line">textual_input = Input(shape=(CONTEXT_LENGTH, output_size))</div><div class="line">encoded_text = language_model(textual_input)</div><div class="line"></div><div class="line">decoder = concatenate([encoded_image, encoded_text])</div><div class="line"></div><div class="line">decoder = LSTM(512, return_sequences=True)(decoder)</div><div class="line">decoder = LSTM(512, return_sequences=False)(decoder)</div><div class="line">decoder = Dense(output_size, activation=&apos;softmax&apos;)(decoder)</div><div class="line"></div><div class="line">self.model = Model(inputs=[visual_input, textual_input], outputs=decoder)</div><div class="line"></div><div class="line">optimizer = RMSprop(lr=0.0001, clipvalue=1.0)</div><div class="line">self.model.compile(loss=&apos;categorical_crossentropy&apos;, optimizer=optimizer)</div></pre></td></tr></table></figure>
+<p>具体原理参考<a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;mid=2650728064&amp;idx=1&amp;sn=adb744e599299916faa23545c2ab436e&amp;chksm=871b22feb06cabe83ba0e3268a7a8c0c486cf6f42427ab41814e69242f919b25bc7de06ea258&amp;scene=21#wechat_redirect" target="_blank" rel="external">论文翻译</a>。</p>
+<p>生成 DSL 后，通过compiler编译成三端代码 UI -&gt; DSL -&gt; Code。</p>
+<p>其中compile过程，就是替换DSL描述到实际控件的过程，这些实际控件的属性和布局位置信息全是写死的，存在放dsl-mapping文件中，以其中一个控件为例，对照关系如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&quot;check&quot;: </div><div class="line">&quot;&lt;CheckBox android:id=\&quot;@+id/[ID]\&quot; </div><div class="line">	android:layout_width=\&quot;wrap_content\&quot; </div><div class="line">	android:layout_height=\&quot;wrap_content\&quot; </div><div class="line">	android:paddingRight=\&quot;10dp\&quot; </div><div class="line">	android:text=\&quot;[TEXT]\&quot;/&gt;&quot;,</div></pre></td></tr></table></figure>
+<p>所以pix2code的核心是通过机器学习得到对应布局的DSL，compiler 是规则替换的过程。</p>
+<h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><p>pix2code具有70%左右的准确率， 基于该项目，西安交大通过一些优化使准确率进一步提高。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images4E51A20B-550F-4016-94FF-9C718DDA2B2F.png" alt=""></p>
+<p>参考文章 <a href="https://www.jiqizhixin.com/articles/2018-11-05-12?from=synced&amp;keyword=pix2Code" target="_blank" rel="external">https://www.jiqizhixin.com/articles/2018-11-05-12?from=synced&amp;keyword=pix2Code</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>pix2code项目本身作为一个实验性质的项目，论证了GUI截图通过AI手段自动生成布局代码的可行性。 </p>
+<p>但是由于其也存在一些问题： </p>
+<ul>
+<li>模型准确率不高，修改模型或者重新构建模型成本高 </li>
+<li>中间过程不允许人工干预，其结果就是完整的DSL，人工干预是在DSL生成后 </li>
+<li>训练素材标准成本高，这也是深度学习都会碰到的一个实际问题 </li>
+<li>切割精准度不够，实际上它是以CNN网络提取图片特征，精准度不大达到像素级别的要求 </li>
+<li>控件位置和属性信息缺失，不能准确还原布局 </li>
+</ul>
+<p>基于以上调研分析，pix2code项目仅仅作为一个研究性项目进行开源，并不能实际使用在生产环境中，作者明确表述该项目和论文仅仅作为实验，并且不会再进行进一步的平台拓展。 </p>
+<p>我们可以探索在pix2code基础上，通过图像分析+pix2code控件识别 来进行UI2Code的工作。 </p>
+<p>后面会去调研下pixelToApp这个项目，其基于传统的计算机视觉识别技术进行代码生成。 </p>
+<p>参考：</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;mid=2650728064&amp;idx=1&amp;sn=adb744e599299916faa23545c2ab436e&amp;chksm=871b22feb06cabe83ba0e3268a7a8c0c486cf6f42427ab41814e69242f919b25bc7de06ea258&amp;scene=21#wechat_redirect" target="_blank" rel="external">https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;mid=2650728064&amp;idx=1&amp;sn=adb744e599299916faa23545c2ab436e&amp;chksm=871b22feb06cabe83ba0e3268a7a8c0c486cf6f42427ab41814e69242f919b25bc7de06ea258&amp;scene=21#wechat_redirect</a></li>
+<li><a href="http://www.zhuanzhi.ai/document/1be2e6712acd7e17ee46b66010be6cd8" target="_blank" rel="external">http://www.zhuanzhi.ai/document/1be2e6712acd7e17ee46b66010be6cd8</a></li>
+<li><a href="https://www.jiqizhixin.com/articles/2018-11-05-12?from=synced&amp;keyword=pix2Code" target="_blank" rel="external">https://www.jiqizhixin.com/articles/2018-11-05-12?from=synced&amp;keyword=pix2Code</a></li>
+<li><a href="https://www.leiphone.com/news/201702/qahhwz9mtCRPHEM3.html?uniqueCode=ZwcjmiJ45aW27ULB" target="_blank" rel="external">https://www.leiphone.com/news/201702/qahhwz9mtCRPHEM3.html?uniqueCode=ZwcjmiJ45aW27ULB</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzIzNjc1NzUzMw==&amp;mid=2247496681&amp;idx=3&amp;sn=885b227400bdc8c81d74feffcb1b6c5c&amp;scene=0#wechat_redirect" target="_blank" rel="external">https://mp.weixin.qq.com/s?__biz=MzIzNjc1NzUzMw==&amp;mid=2247496681&amp;idx=3&amp;sn=885b227400bdc8c81d74feffcb1b6c5c&amp;scene=0#wechat_redirect</a></li>
+</ul>
+<p>本文链接： <a href="http://w4lle.com/2019/05/22/UI2Code-0/">http://w4lle.com/2019/05/22/UI2Code-0/</a> </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;pix2code 项目通过机器学习，支持输入一张图片输出实际的布局代码，同时支持生成三端(Android、iOS、web)布局代码。&lt;/p&gt;
+&lt;p&gt;pix2code作为UI2Code的先驱项目，后续的相关项目或多或少的都有参考该项目的实现。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://w4lle.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>51信用卡 Android 架构演进实践</title>
     <link href="http://w4lle.com/2018/11/16/51credit-android-architecture/"/>
     <id>http://w4lle.com/2018/11/16/51credit-android-architecture/</id>
     <published>2018-11-16T03:24:10.000Z</published>
-    <updated>2018-11-16T03:36:21.000Z</updated>
+    <updated>2019-11-15T07:40:30.090Z</updated>
     
     <content type="html"><![CDATA[<p>随着业务的快速扩张，原本小作坊式的单个工程的开发模式越来与不能满足实际需求。早在两年多以前，51信用卡管家就向下沉淀出了单独的公用基础库，一些通用的功能组件和个别独立的业务被拆分成 SDK，形成了一套中型项目、多人并行的开发模式，也为未来组件化拆分做准备。</p>
 <a id="more"></a>
@@ -1755,78 +1832,6 @@
     
     
       <category term="其他" scheme="http://w4lle.com/tags/%E5%85%B6%E4%BB%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android计步</title>
-    <link href="http://w4lle.com/2016/06/26/step-counter/"/>
-    <id>http://w4lle.com/2016/06/26/step-counter/</id>
-    <published>2016-06-26T02:35:39.000Z</published>
-    <updated>2016-06-26T12:17:21.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>计步越来越成为人们的强需求，一般有手环计步，手表计步，手机计步等实现，这篇文章讨论下手机上实现计步的两种方案。</p>
-<h1 id="加速度传感器（gsensor）"><a href="#加速度传感器（gsensor）" class="headerlink" title="加速度传感器（gsensor）"></a>加速度传感器（gsensor）</h1><p>人在走路时，加速度传感器会形成一个类似正弦波形图，因此可以根据检测波峰波谷记步。见下图：</p>
-<p><img src="http://www.analog.com/library/analogDialogue/archives/44-06/AD44_06_FIG_03.jpg" alt=""></p>
-<p>可以分为几步进行：</p>
-<ol>
-<li>特征选取，由于手机在不同放置条件下三轴传感器会有不同的数据表现，所以 可以取三轴的平方和。</li>
-<li>滤波，由于得到的数据存在一定的噪音，我们需要过滤掉这些噪音得到比 较平滑的数据，一般有中值滤波和低通滤波。</li>
-<li>计步监测，我们一般采用判断峰谷值来决定是否是一次计步。</li>
-<li>动态阈值，采用判断峰谷值来记步需要动态的计算阈值，符合阈值标准才能算一次计步。</li>
-<li>步数矫正，人的步伐速度在200-2000ms之间，通过记录记步的时间戳，矫正步数。步伐间隔<200ms和>2000ms，认为是无效步数。</200ms和></li>
-</ol>
-<p>使用gsensor来计步可能会存在以下问题：</p>
-<ul>
-<li>续航问题，由于要不停的监测gsensor变化和计算，就会导致手机不会进入休眠状态，一直保持CPU的唤醒，这对于手机的续航可能会带来一定的影响。</li>
-<li>精度问题，计步算法需要不断的产品迭代，并且要有较好的步数矫正机制，短时间内不能做到优秀的计步功能。</li>
-<li>后台service保活问题，要保证后台可以实时统计步数需要后台服务一直运行，包括低内存防杀机制、自启机制等。</li>
-<li>对于一些锁屏自动关闭sensor的定制系统来说不可用。</li>
-</ul>
-<h1 id="计步传感器（step-sensor）"><a href="#计步传感器（step-sensor）" class="headerlink" title="计步传感器（step-sensor）"></a>计步传感器（step-sensor）</h1><p>相对于使用加速度传感器获取数据和计算实现计步的方式，通过计步传感器sensor监测或者读取计步数对于终端的续航能力有了很大的提高。</p>
-<p>在Android4.4（KITKAT）系统API提供了两种硬件计步传感器的支持，因为是硬件所以需要厂商支持。可以通过以下方式查看你的手机是否支持</p>
-<ul>
-<li><p>adb shell pm list features<br>如果有以下两项说明支持</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">feature:android.hardware.sensor.stepcounter</div><div class="line">feature:android.hardware.sensor.stepdetector</div></pre></td></tr></table></figure>
-</li>
-<li><p>代码检测Android4.4后更高并且有sensor支持</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isKitkatWithStepSensor</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// BEGIN_INCLUDE(iskitkatsensor)</span></div><div class="line">    <span class="comment">// Require at least Android KitKat</span></div><div class="line">    <span class="keyword">int</span> currentApiVersion = android.os.Build.VERSION.SDK_INT;</div><div class="line">    <span class="comment">// Check that the device supports the step counter and detector sensors</span></div><div class="line">    PackageManager packageManager = getActivity().getPackageManager();</div><div class="line">    <span class="keyword">return</span> currentApiVersion &gt;= android.os.Build.VERSION_CODES.KITKAT</div><div class="line">            &amp;&amp; packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER)</div><div class="line">            &amp;&amp; packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_DETECTOR);</div><div class="line">    <span class="comment">// END_INCLUDE(iskitkatsensor)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>在使用前需要声明权限</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;uses-feature android:name=<span class="string">"android.hardware.sensor.stepcounter"</span> /&gt;</div><div class="line">&lt;uses-feature android:name=<span class="string">"android.hardware.sensor.stepdetector"</span> /&gt;</div></pre></td></tr></table></figure>
-<ol>
-<li><p>TYPE_STEP_COUNTER<br>API的解释说返回从开机被激活后统计的步数，当重启手机后该数据归零，该传感器是一个硬件传感器所以它是低功耗的。为了能持续的计步，请不要反注册事件，就算手机处于休眠状态它依然会计步。当激活的时候依然会上报步数。该sensor适合在长时间的计步需求。</p>
-</li>
-<li><p>TYPE_STEP_DETECTOR<br>翻译过来就是走路检测，API文档也确实是这样说的，该sensor只用来监监测走步，每次返回数字1.0。如果需要长事件的计步请使用TYPE_STEP_COUNTER。</p>
-</li>
-</ol>
-<p>用法比较简单，实现比较方便，由于我们需要长时间的计步，所以一般我们采用<code>TYPE_STEP_COUNTER</code>。<br>优点：</p>
-<ul>
-<li>精度相对来说精确。</li>
-<li>低功耗，对手机续航基本没有影响。</li>
-<li>不需要后台服务持续唤醒，所以不需要后台保活。</li>
-<li>实现简单。</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>手机必须要Android4.4及以上版本，并且内置计步sensor硬件</li>
-<li>并不像iOS的M7协处理器记录每天各个时段的计步数据，step counter sensor记录从开机以来所有的步数，每日计步数需要自己维护。</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总结来说，如果用g-sensor来实现计步会保证良好的兼容性，排除锁屏自动关闭sensor的定制系统除外，基本所有的Android手机都可以使用，但是需要一定时间的算法调试和后台保活机制的健全保证，开发周期较长；如果项目需求开发周期较短，并且没有强制性的全机型兼容，那么可以考虑使用step-sensor，优点比较明显，而且使用协处理器代替纯软件计算实现计步监测已经是大势所趋。另外以上两种方案都需要开机自启权限。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.wujiame.com/blog/2013/12/27/pedometer/" target="_blank" rel="external">如何在手机上实现高精度及自适应多种场景的计步器算法</a><br><a href="https://github.com/johnjohndoe/Android-Developers-Samples/tree/master/BatchStepSensor" target="_blank" rel="external">Android-Developers-Samples-BatchStepSensor</a><br><a href="http://www.analog.com/library/analogDialogue/china/archives/44-06/pedometer.html" target="_blank" rel="external">利用3轴数字加速度计实现功能全面的计步器设计</a></p>
-<p>本文链接： <a href="http://w4lle.com/2016/06/26/step-counter/">http://w4lle.com/2016/06/26/step-counter/</a> </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;计步越来越成为人们的强需求，一般有手环计步，手表计步，手机计步等实现，这篇文章讨论下手机上实现计步的两种方案。&lt;/p&gt;
-&lt;h1 id=&quot;加速
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
