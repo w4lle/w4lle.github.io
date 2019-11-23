@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2019-11-23T14:04:15.907Z</updated>
+  <updated>2019-11-23T15:54:55.012Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -16,11 +16,127 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>flutter-project-manage</title>
+    <link href="http://w4lle.com/2019/11/23/flutter-project-manage/"/>
+    <id>http://w4lle.com/2019/11/23/flutter-project-manage/</id>
+    <published>2019-11-23T14:11:04.000Z</published>
+    <updated>2019-11-23T15:54:55.012Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致，实现细节不详细阐述。</p>
+<a id="more"></a>
+<h1 id="Flutter-工程类型"><a href="#Flutter-工程类型" class="headerlink" title="Flutter 工程类型"></a>Flutter 工程类型</h1><p>Flutter工程中，通常有以下几种工程类型，下面分别简单概述下：</p>
+<p><strong>1. Flutter Application</strong></p>
+<p>​    纯净的Flutter App工程，包含标准的Dart层与Native平台层(android/&amp;ios/)</p>
+<p><strong>2. Flutter Module</strong></p>
+<p>​    Flutter模块工程，仅包含Dart层实现，Native平台子工程的作用是构建Flutter产物，是通过Flutter自动生成的隐藏工程（.android/&amp;.ios/）</p>
+<p><strong>3. Flutter Plugin</strong></p>
+<p>​    Flutter平台插件工程，包含Dart层与Native平台层的实现(android/&amp;ios/)，往外提供API接口</p>
+<p><strong>4. Flutter Package</strong></p>
+<p>​    Flutter纯Dart插件工程，仅包含Dart层的实现，往往定义一些公共Widget</p>
+<p>接入Flutter工程的两种方式：</p>
+<ol>
+<li>源码集成，在原生项目中Flutter作为lib直接嵌入Flutter代码，编译过程需要依赖Flutter环境，每个开发都需要配置Flutter开发环境，适合全新项目</li>
+<li>Flutter项目作为子项目module，生成aar后由原生App依赖，对于App来说屏蔽了Flutter开发环境，在原有环境中即可打包，对App开发来说屏蔽了Flutter环境，适合已经App嵌入Flutter应用</li>
+</ol>
+<p>本文主要介绍第二种方式，由于Flutter官方并未提供完整的解决方案，所以接入过程中会碰到一些问题，这里给出一些解决思路供参考。</p>
+<p>创建一个flutter module：</p>
+<p>flutter create -t module –org com.example my_flutter</p>
+<p>工程结构：</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesD099FCC6-82A2-4170-A8A1-43C90F44CB65.png" alt=""></p>
+<h1 id="FlutterModule-构建-Aar"><a href="#FlutterModule-构建-Aar" class="headerlink" title="FlutterModule 构建 Aar"></a>FlutterModule 构建 Aar</h1><p>flutter build aar</p>
+<p>但是这个命令在Flutter v1.7.8版本中会提示找不到这个命令，估计是dev版本新加入的，还没有stable。</p>
+<p>19个小时前加入的 <a href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps/_compare/1f606754ee0b18d9970e5fdd7b14d8a6df8d2d72...d648f6b063a0ab7ad4eaf0546e90b1cc75b9d58b" target="_blank" rel="external">https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps/_compare/1f606754ee0b18d9970e5fdd7b14d8a6df8d2d72...d648f6b063a0ab7ad4eaf0546e90b1cc75b9d58b</a></p>
+<p>即使没有这个命令，也可以使用./gradlew assembleDebug进行编译，结果是一样的。</p>
+<p>如果使用flutter build aar命令，Flutter官方给出的结果是，本地作为localmaven，生成的结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">build/host/outputs/repo</div><div class="line"></div><div class="line">└── com</div><div class="line"></div><div class="line">└── example</div><div class="line"></div><div class="line">└── my_flutter</div><div class="line"></div><div class="line">└── flutter_release</div><div class="line"></div><div class="line">├── 1.0</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.aar</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.aar.md5</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.aar.sha1</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.pom</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.pom.md5</div><div class="line"></div><div class="line">│   └── flutter_release-1.0.pom.sha1</div><div class="line"></div><div class="line">├── maven-metadata.xml</div><div class="line"></div><div class="line">├── maven-metadata.xml.md5</div><div class="line"></div><div class="line">└── maven-metadata.xml.sha1</div></pre></td></tr></table></figure>
+<p>Flutter v1.2版本之后Flutter产物自动会打包到aar中，具体脚本见 flutter.gradle，主要做了三件事情：</p>
+<ol>
+<li>选择符合对应架构的Flutter引擎（flutter.so）</li>
+<li>解析 .flutter-plugins文件，把Flutter对应的android module动态添加到Native工程的依赖中，即动态添加implementation依赖，这块后面会详细讲</li>
+<li>Hook mergeAssets/processResources Task，预先执行FlutterTask，调用flutter命令编译Dart层代码构建出flutter_assets产物，并拷贝到assets目录下</li>
+</ol>
+<p>基于Flutter v1.7.8，编译产物 Debug版本</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images0517FC2D-73DC-4597-A471-8F87E51420B0.png" alt=""></p>
+<p>Release版本 </p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesCB70BFBA-A021-4D0C-9614-395D366BF292.png" alt=""></p>
+<p>在Flutter v1.7之前，Release的产物如下：</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagese21cd2440bca39a70b30abedaaba4e3be5e090e4.png" alt=""></p>
+<p>也就是说Flutter的编译产物，<strong>从四个二进制文件变成了一个 libapp.so 文件</strong>。</p>
+<p>这里也涉及到so兼容arm的问题，之前把libflutter.so拷贝到arm目录下即可，现在编译出的libapp.so拷贝过去是有问题的，解决办法可以参考 <a href="https://github.com/lizhangqu/plugin-flutter-armeabi" target="_blank" rel="external">这个项目</a>。</p>
+<p>如果在Flutter module 中依赖了Flutter Plugin，那么在App中依赖Flutter module编译出的aar时，会报错，例如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ERROR: Unable to resolve dependency <span class="keyword">for</span> <span class="string">':app@debug/compileClasspath'</span>: Could not resolve io.flutter.plugins.sharedpreferences:shared_preferences:<span class="number">1.0</span>-SNAPSHOT. </div><div class="line"></div><div class="line">Show Details</div><div class="line"></div><div class="line">Affected Modules: app</div></pre></td></tr></table></figure>
+<p>下面会分析下为什么会报错。</p>
+<h1 id="Flutter-Plugin依赖原理"><a href="#Flutter-Plugin依赖原理" class="headerlink" title="Flutter Plugin依赖原理"></a>Flutter Plugin依赖原理</h1><p>以Flutter Module为例，看下Flutter Plugin依赖的原理。</p>
+<h2 id="flutter-package-get"><a href="#flutter-package-get" class="headerlink" title="flutter package get"></a>flutter package get</h2><p>当Flutter Module在pub中依赖了Flutter Plugin，并且在 flutter package get后，会从远程pubserver拉取依赖的Flutter Plugin，并生成一个文件记录依赖了哪些Flutter Plugin，名字为： <code>.flutter-plugins</code>，内容为 k-v，如：</p>
+<p><code>flutter_webview_plugin=/Users/wanglinglong/Develop/flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_webview_plugin-0.3.5/</code></p>
+<p>被拉取到本地后的Flutter Plugin目录如下</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesimage2019-8-6%2011-51-21.png" alt=""></p>
+<h2 id="动态依赖"><a href="#动态依赖" class="headerlink" title="动态依赖"></a>动态依赖</h2><p>然后在.android/app/settings.gradle 文件中添加配置脚本，使其在Gradle初始化之后执行解析操作:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rootProject.name = <span class="string">'android_generated'</span></div><div class="line">setBinding(<span class="keyword">new</span> Binding([gradle: <span class="keyword">this</span>]))</div><div class="line">evaluate(<span class="keyword">new</span> File(settingsDir, <span class="string">'include_flutter.groovy'</span>))</div></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesimage2019-8-2%2015-19-48.png" alt=""></p>
+<p>这个脚本的作用是控制配置(evaluate)顺序，操作是解析.flutter-plugins，得到各个插件的android工程，使其在.android/Flutter 配置完成之后再进行配置解析。Gradle配置阶段的目标是解析每个project中的build.gradle。</p>
+<p>然后在.android/Flutter/build.gradle中依赖 </p>
+<p><code>apply from: &quot;$flutterRoot/packages/flutter_tools/gradle/flutter.gradle&quot;</code></p>
+<p>这个文件中同样解析.flutter-plugins文件，遍历后一个一个 implementation 到./android/Flutter module工程里完成依赖。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesimage2019-8-2%2015-22-42.png" alt=""></p>
+<p>所以在Native层面来看这种依赖其实是本地依赖，只不过Flutter Plugin工程路径都在Flutter的环境变量下的缓存目录中。</p>
+<p>这里的依赖分成两个部分，一部分是原生Native依赖，一部分是Dart依赖。</p>
+<p>对于原生部分，Flutter Plugin作为lib被Flutter Module本地依赖，根据Android 编译常识，在打包Aar后，这些<strong>本地依赖的工程lib不能被一起打到Aar中</strong>。</p>
+<p>所以当App中依赖Flutter Module的产物Aar时，不能获得Flutter Module 中依赖的Flutter Plugin Android原生依赖，最终会报错。</p>
+<p>对于Dart部分，通过pub进行管理依赖，相当于源码依赖，在打包时，这些Plugin的Dart源码部分都参与打包，最终生成Flutter的构建产物。</p>
+<p>Flutter Module打包成Aar后，Aar中包含Android原生部分编译产物和Flutter Dart部分编译产物，后面App依赖该Aar后就可以脱离Flutter的编译环境，直接进行apk打包了。</p>
+<p>那么如何解决Aar报错的问题？</p>
+<h1 id="Flutter-module-依赖-Flutter-Plugin"><a href="#Flutter-module-依赖-Flutter-Plugin" class="headerlink" title="Flutter module 依赖 Flutter Plugin"></a>Flutter module 依赖 Flutter Plugin</h1><p>已有方案大致原理都是收集Flutter Plugin 的Aar文件，然后进一步处理。</p>
+<p><strong>方案一：</strong></p>
+<p>使用 fat-aar，大致原理就是将所有的Flutter Plugin打包到同一个Aar中，这个方案比较臃肿，还可能涉及到gradle版本适配，而且可能产生多次依赖的问题。不建议使用。</p>
+<p><strong>方案二：</strong></p>
+<p>遍历所有依赖的Flutter Plugin，搜集Plugin Android工程下的Aar产物并copy到Flutter Module指定目录下，然后再push maven。</p>
+<p><strong>方案三：</strong></p>
+<p>遍历所有依赖的Flutter Plugin，根据Plugin版本信息，挨个打包成上传到maven。</p>
+<p>由于公司内之前碰到到相关需求场景，即同一工程下多个Module如何统一管理的问题，最后解决方案就是使用的方案三，这里依然采用方案三，相比其他两种方案更稳定。</p>
+<p>iOS 思路相同，打包成framework后上传到CDN，通过Pod进行依赖管理。</p>
+<p>看下实现：</p>
+<p>首先在.andorid/Flutter/build.gradle中依赖脚本 <code>apply from: &#39;./publish_flutter_plugin.gradle&#39;</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">def flutterUpload = gradle.rootProject.project(<span class="string">':flutter'</span>).tasks.getByName(uploadTaskName)</div><div class="line">gradle.rootProject.ext.pluginList.each &#123; name -&gt;</div><div class="line">    project.afterEvaluate &#123;</div><div class="line">        project.apply plugin: <span class="string">'com.u51.publish'</span></div><div class="line">        <span class="comment">// 修改插件库对插件库的本地依赖为pom依</span></div><div class="line">        modifyPom &#123; pom -&gt;</div><div class="line">            pom.dependencies.findAll &#123; dep -&gt;</div><div class="line">                <span class="keyword">if</span> (rootProject.ext.pluginList.contains(dep.artifactId)) &#123;</div><div class="line">                    dep.groupId = rootProject.ext.groupId</div><div class="line">                    dep.version = rootProject.ext.pluginMap[dep.artifactId]</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 设定插件本地库发布坐标版本号</span></div><div class="line">        project.publish &#123;</div><div class="line">            groupId rootProject.ext.groupId</div><div class="line">            version rootProject.ext.pluginMap[name]</div><div class="line">            artifactId name</div><div class="line">            compileEnvCheck <span class="keyword">false</span></div><div class="line">            sources <span class="keyword">true</span></div><div class="line">        &#125;</div><div class="line">        <span class="comment">// flutter库 upload在插件本地库均upload完成后</span></div><div class="line">        <span class="keyword">if</span> (pluginUploadTask != <span class="keyword">null</span>&amp;&amp;node==<span class="keyword">null</span>) &#123;</div><div class="line">            flutterUpload.dependsOn(pluginUploadTask)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另外这种方案兼容持续集成环境，对于Native层面来讲，无需做任何改动。</p>
+<h1 id="Flutter-Plugin-依赖-Flutter-Plugin"><a href="#Flutter-Plugin-依赖-Flutter-Plugin" class="headerlink" title="Flutter Plugin 依赖 Flutter Plugin"></a>Flutter Plugin 依赖 Flutter Plugin</h1><p>上面提到的是Flutter module依赖Flutter Plugin的情况，那么如果是Flutter Plugin工程依赖Flutter Plugin工程有没有问题？</p>
+<p>先看下Flutter Plugin的项目结构 <code>flutter create --template=plugin -i swift -a kotlin flutter_plugin</code></p>
+<p>在example下运行 flutter run命令，就可以跑起来了。</p>
+<p>看下编译产物，其中Aar中只有原生的编译产物，并无Dart编译产物。</p>
+<p>所以Flutter Plugin需要被pub依赖，pub将发布到远程的库下载到本地，然后在工程中</p>
+<ul>
+<li>原生部分，Flutter Module通过上述方案动态添加maven 依赖</li>
+<li>Dart部分，Flutter Module通过pub依赖找到Dart源码，在Flutter Module中import引入，相当于源码依赖，共同参与编译，生成最终的 Dart产物</li>
+</ul>
+<p>上面的场景都是Flutter Module(Flutter Application)依赖Flutter Plugin的情况，那么Flutter Plugin能不能依赖Flutter Plugin，会不会有问题？</p>
+<p>首先Dart部分由于是pub依赖，相当于源码依赖，是没有问题的。</p>
+<p>原生部分，由于Flutter Plugin在原生部分没有引入include_flutter.groovy(Android)，所以宿主Flutter Pugin无法动态include到子Flutter Plugin，找不到依赖。</p>
+<p>解决办法就是再给它加上，方法同上。</p>
+<h1 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h1><p>总结来说，对于 Flutter 来讲只有 Flutter Module 和 Flutter Application编译会生成Dart编译产物，而Flutter Application我们基本不用考虑。</p>
+<p>所以很自然的得出结论，我们可以把Flutter Module作为隔离层，作为Flutter层的聚合统一输出给 App，App 工程只需通过 maven or Pod 依赖Flutter Module即可。</p>
+<p>其余的Flutter相关依赖操作都交给Flutter Module。</p>
+<p>Flutter Module可以看成是Flutter层到Native层的双向关联。</p>
+<p>未完待续。。</p>
+<p>本文链接： <a href="http://w4lle.com/2019/11/23/flutter-project-manage/">http://w4lle.com/2019/11/23/flutter-project-manage/</a> </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致，实现细节不详细阐述。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Flutter" scheme="http://w4lle.com/tags/Flutter/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Flutter 混合栈管理</title>
-    <link href="http://w4lle.com/2019/11/23/flutter-hybrid-stack/"/>
-    <id>http://w4lle.com/2019/11/23/flutter-hybrid-stack/</id>
-    <published>2019-11-23T10:42:54.000Z</published>
-    <updated>2019-11-23T14:04:15.907Z</updated>
+    <link href="http://w4lle.com/2019/11/22/flutter-hybrid-stack/"/>
+    <id>http://w4lle.com/2019/11/22/flutter-hybrid-stack/</id>
+    <published>2019-11-22T10:42:54.000Z</published>
+    <updated>2019-11-23T14:09:49.086Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Flutter-混合栈管理"><a href="#Flutter-混合栈管理" class="headerlink" title="Flutter 混合栈管理"></a>Flutter 混合栈管理</h1><p>本文主要聊一下 Flutter 混合栈，由于 Flutter 版本跨度较大，所以 Flutter API 也有很大变化，下文中前几个方案的实现看看就好，不用深究。重点关注兼容目前 Flutter 版本(v1.9.1) 的实现。本文以 Android 平台为例进行讲解。</p>
 <a id="more"></a>
@@ -256,7 +372,7 @@
 </li>
 <li><a href="https://zhuanlan.zhihu.com/p/38026271" target="_blank" rel="external">为追求高性能，我必须告诉你Flutter引擎线程的事实</a></li>
 </ul>
-<p>本文链接： <a href="http://w4lle.com/2019/11/23/flutter-hybrid-stack/">http://w4lle.com/2019/11/23/flutter-hybrid-stack/</a> </p>
+<p>本文链接： <a href="http://w4lle.com/2019/11/22/flutter-hybrid-stack/">http://w4lle.com/2019/11/22/flutter-hybrid-stack/</a> </p>
 ]]></content>
     
     <summary type="html">
@@ -2168,57 +2284,6 @@
     
     
       <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo Material主题</title>
-    <link href="http://w4lle.com/2016/11/17/hexo-theme-material/"/>
-    <id>http://w4lle.com/2016/11/17/hexo-theme-material/</id>
-    <published>2016-11-17T02:41:20.000Z</published>
-    <updated>2016-11-28T14:24:29.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Material"><a href="#Material" class="headerlink" title="Material"></a>Material</h1><p>最近把博客主题换成了<a href="https://github.com/viosey/hexo-theme-material" target="_blank" rel="external">Material</a>，该主题刚刚上线，效果还不错。</p>
-<p>需要把以前的配置迁移一下，包括留言之类的。</p>
-<h1 id="多说评论"><a href="#多说评论" class="headerlink" title="多说评论"></a>多说评论</h1><p>由于之前用的NexT主题，多说后台每篇文章的thread-key是根据NexT主题来的，现在Material主题的多说配置文件如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div id="comments"&gt;</div><div class="line">    &lt;!-- 多说评论框 start --&gt;</div><div class="line">        &lt;div class="ds-thread" data-thread-key="&lt;% if(theme.comment.duoshuo_thread_key == "id")&#123; %&gt;&lt;%= page.id %&gt;&lt;% &#125; else &#123; %&gt;&lt;%= page.path %&gt;&lt;% &#125; %&gt;" data-url="&lt;%= config.url+ config.root + url_for(path) %&gt;"&gt;&lt;/div&gt;</div><div class="line">    &lt;!-- 多说评论框 end --&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-<p>duoshuo_thread_key配成了page.title，就导致我们找不到多说后台的数据。</p>
-<p>所以要找到NexT主题相关多说的配置。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd themes/next/layout</div><div class="line">grep -ri <span class="string">"thread-key"</span> .<span class="comment">/*</span></div></pre></td></tr></table></figure>
-<p>结果：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">./_macro/post.swig:                  &lt;span class="post-comments-count ds-thread-count" data-thread-key="&#123;&#123; post.path &#125;&#125;" itemprop="commentsCount"&gt;&lt;/span&gt;</div><div class="line">./_partials/comments.swig:      &lt;div class="ds-thread" data-thread-key="&#123;&#123; page.path &#125;&#125;"</div><div class="line">./_partials/share/duoshuo_share.swig:&lt;div class="ds-share flat" data-thread-key="&#123;&#123; page.path &#125;&#125;"</div></pre></td></tr></table></figure>
-<p>可以看到NexT配置的是page.path。那么我们找到Material主题的thread-key替换下就好了。主要就是两个地方:</p>
-<ul>
-<li>./layout/_widget/duoshuo.ejs 文章评论内容</li>
-<li>./layout/_partial/Paradox-post_entry.ejs 首页显示评论数</li>
-</ul>
-<p>都修改下就能正常显示以前的评论了。</p>
-<h1 id="每日一图"><a href="#每日一图" class="headerlink" title="每日一图"></a>每日一图</h1><p>Material主题首页有个每日图片，默认是写死的。我们可以改为动态的，使用了bing的每日图片，是一位开发者抓取的然后提供的一个api，地址：<a href="https://i-meto.com/bing-api/" target="_blank" rel="external">必应美图 API</a></p>
-<p>使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">./_partial/daily_pic.ejs</div><div class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"mdl-card__media mdl-color-text--grey-50"</span> style=<span class="string">"background-image:url(https://api.i-meto.com/bing)"</span>&gt;</div></pre></td></tr></table></figure>
-<h1 id="backgroud"><a href="#backgroud" class="headerlink" title="backgroud"></a>backgroud</h1><p>同上背景图也可以设置成bing的图片。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">config_css.ejs</div><div class="line">&lt;% if(theme.background.bing.enable == true)&#123; %&gt;</div><div class="line">	&lt;style&gt;</div><div class="line">		body&#123;</div><div class="line">            background-image: url(https://api.i-meto.com/bing?&lt;%= theme.background.bing.parameter %&gt;);</div><div class="line">        &#125;</div><div class="line">	&lt;/style&gt;</div></pre></td></tr></table></figure>
-<p>config配置文件</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># Background Settings</div><div class="line"># bing available parameter:</div><div class="line">#     new | color= | type=</div><div class="line">#         color available value: black, blue, brown, green, multi, orange, pink, purple, red, white, yellow</div><div class="line">#         type available value: A (animal), C (culture), N (nature), S (space), T (travel)</div><div class="line">background:</div><div class="line">    purecolor: "#F5F5F5"</div><div class="line">    bgimg: blur</div><div class="line">    bing:</div><div class="line">        parameter: color=white</div><div class="line">        enable: true</div></pre></td></tr></table></figure>
-<h1 id="不算子统计"><a href="#不算子统计" class="headerlink" title="不算子统计"></a>不算子统计</h1><p>站点统计<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">footer.ejs</div><div class="line">		&lt;div&gt;</div><div class="line">		&lt;script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"&gt;&lt;/script&gt;</div><div class="line">		&lt;div&gt;</div><div class="line">		本站总访问量 &lt;span id="busuanzi_value_site_pv"&gt;&lt;/span&gt; &amp;nbsp&amp;nbsp&amp;nbsp</div><div class="line">		你是第&lt;span id="busuanzi_value_site_uv"&gt;&lt;/span&gt;个来到的小伙伴</div><div class="line">		&lt;/div&gt;</div><div class="line">		&lt;/div&gt;</div></pre></td></tr></table></figure></p>
-<h1 id="文章摘要"><a href="#文章摘要" class="headerlink" title="文章摘要"></a>文章摘要</h1><p>有两种方式设置：</p>
-<ol>
-<li>写死固定大小</li>
-<li>more标签<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">以上是摘要</div><div class="line">&lt;!--more--&gt;</div><div class="line">以下是余下全文</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>推荐第二种</p>
-<p>本文链接： <a href="http://w4lle.com/2016/11/17/hexo-theme-material/">http://w4lle.com/2016/11/17/hexo-theme-material/</a> </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Material&quot;&gt;&lt;a href=&quot;#Material&quot; class=&quot;headerlink&quot; title=&quot;Material&quot;&gt;&lt;/a&gt;Material&lt;/h1&gt;&lt;p&gt;最近把博客主题换成了&lt;a href=&quot;https://github.com/viosey/h
-    
-    </summary>
-    
-    
-      <category term="Hexo" scheme="http://w4lle.com/tags/Hexo/"/>
     
   </entry>
   
