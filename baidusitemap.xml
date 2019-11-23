@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://w4lle.com/2019/11/23/flutter-hybrid-stack/</loc>
+    <lastmod>2019-11-23T14:04:15.907Z</lastmod>
+    <data>
+        <display>
+        <title>Flutter 混合栈管理</title>
+        <pubTime>2019-11-23T10:42:54.000Z</pubTime>
+        
+        <tag>Flutter</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://w4lle.com/2019/04/08/UI2Code-2/</loc>
     <lastmod>2019-11-15T13:15:44.494Z</lastmod>
     <data>
@@ -641,15 +658,13 @@
 
     
   <url>
-    <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>
+    <loc>http://w4lle.com/2016/01/28/hello-world/</loc>
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     <data>
         <display>
-        <title>Android Color位移操作</title>
-        <pubTime>2016-05-22T09:53:01.000Z</pubTime>
+        <title>Hello World</title>
+        <pubTime>2016-01-27T16:00:00.000Z</pubTime>
         
-        <tag>Android</tag>
-         
          
            
         </display>
@@ -659,13 +674,15 @@
     
     
   <url>
-    <loc>http://w4lle.com/2016/01/28/hello-world/</loc>
+    <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     <data>
         <display>
-        <title>Hello World</title>
-        <pubTime>2016-01-27T16:00:00.000Z</pubTime>
+        <title>Android Color位移操作</title>
+        <pubTime>2016-05-22T09:53:01.000Z</pubTime>
         
+        <tag>Android</tag>
+         
          
            
         </display>
