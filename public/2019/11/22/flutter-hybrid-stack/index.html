@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            Flutter 混合栈管理 | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="Flutter 混合栈管理本文主要聊一下 Flutter 混合栈，由于 Flutter 版本跨度较大，所以 Flutter API 也有很大变化，下文中前几个方案的实现看看就好，不用深究。重点关注兼容目前 Flutter 版本(v1.9.1) 的实现。本文以 Android 平台为例进行讲解。">
+    <meta name="keywords" content="Android,Flutter">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Flutter 混合栈管理 | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="Flutter 混合栈管理本文主要聊一下 Flutter 混合栈，由于 Flutter 版本跨度较大，所以 Flutter API 也有很大变化，下文中前几个方案的实现看看就好，不用深究。重点关注兼容目前 Flutter 版本(v1.9.1) 的实现。本文以 Android 平台为例进行讲解。">
+    <meta property="og:article:tag" content="Flutter"> 
+
+    
+        <meta property="article:published_time" content="Fri Nov 22 2019 18:42:54 GMT+0800" />
+        <meta property="article:modified_time" content="Sun Nov 24 2019 10:58:54 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="Flutter 混合栈管理 | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="Flutter 混合栈管理本文主要聊一下 Flutter 混合栈，由于 Flutter 版本跨度较大，所以 Flutter API 也有很大变化，下文中前几个方案的实现看看就好，不用深究。重点关注兼容目前 Flutter 版本(v1.9.1) 的实现。本文以 Android 平台为例进行讲解。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2019/11/22/flutter-hybrid-stack/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2019/11/22/flutter-hybrid-stack/index.html",
+    "headline": "Flutter 混合栈管理",
+    "datePublished": "Fri Nov 22 2019 18:42:54 GMT+0800",
+    "dateModified": "Sun Nov 24 2019 10:58:54 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",FlutterAndroid",
+    "description": "Flutter 混合栈管理本文主要聊一下 Flutter 混合栈，由于 Flutter 版本跨度较大，所以 Flutter API 也有很大变化，下文中前几个方案的实现看看就好，不用深究。重点关注兼容目前 Flutter 版本(v1.9.1) 的实现。本文以 Android 平台为例进行讲解。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191123185156.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                Flutter 混合栈管理
+            </p>
+            <h1 id="Flutter-混合栈管理"><a href="#Flutter-混合栈管理" class="headerlink" title="Flutter 混合栈管理"></a>Flutter 混合栈管理</h1><p>本文主要聊一下 Flutter 混合栈，由于 Flutter 版本跨度较大，所以 Flutter API 也有很大变化，下文中前几个方案的实现看看就好，不用深究。重点关注兼容目前 Flutter 版本(v1.9.1) 的实现。本文以 Android 平台为例进行讲解。</p>
+<a id="more"></a>
+<p>系列文章：</p>
+<ul>
+<li><a href="http://w4lle.com/2019/11/22/flutter-hybrid-stack/">Flutter 混合栈管理</a></li>
+<li><a href="http://w4lle.com/2019/11/23/flutter-project-manage/">Flutter 工程架构</a></li>
+</ul>
+<h1 id="为什么需要混合栈？"><a href="#为什么需要混合栈？" class="headerlink" title="为什么需要混合栈？"></a>为什么需要混合栈？</h1><p>在讨论 Flutter 之前，先看下 Weex 及 H5 Hybrid 如何处理多实例问题的。</p>
+<p>对于Weex，其引入了 JavaScript 通过JS Runtime 完成动态运算，再把运算结果和Native客户端进行通信，完成真实ViewTree的构建、渲染等操作指令。</p>
+<p>而当客户端面对多个 Weex 页面时，为了性能方面的考虑，并没有为每个 Weex 页面提供各自独立的 JS Runtime，相反只有一个 JS Runtime，这意味着所有的 Weex 页面共享同一份 JS Runtime，共用全局环境、变量、内存、和外界通信的接口等等。</p>
+<p>所以我们可以看到，Weex初始化过程中，只需要初始化一次 JS Framework(weex-jsfm.js)，后面每次打开新的Weex页面都不必重新初始化。</p>
+<p>为了隔离Weex独立页面的运行环境，在Native层面，每打开一个Weex页面，都会有一个唯一的WXSDKInstance，其中持有唯一InstanceId，在与JS双向通信过程中，每端都要携带InstanceId，例如声明周期调用：</p>
+<ul>
+<li><code>createInstance(id, code, ...)</code>：：创建一个新的 Weex 页面，通过一整段 Weex JS Bundle 的代码，在 JS Runtime 开辟一块新的空间用来存储、记录和运算</li>
+<li><code>refreshInstance(id, data)</code>：更新这个 Weex 页面的“顶级”根组件的数据</li>
+<li><code>destroyInstance(id)</code>：销毁</li>
+</ul>
+<p>指令调用：</p>
+<ul>
+<li><code>sendTasks(id, tasks)</code>：发送指令</li>
+<li><code>receiveTasks(id, tasks)</code>：接受指令</li>
+</ul>
+<p>而在 JS Runtime中，每个InstanceId都有一份独立的运算和数据状态等与客户端相对应，JS通过闭包将其隔离在不同的闭包里，达到隔离的目的。</p>
+<p>对于需要共享的数据，则不用InstanceId做对应，如WeexSDK初始化过程中的各种 registe：</p>
+<ul>
+<li><code>registerComponents(xxcomponent)</code> ： 注册视图组件</li>
+<li><code>registerModules(xxmodule)</code>：注册功能模块</li>
+</ul>
+<p>对应Native端代码 <code>mWXBridge.execJS(&quot;&quot;, null, METHOD_REGISTER_XX, args);</code> ，第一个字段即InstanceId为空。这样即可在全局范围内查找并使用已测试的组件和模块，而不需要每个实例分别注册。</p>
+<p>再看下 H5 Hybrid 混合开发，H5的容器是webview，可以在一个webview中管理所有H5页面，有点类似目前Flutter的方式；性能方面，Android平台来讲，从 Android 7.0开始，webview可选作为独立进程，Android8.0开始默认开启多进程模式，所以，即使App内打开多个webview也不会导致性能下降的很厉害。</p>
+<p>而Flutter一开始的设计就是为了纯净的Flutter应用设计的，纯Flutter应用整个运行生命周期都只有一个FlutterView和Root Isolate，依靠Flutter Framework自身Route支持在FlutterView内部完成界面跳转，类似webview。借用一张图，在新版上有些变化，但大体相通。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191123170804.png" alt=""></p>
+<p>而 Isolate 之间在内存上是隔离的，这个隔离跟上面讲的Weex Instance隔离是两回事情。</p>
+<p>Weex Instance隔离可以认为是两个内部类之间的隔离关系（实际是闭包），它们可以通过共同的外部类（一个比喻）来进行通信，可以共用同一份全局变量，也就是说它们之间是可以做到共用内存进行通信的。</p>
+<p>而Isolate则是彻底的内存隔离，两个Isolate之间不存在内存上通信的可能性，只能通过第三方介入才可以通信。</p>
+<p>试想一种情况，我们在多个页面Widget之间不能直接通信，并且像InheritedWidget也不能做到多Widget数据共享，而我们知道Flutter中的状态管理很大一部分方案都是依赖InheritedWidget来做数据共享的，这就相当于直接废弃了Flutter原生状态管理，得从Native绕道过来通信啦，这对开发来说体验太糟糕。</p>
+<p>更重要的是对资源的占用，FlutterEngine运行环境初始就会占用很大内存，通信通道也会创建多个，缓存空间也会有多份，而且每个Engine会存在四个线程（实际是三个）：</p>
+<ul>
+<li>Platform Task Runner 相当于主线程，跟Flutter Engine的所有交互（接口调用）必须发生在这里，所有Engine实例共享同一个Platform Runner</li>
+<li>UI Task Runner 用于执行 Root Isolate，对创建的对象和Widgets进行Layout并生成一个Layer Tree，处理来自Native Plugins的消息响应，Timers，Microtasks</li>
+<li>GPU Task Runner 被用于执行GPU指令调用</li>
+<li>IO Runner用于 IO 读写</li>
+</ul>
+<h1 id="Flutter-混合栈方案"><a href="#Flutter-混合栈方案" class="headerlink" title="Flutter 混合栈方案"></a>Flutter 混合栈方案</h1><p>总体来讲有几种种方案：</p>
+<ol>
+<li>多 Activity 多 FlutterView 方案，即多引擎方案</li>
+<li>共享 FlutterView，代表为闲鱼 <a href="https://github.com/FlutterRepo/hybrid_stack_manager" target="_blank" rel="external">hybrid_stack_manager</a></li>
+<li>共享 FlutterNativieView，代表为 <a href="https://juejin.im/post/5c419c07f265da616f703aa1" target="_blank" rel="external">微店</a></li>
+<li>共享 FlutterView升级版，代表为闲鱼 <a href="https://github.com/alibaba/flutter_boost" target="_blank" rel="external">Flutter_Boost</a></li>
+<li>共享 Isolate，代表为 <a href="https://www.msup.com.cn/share/details?id=226" target="_blank" rel="external">头条</a></li>
+</ol>
+<p>其实核心思想都是公用同一个 FlutterEngine，避免不必要的资源浪费，优化性能及页面跳转体验，并实现多端逻辑统一。</p>
+<p>下面会深入理解每个框架的实现细节。</p>
+<h2 id="多引擎方案"><a href="#多引擎方案" class="headerlink" title="多引擎方案"></a>多引擎方案</h2><p>多引擎方案即一系列连续Flutter页面对应一个Activity(VC)，类似于webview中打开h5，但是存在着本质上的区别。</p>
+<p>例如，我们进行下面一组导航操作：</p>
+<p><code>Flutter Page1 -&gt; Flutter Page2 -&gt; Native Page1 -&gt; Flutter Page3</code></p>
+<p>我们只需要在Flutter Page1和Flutter Page3创建不同的Flutter实例即可。</p>
+<p>这个方案的好处就是简单易懂，逻辑清晰，但是该方案也存在显著的问题：</p>
+<ul>
+<li>性能问题，每个FlutterView对应一个FlutterEngine，FlutterEngine随着FlutterView的增多而线性增多，而FlutterEngine本身是一个较重的对象。包括线程数量、图片缓存、内存缓存、消息通道等都是存在多份的</li>
+<li>通信问题，每个FlutterView对应的Isolate在内存上隔离，也就是说跨FlutterView的Widget间通信需要原生介入支持</li>
+<li>转场动画问题，Native之间的跳转动画和Flutter Widget间的跳转动画不同，使用体验不太好</li>
+</ul>
+<p>总结起来就是多引擎方案不适合在生产环境中使用。</p>
+<h2 id="hybrid-stack-manager"><a href="#hybrid-stack-manager" class="headerlink" title="hybrid_stack_manager"></a>hybrid_stack_manager</h2><p>这个框架实现思路很简单，即用XFlutterView包装FlutterView，进而代理 FlutterNativeView。</p>
+<p>并且替重写了 FlutterWrapperActivity 用于替换了FlutterActivity，里面的逻辑是相似的，只不过把其中的FlutterView和FlutterActivityDelegate都换成了代理类。</p>
+<p>其中的FlutterView是唯一的，全局共用一个FlutterView。</p>
+<p>当发生跳转时，有几种情况：</p>
+<p><strong>当原生跳转Flutter时</strong></p>
+<ul>
+<li>原生跳转Flutter其实是跳转到FlutterWrapperActivity</li>
+<li>在FlutterWrapperActivity.onCreate方法中动态绑定FlutterView，并将参数通过MethodChannel传递给Flutter</li>
+<li>Flutter通过Navigator管理页面widget，并且在Flutter层唯一确定一个FlutterWrapperActivity</li>
+<li>在FlutterWrapperActivity.onResume方法中更新curFlutterActivity，代表当前的FlutterWrapperActivity</li>
+</ul>
+<p><strong>当Flutter跳转Flutter时</strong></p>
+<ul>
+<li>Flutter跳转Flutter通过MethodChannel传值给原生，调用curFlutterActivity.openUrl方法</li>
+<li>原生这边接收到参数后，再开启一个FlutterWrapperActivity2</li>
+<li>截屏保存bitmap，绑定到对应的FlutterWrapperActivity1，并将截图显示出来</li>
+<li>FlutterActivity1.onStop方法，移除FlutterView</li>
+<li>其余逻辑同上</li>
+</ul>
+<p><strong>当Flutter跳转原生时</strong></p>
+<ul>
+<li>Flutter跳原生通过MethodChannel传值给原生，调用curFlutterActivity.openUrl方法</li>
+<li>原生这边接收到参数后会返回一个Class，通过startActivity实现页面跳转</li>
+<li>截屏保存bitmap，绑定到对应FlutterWrapperActivity，这种情况截屏不需要显示</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191122170546.png" alt=""></p>
+<p>该方案基于一个事实：<strong>任何时候我们最多只能看到一个页面。（特殊情况不在考虑范围内）</strong></p>
+<p>如图所示，当从FlutterActivity跳转到另一个FlutterActivity时，FlutterView从FlutterActivity1移除，并动态绑定到FlutterActivity2。</p>
+<p>此时，为了保证切换在显示上的统一，避免FlutterView从FlutterActivity1移除时页面出现白屏的情况，需要对FlutterActivity1进行截屏操作，并且将截屏显示出来。</p>
+<p>上面只描述了打开页面的情况，对于返回操作是一样的，在onResume和onStop中分别做处理。</p>
+<p>该方案可取之处：</p>
+<ul>
+<li>每一个页面都有一个VC(Activity)，保证所有基于VC(Activity)生命周期的逻辑(如埋点等)照常工作</li>
+<li>不同的Flutter页面之间可以正常通信，共享数据</li>
+<li>Native可以调起任意的Flutter页面，无论是首次打开还是之后</li>
+</ul>
+<p>这种方案的缺点：</p>
+<ul>
+<li>需要反射FlutterSDK，<strong>侵入性强</strong></li>
+<li>单例的HybridStackManager持有context上下文，容易造成内存泄露</li>
+<li><strong>强依赖Flutter版本</strong>，实现基于Flutter v0.x</li>
+<li>依赖FlutterSDK NavigatorState history属性，新版该属性已经私有化，所以 <a href="https://github.com/FlutterRepo/hybrid_stack_manager/issues/5" target="_blank" rel="external">新版不可用</a></li>
+<li>同级的Flutter页面无法实现，例如tab中的同级Flutter页面</li>
+<li>每个FlutterActivity都持有一张截屏的bitmap，占用内存空间</li>
+</ul>
+<h2 id="共享FlutterNativeView方案"><a href="#共享FlutterNativeView方案" class="headerlink" title="共享FlutterNativeView方案"></a>共享FlutterNativeView方案</h2><p>跟方案2类似，只不过从全局共用FlutterView变为全局共用一个FlutterNativeView，保持一个Flutter页面对应一个原生Activity(VC)。<a href="https://juejin.im/post/5c419c07f265da616f703aa1" target="_blank" rel="external">原理解析</a>及部分<a href="https://github.com/voiddog/hybrid_stack_manager" target="_blank" rel="external">源码</a></p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_weidian.jpg" alt=""></p>
+<p>在实现上跟方案二类似，但是要更简洁，废弃了FlutterActivity，重写了FlutterWrapperActivity，仍然复用Delegate用于管理生命周期，在onCreate方法中判断FlutterNativeView是否已经attach过，如果已经attach，那么就先detach操作，detach操作是重点。</p>
+<p>同样的，在FlutterWrapperActivity的onDestroy方法中，也需要detach操作。</p>
+<p>FlutterNativeView的声明是static，所以是全局唯一的，可以与任何FlutterWrapperActivity对应的FlutterView绑定。</p>
+<p>因为在初始化时，getFlutterView和getFlutterNativeView都被ViewFactory的实现类FlutterWrapperActivity所重写，在构造FlutterView时，将唯一的FlutterNativeView当做参数，传进去就完成了FlutterView和FlutterNativeView的绑定。</p>
+<p>并且FlutterNativeView绑定的context是ApplicationContext，所以不存在context内容泄露的风险。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">FlutterWrapperActivity</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> FlutterView <span class="title">createFlutterView</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    FlutterNativeView flutterNativeView = createFlutterNativeView();</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> FlutterView(<span class="keyword">this</span>, <span class="keyword">null</span>, flutterNativeView);</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> FlutterNativeView <span class="title">createFlutterNativeView</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (sFlutterNativeView == <span class="keyword">null</span>) &#123;</div><div class="line">        isCreatePage = <span class="keyword">true</span>;</div><div class="line">        sFlutterNativeView = <span class="keyword">new</span> FlutterNativeView(getApplicationContext());</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> sFlutterNativeView;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面提到的detach方法是重点，是因为这是该方案唯一hook FlutterSDK的地方，实际上这里不能说是严格意义上的detach，最终调用的是 FlutterView.nativeSurfaceDestroyed()。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">onSurfaceDestroyed</span><span class="params">(FlutterView flutterView, FlutterNativeView flutterNativeView)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">//Flutter 较旧版本，新版本已不兼容</span></div><div class="line">        Method nativeSurfaceDestroyed = FlutterView.class.getDeclaredMethod(<span class="string">"nativeSurfaceDestroyed"</span>, <span class="keyword">long</span>.class);</div><div class="line">        nativeSurfaceDestroyed.setAccessible(<span class="keyword">true</span>);</div><div class="line">        nativeSurfaceDestroyed.invoke(flutterView, flutterNativeView.get());</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment">//对应的老版本engine代码 FlutterView.java</span></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">surfaceDestroyed</span><span class="params">(SurfaceHolder holder)</span> </span>&#123;</div><div class="line">            assertAttached();</div><div class="line">            nativeSurfaceDestroyed(mNativeView.get());</div><div class="line">        &#125;</div><div class="line"> </div><div class="line"> </div><div class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">nativeSurfaceDestroyed</span><span class="params">(<span class="keyword">long</span> nativePlatformViewAndroid)</span></span>;</div></pre></td></tr></table></figure>
+<p>为了兼容新版本，只需要替换反射那里的实现即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Flutter v1.7.8</span></div><div class="line">Field mFlutterJNI = flutterNativeView.getClass().getDeclaredField(<span class="string">"mFlutterJNI"</span>);</div><div class="line">mFlutterJNI.setAccessible(<span class="keyword">true</span>);</div><div class="line">Object o = mFlutterJNI.get(flutterNativeView);</div><div class="line"> </div><div class="line">Method onSurfaceDestroyed = o.getClass().getDeclaredMethod(<span class="string">"onSurfaceDestroyed"</span>);</div><div class="line">onSurfaceDestroyed.invoke(o);</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment">//对应的 FlutterSDK 代码 FlutterView.java</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">surfaceDestroyed</span><span class="params">(SurfaceHolder holder)</span> </span>&#123;</div><div class="line">    FlutterView.<span class="keyword">this</span>.assertAttached();</div><div class="line">    FlutterView.<span class="keyword">this</span>.mNativeView.getFlutterJNI().onSurfaceDestroyed();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>修改后在Flutter v1.7.8版本上可以顺利运行。</p>
+<p>其中，<a href="https://github.com/flutter/engine" target="_blank" rel="external">Flutter Engine代码地址</a>，平台代码目录在 shell/platform/android</p>
+<p>该方案最大的特点是不需要截屏，是因为FlutterView是和FlutterActivity绑定的，当切换FlutterActivity时，FlutterNativeView 从 FlutterView1 detach，此时FlutterActivity1中的FlutterView1显示的内容不再更新，所以显示内容不变，不用担心白屏的问题。</p>
+<p>iOS 如果支持滑动返回的话可能还是需要截屏，因为在侧滑的时候，页面不一定结束。</p>
+<p>总结一下，该方案的优点：</p>
+<ul>
+<li>hook 少，侵入性较少，就一处</li>
+<li>不需要截屏，内存占用会稍微好一点</li>
+<li>单例的FlutterNativeView不持有Activity的context，没有内存泄露的风险</li>
+<li>支持页面间数据传递，切是await 的方式，非通知形式</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>首次进入白屏时间较长</li>
+<li>不支持平级的FlutterView展示，比如tab中的Flutter界面</li>
+</ul>
+<p>总体来说，这个方案还是有很大的参考价值的。</p>
+<h2 id="FlutterBoost"><a href="#FlutterBoost" class="headerlink" title="FlutterBoost"></a>FlutterBoost</h2><p><a href="https://github.com/alibaba/flutter_boost" target="_blank" rel="external">项目地址</a></p>
+<p>该方案是多Navigator方案，要研究这个方案的实现，首先要先读下Flutter中路由管理和Widget层级关系的相关代码，可以看<a href="https://juejin.im/post/5c8db8e8f265da2d864b889f" target="_blank" rel="external">这篇文章</a>。</p>
+<p>具体原理即Flutter层通过封装过的Widget，即ContainerManagerWidget，管理多个Navigator，每个Navigator对应一个（或多个）具体的业务Widget，并且支持当前Navigator中正常的push Widget的操作。</p>
+<p>原生层和Flutter层的容器通过唯一id对应起来，并通过消息通道进行生命周期同步和数据交互。</p>
+<p>这里原生层是驱动方，所有的页面级别的操作都是统一发送到原生层处理，然后再次分发同步给Flutter层依次处理。</p>
+<h3 id="多Navigator实现"><a href="#多Navigator实现" class="headerlink" title="多Navigator实现"></a>多Navigator实现</h3><p>这个方案的精髓在于，从FlutterView中的单Navigator栈级别的导航，进化到了多Navigator平级导航，即可以随时随地找到任意一个Flutter页面，它们之间的关系是同级的。这在之前的方案中是做不到的。</p>
+<p>下面主要分析下多Navigator的实现。</p>
+<p>首先，在Flutter中，万事皆Widget。</p>
+<p>Navigator也不例外。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191122173237.png" alt=""></p>
+<p>对于Navigator的页面管理，比如 Navigator.of(context).push(route); 默认从当前控件的context依次向上寻找距离自己最近的NavigatorState，然后调用它的push方法入栈。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> NavigatorState of(</div><div class="line">    BuildContext context, &#123;</div><div class="line">      <span class="built_in">bool</span> rootNavigator = <span class="keyword">false</span>,</div><div class="line">      <span class="built_in">bool</span> nullOk = <span class="keyword">false</span>,</div><div class="line">    &#125;) &#123;</div><div class="line">    <span class="keyword">final</span> NavigatorState navigator = rootNavigator</div><div class="line">        ? context.rootAncestorStateOfType(<span class="keyword">const</span> TypeMatcher&lt;NavigatorState&gt;())</div><div class="line">        : context.ancestorStateOfType(<span class="keyword">const</span> TypeMatcher&lt;NavigatorState&gt;());</div><div class="line">    <span class="keyword">return</span> navigator;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@override</span></div><div class="line">State ancestorStateOfType(TypeMatcher matcher) &#123;</div><div class="line">  <span class="comment">///向父节点寻找类型匹配的对象</span></div><div class="line">  <span class="keyword">assert</span>(_debugCheckStateIsActiveForAncestorLookup());</div><div class="line">  <span class="built_in">Element</span> ancestor = _parent;</div><div class="line">  <span class="keyword">while</span> (ancestor != <span class="keyword">null</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (ancestor <span class="keyword">is</span> StatefulElement &amp;&amp; matcher.check(ancestor.state))</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    ancestor = ancestor._parent;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">final</span> StatefulElement statefulAncestor = ancestor;</div><div class="line">  <span class="keyword">return</span> statefulAncestor?.state;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以只要在Navigator中再插入一个ContainerManagerWidget，进行拦截页面跳转的操作，用来管理多个Navigator，这样就实现了Flutter页面的扁平化操作，规避掉了原有Navigator的栈结构。</p>
+<p>Flutter层的整体架构图如下</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191122173608.png" alt=""></p>
+<p>其中，ContainerManager自己维护了一个Overlay，用于管理多Navigator的上下文切换。</p>
+<p>由于OverlayState在遍历entry过程中是倒叙的，所以只要保证列表结构的 _leastEntries 在添加_ContainerOverlayEntry时，始终保持onstage需要前台展示的最后添加即可。</p>
+<p>上面提到原生层和Flutter层的容器通过唯一id对应起来，并通过消息通道进行生命周期同步和数据交互。</p>
+<p>而在Flutter层，每个Widget之间是共享内存的，它们之间可以共用同一套运行环境、全局变量、内存、通信接口等。所以他们之间可以正常通信，</p>
+<p>这样看是不是和Weex JS 层有点像了。</p>
+<p>实际上当深入了解后，会发现在DOM处理、View的映射关系上Flutter和Weex有很多相似支持。</p>
+<p>比如Flutter中的三棵树 —— Widget、Element、RenderObject 和 Weex Native 中的三棵树—— WxDomObject、WXComponent、NativeView 之间的相似性等等。</p>
+<h3 id="原生层实现"><a href="#原生层实现" class="headerlink" title="原生层实现"></a>原生层实现</h3><p>对于原生层有两种实现，我们分别来看：</p>
+<ol>
+<li>共享FlutterView</li>
+<li>共享FlutterEngine</li>
+</ol>
+<p><strong>共享 FlutterView ：</strong></p>
+<p>分析的代码基于master分支，当前版本0.420，适用于<strong>Flutter v1.5</strong>之前的版本。</p>
+<p>整体上来说，该方案使用了较为复杂的FlutterView共享管理方案，FlutterView仍然是单例的，但是相对于方案二hybrid_stack_manager有了长足的进步，逻辑复杂度也提高了不少。</p>
+<p>下图是官方提供的原理图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191122173908.png" alt=""></p>
+<p>对于原生层和Flutter层来说，分别有一个ContainerManager用于管理调度Flutter容器，这个容器的概念，在原生层就是包装过的FlutterActivity，在Flutter层是Navigator。</p>
+<p>简单来说，原生层通过ContainerManager管理包装过的FlutterActivity，从而共享单例的FlutterView。</p>
+<p>这里为了避免切换过程中出现白屏的问题，依然需要截屏。</p>
+<p>由于截屏，这里可能依然会出现闪动、黑屏的出现，见 <a href="https://github.com/alibaba/flutter_boost/issues/221" target="_blank" rel="external">issue</a></p>
+<p><strong>共享 FlutterEngine：</strong></p>
+<p>分支：flutter_1.5_upgrade_opt 适配了<strong>Flutter v1.5</strong>版本。</p>
+<p>该方案是多FlutterView，单FlutterEngine的方案，有点类似于共享FlutterNativeView方案。</p>
+<p>实际上这里的<strong>FlutterEngine就是Flutter v1.5版本之后用于替代FlutterNativeView的。</strong></p>
+<p><strong>高版本的FlutterSDK，提供了embedding包，该包下提供了新的容器实现及TextureView的支持。</strong></p>
+<p>该方案仍然是废弃了FlutterActivity，而自己组装了一个BoostFlutterActivity，并且废弃了delegate相关声明周期管理，所有的声明周期管理都是自己来管理。</p>
+<p>不同点在于共享FlutterNativeView方案 detach过程中需要反射拿到FlutterJNI，进而调用onSurfaceDestroyed方法，而这个方案不需要，最终在FlutterView的detach过程中，调用路径 FlutterView.detach()-&gt;FlutterRender.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">detachFromRenderSurface()-&gt;</div><div class="line">FlutterRender.surfaceDestroyed()-&gt;</div><div class="line">flutterJNI.onSurfaceDestroyed()-&gt;</div><div class="line">FlutterJNI.nativeSurfaceDestroyed()</div></pre></td></tr></table></figure>
+<p>可以看到最终需要调用的方法是一致的，都需要调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">flutterJNI.nativeSurfaceDestroyed().</div></pre></td></tr></table></figure>
+<p>以Flutter v1.5为界限简单对比如下：</p>
+<p><strong>Flutter v1.5 之前的 Android SDK：</strong></p>
+<p>io.flutter.view.FlutterView: 与FlutterNativeView关联，FlutterNativeView通过DartExecutor对FlutterJNI下jni方法进行消息通道传递；</p>
+<p>视图渲染实际实现为SurfaceView；</p>
+<p>视图销毁与创建通过embedding包下的FlutterJNI通知native</p>
+<p>核心成员：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">private final DartExecutor dartExecutor;</div><div class="line">private final FlutterRenderer flutterRenderer;</div><div class="line">private final NavigationChannel navigationChannel;</div><div class="line">private final KeyEventChannel keyEventChannel;</div><div class="line">private final LifecycleChannel lifecycleChannel;</div><div class="line">private final LocalizationChannel localizationChannel;</div><div class="line">private final PlatformChannel platformChannel;</div><div class="line">private final SettingsChannel settingsChannel;</div><div class="line">private final SystemChannel systemChannel;</div><div class="line">private final InputMethodManager mImm;</div><div class="line">private final TextInputPlugin mTextInputPlugin;</div><div class="line">private final AndroidKeyProcessor androidKeyProcessor;</div><div class="line">private final AndroidTouchProcessor androidTouchProcessor;</div></pre></td></tr></table></figure>
+<p><strong>Flutter 1.5之后的 Android SDK提供了embedding包，废弃了io包：</strong></p>
+<p>io.flutter.embedding.android.FlutterView 与FlutterEngine关联，废弃了FlutterNativeView；</p>
+<p>视图渲染实际为FlutterSurefaceView或FlutterTextureView；</p>
+<p>视图销毁与创建通过embedding包下的FlutterJNI通知native；</p>
+<p>核心成员：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private FlutterView.RenderMode renderMode;</div><div class="line">private FlutterView.TransparencyMode transparencyMode;</div><div class="line">private RenderSurface renderSurface;</div><div class="line">private FlutterEngine flutterEngine;</div><div class="line">private TextInputPlugin textInputPlugin;</div><div class="line">private AndroidKeyProcessor androidKeyProcessor;</div><div class="line">private AndroidTouchProcessor androidTouchProcessor;</div><div class="line">private AccessibilityBridge accessibilityBridge;</div></pre></td></tr></table></figure>
+<p>Flutter Engine核心成员：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">private final AccessibilityChannel accessibilityChannel;</div><div class="line">private final KeyEventChannel keyEventChannel;</div><div class="line">private final LifecycleChannel lifecycleChannel;</div><div class="line">private final LocalizationChannel localizationChannel;</div><div class="line">private final NavigationChannel navigationChannel;</div><div class="line">private final PlatformChannel platformChannel;</div><div class="line">private final SettingsChannel settingsChannel;</div><div class="line">private final SystemChannel systemChannel;</div><div class="line">private final TextInputChannel textInputChannel;</div></pre></td></tr></table></figure>
+<p>另外，在最新版本 Flutter v1.9.1 已经提供了FlutterEngineProvider相关接口，即官方有意提供混合栈的管理方案，但现在只是个半成品，如果直接用的话，会发现返回键点不动，跟了下发现是把PlatformChannel的Handler给置空了，除此之外还有一些其他的问题。</p>
+<p>具体实现参见最新版的Flutter_Boost，已经做好了Flutter v1.9.1的适配，总体上实现已经跟embedding差别不大，有差别的点在于FlutterEngine的attach和detach的时机不同、FlutterPlugin的生命周期做了下同步，感兴趣的自己去阅读，这里不详细说了。</p>
+<p>总结一下：</p>
+<p>优点：</p>
+<ul>
+<li>Flutter层多Navigator方案，支持同级Flutter Widget随意切换</li>
+<li>提供了一种新的思路，理论上Flutter跳转可以仍然使用官方api，可以在中间拦截</li>
+<li>多FlutterView，不需要截屏</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>略有侵入性，各个Flutter版本需要适配</li>
+</ul>
+<h2 id="共享Isolate"><a href="#共享Isolate" class="headerlink" title="共享Isolate"></a>共享Isolate</h2><p>头条的方案，多FlutterView，多FlutterEngine，单Isolate方案</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191122175942.png" alt=""></p>
+<p>该方案需要修改Flutter engine源码，暂不考虑。</p>
+<p>多FlutterEngine在同一运行环境下可以做到内存共享，但同时也需要注意内存同步的问题，毕竟每个FlutterEngine都各自持有UITaskRunner，可以同时操作同一份内存的，头条的解决方案是把这些线程全部做成共享的了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>分析了上面几种混合栈管理方案，整体上来说闲鱼的共享FlutterEngine方案比较主流，其中的多Navigator有很大的参考价值。</p>
+<p>对于51信用卡来说，可以以此为基础，建设符合公司内部使用的混合栈管理方案。主要有几个事情：</p>
+<ul>
+<li>Plugin 管理问题，Plugin 是指每条指令对应在Native（Android、iOS）上的实现，得益于Hybrid的基础设施建设，公司内部目前有200+ Plugin可以直接使用，这也就意味着大部分需要Native参与的功能，都已经实现好了，Flutter 端直接调用即可，这块可以参考之前的文章 <a href="http://w4lle.com/2018/11/16/51credit-android-architecture/">51信用卡 Android 架构演进实践</a> </li>
+<li>路由管理，接入已有路由框架</li>
+<li>Flutter v1.9.1兼容</li>
+</ul>
+<p>经过几个版本的迭代，目前已经完成了上面的几件事情，并在业务中使用。</p>
+<p><strong>注：此篇文章成文时间较久，近期做了一些修改，主要增加了Flutter v1.9.1 及相关的内容。</strong></p>
+<p>参考</p>
+<ul>
+<li><p><a href="https://jiongks.name/blog/weex-multi-instance-runtime/" target="_blank" rel="external">Weex 在 JS Runtime 内的多实例管理</a></p>
+</li>
+<li><p><a href="https://www.jiqizhixin.com/articles/2019-03-07-15" target="_blank" rel="external">Flutter混合开发——FlutterBoost</a></p>
+</li>
+<li><p><a href="https://juejin.im/post/5b764acb51882532dc1812b1" target="_blank" rel="external">Flutter新锐专家之路：混合开发篇</a></p>
+</li>
+<li><p><a href="https://juejin.im/post/5c419c07f265da616f703aa1" target="_blank" rel="external">微店的Flutter混合栈管理技术实践</a></p>
+</li>
+<li><p><a href="https://www.msup.com.cn/share/details?id=226" target="_blank" rel="external">让Flutter真正支持View级别的混合开发</a></p>
+</li>
+<li><a href="https://zhuanlan.zhihu.com/p/38026271" target="_blank" rel="external">为追求高性能，我必须告诉你Flutter引擎线程的事实</a></li>
+</ul>
+<p>本文链接： <a href="http://w4lle.com/2019/11/22/flutter-hybrid-stack/">http://w4lle.com/2019/11/22/flutter-hybrid-stack/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2019/11/22/flutter-hybrid-stack/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2019/11/23/flutter-project-manage/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2019/04/08/UI2Code-2/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

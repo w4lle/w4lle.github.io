@@ -15,6 +15,12 @@ thumbnail: http://7xs23g.com1.z0.glb.clouddn.com/robust.png
 
 <!-- more -->
 
+系列文章:
+
+- [Android热补丁之Robust原理解析(一)](http://w4lle.com/2017/03/31/robust-0/)
+- [Android热补丁之Robust（二）自动化补丁原理解析](http://w4lle.com/2018/05/28/robust-1/)
+- [Android热补丁之Robust（三）坑和解](http://w4lle.com/2018/05/29/robust-2/)
+
 # 从 InstantRun 说起
 
 不得不说 InstantRun 真是个好东西。目前主流的热修复框架都有或多或少的参考 InstantRun 的某些技术点，比如 [Tinker](https://github.com/Tencent/tinker) 的官方文章中明确考虑过 InstantRun 中的 Application 替换，虽然最后没有采用，但是身为其兄弟库的 [TinkerPatch](http://tinkerpatch.com/Docs/intro) 中一键接入方案就采用的该技术点。关于该技术点，可以参考我之前写的一篇文章 [一键接入Tinker](http://w4lle.github.io/2017/01/05/one-key-for-tinker/) 。

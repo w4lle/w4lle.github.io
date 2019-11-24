@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            51信用卡 Android 架构演进实践 | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="随着业务的快速扩张，原本小作坊式的单个工程的开发模式越来与不能满足实际需求。早在两年多以前，51信用卡管家就向下沉淀出了单独的公用基础库，一些通用的功能组件和个别独立的业务被拆分成 SDK，形成了一套中型项目、多人并行的开发模式，也为未来组件化拆分做准备。">
+    <meta name="keywords" content="Android,Android">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="51信用卡 Android 架构演进实践 | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="随着业务的快速扩张，原本小作坊式的单个工程的开发模式越来与不能满足实际需求。早在两年多以前，51信用卡管家就向下沉淀出了单独的公用基础库，一些通用的功能组件和个别独立的业务被拆分成 SDK，形成了一套中型项目、多人并行的开发模式，也为未来组件化拆分做准备。">
+    <meta property="og:article:tag" content="Android"> 
+
+    
+        <meta property="article:published_time" content="Fri Nov 16 2018 11:24:10 GMT+0800" />
+        <meta property="article:modified_time" content="Fri Nov 15 2019 15:40:30 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="51信用卡 Android 架构演进实践 | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="随着业务的快速扩张，原本小作坊式的单个工程的开发模式越来与不能满足实际需求。早在两年多以前，51信用卡管家就向下沉淀出了单独的公用基础库，一些通用的功能组件和个别独立的业务被拆分成 SDK，形成了一套中型项目、多人并行的开发模式，也为未来组件化拆分做准备。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2018/11/16/51credit-android-architecture/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2018/11/16/51credit-android-architecture/index.html",
+    "headline": "51信用卡 Android 架构演进实践",
+    "datePublished": "Fri Nov 16 2018 11:24:10 GMT+0800",
+    "dateModified": "Fri Nov 15 2019 15:40:30 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",AndroidAndroid",
+    "description": "随着业务的快速扩张，原本小作坊式的单个工程的开发模式越来与不能满足实际需求。早在两年多以前，51信用卡管家就向下沉淀出了单独的公用基础库，一些通用的功能组件和个别独立的业务被拆分成 SDK，形成了一套中型项目、多人并行的开发模式，也为未来组件化拆分做准备。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://ws3.sinaimg.cn/large/006tNbRwly1fwrpnjc8xdj31hc0u0gt5.jpg">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                51信用卡 Android 架构演进实践
+            </p>
+            <p>随着业务的快速扩张，原本小作坊式的单个工程的开发模式越来与不能满足实际需求。早在两年多以前，51信用卡管家就向下沉淀出了单独的公用基础库，一些通用的功能组件和个别独立的业务被拆分成 SDK，形成了一套中型项目、多人并行的开发模式，也为未来组件化拆分做准备。</p>
+<a id="more"></a>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwi9479hnhj31g00uk49x.jpg" alt="image-20181023162224348"></p>
+<p>这套框架运行了一段时间之后，伴随着单应用内业务需求的增加、开发人员数量的增多、基础库数量的膨胀，导致了一些问题：</p>
+<ul>
+<li>主工程代码耦合严重，牵一发而动全身</li>
+<li>需求测试影响面大，不能聚焦单一业务模块</li>
+<li>主工程代码越来越多，编译耗时</li>
+<li>依赖倒置，业务代码依赖App工程</li>
+<li>SDK 界限模糊，基础库和业务库界限不明确</li>
+<li>业务模块间可以任意依赖调用，依赖规则不明确</li>
+<li>类库越来越多，不好管理</li>
+</ul>
+<p>除了以上问题，动态化需求也越来越强烈，依赖 Hybrid + H5 打开页面慢的问题也凸显出来。</p>
+<p>这些问题推动我们更进一步的升级开发构架。</p>
+<h1 id="组件化-or-插件化"><a href="#组件化-or-插件化" class="headerlink" title="组件化 or 插件化"></a>组件化 or 插件化</h1><h2 id="动态化"><a href="#动态化" class="headerlink" title="动态化"></a>动态化</h2><p>最近两年，插件化框架层出不穷，各大厂都放出了自家开源的插件化框架。作为 Native 动态化与性能兼顾的插件化方案，很多公司选择插件化作为动态化技术方案。动态性通常有两部分的作用：一是动态热修复；二是动态下发业务插件。对于第一点，我们有热修复框架可以完成这部分工作；对于第二点，我们使用了 Hybrid 加载H5的方式实现，虽然性能上有所欠缺，但完全切到 Native 来做有点推倒重来的意思，并且跟业界同学交流后，对于动态下发业务插件用到的情况也不多，业务更新主要还是依靠 App 升级来实现。技术方案没有最优解，选择适合自己的才是最好的。</p>
+<p>由于插件化也存在一些弊端，比如不可避免的 hook framework、修改 aapt、包装 Gradle Plugin、代理组件等等非常规操作，日常维护也是一笔不小的开销，稳定性、兼容性、新版本适配等等问题都需要考虑进去。对于 Android 端是否使用插件化，公司内部做过一些讨论，结论是不急着上，边走边看，先把业务组件拆分出来再说。</p>
+<p>如今回过头看，自从 Android P发布以来，限制 hook framework 后，插件化逐渐开始式微，后面走向大概率是维护成本越来越高，成本收益比逐渐降低，最终弃坑不用。</p>
+<p>除了插件化外，动态化方案近两年比较火的就是以 ReactNative、Weex 为代表的大前端方向，结合51信用卡的实际情况，最终选择拥抱大前端， Weex 作为动态化方案，以 Native 为主， Hybrid 离线化方案为辅，Weex 逐步迭代的架构开发模式。</p>
+<p>Weex 的基础建设和前端同学合作，历经大半年时间，目前已经稳定应用在51信用卡各个 App 上，Weex 作为动态化页面的首选方案，已经完成了线上数百个页面的开发需求。配合离线化方案，各项性能指标也都达到要求。</p>
+<h2 id="组件分离"><a href="#组件分离" class="headerlink" title="组件分离"></a>组件分离</h2><p>代码解耦与代码隔离，最有效的方案是工程隔离。审视我们最初的方案，每个 SDK 对应单独的仓库，通过 maven 依赖，通过工程分离隔离代码，这种方案没有问题，只不过需要往前更近一步，各个业务模块也需要独立主工程，拆分成独立的业务组件。</p>
+<p>同时，划分清楚代码边界，控制依赖关系，梳理清楚层次结构，最终形成如下图所示的架构。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fwrpnjc8xdj31hc0u0gt5.jpg" alt="组件化层次.001"></p>
+<p>整体架构上提供三种容器：</p>
+<ul>
+<li>Native 容器，采用组件化架构，用于原生业务开发</li>
+<li>Hybrid 容器，webview 加载 H5，配合离线化方案</li>
+<li>Weex 容器，用于编写常规的页面，js 动态转化成 Native 控件，天然具有动态化特性，配合离线化方案，达到页面秒开的效果，同时共用 Hybrid 沉淀出的比较完善的 PG 方法</li>
+</ul>
+<p>同时，Hybrid 和 Weex 依赖于原生提供的方法，通过 JsBridge 进行通信，目前共有 200 多个 PG 方法供 js 调用。长远来看，这三种容器并不会互相取代，相反地，它们应该是相互依存、取长补短、长期共存的状态。</p>
+<h1 id="组件化实践"><a href="#组件化实践" class="headerlink" title="组件化实践"></a>组件化实践</h1><p>Native 容器对应上图中各个层级的定义：</p>
+<ul>
+<li>工程 App，各个应用工程，目前已有十多个应用并行开发，51信用卡管家作为平台应用，其余应用为独立的业务工程应用</li>
+<li>业务组件，独立的业务组件，一般为复合业务组件，api 与实现分离，相互之间依赖隔离</li>
+<li>基础业务 SDK，独立的小的单功能模块，提供基础功能，目前这一层级中还包含遗留未改造的部分业务组件</li>
+<li>基础 Lib，业务无关的基础组件</li>
+</ul>
+<p>组件化拆分的核心诉求是解耦合，提高组件内聚，所以应该从诉求出发，在沿用当下开发模式，并且不强依赖组件化框架的情况下，逐渐的进行组件化拆分。</p>
+<p>通过工程隔离进而进行组件化拆分后，基本可以解决上面提到的问题：</p>
+<ul>
+<li>高内聚，低耦合，代码边界清晰，代码变动影响面可以准确评估</li>
+<li>提高开发效率，每个组件可以独立打包，单独调试，最多几十秒就可以完成打包过程</li>
+<li>每个组件负责组件内的事情，理论上只要保证组件内部稳定，接入工程 App 后也不会产生新的问题</li>
+<li>降低 App 工程编译时间，最理想的情况是，App 工程仅仅是一个空壳，用于加载各个组件</li>
+</ul>
+<p>解耦，一般需要避免直接依赖，转为间接依赖，简单来说就是依赖隔离。对于组件化而言，每个组件都是单独的实现，单个组件对外提供的服务尽可能单一，依赖尽可能少；同时，依赖其它组件功能或页面的情况下，尽可能避免直接依赖，最好依赖中间层进行集中式管理，然后再进行逻辑分发。所以我们一般采用分总分的结构：组件内部分别注册，编译时生成汇总代码、运行时集中式管理，调用时处理逻辑分发。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwrpngbj7qj30yy0i4di0.jpg" alt="image-20181026181156315"></p>
+<p>组件化需要解耦处理的几个基础模块：</p>
+<ul>
+<li>页面路由</li>
+<li>模块间调用</li>
+<li>消息总线</li>
+<li>数据总线</li>
+</ul>
+<p>下面依次介绍。</p>
+<h2 id="页面路由"><a href="#页面路由" class="headerlink" title="页面路由"></a>页面路由</h2><p>路由分发本质上是把直接依赖引用转化为中心化管理分发的一个过程，由于组件化拆分后，各个业务组件间不存在直接的依赖关系，所以必然要有一个统一收集页面跳转规则进而再分发的过程。</p>
+<p>51信用卡在 2017 年就在进行路由化实践，以应对后面进行的组件化拆分需求，并沉淀出一套自研的路由框架 U51OkDeepLink，它也采用分总分结构，主要原理是组件内注册路由，编译时在组件内生成独立的路由表，并用 AOP 在编译时做好所有组件内路由表汇总的工作，调用初始化方法时进行路由表汇总，页面跳转时再进行管理分发，其用法很简单：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//组件内注册路由</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SampleService</span> </span>&#123;</div><div class="line">    <span class="meta">@Path</span>(<span class="string">"/main"</span>)</div><div class="line">    <span class="meta">@Activity</span>(MainActivity.class)</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">startMainActivity</span><span class="params">(@Query(<span class="string">"key"</span>)</span> String key)</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//其余组件唤起页面</span></div><div class="line"><span class="keyword">new</span> DeepLinkClient(context).buildRequest(<span class="string">"old://app/main?key=value"</span>).addQuery(<span class="string">"key2"</span>, <span class="string">"2"</span>).start();</div></pre></td></tr></table></figure>
+<p>并且支持强大的异步特性，支持跳转过程中的中间逻辑处理。</p>
+<p>其原理图如下</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwrpnhjehsj31ju0uewka.jpg" alt="router"></p>
+<p>感兴趣的读者可以阅读 <a href="https://www.jianshu.com/p/8a3eeeaf01e8" target="_blank" rel="external">Android 组件化 —— 路由设计最佳实践</a> 获取更多技术细节。</p>
+<h2 id="模块间调用"><a href="#模块间调用" class="headerlink" title="模块间调用"></a>模块间调用</h2><p>组件间层次和边界模糊问题的产生，根本原因是各个业务组件间的相互依赖关系混乱，为了进行业务组件间的隔离，首先要做好组件之间的服务调用解耦。</p>
+<p>这里采用的是 ServiceLoader 的模式，组件工程目录一般如下所示</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwrpnfmr75j30bs052glm.jpg" alt="image-20181024204942179"></p>
+<p>每个组件内一般声明三个 module：</p>
+<ul>
+<li>api module，声明对外暴露的服务接口和对外暴露的实体类及 Event 事件</li>
+<li>imp module，依赖 api module，是 api module 的具体实现，不对外暴露细节，不允许其他组件对 imp module 进行直接依赖</li>
+<li>app module，是工程的壳，可以直接运行调试，通过 SDKTemplate 创建生成，包含各种运行时所需环境</li>
+</ul>
+<p>业务组件之间依赖 api 库的服务接口，imp 库作为实现动态查找。版本发布时，同时发布 api 和 imp 两个库，并且保证 api 和 imp 具有相同版本号，这个在组件发版时统一管理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">//组件内 api module 接口声明</span></div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TestService</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">sayHello</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//组件内 imp module 接口实现</span></div><div class="line"><span class="meta">@ServiceImpl</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServiceImpl</span> <span class="keyword">implements</span> <span class="title">TestService</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHello</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//跨组件调用</span></div><div class="line">compile <span class="string">'com.u51.android:test-lib-api:$version'</span></div><div class="line"></div><div class="line">CommentService service = ServicesLoader.getInstance().getService(TestService.class);</div><div class="line">service.sayHello();</div></pre></td></tr></table></figure>
+<p>它的实现原理与路由类似，也是采用分总分结构，在编译时通过 APT 生成汇总代码，调用时动态查找注入 Service 及其实现类的绑定关系。</p>
+<p>与路由初始化汇总路由表不同的是，ServiceLoader 在调用时查找，省去了初始化的逻辑，Service 不会像路由这么多，查找起来不会存在遍历太慢的问题。</p>
+<h2 id="消息总线"><a href="#消息总线" class="headerlink" title="消息总线"></a>消息总线</h2><p>消息总线是基于 <a href="https://github.com/greenrobot/EventBus" target="_blank" rel="external">EventBus</a> 实现的跨三端（Native、Hybrid、Weex）事件管理分发组件 U51EventBus。跨三端是指在任意一端注册监听后，在事件触发时都可以得到响应。</p>
+<p>对于原生开发来说，EventBus 本身可以满足需求，虽然有点事件满天飞的缺点，但是还在可接受范围之内。对于业务组件来说，其 Event 类需要放在 api module 中进行暴露。</p>
+<p>对于 Hybrid 和 Weex 来说，一般的 bridge 都是 callback 形式得到异步响应，对于全局事件通知支持不太友好。通过 bridge 通道连接 U51EventBus 消息总线，打通跨三端全局的事件监听及分发，得以实现任意事件可以在 Native、H5、Weex 之间相互发送和监听。比如，类似登陆、登出操作在 Native 发出后，全局已打开的 H5 或 Weex 页面可以立即得到感知。</p>
+<p>其实现原理也是采用分总分结构，在编译时对 EventBus 进行了定制封装，事件分发还是使用的原有的 EventBus 分发逻辑。</p>
+<h2 id="数据总线"><a href="#数据总线" class="headerlink" title="数据总线"></a>数据总线</h2><p>数据存储采用基于 <a href="https://developer.android.com/topic/libraries/architecture/room" target="_blank" rel="external">Room</a> 实现的统一 KV 存储框架，底层数据库依然是 sqlite，性能这块没有做特别强调，强制其在子线程中进行操作，用于支持日常开发中配置和业务数据的存取操作。</p>
+<p>另外，数据总线支持按模块进行存取，每个业务组件都可以定义自有 tag，避免字段冲突问题。</p>
+<h1 id="跨平台混合开发实践"><a href="#跨平台混合开发实践" class="headerlink" title="跨平台混合开发实践"></a>跨平台混合开发实践</h1><p>无论从早期的 PhoneGap、Cordova，还是近年来比较火的 ReactNative、Weex，到最近两年崛起的 Flutter，跨平台混合开发一直深受众多开发青睐。究其原因，还是其跨平台和动态化是原生开发所不具备的特性。</p>
+<h2 id="Hybrid-容器实践"><a href="#Hybrid-容器实践" class="headerlink" title="Hybrid 容器实践"></a>Hybrid 容器实践</h2><p>Native 和 H5 混合开发一般是比较常见的混合开发模式，H5 开发效率高、迭代快速、不依赖 App 发版，51信用卡众多 App 产品中，有很多页面都是用 H5 来开发，嵌入原生 App 中使用 webview 进行加载显示。</p>
+<p>早期 H5 容器在各个 App 中分别独立实现，没有统一的架构和规范，导致对 H5 的支持效率较低，PG 方法（来源于 PhoneGap）的开发、测试和维护都相当的混乱，重复性工作太多。</p>
+<p>Native 层提供一套通用性强、功能丰富、稳定性高的 H5 容器对业务的高速发展至关重要。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwxgmjrohtj31kw0zkwth.jpg" alt="image-20181105173903973"></p>
+<h3 id="插件管理"><a href="#插件管理" class="headerlink" title="插件管理"></a>插件管理</h3><p>由于 H5 不具备直接调用原生方法，所以原生壳要提供一套通用的通信方式，一般为 JsBridge，在 Android 端，实现 JsBridge 通信的通道一般有以下几种：</p>
+<ul>
+<li>shouldOverrideUrlLoading</li>
+<li>addJavascriptInterface</li>
+<li>onJsPrompt/onJsAlert</li>
+</ul>
+<p>而通道不是关键，怎样管理和维护 PG 方法调用才是核心。为此，我们把每个方法定义为一个 Plugin，用插件的形式管理 PG 方法，这样可以做到每个插件独立运行，互不干扰。插件管理也是采用分总分结构，在各个业务组件中分别注册，编译是通过 APT 生成汇总代码，运行时进行插件汇总，最后调用通过 PluginManager 查找分发逻辑。</p>
+<p>插件注册代码如下，其中 <code>onExecute()</code> 方法在 js 调用该方法时触发，执行结果通过 <code>evaluateJavaScript()</code> 方法异步返回。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@JsPlugin</span>(name = TestPlugin.PLUGIN_NAME, loadOnInit = <span class="keyword">false</span>, version = <span class="number">1</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPlugin</span> <span class="keyword">extends</span> <span class="title">EnNiuJsPlugin</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PLUGIN_NAME = <span class="string">"TestPlugin"</span>;</div><div class="line">    </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPluginName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> PLUGIN_NAME;</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onExecute</span><span class="params">(String args)</span> </span>&#123;</div><div class="line">        doSomething();                    </div><div class="line">        callbackContext.callback(...);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中，H5 容器和插件都具有 Activity 生命周期感知能力，插件的生命周期：</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwxgmhf6r9j31kw16eas1.jpg" alt="image-20181105191433330"></p>
+<h3 id="配套设施"><a href="#配套设施" class="headerlink" title="配套设施"></a>配套设施</h3><p>插件统一通过插件管理平台进行维护管理，目前已有200+插件。PG 插件作为基础通用功能，采取集中式管理机制，任何人在新增、修改插件都需要进行相关负责人审核，以避免出现 Android、iOS 两端实现不统一，版本间实现不统一等问题。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwxgmi1nm7j31kw0ebdl6.jpg" alt="image-20181105191949792"></p>
+<p>插件调试通过调试平台进行操作，浏览器中打开调试地址，App 端通过调试工具扫码建立连接，即可进行插件调试。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fwxgmiq9l1j31kw110thw.jpg" alt="image-20181105192429943"></p>
+<h3 id="离线加载"><a href="#离线加载" class="headerlink" title="离线加载"></a>离线加载</h3><p>Hybrid 混合开发的一大劣势就是性能比较差，打开页面较慢，特别是在弱网情况下。由于51信用卡业务大部分都是静态资源请求，参考业界做法，我们实现了动态下发离线包的方式来提升H5页面打开速度。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwxgmkmdnlj31ca12wn45.jpg" alt="lixianbao"></p>
+<p>这里细节问题不具体展开。</p>
+<p>除了以上提到的实践外，我们还做了很多工作，比如 UI 统一、Back 键拦截、公共参数处理、PG 白名单机制、H5监控、PG 方法监控等等，限于文章篇幅，这里不再一一列出，敬请关注后续相关文章。</p>
+<h2 id="Weex-容器实践"><a href="#Weex-容器实践" class="headerlink" title="Weex 容器实践"></a>Weex 容器实践</h2><p>在 Hybrid 已有配套基础上，51信用卡选择了 Weex 作为跨平台方案，经过一年的踩坑填坑过程，目前已经有 20+ 个项目、数百个 Weex 页面在线上稳定运行，并且，目前 Weex 方案趋于成熟，已经作为51信用卡端内首选业务方案。</p>
+<h3 id="共享插件"><a href="#共享插件" class="headerlink" title="共享插件"></a>共享插件</h3><p>由于 Hybrid 良好的面向接口编程特性，在进行 Weex 基础建设过程中，很方便的就把已有的插件集成进来，并且共享已沉淀的配套设施。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ENBridgeModule</span> <span class="keyword">extends</span> <span class="title">WXModule</span> </span>&#123;</div><div class="line">    <span class="meta">@JSMethod</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">(String method, String args, JSCallback jsCallback)</span> </span>&#123;</div><div class="line">        ...</div><div class="line">        weexWebView = weexEngine.getWeexVirtualWebView();</div><div class="line">        EnNiuJsBridge enNiuJsBridge = weexWebView.getEnNiuJsBridge();</div><div class="line">        enNiuJsBridge.notify(pg);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注册 Weex 的 Module，并且每个 Weex Engine 中会新建出一个虚拟 webview，用于桥接 JsBridge 进而调用 PluginManager 进行插件逻辑分发。</p>
+<p>Weex 容器实践在之前的文章中已经提到过一部分，具体请看 <a href="https://mp.weixin.qq.com/s/PSquf5ILDykC9jYFu911qg" target="_blank" rel="external">Weex避坑指南-理论篇 </a>，后续还将有 Weex 实践相关的文章放出，这里不做过多篇幅的介绍，敬请关注后续相关文章。</p>
+<h1 id="工程化实践"><a href="#工程化实践" class="headerlink" title="工程化实践"></a>工程化实践</h1><p>工程化本质上是为了提高研发效率。51信用卡客户端团队自研的大风车管理平台，用于 App 管理、持续集成、类库管理、发版管理等，围绕客户端研发上下游流程，建立统一的管理入口。</p>
+<p>目前，51信用卡 iOS 和 Android 共 30 多个应用 App、 200 多个类库依托大风车平台进行管理。下面主要介绍下类库管理相关内容。</p>
+<h2 id="类库管理"><a href="#类库管理" class="headerlink" title="类库管理"></a>类库管理</h2><p>51信用卡目前有 100 多个 Android 类库，每个类库对应一个独立的 Gitlab 仓库。过多的独立组件及独立仓库，管理起来有些麻烦。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwrpnk3uc9j31kw0scaj6.jpg" alt="image-20181030193630574"></p>
+<p>依托于大风车平台，所有类库的名称、最新版本及标签类型都会展示在列表页，标签类型对应组件化架构的层次结构，包括：基础组件、单业务功能组件、多业务功能组件。</p>
+<p>在类库详情页，会有库的功能描述、groupId:artifactId 依赖信息、版本历史记录、分支信息、README、CHANGELOG、负责人等详情信息。</p>
+<p>所有的类库管理工作都可以在大风车完成，包括新建类库、类库发版、查阅相关信息等等，这大大提高了基础组的研发效率，降低了团队间的沟通成本。</p>
+<p>并且 App 工程中，该 App 所依赖的所有类库信息一目了然，在多人维护、多类库并行开发、类库频繁发版的情况下，依赖类库信息 check 更加便捷。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwrpng2bwcj31kw1540z0.jpg" alt="image-20181031160854953"></p>
+<h2 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h2><p>由于类库之间是仓库隔离，所以它们的依赖关系是 maven 依赖，所有类库的 aar 包都需要发布到内部 maven 服务器上，上传工作由 PublishMavenPlugin 完成。</p>
+<h3 id="SNAPSHOT-预览版"><a href="#SNAPSHOT-预览版" class="headerlink" title="SNAPSHOT 预览版"></a>SNAPSHOT 预览版</h3><p>对于开发调试阶段，每个类库自带 DemoApp 工程，所以采用源码依赖；开发完成后，类库使用<code>SNAPSHOT</code>版本（比如 1.0.0-SNAPSHOT）发布到 maven 服务器，接入 App 工程后 push 代码触发大风车打包，进行集成测试。需要修改类库时，可以再重复发布相同版本的<code>SNAPSHOT</code>版本。</p>
+<p><code>SNAPSHOT</code>版本可以在开发同学自己的机器上进行打包发布。</p>
+<h3 id="正式版"><a href="#正式版" class="headerlink" title="正式版"></a>正式版</h3><p>对于发布阶段，类库必须使用正式版本发布，由于正式版本不可重复发布，这也就要求开发同学保证每个正式版本的版本质量，在正式发布前都应达到发布标准。</p>
+<p>由于类库内部也存在相互依赖的情况，所以在类库正式发布时，不允许依赖包含<code>SNAPSHOT</code>版本的类库，<code>DependencyCheck</code>工作也会在  PublishMavenPlugin 完成。</p>
+<p>同时，正式版本不允许开发同学在本机打包发布，PublishMavenPlugin 会检测是否在云端打包环境。功能分支经 CodeReview 后合并 master 分支，然后创建对应版本的 tag，触发大风车进行打包发布工作，发布成功后，会邮件通知 Android 组同学，并附带 CHANGELOG。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fwxgz042voj312q0qa44m.jpg" alt="image-20181105204154472"></p>
+<h2 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h2><h3 id="依赖传递"><a href="#依赖传递" class="headerlink" title="依赖传递"></a>依赖传递</h3><p>App 工程下采用 compile 依赖，compile 会解析类库 maven 包中的 pom 文件，进而间接依赖 pom 文件中声明的其他类库，也就是依赖传递。正常情况下，依赖传递会减少不必要的类库声明，当出现版本冲突时会自动处理 merge 操作。</p>
+<p>但是，在多人协同工作、多类库并行开发情况下，事情变得有些复杂。考虑一种情况，应用 A 依赖类库 B，类库 B 依赖类库 C，正常情况下，A 中只需要声明依赖 B 即可，C 会被依赖传递过去。如果 C 中改变了方法签名，并且在应用 A 中显示声明依赖 C，编译时和运行时会分别出现什么情况？在编译时没有问题，正常编译通过；在运行时，当运行到类库 B 中使用的类库 C 中被改变签名的方法时，App crash。这是因为，maven 在处理类库版本 merge 时，会将 C 升级到最高版本，而此时 B 中已经编译好的 class 中使用的还是老版本 C 中的方法。</p>
+<p>为了处理这个问题，我们使用 APICheckGradlePlugin 在编译时进行 check 操作，当发现被调用的方法找不到时，主动报错，将错误提前暴露在编译期，而非在运行时。同时内部强调 API 接口的向下兼容性，不用的方法标记为废弃，而非直接修改其方法签名或删除方法。</p>
+<p>APICheckGradlePlugin 核心代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    c.getClassPool().get(callClassName)</div><div class="line">    isClassNotFound = <span class="keyword">false</span></div><div class="line">    m.getMethod()</div><div class="line">&#125; <span class="keyword">catch</span> (NotFoundException e) &#123;</div><div class="line">    <span class="keyword">if</span> (isClassNotFound) &#123;</div><div class="line">        dealException(String.format(<span class="string">"在%s类中的第%d行是用到的%s类不存在"</span>, className, line, callClassName))</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        dealException(String.format(<span class="string">"在%s类中的第%d行是用到的%s类的%s方法不存在"</span>, className, line, callClassName, methodName))</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="多module发布"><a href="#多module发布" class="headerlink" title="多module发布"></a>多module发布</h3><p>上文中提到，在多业务组件库工程中会有多个 module，一个 api module，一个 imp module，在使用 DemoApp 编译调试时采用源码依赖， imp module 依赖 api module，App 依赖 imp module，这样在打包上传 maven 时，会出现无法一起上传的问题；并且我们也要确保 api 和 imp 的版本号一致。为了解决这个问题，需要在上传时动态修改他们的 pom 文件，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">modifyPom &#123; pom -&gt;</div><div class="line">    pom.dependencies.findAll &#123; dep -&gt; dep.groupId == rootProject.name &#125;.collect &#123; dep -&gt;</div><div class="line">        dep.groupId = pom.groupId = rootProject.groupId</div><div class="line">        dep.version = pom.version = rootProject.sdkVersion</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="一键创建项目"><a href="#一键创建项目" class="headerlink" title="一键创建项目"></a>一键创建项目</h2><h3 id="模板工程"><a href="#模板工程" class="headerlink" title="模板工程"></a>模板工程</h3><p>由于每个新建组件类库的 App 工程需要运行时环境基本相同，包括网络环境、调试环境、gradle 配置、通用依赖配置等等，这些重复性的工作最好放在一起统一处理。为此，我们创建了组件库的模板工程，只需要 clone 下来模板仓库，然后修改一些代码即可开发需求代码。</p>
+<h3 id="一键创建类库"><a href="#一键创建类库" class="headerlink" title="一键创建类库"></a>一键创建类库</h3><p>但是，这种方式依然有很多共性的工作，比如 clone 代码、修改类库名、修改 groupId:artifactId、创建新的类库仓库、push 代码、在大风车中新建类库关联仓库地址等等操作。这些共性操作仍然可以用机器来操作，所以我们在大风车新建类库这一步中，把前面所有要做的事情全部做完，只需要在新建类库时填入必要的参数，一键就可以创建出可用的类库项目。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fwrpngxyd4j31g40mqdht.jpg" alt="image-20181031201425732"></p>
+<h3 id="一键创建应用"><a href="#一键创建应用" class="headerlink" title="一键创建应用"></a>一键创建应用</h3><p>随着我司 App 越来越多，新建 App 的配置同样面临类库刚开始时的困扰，新建 App 与新建类库本质上是一样的，只不过所需参数更多一些，并且这些参数可能不固定，有些 App 需要有些 App 不需要。参考类库，我们提取共性操作，创建了 App 的模板工程，并且对接大风车，一键即可创建出 App 工程，那些可变的参数留在模板工程中按需手动配置。</p>
+<h2 id="模块负责人"><a href="#模块负责人" class="headerlink" title="模块负责人"></a>模块负责人</h2><p>在组件化初步开始时，我们的每个模块都有固定的负责人，每个人手上都有固定的若干个模块，责任人对自己负责的模块负责。</p>
+<p>但是随着组内的人员变动和业务变动，导致一些模块频繁易主，一些模块的文档长期处于不被维护状态，README 和 CHANGELOG 常年失修。</p>
+<p>依赖大风车的类库管理，重新为每个模块指定负责人，并且梳理现存类库哪些缺失文档，进行补全。自从大风车自动抄送类库发版 CHANGELOG 后，CHANGELOG 不全的情况也大幅改善，基本每个新的版本都会附上该版本所做修改。</p>
+<p>同时，我们也强调 CodeReview 机制，每个模块在提测前进行 CodeReview，强制merge request 必须有人点赞后才能合并 master 分支等等代码审查机制。未来，我们可能会进一步实践负责人 backup 方案，主副负责人相互 review，扩大大家技术视野的同时，可以进一步提高大家的主人翁意识。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>好的架构不是设计出来的，而是演进出来的。本文简单阐述了51信用卡 Android 架构演进的一些实践经验，同时我们坚信技术方案没有最优解，重要的是要选择选择适合自己的。脱离所处环境和问题本身谈技术方案，都将不能得到适合自身的开发架构。同时，我们也应当吸取和借鉴业界优秀的架构和设计理念，并将其根据自身适用场景加以改造，在理论和实践中逐渐交替探索演进。</p>
+<p>当然，我们目前所使用的架构依然存在一些问题，比如组件拆分不完全、主工程业务仍然很多、CodeReview 机制不健全、代码扫描不够严格、一些组件库没有严格按照 api 工程来改造、一些老的组件依然没有 api module等等问题。我们也应该看到，正是因为这些实际的问题在推动我们进行技术改造，架构升级。同时，我们也要审视行业内大的方向，紧跟技术趋势，主动拥抱变化，毕竟技术世界唯一不变的，便是变化。</p>
+<p>本文链接： <a href="http://w4lle.com/2018/11/16/51credit-android-architecture/">http://w4lle.com/2018/11/16/51credit-android-architecture/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2018/11/16/51credit-android-architecture/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2019/03/13/UI2Code-0/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2018/06/20/robust-2/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

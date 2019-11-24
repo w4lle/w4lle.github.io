@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            Flutter 工程架构 | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致。">
+    <meta name="keywords" content="Android,Flutter">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Flutter 工程架构 | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致。">
+    <meta property="og:article:tag" content="Flutter"> 
+
+    
+        <meta property="article:published_time" content="Sat Nov 23 2019 22:11:04 GMT+0800" />
+        <meta property="article:modified_time" content="Sun Nov 24 2019 10:59:05 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="Flutter 工程架构 | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2019/11/23/flutter-project-manage/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2019/11/23/flutter-project-manage/index.html",
+    "headline": "Flutter 工程架构",
+    "datePublished": "Sat Nov 23 2019 22:11:04 GMT+0800",
+    "dateModified": "Sun Nov 24 2019 10:59:05 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",FlutterAndroid",
+    "description": "本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191123185156.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                Flutter 工程架构
+            </p>
+            <p>本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致。</p>
+<a id="more"></a>
+<p>系列文章：</p>
+<ul>
+<li><a href="http://w4lle.com/2019/11/22/flutter-hybrid-stack/">Flutter 混合栈管理</a></li>
+<li><a href="http://w4lle.com/2019/11/23/flutter-project-manage/">Flutter 工程架构</a></li>
+</ul>
+<h1 id="Flutter-工程类型"><a href="#Flutter-工程类型" class="headerlink" title="Flutter 工程类型"></a>Flutter 工程类型</h1><p>Flutter工程中，通常有以下几种工程类型，下面分别简单概述下：</p>
+<p><strong>1. Flutter Application</strong></p>
+<p>​    纯净的Flutter App工程，包含标准的Dart层与Native平台层(android/&amp;ios/)</p>
+<p><strong>2. Flutter Module</strong></p>
+<p>​    Flutter模块工程，仅包含Dart层实现，Native平台子工程的作用是构建Flutter产物，是通过Flutter自动生成的隐藏工程（.android/&amp;.ios/）</p>
+<p><strong>3. Flutter Plugin</strong></p>
+<p>​    Flutter平台插件工程，包含Dart层与Native平台层的实现(android/&amp;ios/)，往外提供API接口</p>
+<p><strong>4. Flutter Package</strong></p>
+<p>​    Flutter纯Dart插件工程，仅包含Dart层的实现，往往定义一些公共Widget</p>
+<p>接入Flutter工程的两种方式：</p>
+<ol>
+<li>源码集成，在原生项目中Flutter作为lib直接嵌入Flutter代码，编译过程需要依赖Flutter环境，每个开发都需要配置Flutter开发环境，适合全新项目</li>
+<li>Flutter项目作为子项目module，生成aar后由原生App依赖，对于App来说屏蔽了Flutter开发环境，在原有环境中即可打包，对App开发来说屏蔽了Flutter环境，适合已经App嵌入Flutter应用</li>
+</ol>
+<p>本文主要介绍第二种方式，由于Flutter官方并未提供完整的解决方案，所以接入过程中会碰到一些问题，这里给出一些解决思路供参考。</p>
+<p>创建一个flutter module：</p>
+<p>flutter create -t module –org com.example my_flutter</p>
+<p>工程结构：</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesD099FCC6-82A2-4170-A8A1-43C90F44CB65.png" alt=""></p>
+<h1 id="FlutterModule-构建-Aar"><a href="#FlutterModule-构建-Aar" class="headerlink" title="FlutterModule 构建 Aar"></a>FlutterModule 构建 Aar</h1><p>flutter build aar</p>
+<p>但是这个命令在Flutter v1.7.8版本中会提示找不到这个命令，估计是dev版本新加入的，还没有stable。</p>
+<p>不久前加入的 <a href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps/_compare/1f606754ee0b18d9970e5fdd7b14d8a6df8d2d72...d648f6b063a0ab7ad4eaf0546e90b1cc75b9d58b" target="_blank" rel="external">https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps/_compare/1f606754ee0b18d9970e5fdd7b14d8a6df8d2d72...d648f6b063a0ab7ad4eaf0546e90b1cc75b9d58b</a></p>
+<p>即使没有这个命令，也可以使用./gradlew assembleDebug进行编译，结果是一样的。</p>
+<p>如果使用flutter build aar命令，Flutter官方给出的结果是，本地作为localmaven，生成的结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">build/host/outputs/repo</div><div class="line"></div><div class="line">└── com</div><div class="line"></div><div class="line">└── example</div><div class="line"></div><div class="line">└── my_flutter</div><div class="line"></div><div class="line">└── flutter_release</div><div class="line"></div><div class="line">├── 1.0</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.aar</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.aar.md5</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.aar.sha1</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.pom</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.pom.md5</div><div class="line"></div><div class="line">│   └── flutter_release-1.0.pom.sha1</div><div class="line"></div><div class="line">├── maven-metadata.xml</div><div class="line"></div><div class="line">├── maven-metadata.xml.md5</div><div class="line"></div><div class="line">└── maven-metadata.xml.sha1</div></pre></td></tr></table></figure>
+<p>Flutter v1.2版本之后Flutter产物自动会打包到aar中，具体脚本见 flutter.gradle，主要做了三件事情：</p>
+<ol>
+<li>选择符合对应架构的Flutter引擎（flutter.so）</li>
+<li>解析 .flutter-plugins文件，把Flutter对应的android module动态添加到Native工程的依赖中，即动态添加implementation依赖，这块后面会详细讲</li>
+<li>Hook mergeAssets/processResources Task，预先执行FlutterTask，调用flutter命令编译Dart层代码构建出flutter_assets产物，并拷贝到assets目录下</li>
+</ol>
+<p>基于Flutter v1.7.8，编译产物 Debug版本</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images0517FC2D-73DC-4597-A471-8F87E51420B0.png" alt=""></p>
+<p>Release版本 </p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesCB70BFBA-A021-4D0C-9614-395D366BF292.png" alt=""></p>
+<p>在Flutter v1.7之前，Release的产物如下：</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagese21cd2440bca39a70b30abedaaba4e3be5e090e4.png" alt=""></p>
+<p>也就是说Flutter的编译产物，<strong>从四个二进制文件变成了一个 libapp.so 文件</strong>。</p>
+<p>这里也涉及到so兼容arm的问题，之前把libflutter.so拷贝到arm目录下即可，现在编译出的libapp.so拷贝过去是有问题的，解决办法可以参考 <a href="https://github.com/lizhangqu/plugin-flutter-armeabi" target="_blank" rel="external">这个项目</a>。</p>
+<p>如果在Flutter module 中依赖了Flutter Plugin，那么在App中依赖Flutter module编译出的aar时，会报错，例如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ERROR: Unable to resolve dependency <span class="keyword">for</span> <span class="string">':app@debug/compileClasspath'</span>: Could not resolve io.flutter.plugins.sharedpreferences:shared_preferences:<span class="number">1.0</span>-SNAPSHOT. </div><div class="line"></div><div class="line">Show Details</div><div class="line"></div><div class="line">Affected Modules: app</div></pre></td></tr></table></figure>
+<p>下面会分析下为什么会报错。</p>
+<h1 id="Flutter-Plugin依赖原理"><a href="#Flutter-Plugin依赖原理" class="headerlink" title="Flutter Plugin依赖原理"></a>Flutter Plugin依赖原理</h1><p>以Flutter Module为例，看下Flutter Plugin依赖的原理。</p>
+<h2 id="flutter-package-get"><a href="#flutter-package-get" class="headerlink" title="flutter package get"></a>flutter package get</h2><p>当Flutter Module在pub中依赖了Flutter Plugin，并且在 flutter package get后，会从远程pubserver拉取依赖的Flutter Plugin，并生成一个文件记录依赖了哪些Flutter Plugin，名字为： <code>.flutter-plugins</code>，内容为 k-v，如：</p>
+<p><code>flutter_webview_plugin=/Users/wanglinglong/Develop/flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_webview_plugin-0.3.5/</code></p>
+<p>被拉取到本地后的Flutter Plugin目录如下</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesimage2019-8-6%2011-51-21.png" alt=""></p>
+<h2 id="动态依赖"><a href="#动态依赖" class="headerlink" title="动态依赖"></a>动态依赖</h2><p>然后在.android/app/settings.gradle 文件中添加配置脚本，使其在Gradle初始化之后执行解析操作:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rootProject.name = <span class="string">'android_generated'</span></div><div class="line">setBinding(<span class="keyword">new</span> Binding([gradle: <span class="keyword">this</span>]))</div><div class="line">evaluate(<span class="keyword">new</span> File(settingsDir, <span class="string">'include_flutter.groovy'</span>))</div></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesimage2019-8-2%2015-19-48.png" alt=""></p>
+<p>这个脚本的作用是控制配置(evaluate)顺序，操作是解析.flutter-plugins，得到各个插件的android工程，使其在.android/Flutter 配置完成之后再进行配置解析。Gradle配置阶段的目标是解析每个project中的build.gradle。</p>
+<p>然后在.android/Flutter/build.gradle中依赖 </p>
+<p><code>apply from: &quot;$flutterRoot/packages/flutter_tools/gradle/flutter.gradle&quot;</code></p>
+<p>这个文件中同样解析.flutter-plugins文件，遍历后一个一个 implementation 到./android/Flutter module工程里完成依赖。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesimage2019-8-2%2015-22-42.png" alt=""></p>
+<p>所以在Native层面来看这种依赖其实是本地依赖，只不过Flutter Plugin工程路径都在Flutter的环境变量下的缓存目录中。</p>
+<p>这里的依赖分成两个部分，一部分是原生Native依赖，一部分是Dart依赖。</p>
+<p>对于原生部分，Flutter Plugin作为lib被Flutter Module本地依赖，根据Android 编译常识，在打包Aar后，这些<strong>本地依赖的工程lib不能被一起打到Aar中</strong>。</p>
+<p>所以当App中依赖Flutter Module的产物Aar时，不能获得Flutter Module 中依赖的Flutter Plugin Android原生依赖，最终会报错。</p>
+<p>对于Dart部分，通过pub进行管理依赖，相当于源码依赖，在打包时，这些Plugin的Dart源码部分都参与打包，最终生成Flutter的构建产物。</p>
+<p>Flutter Module打包成Aar后，Aar中包含Android原生部分编译产物和Flutter Dart部分编译产物，后面App依赖该Aar后就可以脱离Flutter的编译环境，直接进行apk打包了。</p>
+<p>那么如何解决Aar报错的问题？</p>
+<h1 id="Flutter-module-依赖-Flutter-Plugin"><a href="#Flutter-module-依赖-Flutter-Plugin" class="headerlink" title="Flutter module 依赖 Flutter Plugin"></a>Flutter module 依赖 Flutter Plugin</h1><p>已有方案大致原理都是收集Flutter Plugin 的Aar文件，然后进一步处理。</p>
+<p><strong>方案一：</strong></p>
+<p>使用 fat-aar，大致原理就是将所有的Flutter Plugin打包到同一个Aar中，这个方案比较臃肿，还可能涉及到gradle版本适配，而且可能产生多次依赖的问题。不建议使用。</p>
+<p><strong>方案二：</strong></p>
+<p>遍历所有依赖的Flutter Plugin，搜集Plugin Android工程下的Aar产物并copy到Flutter Module指定目录下，然后再push maven。</p>
+<p><strong>方案三：</strong></p>
+<p>遍历所有依赖的Flutter Plugin，根据Plugin版本信息，挨个打包成上传到maven。</p>
+<p>由于公司内之前碰到到相关需求场景，即同一工程下多个Module如何统一管理的问题，最后解决方案就是使用的方案三，这里依然采用方案三，相比其他两种方案更稳定。</p>
+<p>iOS 思路相同，打包成framework后上传到CDN，通过Pod进行依赖管理。</p>
+<p>看下实现：</p>
+<p>首先在.andorid/Flutter/build.gradle中依赖脚本 <code>apply from: &#39;./publish_flutter_plugin.gradle&#39;</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">def flutterUpload = gradle.rootProject.project(<span class="string">':flutter'</span>).tasks.getByName(uploadTaskName)</div><div class="line">gradle.rootProject.ext.pluginList.each &#123; name -&gt;</div><div class="line">    project.afterEvaluate &#123;</div><div class="line">        project.apply plugin: <span class="string">'com.u51.publish'</span></div><div class="line">        <span class="comment">// 修改插件库对插件库的本地依赖为pom依</span></div><div class="line">        modifyPom &#123; pom -&gt;</div><div class="line">            pom.dependencies.findAll &#123; dep -&gt;</div><div class="line">                <span class="keyword">if</span> (rootProject.ext.pluginList.contains(dep.artifactId)) &#123;</div><div class="line">                    dep.groupId = rootProject.ext.groupId</div><div class="line">                    dep.version = rootProject.ext.pluginMap[dep.artifactId]</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 设定插件本地库发布坐标版本号</span></div><div class="line">        project.publish &#123;</div><div class="line">            groupId rootProject.ext.groupId</div><div class="line">            version rootProject.ext.pluginMap[name]</div><div class="line">            artifactId name</div><div class="line">            compileEnvCheck <span class="keyword">false</span></div><div class="line">            sources <span class="keyword">true</span></div><div class="line">        &#125;</div><div class="line">        <span class="comment">// flutter库 upload在插件本地库均upload完成后</span></div><div class="line">        <span class="keyword">if</span> (pluginUploadTask != <span class="keyword">null</span>&amp;&amp;node==<span class="keyword">null</span>) &#123;</div><div class="line">            flutterUpload.dependsOn(pluginUploadTask)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另外这种方案兼容持续集成环境，对于Native层面来讲，无需做任何改动。</p>
+<h1 id="Flutter-Plugin-依赖-Flutter-Plugin"><a href="#Flutter-Plugin-依赖-Flutter-Plugin" class="headerlink" title="Flutter Plugin 依赖 Flutter Plugin"></a>Flutter Plugin 依赖 Flutter Plugin</h1><p>上面提到的是Flutter module依赖Flutter Plugin的情况，那么如果是Flutter Plugin工程依赖Flutter Plugin工程有没有问题？</p>
+<p>先看下Flutter Plugin的项目结构 <code>flutter create --template=plugin -i swift -a kotlin flutter_plugin</code></p>
+<p>在example下运行 flutter run命令，就可以跑起来了。</p>
+<p>看下编译产物，其中Aar中只有原生的编译产物，并无Dart编译产物。</p>
+<p>所以Flutter Plugin需要被pub依赖，pub将发布到远程的库下载到本地，然后在工程中</p>
+<ul>
+<li>原生部分，Flutter Module通过上述方案动态添加maven 依赖</li>
+<li>Dart部分，Flutter Module通过pub依赖找到Dart源码，在Flutter Module中import引入，相当于源码依赖，共同参与编译，生成最终的 Dart产物</li>
+</ul>
+<p>上面的场景都是Flutter Module(Flutter Application)依赖Flutter Plugin的情况，那么Flutter Plugin能不能依赖Flutter Plugin，会不会有问题？</p>
+<p>首先Dart部分由于是pub依赖，相当于源码依赖，是没有问题的。</p>
+<p>原生部分，由于Flutter Plugin在原生部分没有引入include_flutter.groovy(Android)，所以宿主Flutter Pugin无法动态include到子Flutter Plugin，找不到依赖。</p>
+<p>解决办法就是再给它加上，方法同上。</p>
+<h1 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h1><p>总结来说，对于 Flutter 来讲只有 Flutter Module 和 Flutter Application编译会生成Dart编译产物，而Flutter Application我们基本不用考虑。</p>
+<p>所以很自然的得出结论，我们可以把Flutter Module作为隔离层，作为Flutter层的聚合统一输出给 App，App 工程只需通过 maven or Pod 依赖Flutter Module即可。</p>
+<p>其余的Flutter相关依赖操作都交给Flutter Module，通过Pub进行管理即可。</p>
+<p>这样通过若干个独立工程 Flutter Module、App、Flutter Plugin，就把整个构建流程建立起来了。</p>
+<p>更进一步的，如果业务需要，可以在Flutter层进行更细化的划分，把Native组件化的思路对应到Flutter层。</p>
+<p>每个Flutter Plugin可以作为独立的业务模块或基础组件，业务组件向下依赖基础组件，在打包时通过Pub传递依赖一起参与打包。</p>
+<p>我们期望业务组件之间不互相依赖，就像之前的文章 <a href="http://w4lle.com/2018/11/16/51credit-android-architecture/">51信用卡 Android 架构演进实践</a> 中讲的那样，业务组件不互相依赖只是约定，但不是强制约束，所以要通过一些手段达到强制约束的目的，由于架构还没有演进到这一步，所以没还没有调研方案，后面有需要再研究。</p>
+<p>另外还有持续集成 Flutter 环境怎么配置？</p>
+<p>以及Flutter版本管理的问题，Flutter版本升级API可能有变动，怎么保证开发同学使用同一版本的Flutter？</p>
+<p>参考主流方案使用flutterw进行管理，不详细阐述。</p>
+<p>整体结构借用一张图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_hybrid_arch.jpg" alt=""></p>
+<h2 id="Pub-私服"><a href="#Pub-私服" class="headerlink" title="Pub 私服"></a>Pub 私服</h2><p>参考 <a href="https://github.com/dart-lang/pub_server" target="_blank" rel="external">pub_server</a> 搭建私服。</p>
+<h1 id="工程模板"><a href="#工程模板" class="headerlink" title="工程模板"></a>工程模板</h1><p>当依照上面的思路愉快的开发时，会发现当触发<code>flutter package get</code> 命令，.android/&amp;.ios/ 目录就都被还原了，里面的修改都被删除了。</p>
+<p>这段操作在 flutter_tools 中进行，官方这么做的目的可能是不希望开发者直接修改.android&amp;.ios/目录，因为这两个目录仅仅是参与编译的中间过渡。</p>
+<p>而通过上面的分析，这两个目录是一定要修改的，不然跑不起来。</p>
+<p>除此之外还有一个问题，上面提到远程依赖和本地依赖切换，在开发过程中选择本地依赖进行打包，此时Flutter是跑在App中的，需要调试时发现没有入口。</p>
+<p>这里可以通过在Flutter Module 中 <code>flutter attach</code>，然后重启App就可以连上Flutter的调试服务，才可以使用hot reload的功能，但是整个流程还是很长，并且hot reload并不是全能的，有些情况下并不能生效，还是要触发全量编译，有没有办法缩短构建路径？</p>
+<p>上面的两个问题其实都可以通过自定义工程模板来解决，首先我们修改flutter_tools中的关键代码，使得不覆盖目录。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">packages/flutter_tools/lib/src/commands/packages.dart</div><div class="line">  <span class="meta">@override</span></div><div class="line">  Future&lt;FlutterCommandResult&gt; runCommand() <span class="keyword">async</span> &#123;</div><div class="line">    <span class="comment">// await rootProject.ensureReadyForPlatformSpecificTooling(checkProjects: true);</span></div><div class="line">    logger.startProgress(</div><div class="line">      <span class="string">'这是修改过的 flutter_tools 不会去修改.android 和 .ios 目录下的代码'</span>,</div><div class="line">    );</div><div class="line">    refreshPluginsList(rootProject);</div><div class="line">  	...</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>然后我们修改flutter_tools/template下的模板代码，使其满足我们的需求。这样新建的Flutter Module都是通过模板工程创建的，开发环境一致。</p>
+<p>更进一步的，我们可以把<strong>完整可运行</strong>的Module模板放到仓库中使用submodule进行管理，这样每次模板更新后，Module可以实时更新。这部分可以放在flutterw中进行管理。</p>
+<p>这里的完整可运行包含两个部分：</p>
+<ul>
+<li>修改 .android/Flutter/ Module，使其可以满足编译构建需要</li>
+<li>修改 .android/app，使其<strong>拥有和工程App同样的运行时环境</strong>，包括登陆注册环境、Hybrid Plugin环境(非Flutter Plugin，这里可以理解为不依赖Flutter环境的、更加通用的Hybrid插件系统)、调试环境、网络环境等等</li>
+</ul>
+<p>当然这个方案也并不完美，因为涉及到修改flutter_tools，虽然改动不大，但每次Flutter版本还是要做版本兼容。</p>
+<p>更好的方案是重写Dart构建流程，将flutter_tools中的流程串起来而不是修改它们，这样就不用做版本迁移了。</p>
+<p>好在本身Flutter开发环境就是由flutterw动态配置的，我们把FlutterSDK放在内部仓库进行维护，通过统一管理入口进行管理，对开发来讲透明、无感知。</p>
+<p>另外在App中，我们可以通过一些配置来切换远程依赖和本地依赖。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">gradle.properties</div><div class="line"># flutter模块项目开关</div><div class="line">includeFlutterProject=false</div><div class="line">flutterProjectPath=../U51XiaoLanBenFlutter</div><div class="line"></div><div class="line">setting.gradle</div><div class="line">// flutter lib</div><div class="line">if (includeFlutterProject == 'true') &#123;</div><div class="line">    setBinding(new Binding([gradle: this]))</div><div class="line">    evaluate(new File(</div><div class="line">            settingsDir,</div><div class="line">            "$&#123;flutterProjectPath&#125;/.android/include_flutter.groovy"</div><div class="line">    ))</div><div class="line">&#125;</div><div class="line"></div><div class="line">build.gradle</div><div class="line">if (includeFlutterProject == 'true') &#123;</div><div class="line">	implementation project(':flutter')</div><div class="line">  implementation project(':flutter_shell')</div><div class="line">&#125; else &#123;</div><div class="line">	implementation 'com.u51.android:xiaolanben-flutter:0.0.1-SNAPSHOT'</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样可以更方便的进行调试。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本篇文章以Android为例子，主要介绍了在接入Flutter过程中碰到的一些问题及解决方案，实际上对于iOS来说也思路基本一致，我们的iOS方案也已经落地。</p>
+<p>我们目前只在一个App中进行了实践，实际上对于另外的一个App工程，业务相同的Flutter Plugin应该做到通用性，只需要新建一个Flutter Module做中转就可以集成。</p>
+<p>各个App的Flutter运行时环境应该是统一的，目前来看，这个工程架构可以满足多业务组开发并行Flutter的情况。</p>
+<p><strong>注：另外这篇文章成文时间较久了，大概几个月前写的，方案对于目前的Flutter v1.9版本依然是适用的。</strong></p>
+<p>参考：</p>
+<ul>
+<li><a href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps" target="_blank" rel="external">https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps</a></li>
+<li><a href="https://tech.meituan.com/2018/08/09/waimai-flutter-practice.html" target="_blank" rel="external">Flutter原理与实践</a></li>
+<li><a href="http://zhengxiaoyong.com/2018/12/16/Flutter%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6%E5%8C%96%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96%E6%9E%B6%E6%9E%84/" target="_blank" rel="external">Flutter混合开发组件化与工程化架构</a></li>
+</ul>
+<p>本文链接： <a href="http://w4lle.com/2019/11/23/flutter-project-manage/">http://w4lle.com/2019/11/23/flutter-project-manage/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2019/11/23/flutter-project-manage/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2019/11/22/flutter-hybrid-stack/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
