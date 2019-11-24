@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://w4lle.com/2019/11/23/flutter-project-manage/</loc>
-    <lastmod>2019-11-23T15:54:55.012Z</lastmod>
+    <lastmod>2019-11-24T02:59:05.792Z</lastmod>
     <data>
         <display>
-        <title>flutter-project-manage</title>
+        <title>Flutter 工程架构</title>
         <pubTime>2019-11-23T14:11:04.000Z</pubTime>
         
         <tag>Flutter</tag>
@@ -22,7 +22,7 @@
     
   <url>
     <loc>http://w4lle.com/2019/11/22/flutter-hybrid-stack/</loc>
-    <lastmod>2019-11-23T14:09:49.086Z</lastmod>
+    <lastmod>2019-11-24T02:58:54.206Z</lastmod>
     <data>
         <display>
         <title>Flutter 混合栈管理</title>
@@ -38,8 +38,25 @@
 
     
   <url>
+    <loc>http://w4lle.com/2019/03/22/UI2Code-1/</loc>
+    <lastmod>2019-11-24T02:58:32.429Z</lastmod>
+    <data>
+        <display>
+        <title>UI2Code（二）pixeltoapp</title>
+        <pubTime>2019-03-22T09:36:57.000Z</pubTime>
+        
+        <tag>机器学习</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://w4lle.com/2019/04/08/UI2Code-2/</loc>
-    <lastmod>2019-11-15T13:15:44.494Z</lastmod>
+    <lastmod>2019-11-24T02:58:29.904Z</lastmod>
     <data>
         <display>
         <title>UI2Code（三）imgcook</title>
@@ -56,28 +73,11 @@
     
   <url>
     <loc>http://w4lle.com/2019/03/13/UI2Code-0/</loc>
-    <lastmod>2019-11-15T11:30:51.837Z</lastmod>
+    <lastmod>2019-11-24T02:57:34.478Z</lastmod>
     <data>
         <display>
         <title>UI2Code（一）pix2code</title>
         <pubTime>2019-03-13T08:27:22.000Z</pubTime>
-        
-        <tag>机器学习</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://w4lle.com/2019/03/22/UI2Code-1/</loc>
-    <lastmod>2019-11-15T11:29:54.509Z</lastmod>
-    <data>
-        <display>
-        <title>UI2Code（二）pixeltoapp</title>
-        <pubTime>2019-03-22T09:36:57.000Z</pubTime>
         
         <tag>机器学习</tag>
          
@@ -674,6 +674,7 @@
     </url>
 
     
+    
   <url>
     <loc>http://w4lle.com/2016/01/28/hello-world/</loc>
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
@@ -688,7 +689,6 @@
     </data>
     </url>
 
-    
     
   <url>
     <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2019-11-23T15:54:55.012Z</updated>
+  <updated>2019-11-24T02:59:05.792Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -16,14 +16,19 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>flutter-project-manage</title>
+    <title>Flutter 工程架构</title>
     <link href="http://w4lle.com/2019/11/23/flutter-project-manage/"/>
     <id>http://w4lle.com/2019/11/23/flutter-project-manage/</id>
     <published>2019-11-23T14:11:04.000Z</published>
-    <updated>2019-11-23T15:54:55.012Z</updated>
+    <updated>2019-11-24T02:59:05.792Z</updated>
     
-    <content type="html"><![CDATA[<p>本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致，实现细节不详细阐述。</p>
+    <content type="html"><![CDATA[<p>本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致。</p>
 <a id="more"></a>
+<p>系列文章：</p>
+<ul>
+<li><a href="http://w4lle.com/2019/11/22/flutter-hybrid-stack/">Flutter 混合栈管理</a></li>
+<li><a href="http://w4lle.com/2019/11/23/flutter-project-manage/">Flutter 工程架构</a></li>
+</ul>
 <h1 id="Flutter-工程类型"><a href="#Flutter-工程类型" class="headerlink" title="Flutter 工程类型"></a>Flutter 工程类型</h1><p>Flutter工程中，通常有以下几种工程类型，下面分别简单概述下：</p>
 <p><strong>1. Flutter Application</strong></p>
 <p>​    纯净的Flutter App工程，包含标准的Dart层与Native平台层(android/&amp;ios/)</p>
@@ -45,7 +50,7 @@
 <p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesD099FCC6-82A2-4170-A8A1-43C90F44CB65.png" alt=""></p>
 <h1 id="FlutterModule-构建-Aar"><a href="#FlutterModule-构建-Aar" class="headerlink" title="FlutterModule 构建 Aar"></a>FlutterModule 构建 Aar</h1><p>flutter build aar</p>
 <p>但是这个命令在Flutter v1.7.8版本中会提示找不到这个命令，估计是dev版本新加入的，还没有stable。</p>
-<p>19个小时前加入的 <a href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps/_compare/1f606754ee0b18d9970e5fdd7b14d8a6df8d2d72...d648f6b063a0ab7ad4eaf0546e90b1cc75b9d58b" target="_blank" rel="external">https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps/_compare/1f606754ee0b18d9970e5fdd7b14d8a6df8d2d72...d648f6b063a0ab7ad4eaf0546e90b1cc75b9d58b</a></p>
+<p>不久前加入的 <a href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps/_compare/1f606754ee0b18d9970e5fdd7b14d8a6df8d2d72...d648f6b063a0ab7ad4eaf0546e90b1cc75b9d58b" target="_blank" rel="external">https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps/_compare/1f606754ee0b18d9970e5fdd7b14d8a6df8d2d72...d648f6b063a0ab7ad4eaf0546e90b1cc75b9d58b</a></p>
 <p>即使没有这个命令，也可以使用./gradlew assembleDebug进行编译，结果是一样的。</p>
 <p>如果使用flutter build aar命令，Flutter官方给出的结果是，本地作为localmaven，生成的结构如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">build/host/outputs/repo</div><div class="line"></div><div class="line">└── com</div><div class="line"></div><div class="line">└── example</div><div class="line"></div><div class="line">└── my_flutter</div><div class="line"></div><div class="line">└── flutter_release</div><div class="line"></div><div class="line">├── 1.0</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.aar</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.aar.md5</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.aar.sha1</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.pom</div><div class="line"></div><div class="line">│   ├── flutter_release-1.0.pom.md5</div><div class="line"></div><div class="line">│   └── flutter_release-1.0.pom.sha1</div><div class="line"></div><div class="line">├── maven-metadata.xml</div><div class="line"></div><div class="line">├── maven-metadata.xml.md5</div><div class="line"></div><div class="line">└── maven-metadata.xml.sha1</div></pre></td></tr></table></figure>
@@ -114,15 +119,53 @@
 <p>解决办法就是再给它加上，方法同上。</p>
 <h1 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h1><p>总结来说，对于 Flutter 来讲只有 Flutter Module 和 Flutter Application编译会生成Dart编译产物，而Flutter Application我们基本不用考虑。</p>
 <p>所以很自然的得出结论，我们可以把Flutter Module作为隔离层，作为Flutter层的聚合统一输出给 App，App 工程只需通过 maven or Pod 依赖Flutter Module即可。</p>
-<p>其余的Flutter相关依赖操作都交给Flutter Module。</p>
-<p>Flutter Module可以看成是Flutter层到Native层的双向关联。</p>
-<p>未完待续。。</p>
+<p>其余的Flutter相关依赖操作都交给Flutter Module，通过Pub进行管理即可。</p>
+<p>这样通过若干个独立工程 Flutter Module、App、Flutter Plugin，就把整个构建流程建立起来了。</p>
+<p>更进一步的，如果业务需要，可以在Flutter层进行更细化的划分，把Native组件化的思路对应到Flutter层。</p>
+<p>每个Flutter Plugin可以作为独立的业务模块或基础组件，业务组件向下依赖基础组件，在打包时通过Pub传递依赖一起参与打包。</p>
+<p>我们期望业务组件之间不互相依赖，就像之前的文章 <a href="http://w4lle.com/2018/11/16/51credit-android-architecture/">51信用卡 Android 架构演进实践</a> 中讲的那样，业务组件不互相依赖只是约定，但不是强制约束，所以要通过一些手段达到强制约束的目的，由于架构还没有演进到这一步，所以没还没有调研方案，后面有需要再研究。</p>
+<p>另外还有持续集成 Flutter 环境怎么配置？</p>
+<p>以及Flutter版本管理的问题，Flutter版本升级API可能有变动，怎么保证开发同学使用同一版本的Flutter？</p>
+<p>参考主流方案使用flutterw进行管理，不详细阐述。</p>
+<p>整体结构借用一张图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_hybrid_arch.jpg" alt=""></p>
+<h2 id="Pub-私服"><a href="#Pub-私服" class="headerlink" title="Pub 私服"></a>Pub 私服</h2><p>参考 <a href="https://github.com/dart-lang/pub_server" target="_blank" rel="external">pub_server</a> 搭建私服。</p>
+<h1 id="工程模板"><a href="#工程模板" class="headerlink" title="工程模板"></a>工程模板</h1><p>当依照上面的思路愉快的开发时，会发现当触发<code>flutter package get</code> 命令，.android/&amp;.ios/ 目录就都被还原了，里面的修改都被删除了。</p>
+<p>这段操作在 flutter_tools 中进行，官方这么做的目的可能是不希望开发者直接修改.android&amp;.ios/目录，因为这两个目录仅仅是参与编译的中间过渡。</p>
+<p>而通过上面的分析，这两个目录是一定要修改的，不然跑不起来。</p>
+<p>除此之外还有一个问题，上面提到远程依赖和本地依赖切换，在开发过程中选择本地依赖进行打包，此时Flutter是跑在App中的，需要调试时发现没有入口。</p>
+<p>这里可以通过在Flutter Module 中 <code>flutter attach</code>，然后重启App就可以连上Flutter的调试服务，才可以使用hot reload的功能，但是整个流程还是很长，并且hot reload并不是全能的，有些情况下并不能生效，还是要触发全量编译，有没有办法缩短构建路径？</p>
+<p>上面的两个问题其实都可以通过自定义工程模板来解决，首先我们修改flutter_tools中的关键代码，使得不覆盖目录。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">packages/flutter_tools/lib/src/commands/packages.dart</div><div class="line">  <span class="meta">@override</span></div><div class="line">  Future&lt;FlutterCommandResult&gt; runCommand() <span class="keyword">async</span> &#123;</div><div class="line">    <span class="comment">// await rootProject.ensureReadyForPlatformSpecificTooling(checkProjects: true);</span></div><div class="line">    logger.startProgress(</div><div class="line">      <span class="string">'这是修改过的 flutter_tools 不会去修改.android 和 .ios 目录下的代码'</span>,</div><div class="line">    );</div><div class="line">    refreshPluginsList(rootProject);</div><div class="line">  	...</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>然后我们修改flutter_tools/template下的模板代码，使其满足我们的需求。这样新建的Flutter Module都是通过模板工程创建的，开发环境一致。</p>
+<p>更进一步的，我们可以把<strong>完整可运行</strong>的Module模板放到仓库中使用submodule进行管理，这样每次模板更新后，Module可以实时更新。这部分可以放在flutterw中进行管理。</p>
+<p>这里的完整可运行包含两个部分：</p>
+<ul>
+<li>修改 .android/Flutter/ Module，使其可以满足编译构建需要</li>
+<li>修改 .android/app，使其<strong>拥有和工程App同样的运行时环境</strong>，包括登陆注册环境、Hybrid Plugin环境(非Flutter Plugin，这里可以理解为不依赖Flutter环境的、更加通用的Hybrid插件系统)、调试环境、网络环境等等</li>
+</ul>
+<p>当然这个方案也并不完美，因为涉及到修改flutter_tools，虽然改动不大，但每次Flutter版本还是要做版本兼容。</p>
+<p>更好的方案是重写Dart构建流程，将flutter_tools中的流程串起来而不是修改它们，这样就不用做版本迁移了。</p>
+<p>好在本身Flutter开发环境就是由flutterw动态配置的，我们把FlutterSDK放在内部仓库进行维护，通过统一管理入口进行管理，对开发来讲透明、无感知。</p>
+<p>另外在App中，我们可以通过一些配置来切换远程依赖和本地依赖。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">gradle.properties</div><div class="line"># flutter模块项目开关</div><div class="line">includeFlutterProject=false</div><div class="line">flutterProjectPath=../U51XiaoLanBenFlutter</div><div class="line"></div><div class="line">setting.gradle</div><div class="line">// flutter lib</div><div class="line">if (includeFlutterProject == 'true') &#123;</div><div class="line">    setBinding(new Binding([gradle: this]))</div><div class="line">    evaluate(new File(</div><div class="line">            settingsDir,</div><div class="line">            "$&#123;flutterProjectPath&#125;/.android/include_flutter.groovy"</div><div class="line">    ))</div><div class="line">&#125;</div><div class="line"></div><div class="line">build.gradle</div><div class="line">if (includeFlutterProject == 'true') &#123;</div><div class="line">	implementation project(':flutter')</div><div class="line">  implementation project(':flutter_shell')</div><div class="line">&#125; else &#123;</div><div class="line">	implementation 'com.u51.android:xiaolanben-flutter:0.0.1-SNAPSHOT'</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样可以更方便的进行调试。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本篇文章以Android为例子，主要介绍了在接入Flutter过程中碰到的一些问题及解决方案，实际上对于iOS来说也思路基本一致，我们的iOS方案也已经落地。</p>
+<p>我们目前只在一个App中进行了实践，实际上对于另外的一个App工程，业务相同的Flutter Plugin应该做到通用性，只需要新建一个Flutter Module做中转就可以集成。</p>
+<p>各个App的Flutter运行时环境应该是统一的，目前来看，这个工程架构可以满足多业务组开发并行Flutter的情况。</p>
+<p><strong>注：另外这篇文章成文时间较久了，大概几个月前写的，方案对于目前的Flutter v1.9版本依然是适用的。</strong></p>
+<p>参考：</p>
+<ul>
+<li><a href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps" target="_blank" rel="external">https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps</a></li>
+<li><a href="https://tech.meituan.com/2018/08/09/waimai-flutter-practice.html" target="_blank" rel="external">Flutter原理与实践</a></li>
+<li><a href="http://zhengxiaoyong.com/2018/12/16/Flutter%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91%E7%BB%84%E4%BB%B6%E5%8C%96%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96%E6%9E%B6%E6%9E%84/" target="_blank" rel="external">Flutter混合开发组件化与工程化架构</a></li>
+</ul>
 <p>本文链接： <a href="http://w4lle.com/2019/11/23/flutter-project-manage/">http://w4lle.com/2019/11/23/flutter-project-manage/</a> </p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致，实现细节不详细阐述。&lt;/p&gt;
+      &lt;p&gt;本文主要介绍Android视角下在已有 App 中嵌入 Flutter 应用的实践，iOS 的方案思路基本一致。&lt;/p&gt;
     
     </summary>
     
@@ -136,10 +179,15 @@
     <link href="http://w4lle.com/2019/11/22/flutter-hybrid-stack/"/>
     <id>http://w4lle.com/2019/11/22/flutter-hybrid-stack/</id>
     <published>2019-11-22T10:42:54.000Z</published>
-    <updated>2019-11-23T14:09:49.086Z</updated>
+    <updated>2019-11-24T02:58:54.206Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Flutter-混合栈管理"><a href="#Flutter-混合栈管理" class="headerlink" title="Flutter 混合栈管理"></a>Flutter 混合栈管理</h1><p>本文主要聊一下 Flutter 混合栈，由于 Flutter 版本跨度较大，所以 Flutter API 也有很大变化，下文中前几个方案的实现看看就好，不用深究。重点关注兼容目前 Flutter 版本(v1.9.1) 的实现。本文以 Android 平台为例进行讲解。</p>
 <a id="more"></a>
+<p>系列文章：</p>
+<ul>
+<li><a href="http://w4lle.com/2019/11/22/flutter-hybrid-stack/">Flutter 混合栈管理</a></li>
+<li><a href="http://w4lle.com/2019/11/23/flutter-project-manage/">Flutter 工程架构</a></li>
+</ul>
 <h1 id="为什么需要混合栈？"><a href="#为什么需要混合栈？" class="headerlink" title="为什么需要混合栈？"></a>为什么需要混合栈？</h1><p>在讨论 Flutter 之前，先看下 Weex 及 H5 Hybrid 如何处理多实例问题的。</p>
 <p>对于Weex，其引入了 JavaScript 通过JS Runtime 完成动态运算，再把运算结果和Native客户端进行通信，完成真实ViewTree的构建、渲染等操作指令。</p>
 <p>而当客户端面对多个 Weex 页面时，为了性能方面的考虑，并没有为每个 Weex 页面提供各自独立的 JS Runtime，相反只有一个 JS Runtime，这意味着所有的 Weex 页面共享同一份 JS Runtime，共用全局环境、变量、内存、和外界通信的接口等等。</p>
@@ -352,7 +400,7 @@
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>分析了上面几种混合栈管理方案，整体上来说闲鱼的共享FlutterEngine方案比较主流，其中的多Navigator有很大的参考价值。</p>
 <p>对于51信用卡来说，可以以此为基础，建设符合公司内部使用的混合栈管理方案。主要有几个事情：</p>
 <ul>
-<li>Plugin 管理问题，Plugin 是指每条指令对应在Native（Android、iOS）上的实现，得益于Hybrid的基础设施建设，公司内部目前有200+ Plugin可以直接使用，这也就意味着大部分需要Native参与的功能，都已经实现好了，Flutter 端直接调用即可，这块后面应该会写篇文章详细讲</li>
+<li>Plugin 管理问题，Plugin 是指每条指令对应在Native（Android、iOS）上的实现，得益于Hybrid的基础设施建设，公司内部目前有200+ Plugin可以直接使用，这也就意味着大部分需要Native参与的功能，都已经实现好了，Flutter 端直接调用即可，这块可以参考之前的文章 <a href="http://w4lle.com/2018/11/16/51credit-android-architecture/">51信用卡 Android 架构演进实践</a> </li>
 <li>路由管理，接入已有路由框架</li>
 <li>Flutter v1.9.1兼容</li>
 </ul>
@@ -391,10 +439,16 @@
     <link href="http://w4lle.com/2019/04/08/UI2Code-2/"/>
     <id>http://w4lle.com/2019/04/08/UI2Code-2/</id>
     <published>2019-04-08T11:30:15.000Z</published>
-    <updated>2019-11-15T13:15:44.494Z</updated>
+    <updated>2019-11-24T02:58:29.904Z</updated>
     
     <content type="html"><![CDATA[<p>imgcook是阿里实现的基于sketch或Ps设计稿，自动生成布局代码的工具，支持生成支持flexbox布局的代码，包括JARVIS、Vue、微信小程序、React、H5、Rax等等。由两部分组成，一个是sketch(Ps)插件，另外一部分是<a href="https://imgcook.taobao.org/" target="_blank" rel="external">imgcook平台</a>。</p>
 <a id="more"></a>
+<p>系列文章：</p>
+<ul>
+<li><a href="http://w4lle.com/2019/03/13/UI2Code-0/">UI2Code（一）pix2code</a></li>
+<li><a href="http://w4lle.com/2019/03/22/UI2Code-1/">UI2Code（二）pixeltoapp</a></li>
+<li><a href="http://w4lle.com/2019/04/08/UI2Code-2/">UI2Code（三）imgcook</a></li>
+</ul>
 <p>经过前面的研究，我们知道，UI2Code作为可以从UI截图生成布局代码的工作，其构建流程大致如下：</p>
 <ol>
 <li>版面分析，包含背景分析和前景分析</li>
@@ -556,10 +610,16 @@
     <link href="http://w4lle.com/2019/03/22/UI2Code-1/"/>
     <id>http://w4lle.com/2019/03/22/UI2Code-1/</id>
     <published>2019-03-22T09:36:57.000Z</published>
-    <updated>2019-11-15T11:29:54.509Z</updated>
+    <updated>2019-11-24T02:58:32.429Z</updated>
     
     <content type="html"><![CDATA[<p><a href="http://pixeltoapp.com/" target="_blank" rel="external">pixeltoapp</a> 是一个通过传统图像处理把屏幕截图转换为 Android 代码的项目，使用python实现，提供在线服务，具体实现在<a href="https://github.com/soumikmohianuta/pixtoapp" target="_blank" rel="external">项目源码地址</a></p>
 <a id="more"></a>
+<p>系列文章：</p>
+<ul>
+<li><a href="http://w4lle.com/2019/03/13/UI2Code-0/">UI2Code（一）pix2code</a></li>
+<li><a href="http://w4lle.com/2019/03/22/UI2Code-1/">UI2Code（二）pixeltoapp</a></li>
+<li><a href="http://w4lle.com/2019/04/08/UI2Code-2/">UI2Code（三）imgcook</a></li>
+</ul>
 <h1 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h1><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1bjfidsnoj30ku1940wr.jpg" alt="原图"> </p>
 <p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1g1bjglum9yj30ly118wgz.jpg" alt="代码渲染图"> </p>
 <p>生成的布局代码：</p>
@@ -662,11 +722,17 @@
     <link href="http://w4lle.com/2019/03/13/UI2Code-0/"/>
     <id>http://w4lle.com/2019/03/13/UI2Code-0/</id>
     <published>2019-03-13T08:27:22.000Z</published>
-    <updated>2019-11-15T11:30:51.837Z</updated>
+    <updated>2019-11-24T02:57:34.478Z</updated>
     
     <content type="html"><![CDATA[<p>pix2code 项目通过机器学习，支持输入一张图片输出实际的布局代码，同时支持生成三端(Android、iOS、web)布局代码。</p>
 <p>pix2code作为UI2Code的先驱项目，后续的相关项目或多或少的都有参考该项目的实现。</p>
 <a id="more"></a>
+<p>系列文章：</p>
+<ul>
+<li><a href="http://w4lle.com/2019/03/13/UI2Code-0/">UI2Code（一）pix2code</a></li>
+<li><a href="http://w4lle.com/2019/03/22/UI2Code-1/">UI2Code（二）pixeltoapp</a></li>
+<li><a href="http://w4lle.com/2019/04/08/UI2Code-2/">UI2Code（三）imgcook</a></li>
+</ul>
 <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><a href="https://github.com/tonybeltramelli/pix2code" target="_blank" rel="external">项目地址</a><br><a href="https://arxiv.org/abs/1705.07962" target="_blank" rel="external">论文地址</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;mid=2650728064&amp;idx=1&amp;sn=adb744e599299916faa23545c2ab436e&amp;chksm=871b22feb06cabe83ba0e3268a7a8c0c486cf6f42427ab41814e69242f919b25bc7de06ea258&amp;scene=21#wechat_redirect" target="_blank" rel="external">论文翻译</a></p>
 <p>使用双显卡服务器跑出模型，耗时大概1.5小时，模型数量1500张图片，1500个对应DSL，模型大小450M左右</p>
 <p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20191115164209.png" alt=""></p>
