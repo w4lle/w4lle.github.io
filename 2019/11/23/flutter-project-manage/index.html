@@ -248,7 +248,7 @@
 
     
         <meta property="article:published_time" content="Sat Nov 23 2019 22:11:04 GMT+0800" />
-        <meta property="article:modified_time" content="Sun Nov 24 2019 10:59:05 GMT+0800" />
+        <meta property="article:modified_time" content="Sun Nov 24 2019 11:41:50 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
@@ -275,7 +275,7 @@
     "mainEntityOfPage": "http://w4lle.com/2019/11/23/flutter-project-manage/index.html",
     "headline": "Flutter 工程架构",
     "datePublished": "Sat Nov 23 2019 22:11:04 GMT+0800",
-    "dateModified": "Sun Nov 24 2019 10:59:05 GMT+0800",
+    "dateModified": "Sun Nov 24 2019 11:41:50 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "w4lle",
@@ -537,7 +537,7 @@
 <p><code>apply from: &quot;$flutterRoot/packages/flutter_tools/gradle/flutter.gradle&quot;</code></p>
 <p>这个文件中同样解析.flutter-plugins文件，遍历后一个一个 implementation 到./android/Flutter module工程里完成依赖。</p>
 <p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesimage2019-8-2%2015-22-42.png" alt=""></p>
-<p>所以在Native层面来看这种依赖其实是本地依赖，只不过Flutter Plugin工程路径都在Flutter的环境变量下的缓存目录中。</p>
+<p>所以在Native层面来看这种依赖其实是本地依赖，只不过Flutter Plugin工程路径都在Flutter的环境变量下的缓存目录中。留个思考题，这里用 <code>api</code> 代替 <code>implementation</code> 行不行？</p>
 <p>这里的依赖分成两个部分，一部分是原生Native依赖，一部分是Dart依赖。</p>
 <p>对于原生部分，Flutter Plugin作为lib被Flutter Module本地依赖，根据Android 编译常识，在打包Aar后，这些<strong>本地依赖的工程lib不能被一起打到Aar中</strong>。</p>
 <p>所以当App中依赖Flutter Module的产物Aar时，不能获得Flutter Module 中依赖的Flutter Plugin Android原生依赖，最终会报错。</p>
@@ -671,6 +671,14 @@
             <!-- Post Prev & Next Nav -->
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
+    
+        <a href="/2020/11/09/flutter-ui-overview/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
     
 
     <!-- Section Spacer -->
