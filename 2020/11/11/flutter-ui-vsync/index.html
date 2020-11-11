@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            Flutter UI 渲染浅析（二）VSync 注册 | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="在 Flutter App 启动过程或者 State 刷新过程中，会请求注册 VSync 信号。
+本篇文章主要分析下 VSync 信号注册以及回调过程。
+基于 Android 平台，Flutter v1.20.4。">
+    <meta name="keywords" content="Android,Flutter">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Flutter UI 渲染浅析（二）VSync 注册 | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="在 Flutter App 启动过程或者 State 刷新过程中，会请求注册 VSync 信号。
+本篇文章主要分析下 VSync 信号注册以及回调过程。
+基于 Android 平台，Flutter v1.20.4。">
+    <meta property="og:article:tag" content="Flutter"> 
+
+    
+        <meta property="article:published_time" content="Wed Nov 11 2020 18:31:21 GMT+0800" />
+        <meta property="article:modified_time" content="Wed Nov 11 2020 18:33:24 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="Flutter UI 渲染浅析（二）VSync 注册 | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="在 Flutter App 启动过程或者 State 刷新过程中，会请求注册 VSync 信号。
+本篇文章主要分析下 VSync 信号注册以及回调过程。
+基于 Android 平台，Flutter v1.20.4。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2020/11/11/flutter-ui-vsync/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2020/11/11/flutter-ui-vsync/index.html",
+    "headline": "Flutter UI 渲染浅析（二）VSync 注册",
+    "datePublished": "Wed Nov 11 2020 18:31:21 GMT+0800",
+    "dateModified": "Wed Nov 11 2020 18:33:24 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",FlutterAndroid",
+    "description": "在 Flutter App 启动过程或者 State 刷新过程中，会请求注册 VSync 信号。
+本篇文章主要分析下 VSync 信号注册以及回调过程。
+基于 Android 平台，Flutter v1.20.4。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                Flutter UI 渲染浅析（二）VSync 注册
+            </p>
+            <p>在 Flutter App 启动过程或者 State 刷新过程中，会请求注册 VSync 信号。</p>
+<p>本篇文章主要分析下 VSync 信号注册以及回调过程。</p>
+<p>基于 Android 平台，Flutter v1.20.4。</p>
+<a id="more"></a>
+<p>调用时序图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_vsync.png" alt=""></p>
+<h2 id="1、Flutter-App-启动"><a href="#1、Flutter-App-启动" class="headerlink" title="1、Flutter App 启动"></a>1、Flutter App 启动</h2><p>Flutter App 启动过程中调用 <code>runApp()</code>方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/widgets/binding.dart</span></div><div class="line"><span class="keyword">void</span> runApp(Widget app) &#123;</div><div class="line">  WidgetsFlutterBinding.ensureInitialized()</div><div class="line">    ..scheduleAttachRootWidget(app)</div><div class="line">    ..scheduleWarmUpFrame();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WidgetsFlutterBinding</span> <span class="keyword">extends</span> <span class="title">BindingBase</span> <span class="title">with</span> <span class="title">GestureBinding</span>, <span class="title">SchedulerBinding</span>, <span class="title">ServicesBinding</span>, <span class="title">PaintingBinding</span>, <span class="title">SemanticsBinding</span>, <span class="title">RendererBinding</span>, <span class="title">WidgetsBinding</span> </span>&#123;</div><div class="line">  <span class="keyword">static</span> WidgetsBinding ensureInitialized() &#123;</div><div class="line">    <span class="keyword">if</span> (WidgetsBinding.instance == <span class="keyword">null</span>)</div><div class="line">      WidgetsFlutterBinding();</div><div class="line">    <span class="keyword">return</span> WidgetsBinding.instance;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>runApp()</code>过程中初始化 <code>WidgetsFlutterBinding</code>，它是 Dart Framework 和 C++ Engine 之间的胶水层，并且混入了 7 个Binding 类，用于初始化 7 个 Binding 类。</p>
+<p>上文中我们提到，<code>Window</code> 是 <code>dart:ui</code> 包中最重要的类，通过  <code>Window</code>  建立起了建立 Dart Framework 和 C++ Engine 的通讯连接，<code>Window</code> 在 Flutter Framework 和 C++ Engine 中分别存在，并通过 <code>ffi</code> 互相调用。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Window</span> </span>&#123;</div><div class="line">  <span class="comment">// 当窗口绘制区域变化时回调，比如[devicePixelRatio],</span></div><div class="line">  <span class="comment">/// [physicalSize], [padding], [viewInsets], or [systemGestureInsets]变化</span></div><div class="line">  VoidCallback? <span class="keyword">get</span> onMetricsChanged =&gt; _onMetricsChanged;</div><div class="line">  <span class="comment">// 当语言环境发生变化时回调</span></div><div class="line">  VoidCallback? <span class="keyword">get</span> onLocaleChanged =&gt; _onLocaleChanged;</div><div class="line">  <span class="comment">// 当系统字体缩放变化时回调</span></div><div class="line">  VoidCallback <span class="keyword">get</span> onTextScaleFactorChanged =&gt; _onTextScaleFactorChanged;</div><div class="line">  <span class="comment">// 绘制前回调，一般在收到 VSync 信号后回调，或者在App启动首帧主动调用</span></div><div class="line">  FrameCallback <span class="keyword">get</span> onBeginFrame =&gt; _onBeginFrame;</div><div class="line">  <span class="comment">// 绘制回调，一般在 onBeginFrame 和 microtask 执行完后执行，或者在App启动首帧主动调用</span></div><div class="line">  VoidCallback <span class="keyword">get</span> onDrawFrame =&gt; _onDrawFrame;</div><div class="line">  <span class="comment">// 绘制时间回调，用于计算fps</span></div><div class="line">  TimingsCallback? <span class="keyword">get</span> onReportTimings =&gt; _onReportTimings;</div><div class="line">  <span class="comment">// 点击或指针事件回调</span></div><div class="line">  PointerDataPacketCallback <span class="keyword">get</span> onPointerDataPacket =&gt; _onPointerDataPacket;</div><div class="line">  <span class="comment">// 触发 Engine Pipeline 渲染管线工作，注册 VSync 信号回调，当 VSync 信号到来时</span></div><div class="line">  <span class="comment">// onBeginFrame和onDrawFrame 会被调用</span></div><div class="line">  <span class="keyword">void</span> scheduleFrame() native <span class="string">'Window_scheduleFrame'</span>;</div><div class="line">  <span class="comment">// 触发 RasterThread 执行光栅化合成</span></div><div class="line">  <span class="keyword">void</span> render(Scene scene) native <span class="string">'Window_render'</span>;</div><div class="line">  <span class="comment">// 发送平台消息</span></div><div class="line">  <span class="keyword">void</span> sendPlatformMessage(<span class="built_in">String</span> name,</div><div class="line">                           ByteData data,</div><div class="line">                           PlatformMessageResponseCallback callback) ;</div><div class="line">  <span class="comment">// 平台通道消息处理回调  </span></div><div class="line">  PlatformMessageCallback <span class="keyword">get</span> onPlatformMessage =&gt; _onPlatformMessage;</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 <code>Window</code> 中存在一些回调方法，由 C++ Engine 触发回调方法，触发 Flutter Framework 执行相应动作。</p>
+<p>这些回调方法分散注册在 7 个 Binding 类中。</p>
+<ul>
+<li>SchedulerBinding，渲染任务调度器，注册 <code>onBeginFrame</code> 、 <code>onDrawFrame</code> 、<code>onReportTimings</code> 等回调，用于调度渲染流程、计算绘制耗时</li>
+<li>WidgetsBinding，是视图层和 Flutter Engine 之间的胶水层，用于管理三棵树的构建和更新操作；注册 <code>window.onLocaleChanged</code>、<code>onBuildScheduled</code> 回调；持有 BuilderOwner 对象</li>
+<li>RendererBinding，是绘制树 (Render Tree) 和 Flutter Engine 之间的胶水层，用于布局和绘制，核心方法<code>drawFrame()</code>；注册 <code>window.onMetricsChanged</code> 、<code>window.onTextScaleFactorChanged</code>  等回调；持有 PipelineOwner 对象</li>
+<li>PaintingBinding，绑定绘制库，主要用于处理图片缓存</li>
+<li>ServicesBinding，注册<code>window.onPlatformMessage</code> 回调， 用于绑定平台消息通道（message channel），处理原生和 Flutter 通信</li>
+<li>GestureBinding，注册 <code>window.onPointerDataPacket</code> 回调，绑定Framework手势子系统，是Framework事件模型与底层事件的绑定入口</li>
+<li>SemanticsBinding，语义化层与Flutter engine的桥梁，主要是辅助功能的底层支持</li>
+</ul>
+<p>重点关注 <code>SchedulerBinding</code>、<code>WidgetsBinding</code>、<code>RendererBinding</code> 及他们注册的回调方法。</p>
+<h2 id="2、scheduleFrame"><a href="#2、scheduleFrame" class="headerlink" title="2、scheduleFrame"></a>2、scheduleFrame</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/widgets/binding.dart</span></div><div class="line"><span class="keyword">void</span> runApp(Widget app) &#123;</div><div class="line">  WidgetsFlutterBinding.ensureInitialized()</div><div class="line">    ..scheduleAttachRootWidget(app)</div><div class="line">    ..scheduleWarmUpFrame();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 <code>runApp()</code> 启动方法中</p>
+<ul>
+<li><code>scheduleAttachRootWidget(app)</code> 首先构建三棵树，并且通过 <code>BuildOwner</code> 调用 <code>scheduleFrame()</code> 触发注册 VSync 信号</li>
+<li><code>scheduleWarmUpFrame()</code> 准备第一帧的绘制工作，触发 <code>beginFrame()</code> 和 <code>drawFrame()</code> 执行方法，这样就不用等待 VSync 信号回调，可以尽快的绘制第一帧</li>
+</ul>
+<p>同样的，在 <code>State.setState()</code> 方法中也会触发 <code>ScheduleFrame()</code> 方法。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/widgets/framework.dart </span></div><div class="line"></div><div class="line"><span class="comment">// State</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">State</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span>&gt; <span class="title">with</span> <span class="title">Diagnosticable</span> </span>&#123;</div><div class="line">	<span class="keyword">void</span> setState(VoidCallback fn) &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// 调用callback</span></div><div class="line">    <span class="keyword">final</span> <span class="keyword">dynamic</span> result = fn() <span class="keyword">as</span> <span class="keyword">dynamic</span>;</div><div class="line">    ...</div><div class="line">    <span class="comment">// element 标脏</span></div><div class="line">    _element.markNeedsBuild();</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Element</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Element</span> <span class="keyword">extends</span> <span class="title">DiagnosticableTree</span> <span class="keyword">implements</span> <span class="title">BuildContext</span> </span>&#123;</div><div class="line">  <span class="keyword">void</span> markNeedsBuild() &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// 防止重复标脏</span></div><div class="line">    <span class="keyword">if</span> (dirty)</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    _dirty = <span class="keyword">true</span>;</div><div class="line">    <span class="comment">// 触发绘制</span></div><div class="line">    owner.scheduleBuildFor(<span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// BuildOwner</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BuildOwner</span> </span>&#123;</div><div class="line">  <span class="keyword">void</span> scheduleBuildFor(<span class="built_in">Element</span> element) &#123;</div><div class="line">    ...</div><div class="line">    <span class="keyword">if</span> (!_scheduledFlushDirtyElements &amp;&amp; onBuildScheduled != <span class="keyword">null</span>) &#123;</div><div class="line">      _scheduledFlushDirtyElements = <span class="keyword">true</span>;</div><div class="line">      <span class="comment">// 调用scheduleFrame</span></div><div class="line">      onBuildScheduled();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 添加到 _dirtyElements 脏列表</span></div><div class="line">    _dirtyElements.add(element);</div><div class="line">    element._inDirtyList = <span class="keyword">true</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>最终会调用到 <code>BuildOwner.onBuildScheduled()</code> ，这个回调方法是在 <code>WidgetsBinding.initInstances()</code> 初始化过程中中注册的。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/widgets/binding.dart WidgetsBinding</span></div><div class="line">mixin WidgetsBinding on BindingBase, ServicesBinding, SchedulerBinding, GestureBinding, RendererBinding, SemanticsBinding &#123;</div><div class="line">  <span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> initInstances() &#123;</div><div class="line">    <span class="keyword">super</span>.initInstances();</div><div class="line">    _instance = <span class="keyword">this</span>;</div><div class="line">    <span class="comment">//构造BuildeOwner，主要负责Widget的build过程</span></div><div class="line">    _buildOwner = BuildOwner();</div><div class="line">    <span class="comment">// 注册 onBuildScheduled 回调</span></div><div class="line">    buildOwner.onBuildScheduled = _handleBuildScheduled;</div><div class="line">    <span class="comment">//注册window相关回调</span></div><div class="line">    <span class="built_in">window</span>.onLocaleChanged = handleLocaleChanged;</div><div class="line">    <span class="built_in">window</span>.onAccessibilityFeaturesChanged = handleAccessibilityFeaturesChanged;</div><div class="line">  	<span class="comment">//导航channel  </span></div><div class="line">    SystemChannels.navigation.setMethodCallHandler(_handleNavigationInvocation);</div><div class="line">    FlutterErrorDetails.propertiesTransformers.add(transformDebugCreator);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="keyword">void</span> _handleBuildScheduled() &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// 交给 SchedulerBinding 调度处理</span></div><div class="line">    ensureVisualUpdate();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>交给 <code>SchedulerBinding</code> 调度处理</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/scheduler/binding.dart</span></div><div class="line">	<span class="keyword">void</span> ensureVisualUpdate() &#123;</div><div class="line">    <span class="keyword">switch</span> (schedulerPhase) &#123;</div><div class="line">      <span class="keyword">case</span> SchedulerPhase.idle:</div><div class="line">      <span class="keyword">case</span> SchedulerPhase.postFrameCallbacks:</div><div class="line">        <span class="comment">// 调用</span></div><div class="line">        scheduleFrame();</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">      <span class="keyword">case</span> SchedulerPhase.transientCallbacks:</div><div class="line">      <span class="keyword">case</span> SchedulerPhase.midFrameMicrotasks:</div><div class="line">      <span class="keyword">case</span> SchedulerPhase.persistentCallbacks:</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> scheduleFrame() &#123;</div><div class="line">    <span class="comment">//防止重复注册</span></div><div class="line">    <span class="keyword">if</span> (_hasScheduledFrame || !framesEnabled)</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    <span class="comment">// 注册回调方法</span></div><div class="line">    ensureFrameCallbacksRegistered();</div><div class="line">    <span class="comment">// 通过window，调用Engine scheduleFrame</span></div><div class="line">    <span class="built_in">window</span>.scheduleFrame();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> ensureFrameCallbacksRegistered() &#123;</div><div class="line">    <span class="comment">// 注册 onBeginFrame 、onDrawFrame 回调方法</span></div><div class="line">    <span class="built_in">window</span>.onBeginFrame ??= _handleBeginFrame;</div><div class="line">    <span class="built_in">window</span>.onDrawFrame ??= _handleDrawFrame;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>通过 <code>window</code>  调用Engine <code>Window ::scheduleFrame()</code> Native 方法，并注册 <code>onBeginFrame</code> 、<code>onDrawFrame</code>  回调方法。</p>
+<p>看下 <code>SchedulerBinding</code> 的状态机，这里是和 C++ Engine 中的回调过程一一对应的，后面会看到。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">enum</span> SchedulerPhase &#123;</div><div class="line">  <span class="comment">//空闲状态</span></div><div class="line">  idle,</div><div class="line"></div><div class="line">  <span class="comment">//调用瞬时回调状态，主要处理动画计算机更新等任务，由WidgetsBinding.scheduleFrameCallback注册回调</span></div><div class="line">  transientCallbacks,</div><div class="line"></div><div class="line">  <span class="comment">//处理transientCallbacks阶段注册的微任务microtasks</span></div><div class="line">  midFrameMicrotasks,</div><div class="line"></div><div class="line">  <span class="comment">//build/layout/paint阶段，同时处理WidgetsBinding.addPersistentFrameCallback注册的persistentCallbacks</span></div><div class="line">  persistentCallbacks,</div><div class="line"></div><div class="line">  <span class="comment">//绘制完成，处理一些清理工作，同时处理WidgetsBinding.addPostFrameCallback注册的postFrameCallbacks，App层可以在这里处理一些绘制完成后的工作</span></div><div class="line">  postFrameCallbacks,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="3、dart-ffi"><a href="#3、dart-ffi" class="headerlink" title="3、dart:ffi"></a>3、dart:ffi</h2><p>在 Flutter 中，可以使用 <code>dart:ffi</code> 实现 Dart 方法和 Native 方法的互相调用绑定，类似于 Java 的 <code>JNI</code>。</p>
+<p>在 Engine <code>Window</code> 类中，通过 <code>dart:ffi</code> 注册 <code>Native</code> 方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// flutter/lib/ui/window/window.cc</span></div><div class="line"><span class="keyword">void</span> Window::RegisterNatives(tonic::DartLibraryNatives* natives) &#123;</div><div class="line">  natives-&gt;Register(&#123;</div><div class="line">    	<span class="comment">// 默认路由 '/'</span></div><div class="line">      &#123;<span class="string">"Window_defaultRouteName"</span>, DefaultRouteName, <span class="number">1</span>, <span class="literal">true</span>&#125;,</div><div class="line">    	<span class="comment">// 触发绘制</span></div><div class="line">        &#123;<span class="string">"Window_scheduleFrame"</span>, ScheduleFrame, <span class="number">1</span>, <span class="literal">true</span>&#125;,</div><div class="line">    	<span class="comment">// 发送消息回调</span></div><div class="line">      &#123;<span class="string">"Window_sendPlatformMessage"</span>, _SendPlatformMessage, <span class="number">4</span>, <span class="literal">true</span>&#125;,</div><div class="line">    	<span class="comment">// 回调消息</span></div><div class="line">      &#123;<span class="string">"Window_respondToPlatformMessage"</span>, _RespondToPlatformMessage, <span class="number">3</span>, <span class="literal">true</span>&#125;,</div><div class="line">    	<span class="comment">// 光栅化合成</span></div><div class="line">      &#123;<span class="string">"Window_render"</span>, Render, <span class="number">2</span>, <span class="literal">true</span>&#125;,</div><div class="line">      &#123;<span class="string">"Window_updateSemantics"</span>, UpdateSemantics, <span class="number">2</span>, <span class="literal">true</span>&#125;,</div><div class="line">      &#123;<span class="string">"Window_setIsolateDebugName"</span>, SetIsolateDebugName, <span class="number">2</span>, <span class="literal">true</span>&#125;,</div><div class="line">    	<span class="comment">// 上报异常</span></div><div class="line">      &#123;<span class="string">"Window_reportUnhandledException"</span>, ReportUnhandledException, <span class="number">2</span>, <span class="literal">true</span>&#125;,</div><div class="line">      &#123;<span class="string">"Window_setNeedsReportTimings"</span>, SetNeedsReportTimings, <span class="number">2</span>, <span class="literal">true</span>&#125;,</div><div class="line">      ...</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>列表中的参数：</p>
+<ul>
+<li>第一个参数是 Dart 方法id</li>
+<li>第二个参数是 Engine 中 <code>Native</code> 方法的指针，一般以 <code>_</code> 开头的方法是 Dart 注册的回调方法或者需要回调的方法</li>
+<li>第三个参数是方法参数个数</li>
+<li>第四个参数为是否自动注册</li>
+</ul>
+<p>在 <code>DartVM</code> 启动过程中，将 Native 方法注册到 <code>dart:ffi</code>  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// flutter/lib/ui/dart_ui.cc</span></div><div class="line"><span class="keyword">using</span> tonic::ToDart;</div><div class="line"></div><div class="line"><span class="keyword">namespace</span> flutter &#123;</div><div class="line"><span class="keyword">namespace</span> &#123;</div><div class="line"></div><div class="line"><span class="comment">// 注册Native方法列表</span></div><div class="line"><span class="keyword">static</span> tonic::DartLibraryNatives* g_natives;</div><div class="line"></div><div class="line"><span class="comment">// 用的时候来查表</span></div><div class="line"><span class="function">Dart_NativeFunction <span class="title">GetNativeFunction</span><span class="params">(Dart_Handle name,</span></span></div><div class="line">                                      <span class="keyword">int</span> argument_count,</div><div class="line">                                      <span class="keyword">bool</span>* auto_setup_scope) &#123;</div><div class="line">  <span class="keyword">return</span> g_natives-&gt;GetNativeFunction(name, argument_count, auto_setup_scope);</div><div class="line">&#125;</div><div class="line"><span class="comment">//获取 Dart 方法id</span></div><div class="line"><span class="function"><span class="keyword">const</span> uint8_t* <span class="title">GetSymbol</span><span class="params">(Dart_NativeFunction native_function)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> g_natives-&gt;GetSymbol(native_function);</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#125;  <span class="comment">// namespace</span></div><div class="line"></div><div class="line"><span class="keyword">void</span> DartUI::InitForGlobal() &#123;</div><div class="line">  <span class="keyword">if</span> (!g_natives) &#123;</div><div class="line">    <span class="comment">// 构造DartLibraryNatives类，持有方法列表，分为dart方法id映射表，和Native方法映射表</span></div><div class="line">    g_natives = <span class="keyword">new</span> tonic::DartLibraryNatives();</div><div class="line">    Canvas::RegisterNatives(g_natives);</div><div class="line">    CanvasGradient::RegisterNatives(g_natives);</div><div class="line">    CanvasImage::RegisterNatives(g_natives);</div><div class="line">    CanvasPath::RegisterNatives(g_natives);</div><div class="line">    CanvasPathMeasure::RegisterNatives(g_natives);</div><div class="line">    Codec::RegisterNatives(g_natives);</div><div class="line">    ColorFilter::RegisterNatives(g_natives);</div><div class="line">    DartRuntimeHooks::RegisterNatives(g_natives);</div><div class="line">    EngineLayer::RegisterNatives(g_natives);</div><div class="line">    FontCollection::RegisterNatives(g_natives);</div><div class="line">    FrameInfo::RegisterNatives(g_natives);</div><div class="line">    ImageFilter::RegisterNatives(g_natives);</div><div class="line">    ImageShader::RegisterNatives(g_natives);</div><div class="line">    IsolateNameServerNatives::RegisterNatives(g_natives);</div><div class="line">    Paragraph::RegisterNatives(g_natives);</div><div class="line">    ParagraphBuilder::RegisterNatives(g_natives);</div><div class="line">    Picture::RegisterNatives(g_natives);</div><div class="line">    PictureRecorder::RegisterNatives(g_natives);</div><div class="line">    Scene::RegisterNatives(g_natives);</div><div class="line">    SceneBuilder::RegisterNatives(g_natives);</div><div class="line">    SemanticsUpdate::RegisterNatives(g_natives);</div><div class="line">    SemanticsUpdateBuilder::RegisterNatives(g_natives);</div><div class="line">    Vertices::RegisterNatives(g_natives);</div><div class="line">    Window::RegisterNatives(g_natives);</div><div class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(LEGACY_FUCHSIA_EMBEDDER)</span></div><div class="line">    SceneHost::RegisterNatives(g_natives);</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// DartVM 初始化过程中会调用</span></div><div class="line"><span class="keyword">void</span> DartUI::InitForIsolate() &#123;</div><div class="line">  FML_DCHECK(g_natives);</div><div class="line">  Dart_Handle result = Dart_SetNativeResolver(</div><div class="line">      Dart_LookupLibrary(ToDart(<span class="string">"dart:ui"</span>)), GetNativeFunction, GetSymbol);</div><div class="line">  <span class="keyword">if</span> (Dart_IsError(result)) &#123;</div><div class="line">    Dart_PropagateError(result);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>DartVM 初始化过程中会调用 <code>DartUI::InitForIsolate()</code> 进行方法注册。</p>
+<p>上面的类都是 <code>dart:ui</code> 包下的类，通过 <code>dart:ffi</code> 将 Dart 方法和 Native 方法进行绑定。</p>
+<p><code>dart:ffi</code> 的详细介绍见 <a href="https://flutter.dev/docs/development/platform-integration/c-interop" target="_blank" rel="external">Binding to native code using dart:ffi</a></p>
+<h2 id="4、注册-VSync"><a href="#4、注册-VSync" class="headerlink" title="4、注册 VSync"></a>4、注册 VSync</h2><p>继续调用 <code>Window::ScheduleFrame()</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/ui/window.cc</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">ScheduleFrame</span><span class="params">(Dart_NativeArguments args)</span> </span>&#123;</div><div class="line">  UIDartState::ThrowIfUIOperationsProhibited();</div><div class="line">  UIDartState::Current()-&gt;window()-&gt;client()-&gt;ScheduleFrame();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// runtime/runtime_controller.cc</span></div><div class="line"><span class="comment">// |WindowClient|</span></div><div class="line"><span class="keyword">void</span> RuntimeController::ScheduleFrame() &#123;</div><div class="line">  client_.ScheduleFrame();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// shell/common/engine.cc</span></div><div class="line"><span class="keyword">void</span> Engine::ScheduleFrame(<span class="keyword">bool</span> regenerate_layer_tree) &#123;</div><div class="line">  animator_-&gt;RequestFrame(regenerate_layer_tree);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// shell/common/animator.cc</span></div><div class="line"><span class="keyword">void</span> Animator::RequestFrame(<span class="keyword">bool</span> regenerate_layer_tree) &#123;</div><div class="line">  <span class="keyword">if</span> (regenerate_layer_tree) &#123;</div><div class="line">    <span class="comment">// 默认值 true，决定是否重新生成layer tree</span></div><div class="line">    regenerate_layer_tree_ = <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 当调用 Animator::Stop() 停止请求</span></div><div class="line">  <span class="keyword">if</span> (paused_ &amp;&amp; !dimension_change_pending_) &#123;</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!pending_frame_semaphore_.TryWait()) &#123;</div><div class="line">    <span class="comment">// 多次调用，只生效一次</span></div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// 在 UIThread 执行 VSync 注册回调</span></div><div class="line">  task_runners_.GetUITaskRunner()-&gt;PostTask([self = weak_factory_.GetWeakPtr(),</div><div class="line">                                             frame_number = frame_number_]() &#123;</div><div class="line">    <span class="keyword">if</span> (!self.get()) &#123;</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    TRACE_EVENT_ASYNC_BEGIN0(<span class="string">"flutter"</span>, <span class="string">"Frame Request Pending"</span>, frame_number);</div><div class="line">    <span class="comment">//注册 VSync</span></div><div class="line">    self-&gt;AwaitVSync();</div><div class="line">  &#125;);</div><div class="line">  <span class="comment">// 标记已经请求渲染</span></div><div class="line">  frame_scheduled_ = <span class="literal">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>这里方法的参数 <code>regenerate_layer_tree</code> 默认值是 true，当为 false 时不需要重绘</li>
+<li>通过 <code>pending_frame_semaphore_</code> 信号量控制 <code>Animator::ScheduleFrame</code> 只需注册一次 VSync 信号，初始值为1，为0 时，这里 <code>pending_frame_semaphore_</code> -1，<code>Animator::beginFrame()</code> 被调用后 <code>pending_frame_semaphore_</code> + 1</li>
+<li>在 UIThread 执行 VSync 注册回调</li>
+</ul>
+<h3 id="4-1、Animator-AwaitVSync"><a href="#4-1、Animator-AwaitVSync" class="headerlink" title="4.1、Animator::AwaitVSync()"></a>4.1、Animator::AwaitVSync()</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// shell/common/animator.cc</span></div><div class="line"><span class="keyword">void</span> Animator::AwaitVSync() &#123;</div><div class="line">  waiter_-&gt;AsyncWaitForVsync(</div><div class="line">      [self = weak_factory_.GetWeakPtr()](fml::TimePoint frame_start_time,</div><div class="line">                                          fml::TimePoint frame_target_time) &#123;</div><div class="line">        <span class="comment">// VSync 信号的回调方法</span></div><div class="line">        <span class="comment">// frame_start_time 为接受到 VSync 信号时间点</span></div><div class="line">        <span class="comment">// frame_target_time 为这一帧渲染目标时间，超过这个时间即为掉帧</span></div><div class="line">        <span class="keyword">if</span> (self) &#123;</div><div class="line">          <span class="keyword">if</span> (self-&gt;CanReuseLastLayerTree()) &#123;</div><div class="line">            <span class="comment">// regenerate_layer_tree 为false，复用上一次生成的LayerTree，直接光栅化合成</span></div><div class="line">            self-&gt;DrawLastLayerTree();</div><div class="line">          &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">// 触发渲染管线工作</span></div><div class="line">            self-&gt;BeginFrame(frame_start_time, frame_target_time);</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;);</div><div class="line">  delegate_.OnAnimatorNotifyIdle(dart_frame_deadline_);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>注册VSync 信号的回调</li>
+<li><code>frame_start_time</code> 为接受到 VSync 信号时间点， <code>frame_target_time</code> 为这一帧渲染目标时间，超过这个时间点即为掉帧，下一帧就不会注册 VSync 信号回调</li>
+<li>regenerate_layer_tree 为false，复用上一次生成的LayerTree，直接光栅化合成；为 false 继续触发渲染管线启动</li>
+<li><code>waiter_</code> 为 <code>VsyncWaiter</code> 对象，在引擎启动过程中，初始化 <code>Shell</code> 时被创建，根据不同 Platform，构建出不同的对象，这里以 Android 为例，它是 <code>VsyncWaiterAndroid</code> 类的对象</li>
+</ul>
+<h3 id="4-2、VsyncWaiter-AsyncWaitForVsync"><a href="#4-2、VsyncWaiter-AsyncWaitForVsync" class="headerlink" title="4.2、VsyncWaiter::AsyncWaitForVsync"></a>4.2、VsyncWaiter::AsyncWaitForVsync</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// shell/common/async_waiter.cc</span></div><div class="line"><span class="keyword">void</span> VsyncWaiter::AsyncWaitForVsync(<span class="keyword">const</span> Callback&amp; callback) &#123;</div><div class="line">	...</div><div class="line">  TRACE_EVENT0(<span class="string">"flutter"</span>, <span class="string">"AsyncWaitForVsync"</span>);</div><div class="line"></div><div class="line">  &#123;</div><div class="line">    <span class="built_in">std</span>::<span class="function">scoped_lock <span class="title">lock</span><span class="params">(callback_mutex_)</span></span>;</div><div class="line">    ...</div><div class="line">    callback_ = <span class="built_in">std</span>::move(callback);</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line">  AwaitVSync();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// shell/platform/android/vsync_waiter_android.cc</span></div><div class="line"><span class="keyword">void</span> VsyncWaiterAndroid::AwaitVSync() &#123;</div><div class="line">  <span class="keyword">auto</span>* weak_this = <span class="keyword">new</span> <span class="built_in">std</span>::weak_ptr&lt;VsyncWaiter&gt;(shared_from_this());</div><div class="line">  jlong java_baton = <span class="keyword">reinterpret_cast</span>&lt;jlong&gt;(weak_this);</div><div class="line"></div><div class="line">  task_runners_.GetPlatformTaskRunner()-&gt;PostTask([java_baton]() &#123;</div><div class="line">    JNIEnv* env = fml::jni::AttachCurrentThread();</div><div class="line">    env-&gt;CallStaticVoidMethod(g_vsync_waiter_class-&gt;obj(),     </div><div class="line">                              g_async_wait_for_vsync_method_,  </div><div class="line">                              java_baton                       </div><div class="line">    );</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 注册 JNI 方法</span></div><div class="line"><span class="keyword">bool</span> VsyncWaiterAndroid::Register(JNIEnv* env) &#123;</div><div class="line">  <span class="comment">// VSync 回调，Java 调用</span></div><div class="line">  <span class="keyword">static</span> <span class="keyword">const</span> JNINativeMethod methods[] = &#123;&#123;</div><div class="line">      .name = <span class="string">"nativeOnVsync"</span>,</div><div class="line">      .signature = <span class="string">"(JJJ)V"</span>,</div><div class="line">      .fnPtr = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">void</span>*&gt;(&amp;OnNativeVsync),</div><div class="line">  &#125;&#125;;</div><div class="line"></div><div class="line">  jclass clazz = env-&gt;FindClass(<span class="string">"io/flutter/embedding/engine/FlutterJNI"</span>);</div><div class="line"></div><div class="line">  g_vsync_waiter_class = <span class="keyword">new</span> fml::jni::ScopedJavaGlobalRef&lt;jclass&gt;(env, clazz);</div><div class="line">  </div><div class="line">  g_async_wait_for_vsync_method_ = env-&gt;GetStaticMethodID(</div><div class="line">      g_vsync_waiter_class-&gt;obj(), <span class="string">"asyncWaitForVsync"</span>, <span class="string">"(J)V"</span>);</div><div class="line">  <span class="keyword">return</span> env-&gt;RegisterNatives(clazz, methods, fml::size(methods)) == <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在引擎启动过程中，已经通过 Java JNI 绑定了 C++ 和 Java 代码的映射，这里通过 JNI 调用 Android Java 代码</p>
+<ul>
+<li>JNIEnv 代表了 Java 在本线程的执行环境（在这里就是 Android 主线程），它的结构是一个函数表</li>
+<li>注册 VSync 信号回调 <code>nativeOnVsync</code>  Native 方法 <code>OnNativeVsync</code></li>
+<li>运行在 PlatformThread，即 Android 主线程</li>
+<li><code>g_vsync_waiter_class</code> 与 <code>io/flutter/embedding/engine/FlutterJNI</code> Java 类绑定</li>
+<li><code>g_async_wait_for_vsync_method_</code> 是 <code>io/flutter/embedding/engine/FlutterJNI.asyncWaitForVsync()</code> Java 方法的指针</li>
+</ul>
+<p>最终在 Android 主线程调用 <code>io/flutter/embedding/engine/FlutterJNI.asyncWaitForVsync()</code> 方法。</p>
+<h3 id="4-3、Choreographer"><a href="#4-3、Choreographer" class="headerlink" title="4.3、Choreographer"></a>4.3、Choreographer</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// io.flutter.embedding.engine.FlutterJNI</span></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">asyncWaitForVsync</span><span class="params">(<span class="keyword">final</span> <span class="keyword">long</span> cookie)</span> </span>&#123;</div><div class="line">    asyncWaitForVsyncDelegate.asyncWaitForVsync(cookie);</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="comment">//io.flutter.view.VsyncWaiter</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VsyncWaiter</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> VsyncWaiter instance;</div><div class="line"></div><div class="line">  <span class="meta">@NonNull</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> VsyncWaiter <span class="title">getInstance</span><span class="params">(@NonNull WindowManager windowManager)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">      instance = <span class="keyword">new</span> VsyncWaiter(windowManager);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> instance;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@NonNull</span> <span class="keyword">private</span> <span class="keyword">final</span> WindowManager windowManager;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">final</span> FlutterJNI.AsyncWaitForVsyncDelegate asyncWaitForVsyncDelegate =</div><div class="line">      <span class="keyword">new</span> FlutterJNI.AsyncWaitForVsyncDelegate() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">asyncWaitForVsync</span><span class="params">(<span class="keyword">long</span> cookie)</span> </span>&#123;</div><div class="line">          Choreographer.getInstance()</div><div class="line">            <span class="comment">// 注册 VSync 回调，只会回调一次</span></div><div class="line">              .postFrameCallback(</div><div class="line">                  <span class="keyword">new</span> Choreographer.FrameCallback() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFrame</span><span class="params">(<span class="keyword">long</span> frameTimeNanos)</span> </span>&#123;</div><div class="line">                      <span class="comment">// 获取屏幕刷新频率，例如60、90、120</span></div><div class="line">                      <span class="keyword">float</span> fps = windowManager.getDefaultDisplay().getRefreshRate();</div><div class="line">                      <span class="comment">// 根据刷新频率计算出每一帧绘制时间</span></div><div class="line">                      <span class="keyword">long</span> refreshPeriodNanos = (<span class="keyword">long</span>) (<span class="number">1000000000.0</span> / fps);</div><div class="line">                      <span class="comment">// 回调 Native 方法，frameTimeNanos 即为 frame_start_time</span></div><div class="line">                      FlutterJNI.nativeOnVsync(</div><div class="line">                          frameTimeNanos, frameTimeNanos + refreshPeriodNanos, cookie);</div><div class="line">                    &#125;</div><div class="line">                  &#125;);</div><div class="line">        &#125;</div><div class="line">      &#125;;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">VsyncWaiter</span><span class="params">(@NonNull WindowManager windowManager)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.windowManager = windowManager;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">//设置 FlutterJNI delegate</span></div><div class="line">    FlutterJNI.setAsyncWaitForVsyncDelegate(asyncWaitForVsyncDelegate);</div><div class="line"></div><div class="line">    <span class="comment">// 获取屏幕刷新频率，例如60、90、120</span></div><div class="line">    <span class="keyword">float</span> fps = windowManager.getDefaultDisplay().getRefreshRate();</div><div class="line">    FlutterJNI.setRefreshRateFPS(fps);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>在 App 启动过程中，<code>FlutterLoader.startInitialization()</code> 方法中初始化 <code>VsyncWaiter</code> 单例，设置 FlutterJNI delegate</li>
+<li>通过 <code>Choreographer..postFrameCallback()</code> 注册 VSync 信号回调，只会回调一次，每用一次注册一次</li>
+<li>根据屏幕刷新频率，计算 <code>frame_start_time</code> 和 <code>frame_target_time</code></li>
+<li>收到 VSync 信号回调后，通过 JNI 回调 Native 方法</li>
+</ul>
+<p>Choreographer 通过 <code>SurfaceFlinger</code> 注册 VSync 信号回调 <code>FrameDisplayEventReceiver</code>，一旦 VSync 信号到来，<code>SurfaceFlinger</code> 通知 FrameDisplayEventReceiver 回调 <code>doFrame()</code> 方法.</p>
+<p>注意只会回调一次，每用一次注册一次。所以当屏幕静止未刷新时，FPS 会一为未 0。</p>
+<h3 id="4-4、OnNativeVsync"><a href="#4-4、OnNativeVsync" class="headerlink" title="4.4、OnNativeVsync"></a>4.4、OnNativeVsync</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// shell/platform/android/vsync_waiter_android.cc</span></div><div class="line"><span class="keyword">void</span> VsyncWaiterAndroid::OnNativeVsync(JNIEnv* env,</div><div class="line">                                       jclass jcaller,</div><div class="line">                                       jlong frameTimeNanos,</div><div class="line">                                       jlong frameTargetTimeNanos,</div><div class="line">                                       jlong java_baton) &#123;</div><div class="line">  <span class="keyword">auto</span> frame_time = fml::TimePoint::FromEpochDelta(</div><div class="line">      fml::TimeDelta::FromNanoseconds(frameTimeNanos));</div><div class="line">  <span class="keyword">auto</span> target_time = fml::TimePoint::FromEpochDelta(</div><div class="line">      fml::TimeDelta::FromNanoseconds(frameTargetTimeNanos));</div><div class="line"></div><div class="line">  ConsumePendingCallback(java_baton, frame_time, target_time);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// shell/common/async_waiter.cc</span></div><div class="line"><span class="keyword">void</span> VsyncWaiter::FireCallback(fml::TimePoint frame_start_time,</div><div class="line">                               fml::TimePoint frame_target_time) &#123;</div><div class="line">  Callback callback;</div><div class="line">  fml::closure secondary_callback;</div><div class="line"></div><div class="line">  &#123;</div><div class="line">    <span class="built_in">std</span>::<span class="function">scoped_lock <span class="title">lock</span><span class="params">(callback_mutex_)</span></span>;</div><div class="line">    callback = <span class="built_in">std</span>::move(callback_);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (callback) &#123;</div><div class="line">    <span class="keyword">auto</span> flow_identifier = fml::tracing::TraceNonce();</div><div class="line">    TRACE_FLOW_BEGIN(<span class="string">"flutter"</span>, kVsyncFlowName, flow_identifier);</div><div class="line">		<span class="comment">// 运行在 UIThread </span></div><div class="line">    task_runners_.GetUITaskRunner()-&gt;PostTaskForTime(</div><div class="line">        [callback, flow_identifier, frame_start_time, frame_target_time]() &#123;</div><div class="line">          <span class="comment">// 执行回调方法</span></div><div class="line">          callback(frame_start_time, frame_target_time);</div><div class="line">          TRACE_FLOW_END(<span class="string">"flutter"</span>, kVsyncFlowName, flow_identifier);</div><div class="line">        &#125;,</div><div class="line">        frame_start_time);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>执行注册的回调方法，运行在 UIThread，回到 #4.1</p>
+<h2 id="5、BeginFrame"><a href="#5、BeginFrame" class="headerlink" title="5、BeginFrame"></a>5、BeginFrame</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> Animator::BeginFrame(fml::TimePoint frame_start_time,</div><div class="line">                          fml::TimePoint frame_target_time) &#123;</div><div class="line">  frame_scheduled_ = <span class="literal">false</span>;</div><div class="line">  notify_idle_task_id_++;</div><div class="line">  regenerate_layer_tree_ = <span class="literal">false</span>;</div><div class="line">  <span class="comment">//信号量 pending_frame_semaphore_ +1，可以继续接收 RequestFrame 请求</span></div><div class="line">  pending_frame_semaphore_.Signal();</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!producer_continuation_) &#123;</div><div class="line">    <span class="comment">// producer_continuation_ 持有生产对象，并通过信号量控制管线任务</span></div><div class="line">    producer_continuation_ = layer_tree_pipeline_-&gt;Produce();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (!producer_continuation_) &#123;</div><div class="line">      <span class="comment">// layer_tree_pipeline_ 管线任务已满（2个），忽略本次绘制</span></div><div class="line">      RequestFrame();</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  last_frame_begin_time_ = frame_start_time;</div><div class="line">  last_frame_target_time_ = frame_target_time;</div><div class="line">  dart_frame_deadline_ = FxlToDartOrEarlier(frame_target_time);</div><div class="line">  &#123;</div><div class="line">    delegate_.OnAnimatorBeginFrame(frame_target_time);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!frame_scheduled_) &#123;</div><div class="line">    <span class="comment">// Animator::RequestFrame() 方法最后置为 true，标记已经请求渲染</span></div><div class="line">    task_runners_.GetUITaskRunner()-&gt;PostDelayedTask(</div><div class="line">        [self = weak_factory_.GetWeakPtr(),</div><div class="line">         notify_idle_task_id = notify_idle_task_id_]() &#123;</div><div class="line">          <span class="keyword">if</span> (!self.get()) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">          &#125;</div><div class="line">          <span class="comment">// 51ms 时间之内没有新的提交新的任务，通知Engine空闲可以进行 GC</span></div><div class="line">          <span class="keyword">if</span> (notify_idle_task_id == self-&gt;notify_idle_task_id_ &amp;&amp;</div><div class="line">              !self-&gt;frame_scheduled_) &#123;</div><div class="line">            self-&gt;delegate_.OnAnimatorNotifyIdle(Dart_TimelineGetMicros() +</div><div class="line">                                                 <span class="number">100000</span>);</div><div class="line">          &#125;</div><div class="line">        &#125;,</div><div class="line">      	<span class="comment">// 51ms，通知 Engine 空闲</span></div><div class="line">        kNotifyIdleTaskWaitTime);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>信号量 pending_frame<em>semaphore</em> +1，可以继续接收 RequestFrame 请求</li>
+<li>regenerate_layer<em>tree</em> 赋值 false，在一些情况下调用 RequestFrame 可以复用这次生成的 <code>flutter::LayerTree</code></li>
+<li><code>producer_continuation_</code> 是 <code>ProducerContinuation</code> 类的对象，持有生产对象，并通过信号量控制管线任务</li>
+<li><code>layer_tree_pipeline_</code> 是 <code>LayerTreePipeline</code> 类的对象，在 Animator 初始化过程中被创建，<code>LayerTreePipeline</code> 是一个线程安全的生产者消费者队列， UIThread 负责生产 <code>flutter::LayerTree</code> 和 RasterThread 负责消费 <code>flutter::LayerTree</code>，<code>flutter::LayerTree</code> 持有 Dart Framework 生成的Layer Tree映射到 Engine 的 <code>flow::Layer</code> 的根节点</li>
+<li>执行 <code>delegate_.OnAnimatorBeginFrame(frame_target_time)</code> ， delagate_ 的实现在 <code>Shell</code> 类</li>
+</ul>
+<h3 id="5-1、LayerTreePipeline"><a href="#5-1、LayerTreePipeline" class="headerlink" title="5.1、LayerTreePipeline"></a>5.1、LayerTreePipeline</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">	// shell/common/animator.h</div><div class="line">  using LayerTreePipeline = Pipeline&lt;flutter::LayerTree&gt;;</div><div class="line">...</div><div class="line">// shell/common/animator.cc</div><div class="line">Animator::Animator(Delegate&amp; delegate,</div><div class="line">                   TaskRunners task_runners,</div><div class="line">                   std::unique_ptr&lt;VsyncWaiter&gt; waiter)</div><div class="line">    : delegate_(delegate),</div><div class="line">      task_runners_(std::move(task_runners)),</div><div class="line">      waiter_(std::move(waiter)),</div><div class="line">      last_frame_begin_time_(),</div><div class="line">      last_frame_target_time_(),</div><div class="line">      dart_frame_deadline_(0),</div><div class="line">#if FLUTTER_SHELL_ENABLE_METAL</div><div class="line">			// 支持 Metal 深度为2</div><div class="line">      layer_tree_pipeline_(fml::MakeRefCounted&lt;LayerTreePipeline&gt;(2)),</div><div class="line">#else   </div><div class="line">			// 这里在一些情况下有bug，后续版本会写死深度为2 </div><div class="line">      layer_tree_pipeline_(fml::MakeRefCounted&lt;LayerTreePipeline&gt;(</div><div class="line">          task_runners.GetPlatformTaskRunner() ==</div><div class="line">                  task_runners.GetRasterTaskRunner()</div><div class="line">              ? 1</div><div class="line">              : 2)),</div><div class="line">#endif  // FLUTTER_SHELL_ENABLE_METAL </div><div class="line">			// pending_frame_semaphore_ 初始化为1，可以接受一个 RequestFrame 请求</div><div class="line">      pending_frame_semaphore_(1),</div><div class="line">...</div><div class="line">	// shell/common/pipeline.h</div><div class="line">  explicit Pipeline(uint32_t depth)</div><div class="line">      : depth_(depth), empty_(depth), available_(0), inflight_(0) &#123;&#125;</div><div class="line">  fml::Semaphore empty_; // 默认为2</div><div class="line">  fml::Semaphore available_ // 默认为0</div></pre></td></tr></table></figure>
+<p>构建深度为 2 的 <code>Pipeline</code> 对象，可以持有 <code>flutter::LayerTree</code> 对象。</p>
+<p>Pipeline 持有两个信号量 <code>empty_</code> 和 <code>available_</code>，用来控制管线任务调度。</p>
+<p>当调用 <code>layer_tree_pipeline_-&gt;Produce()</code> 方法时</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// shell/common/pipeline.h</span></div><div class="line"><span class="function">ProducerContinuation <span class="title">Produce</span><span class="params">()</span> </span>&#123;</div><div class="line">   <span class="keyword">if</span> (!empty_.TryWait()) &#123;</div><div class="line">     <span class="comment">// 信号量 empty_ 为0时，返回空</span></div><div class="line">     <span class="keyword">return</span> &#123;&#125;;</div><div class="line">   &#125;</div><div class="line">   ++inflight_;</div><div class="line">   </div><div class="line">   <span class="keyword">return</span> ProducerContinuation&#123;</div><div class="line">     <span class="comment">// 持有 Pipeline::ProducerCommit 方法引用</span></div><div class="line">       <span class="built_in">std</span>::bind(&amp;Pipeline::ProducerCommit, <span class="keyword">this</span>, <span class="built_in">std</span>::placeholders::_1,</div><div class="line">                 <span class="built_in">std</span>::placeholders::_2),  <span class="comment">// continuation</span></div><div class="line">       GetNextPipelineTraceID()&#125;;         <span class="comment">// trace id</span></div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>生成一个 <code>ProducerContinuation</code> 类的对象 <code>producer_continuation_</code>，<code>continuation_</code> 对象持有 <code>Pipeline::ProducerCommit()</code> 方法引用。</p>
+<p>当 UIThread 在 Dart Framework 生成 Layer Tree，并通过 <code>SceneBuilder</code> 构建出 <code>Scene</code> 对象，持有 <code>flutter:LayerTree</code>，调用 <code>window.render()</code> 方法开启光栅化合成之前，会调用<code>Pipeline::ProducerCommit()</code> 方法，并将 <code>flutter:LayerTree</code> 绑定到 <code>producer_continuation_</code>对象</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// shell/common/pipeline.h</span></div><div class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">ProducerCommit</span><span class="params">(ResourcePtr resource, <span class="keyword">size_t</span> trace_id)</span> </span>&#123;</div><div class="line">    &#123;</div><div class="line">      <span class="built_in">std</span>::<span class="function">scoped_lock <span class="title">lock</span><span class="params">(queue_mutex_)</span></span>;</div><div class="line">      <span class="comment">//resource 是 flutter:LayerTree 对象，添加到队列</span></div><div class="line">      queue_.emplace_back(<span class="built_in">std</span>::move(resource), trace_id);</div><div class="line">    &#125;</div><div class="line">		<span class="comment">// available_ + 1，触发 RasterThread 光栅化</span></div><div class="line">    available_.Signal();</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>整个 Pipeline 管线的流程为：</p>
+<ul>
+<li><p><code>Animator::RequestFrame()</code>方法触发绘制开始<code>_empty</code> -1，开始生成 <code>flutter::LayerTree</code>，运行在 UIThread</p>
+</li>
+<li><p>当 UIThread 准备好 Engine <code>flutter::LayerTree</code>， <code>available_</code> +1</p>
+</li>
+<li><p>当 <code>available_</code> &gt; 0 时，触发 Raster Thread 工作，拿到 <code>flutter:LayerTree</code> 进行光栅化合成</p>
+</li>
+<li><p>当 RasterThread 处理完成， <code>_empty</code> + 1，下次 <code>Animator::RequestFrame()</code> 可以正常开始处理生成 <code>flutter::LayerTree</code> 工作</p>
+</li>
+<li><p>当 <code>_empty</code> 为 0 时，管线任务已满，忽略本次 <code>Animator::RequestFrame()</code> 请求，直到下一次 VSync 信号到来</p>
+</li>
+</ul>
+<p>通过两个信号量来管理管线的调度，这种调度机制可以确保 RasterThread 不至于过载（2个任务），同时也可以避免 UIThread 不必要的资源消耗。</p>
+<p>所以不论在 UIThread 还是在 RasterThread 耗时太久，都可能会导致 Flutter 应用卡顿，因为会导致延迟接受 VSync 信号，导致掉帧。</p>
+<h3 id="5-2、OnAnimatorBeginFrame"><a href="#5-2、OnAnimatorBeginFrame" class="headerlink" title="5.2、OnAnimatorBeginFrame"></a>5.2、OnAnimatorBeginFrame</h3><p>继续调用 <code>delegate_.OnAnimatorBeginFrame(frame_target_time)</code>方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// shell/common/shell.cc</span></div><div class="line"><span class="comment">// |Animator::Delegate|</span></div><div class="line"><span class="keyword">void</span> Shell::OnAnimatorBeginFrame(fml::TimePoint frame_target_time) &#123;</div><div class="line">  FML_DCHECK(is_setup_);</div><div class="line">  FML_DCHECK(task_runners_.GetUITaskRunner()-&gt;RunsTasksOnCurrentThread());</div><div class="line"></div><div class="line">  <span class="comment">// record the target time for use by rasterizer.</span></div><div class="line">  &#123;</div><div class="line">    <span class="built_in">std</span>::<span class="function">scoped_lock <span class="title">time_recorder_lock</span><span class="params">(time_recorder_mutex_)</span></span>;</div><div class="line">    <span class="comment">// 记录frame_target_time</span></div><div class="line">    latest_frame_target_time_.emplace(frame_target_time);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (engine_) &#123;</div><div class="line">    engine_-&gt;BeginFrame(frame_target_time);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// shell/common/engine.cc</span></div><div class="line"><span class="keyword">void</span> Engine::BeginFrame(fml::TimePoint frame_time) &#123;</div><div class="line">  TRACE_EVENT0(<span class="string">"flutter"</span>, <span class="string">"Engine::BeginFrame"</span>);</div><div class="line">  runtime_controller_-&gt;BeginFrame(frame_time);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// runtime/runtime_controller.cc</span></div><div class="line"><span class="keyword">bool</span> RuntimeController::BeginFrame(fml::TimePoint frame_time) &#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">auto</span>* window = GetWindowIfAvailable()) &#123;</div><div class="line">    window-&gt;BeginFrame(frame_time);</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// lib/ui/window/window.cc</span></div><div class="line"><span class="keyword">void</span> Window::BeginFrame(fml::TimePoint frameTime) &#123;</div><div class="line">  tonic::DartState::<span class="function">Scope <span class="title">scope</span><span class="params">(dart_state)</span></span>;</div><div class="line"></div><div class="line">  <span class="keyword">int64_t</span> microseconds = (frameTime - fml::TimePoint()).ToMicroseconds();</div><div class="line">	<span class="comment">// 通过 fii 回调 Dart Framework window._beginFrame()</span></div><div class="line">  tonic::LogIfError(tonic::DartInvokeField(library_.value(), <span class="string">"_beginFrame"</span>,</div><div class="line">                                           &#123;</div><div class="line">                                               Dart_NewInteger(microseconds),</div><div class="line">                                           &#125;));</div><div class="line"></div><div class="line">  UIDartState::Current()-&gt;FlushMicrotasksNow();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过 Shell::OnAnimatorBeginFrame -&gt; Engine::BeginFrame -&gt; RuntimeController::BeginFrame -&gt; Window::BeginFrame 层层调用，通过 fii 回调 Dart Framework <code>window._beginFrame()</code>。</p>
+<p>到这里，VSync 注册流程结束，接下来回到 Dart Framework 中继续进行。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://book.flutterchina.club/chapter14/flutter_app_startup.html" target="_blank" rel="external">14.4 Flutter运行机制-从启动到显示</a></p>
+<p>[Flutter渲染机制—UI线程](</p>
+<p>本文链接： <a href="http://w4lle.com/2020/11/11/flutter-ui-vsync/">http://w4lle.com/2020/11/11/flutter-ui-vsync/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2020/11/11/flutter-ui-vsync/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2020/11/09/flutter-ui-overview/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

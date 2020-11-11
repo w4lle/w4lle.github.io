@@ -248,7 +248,7 @@
 
     
         <meta property="article:published_time" content="Mon Nov 09 2020 19:43:02 GMT+0800" />
-        <meta property="article:modified_time" content="Mon Nov 09 2020 19:58:03 GMT+0800" />
+        <meta property="article:modified_time" content="Wed Nov 11 2020 18:33:21 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
@@ -275,7 +275,7 @@
     "mainEntityOfPage": "http://w4lle.com/2020/11/09/flutter-ui-overview/index.html",
     "headline": "Flutter UI 渲染浅析（一）总览",
     "datePublished": "Mon Nov 09 2020 19:43:02 GMT+0800",
-    "dateModified": "Mon Nov 09 2020 19:58:03 GMT+0800",
+    "dateModified": "Wed Nov 11 2020 18:33:21 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "w4lle",
@@ -478,10 +478,13 @@
             <p>Flutter UI 渲染系列文章，基于 Flutter v1.20.4</p>
 <a id="more"></a>
 <p>我们知道屏幕显示的基本单位是像素，每个像素点显示不同的颜色值，按一定规则排列就形成了图像。</p>
-<p>显示器按一定频率从 GPU 获取数据，就可以完成图像的更新。现在手机屏幕一般有60HZ、90HZ、120HZ，以60HZ为例，屏幕每秒会发出 60 个 Vsync 垂直同步信号。</p>
-<p>Vsync 信号用于协调显示器、CPU 和 GPU 的工作。</p>
-<p>GPU 每秒可以绘制的帧数叫做帧速率，如果帧速率大于屏幕刷新率，屏幕上显示的内容就有可能是两个图像的不完全内容，造成图像撕裂。Vsync 垂直信号可以保证刷新频率的统一。</p>
-<p>在 Vsync 信号的调度下，UI 系统把逻辑代码变成图像显示到屏幕上，一般需要经过以下几个阶段：</p>
+<p>显示器按一定频率从 GPU 获取数据，就可以完成图像的更新。现在手机屏幕一般有60HZ、90HZ、120HZ，以60HZ为例，屏幕每秒会发出 60 个 VSync 垂直同步信号。</p>
+<p>VSync 信号用于协调显示器、CPU 和 GPU 的工作。</p>
+<p>GPU 每秒可以绘制的帧数叫做帧速率，如果帧速率大于屏幕刷新率，屏幕上显示的内容就有可能是两个图像的不完全内容，造成图像撕裂。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imageswithout_sync.png" alt=""></p>
+<p>VSync 垂直信号可以保证刷新频率的统一。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imageswith_sync.png" alt=""></p>
+<p>在 VSync 信号的调度下，UI 系统把逻辑代码变成图像显示到屏幕上，一般需要经过以下几个阶段：</p>
 <ol>
 <li>View，构建 View/DOM 节点</li>
 <li>Layout，计算样式(Style)、布局(Layout)</li>
@@ -501,7 +504,7 @@
 <p>这个系列的文章主要分析下 Flutter UI 渲染流程，涉及到的中间过程会分部解析，基于 Flutter v1.20.4 版本源码，主要分为以下几个部分：</p>
 <ol>
 <li>总览</li>
-<li>Vsync 注册</li>
+<li>VSync 注册</li>
 <li>Animate 及动画实现原理</li>
 <li>Build</li>
 <li>Layout</li>
@@ -509,12 +512,12 @@
 <li>CompositeFrame</li>
 <li>RasterThread 光栅化及合成</li>
 </ol>
-<h2 id="Flutter-架构"><a href="#Flutter-架构" class="headerlink" title="Flutter 架构"></a>Flutter 架构</h2><p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_archdiagram.png" alt=""></p>
+<h2 id="1、Flutter-架构"><a href="#1、Flutter-架构" class="headerlink" title="1、Flutter 架构"></a>1、Flutter 架构</h2><p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_archdiagram.png" alt=""></p>
 <p>Flutter 架构分为三层：Dart Framework、C++ Engine、 Platform Embedder。</p>
 <p>Dart Framework 提供了响应式的开发框架，使用 Dart 开发，它对渲染逻辑做了统一封装，屏蔽了底层实现，对底层 C++ Engine 提供双向通信能力，开发者只需要组合 Widgets 用于构建 App 视图即可。</p>
 <ul>
 <li>最底层的 Foundation 层提供一些最基础的抽象类或定义，基于此， Animation 动画、Painting 绘制、Gestures 手势等构建出通用抽象能力</li>
-<li>Rendering 层，构建出渲染树 Render Tree，也即 RenderObject Tree，用于绘制具体，RenderObject 会自动随着数据改变而动态改变</li>
+<li>Rendering 层，构建出渲染树 Render Tree，也即 RenderObject Tree，用于具体绘制，RenderObject 会自动随着数据改变而动态改变</li>
 <li>Widgets 层，提供了一套非常丰富的 Widget 组件库，用于构建 Widgets Tree 和 Element Tree，这是响应式编程的基础实现，每一个 RenderObject 都有一个对应的 Widget 及 Element</li>
 <li>Materail 层和 Cupertino 层使用 Widgets 组件库，构建 Android Materail 或者 iOS Cupertino 风格的应用视图，开发者基于这些 Widgets 即可构建出效果一致的跨端应用</li>
 </ul>
@@ -526,8 +529,9 @@
 <p>Dart Framework 对上提供统一的基于 dart 的响应式 UI 描述框架。</p>
 <p>C++ Engine 向下对 Skia 绘制引擎对下统一封装，屏蔽了平台实现。</p>
 <p>ReactNative / Weex 作为跨端框架 ，虽然走的也是是原生渲染，但是需要通过 js 来组织和描述 UI，中间需要做一层转换，才可以变成原生的 UI 描述结构，进而原生渲染。</p>
-<p>而 Flutter 自建渲染引擎，不依赖平台实现，并且 dart 可以直接被编译成机器码，从架构上来说，性能相比 ReactNative / Weex 会更好。</p>
-<h2 id="Flutter-渲染管线"><a href="#Flutter-渲染管线" class="headerlink" title="Flutter 渲染管线"></a>Flutter 渲染管线</h2><p>Flutter 渲染管线的设计是类似的，流程参考下图</p>
+<p>中间多了一层转换过程。</p>
+<p>而 Flutter 自建渲染引擎，不依赖平台实现，并且 Dart 可以直接被编译成机器码，从架构上来说，性能相比 ReactNative / Weex 会更好。</p>
+<h2 id="2、Flutter-渲染管线"><a href="#2、Flutter-渲染管线" class="headerlink" title="2、Flutter 渲染管线"></a>2、Flutter 渲染管线</h2><p>Flutter 渲染管线的设计是类似的，流程参考下图</p>
 <p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_graphics_pipeline1.png" alt=""></p>
 <p>首先看下用到的线程：</p>
 <p>UIThread 是 Platform 创建的子线程，DartVM Root Isolate 所有的 dart 代码都运行在该线程。</p>
@@ -536,29 +540,16 @@
 <p>C++ Engine 中的光栅化和合成过程运行在该线程。</p>
 <p>整个流程会经过以下几个过程：</p>
 <ul>
-<li>C++ Engine 触发 Platform 注册 Vsync 垂直信号回调，通过 Platform -&gt; C++ Engine -&gt; Dart Framework 触发整个绘制流程</li>
-<li>Dart Framework 构建出四棵树，Widget Tree、Element Tree、RenderObject Tree、Layer Tree，布局、记录绘制区域及绘制指令信息，并保存在 Scene 对象用以光栅化，这个过程运行在  UIThread</li>
-<li>通过 Flutter 自建引擎 Skia 进行光栅化和合成操作， 将 LayerTree 转换为 GPU 指令，并发送给 GPU 完成光栅化合成上屏显示操作，这个过程执行在 RasterThread</li>
+<li>C++ Engine 触发 Platform 注册 VSync 垂直信号回调，通过 Platform -&gt; C++ Engine -&gt; Dart Framework 触发整个绘制流程</li>
+<li>Dart Framework 构建出四棵树，Widget Tree、Element Tree、RenderObject Tree、Layer Tree，布局、记录绘制区域及绘制指令信息生成 <code>flutter::LayerTree</code>，并保存在 <code>Scene</code> 对象用以光栅化，这个过程运行在  UIThread</li>
+<li>通过 Flutter 自建引擎 Skia 进行光栅化和合成操作， 将 <code>flutter::LayerTree</code> 转换为 GPU 指令，并发送给 GPU 完成光栅化合成上屏显示操作，这个过程执行在 RasterThread</li>
 </ul>
-<p>整个过程是生产者消费者模型。</p>
-<p>UIThread 负责生产 Layer Tree，RasterThread 负责消费 Layer Tree。</p>
-<p>在 Engine Pipeline 中通过深度为 2 的两个信号量 <code>empty_</code> 和 <code>available_</code> 控制整个流程。</p>
-<ul>
-<li><p>当 Vsync 信号到来，触发 UIThread 开始工作时，<code>_empty</code> -1，开始生成 LayerTree ；</p>
-</li>
-<li><p>当 UIThread 准备好保存了 Engine LayerTree 的 Scene 对象， <code>available_</code> + 1</p>
-</li>
-<li><p>触发 Raster Thread 开始工作， <code>available_</code> - 1；</p>
-</li>
-<li><p>当 RasterThread 处理完光栅化合成上屏后， <code>_empty</code> + 1，使得 UIThread 继续接收 Vsync 信号，继续触发图形化流程。</p>
-</li>
-<li><p>当  <code>_empty</code> 信号量为 0 时，代表工作任务已满，就会延迟 UIThread 生成 Layer Tree 的任务，直到下一次 Vsync 信息到来。</p>
-</li>
-</ul>
-<p>这种调度机制可以确保 RasterThread 不至于过载（2个任务）引起图像撕裂，同时也可以避免 UIThread 不必要的资源消耗。</p>
-<p>所以不论在 UIThread 还是在 RasterThread 耗时太久，都会导致 Flutter 应用卡顿，因为会导致延迟接受 Vsync 信号，导致掉帧。</p>
+<p>整个调度过程是生产者消费者模型，它的实现在 Engine 的 <code>LayerTreePipeline</code>。</p>
+<p>UIThread 负责生产 <code>flutter::Layer Tree</code>，RasterThread 负责消费 <code>flutter::Layer Tree</code>。</p>
+<p>这种调度机制可以确保 RasterThread 不至于过载（2个任务），同时也可以避免 UIThread 不必要的资源消耗。</p>
+<p>所以不论在 UIThread 还是在 RasterThread 耗时太久，都可能会导致 Flutter 应用卡顿，因为会导致延迟接受 VSync 信号，导致掉帧。</p>
 <p>这个调度过程会在下一篇文章中详细分析。</p>
-<h2 id="Flutter-UI-绘制管线"><a href="#Flutter-UI-绘制管线" class="headerlink" title="Flutter UI 绘制管线"></a>Flutter UI 绘制管线</h2><p>其中在 UIThread 生成Layer Tree的过程，我们将其称为 <code>Rendering Pipeline</code> 渲染管线。</p>
+<h2 id="3、Flutter-UI-绘制管线"><a href="#3、Flutter-UI-绘制管线" class="headerlink" title="3、Flutter UI 绘制管线"></a>3、Flutter UI 绘制管线</h2><p>其中在 UIThread 生成 Layer Tree 的过程，我们将其称为 <code>Rendering Pipeline</code> 绘制管线。</p>
 <p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_rendering_pipeline.png" alt=""></p>
 <p>主要过程为：</p>
 <ul>
@@ -570,6 +561,7 @@
 <li>Composite，触发 Layer Tree 发送到 Engine，生成 Engine LayerTree</li>
 </ul>
 <p>在 UIThread 构建出四棵树，并在 Engine 生成 Scene，最后提交给 RasterThread，对 LayerTree 做光栅化合成上屏。</p>
+<p>下一篇文章分析下 VSync 注册。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://zhuanlan.zhihu.com/p/78758247" target="_blank" rel="external">渲染流水线中的光栅化（一）</a></p>
 <p><a href="https://developer.aliyun.com/article/770384" target="_blank" rel="external">从架构到源码：一文了解Flutter渲染机制</a></p>
 <p><a href="http://gityuan.com/2019/06/15/flutter_ui_draw/" target="_blank" rel="external">Flutter渲染机制—UI线程</a></p>
@@ -631,6 +623,14 @@
             <!-- Post Prev & Next Nav -->
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
+    
+        <a href="/2020/11/11/flutter-ui-vsync/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
     
 
     <!-- Section Spacer -->
