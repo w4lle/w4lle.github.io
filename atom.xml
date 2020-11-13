@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2020-11-13T13:50:58.146Z</updated>
+  <updated>2020-11-13T13:56:00.237Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Flutter UI 渲染浅析（三）Animation 原理解析</title>
+    <title>Flutter UI 渲染浅析（三）Animation 原理</title>
     <link href="http://w4lle.com/2020/11/13/flutter-ui-animate/"/>
     <id>http://w4lle.com/2020/11/13/flutter-ui-animate/</id>
     <published>2020-11-13T10:45:24.000Z</published>
-    <updated>2020-11-13T13:50:58.146Z</updated>
+    <updated>2020-11-13T13:56:00.237Z</updated>
     
     <content type="html"><![CDATA[<p>本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。</p>
 <p>基于 Android 平台，Flutter v1.20.4。</p>
