@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://w4lle.com/2020/11/13/flutter-ui-animate/</loc>
+    <lastmod>2020-11-13T12:47:02.620Z</lastmod>
+    <data>
+        <display>
+        <title>Flutter UI 渲染浅析（三）Animation 原理解析</title>
+        <pubTime>2020-11-13T10:45:24.000Z</pubTime>
+        
+        <tag>Flutter</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://w4lle.com/2020/11/11/flutter-ui-vsync/</loc>
-    <lastmod>2020-11-11T10:33:24.449Z</lastmod>
+    <lastmod>2020-11-13T12:47:00.554Z</lastmod>
     <data>
         <display>
         <title>Flutter UI 渲染浅析（二）VSync 注册</title>
@@ -708,21 +725,6 @@
     </url>
 
     
-  <url>
-    <loc>http://w4lle.com/2016/01/28/hello-world/</loc>
-    <lastmod>2016-06-06T10:13:15.000Z</lastmod>
-    <data>
-        <display>
-        <title>Hello World</title>
-        <pubTime>2016-01-27T16:00:00.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
     
   <url>
     <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>
@@ -734,6 +736,21 @@
         
         <tag>Android</tag>
          
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://w4lle.com/2016/01/28/hello-world/</loc>
+    <lastmod>2016-06-06T10:13:15.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2016-01-27T16:00:00.000Z</pubTime>
+        
          
            
         </display>

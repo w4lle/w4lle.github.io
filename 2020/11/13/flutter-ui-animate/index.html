@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            Flutter UI 渲染浅析（三）Animation 原理解析 | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。
+基于 Android 平台，Flutter v1.20.4。">
+    <meta name="keywords" content="Android,Flutter">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Flutter UI 渲染浅析（三）Animation 原理解析 | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。
+基于 Android 平台，Flutter v1.20.4。">
+    <meta property="og:article:tag" content="Flutter"> 
+
+    
+        <meta property="article:published_time" content="Fri Nov 13 2020 18:45:24 GMT+0800" />
+        <meta property="article:modified_time" content="Fri Nov 13 2020 20:47:02 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="Flutter UI 渲染浅析（三）Animation 原理解析 | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。
+基于 Android 平台，Flutter v1.20.4。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2020/11/13/flutter-ui-animate/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2020/11/13/flutter-ui-animate/index.html",
+    "headline": "Flutter UI 渲染浅析（三）Animation 原理解析",
+    "datePublished": "Fri Nov 13 2020 18:45:24 GMT+0800",
+    "dateModified": "Fri Nov 13 2020 20:47:02 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",FlutterAndroid",
+    "description": "本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。
+基于 Android 平台，Flutter v1.20.4。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                Flutter UI 渲染浅析（三）Animation 原理解析
+            </p>
+            <p>本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。</p>
+<p>基于 Android 平台，Flutter v1.20.4。</p>
+<a id="more"></a>
+<p>在上一篇文章最后，我们提到做三件事情：</p>
+<ul>
+<li>执行 Dart Framework <code>dart:ui</code> 包下的 <code>_beginFrame()</code></li>
+<li>执行 microtasks 任务</li>
+<li>执行 Dart Framework <code>dart:ui</code> 包下的  <code>_drawFrame()</code></li>
+</ul>
+<p><code>dart:ui</code> 包下的两个方法的实现在 hooks.dart</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/ui/hooks.dart</span></div><div class="line"><span class="comment">// 没有直接引用，标记防止被 tree shaking干掉</span></div><div class="line"><span class="meta">@pragma</span>(<span class="string">'vm:entry-point'</span>)</div><div class="line"><span class="keyword">void</span> _beginFrame(<span class="built_in">int</span> microseconds) &#123;</div><div class="line">  <span class="comment">// 执行 window.onBeginFrame</span></div><div class="line">  _invoke1&lt;<span class="built_in">Duration</span>&gt;(<span class="built_in">window</span>.onBeginFrame, <span class="built_in">window</span>._onBeginFrameZone, <span class="built_in">Duration</span>(microseconds: microseconds));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@pragma</span>(<span class="string">'vm:entry-point'</span>)</div><div class="line"><span class="keyword">void</span> _drawFrame() &#123;</div><div class="line">  <span class="comment">// 执行 window.onDrawFrame</span></div><div class="line">  _invoke(<span class="built_in">window</span>.onDrawFrame, <span class="built_in">window</span>._onDrawFrameZone);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> _invoke(<span class="keyword">void</span> callback()?, Zone zone) &#123;</div><div class="line">	...</div><div class="line">    <span class="comment">// 运行 zone 未变，直接调用方法</span></div><div class="line">  <span class="keyword">if</span> (identical(zone, Zone.current)) &#123;</div><div class="line">    callback();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    zone.runGuarded(callback);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上篇文章中提到，<code>SchedulerBinding</code> 注册了 <code>window.onBeginFrame()</code> 和 <code>window.onDrawFrame()</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/scheduler/binding.dart</span></div><div class="line">  <span class="keyword">void</span> ensureFrameCallbacksRegistered() &#123;</div><div class="line">    <span class="comment">// 注册 onBeginFrame 、onDrawFrame 回调方法</span></div><div class="line">    <span class="built_in">window</span>.onBeginFrame ??= _handleBeginFrame;</div><div class="line">    <span class="built_in">window</span>.onDrawFrame ??= _handleDrawFrame;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>本篇文章先分析 <code>SchedulerBinding._handleBeginFrame()</code>。</p>
+<p>##1、_handleBeginFrame()</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> _handleBeginFrame(<span class="built_in">Duration</span> rawTimeStamp) &#123;</div><div class="line">  <span class="keyword">if</span> (_warmUpFrame) &#123;</div><div class="line">    <span class="comment">// 如果是启动预热帧，忽略本次调用</span></div><div class="line">    _ignoreNextEngineDrawFrame = <span class="keyword">true</span>;</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line">  handleBeginFrame(rawTimeStamp);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果是启动预热帧，忽略本次调用。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> handleBeginFrame(<span class="built_in">Duration</span> rawTimeStamp) &#123;</div><div class="line">  <span class="comment">// 开始记录 Frame 过程</span></div><div class="line">  Timeline.startSync(<span class="string">'Frame'</span>, arguments: timelineArgumentsIndicatingLandmarkEvent);</div><div class="line">  _firstRawTimeStampInEpoch ??= rawTimeStamp;</div><div class="line">  _currentFrameTimeStamp = _adjustForEpoch(rawTimeStamp ?? _lastRawTimeStamp);</div><div class="line">  <span class="keyword">if</span> (rawTimeStamp != <span class="keyword">null</span>)</div><div class="line">    _lastRawTimeStamp = rawTimeStamp;</div><div class="line"></div><div class="line">  <span class="keyword">assert</span>(() &#123;</div><div class="line">    <span class="comment">// 绘制次数 + 1</span></div><div class="line">    _debugFrameNumber += <span class="number">1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (debugPrintBeginFrameBanner || debugPrintEndFrameBanner) &#123;</div><div class="line">      <span class="keyword">final</span> <span class="built_in">StringBuffer</span> frameTimeStampDescription = <span class="built_in">StringBuffer</span>();</div><div class="line">      <span class="keyword">if</span> (rawTimeStamp != <span class="keyword">null</span>) &#123;</div><div class="line">        _debugDescribeTimeStamp(_currentFrameTimeStamp, frameTimeStampDescription);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        frameTimeStampDescription.write(<span class="string">'(warm-up frame)'</span>);</div><div class="line">      &#125;</div><div class="line">      _debugBanner = <span class="string">'▄▄▄▄▄▄▄▄ Frame <span class="subst">$&#123;_debugFrameNumber.toString().padRight(<span class="number">7</span>)&#125;</span>   <span class="subst">$&#123;frameTimeStampDescription.toString().padLeft(<span class="number">18</span>)&#125;</span> ▄▄▄▄▄▄▄▄'</span>;</div><div class="line">      <span class="keyword">if</span> (debugPrintBeginFrameBanner)</div><div class="line">        debugPrint(_debugBanner);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">  &#125;());</div><div class="line"><span class="comment">//当前处于 SchedulerPhase.idle 状态</span></div><div class="line">  <span class="keyword">assert</span>(schedulerPhase == SchedulerPhase.idle);</div><div class="line">  <span class="comment">// 更新标志位，接收下次 scheduleFrame 请求</span></div><div class="line">  _hasScheduledFrame = <span class="keyword">false</span>;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    <span class="comment">// TRANSIENT FRAME CALLBACKS</span></div><div class="line">    <span class="comment">// 开始记录 Animate 过程</span></div><div class="line">    Timeline.startSync(<span class="string">'Animate'</span>, arguments: timelineArgumentsIndicatingLandmarkEvent);</div><div class="line">    _schedulerPhase = SchedulerPhase.transientCallbacks;</div><div class="line">    <span class="comment">// 执行 transientCallbacks 回调</span></div><div class="line">    <span class="keyword">final</span> <span class="built_in">Map</span>&lt;<span class="built_in">int</span>, _FrameCallbackEntry&gt; callbacks = _transientCallbacks;</div><div class="line">    <span class="comment">// 清空列表</span></div><div class="line">    _transientCallbacks = &lt;<span class="built_in">int</span>, _FrameCallbackEntry&gt;&#123;&#125;;</div><div class="line">    callbacks.forEach((<span class="built_in">int</span> id, _FrameCallbackEntry callbackEntry) &#123;</div><div class="line">      <span class="keyword">if</span> (!_removedIds.contains(id))</div><div class="line">        _invokeFrameCallback(callbackEntry.callback, _currentFrameTimeStamp, callbackEntry.debugStack);</div><div class="line">    &#125;);</div><div class="line">    _removedIds.clear();</div><div class="line">  &#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="comment">//改变状态为 SchedulerPhase.midFrameMicrotasks</span></div><div class="line">    _schedulerPhase = SchedulerPhase.midFrameMicrotasks;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>TimeLine 开始记录 <code>Frame</code> 过程</li>
+<li>如果 debugPrintBeginFrameBanner || debugPrintEndFrameBanner 打印绘制次数及时间</li>
+<li>更新标志位 _hasScheduledFrame = false ，接收下次 scheduleFrame 请求</li>
+<li>开始记录 Animate 过程</li>
+<li>执行 <code>transientCallbacks</code> 瞬时帧回调，并清空回调列表，由 <code>WidgetsBinding.scheduleFrameCallback()</code> 注册</li>
+<li>改变状态为 <code>SchedulerPhase.midFrameMicrotasks</code></li>
+</ul>
+<p>打印如下，打印的时间为距离首帧绘制的时间，<code>warm-up frame</code> 为 <code>runApp()</code> 启动过程中，<code>RenderView</code> 触发的预热帧，非 C ++ Engine 回调</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">I/flutter (<span class="number">14160</span>): ▄▄▄▄▄▄▄▄ Frame <span class="number">1</span>            (warm-up frame) ▄▄▄▄▄▄▄▄</div><div class="line">I/flutter (<span class="number">14160</span>): ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀</div><div class="line">D/PhoneWindow(<span class="number">14160</span>): setNavigationBarColor: ff000000</div><div class="line">I/flutter (<span class="number">14160</span>): ▄▄▄▄▄▄▄▄ Frame <span class="number">2</span>                        <span class="number">0</span>ms ▄▄▄▄▄▄▄▄</div><div class="line">I/flutter (<span class="number">14160</span>): ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀</div><div class="line">I/flutter (<span class="number">14160</span>): [verbose]: Add bucket <span class="keyword">in</span> <span class="keyword">set</span> from <span class="number">0</span></div><div class="line">I/flutter (<span class="number">14160</span>): ▄▄▄▄▄▄▄▄ Frame <span class="number">3</span>                  <span class="number">301.668</span>ms ▄▄▄▄▄▄▄▄</div><div class="line">I/flutter (<span class="number">14160</span>): ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀</div><div class="line">I/flutter (<span class="number">14160</span>): ▄▄▄▄▄▄▄▄ Frame <span class="number">4</span>                  <span class="number">402.225</span>ms ▄▄▄▄▄▄▄▄</div></pre></td></tr></table></figure>
+<p><code>beginFrame()</code>主要是执行 <code>transientCallbacks</code> 瞬时帧回调，是由 <code>WidgetsBinding.scheduleFrameCallback</code> 注册，用来处理帧间动画计算和更新的工作，如果没有动画，则 <code>transientCallbacks</code> 为空。</p>
+<p>先看下动画注册瞬时帧回调的过程。</p>
+<h2 id="2、Flutter-Animation-动画原理"><a href="#2、Flutter-Animation-动画原理" class="headerlink" title="2、Flutter Animation 动画原理"></a>2、Flutter Animation 动画原理</h2><h3 id="2-1、主要类"><a href="#2-1、主要类" class="headerlink" title="2.1、主要类"></a>2.1、主要类</h3><p>Flutter 中的动画主要类结构如下图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_animation.png" alt=""></p>
+<ul>
+<li><code>Animation</code> 动画实现类，通过 <code>Ticker</code> 瞬时帧回调改变当前值，提供值回调和状态回调<ul>
+<li>值回调 addListener(VoidCallback)</li>
+<li>状态回调 addStatusListener(AnimationStatusListener)</li>
+</ul>
+</li>
+<li><code>AnimationController</code> ，动画控制器，用于控制 <code>Animation</code> 运行状态，注册 <code>Ticker</code> 回调方法</li>
+<li><code>Ticker</code> 用于注册 <code>SchedulerBinding.transientCallbacks</code> 回调，执行 <code>AnimationController</code> 注册的回调</li>
+<li><code>TickerProvider</code> &amp; <code>SingleTickerProviderStateMixin</code>，提供默认的 <code>Ticker</code> 对象</li>
+<li><code>AnimateWidget</code> &amp; <code>AnimateState</code> or  <code>AnimateBuilder</code>  动画 UI 展示，注册 <code>Animation</code> 值回调，自动触发 <code>setState()</code> ，混入<code>SingleTickerProviderStateMixin</code> 提供默认的 <code>Ticker</code> 对象，用于构建 <code>AnimationController</code> 动画控制器</li>
+<li><code>Curve</code> 动画曲线可以控制时间的变化情况，类似于 Android 动画的插值器，默认是线性流逝，有以下几种类型，效果参考 <a href="https://api.flutter.dev/flutter/animation/Curves-class.html" target="_blank" rel="external">官网 Curves-class</a><ul>
+<li>linear</li>
+<li>decelerate</li>
+<li>ease</li>
+<li>easeIn</li>
+<li>easeOut</li>
+<li>easeInOut</li>
+<li>fastOutSlowIn</li>
+<li>bounceIn</li>
+<li>bounceOut</li>
+<li>bounceInOut</li>
+<li>elasticIn</li>
+<li>elasticOut</li>
+<li>elasticInOut</li>
+</ul>
+</li>
+<li><code>Tween</code> 动画取值计算出当前时间 <code>t</code> 对应的泛型值，有以下几个子类<ul>
+<li>ReverseTween</li>
+<li>ColorTween</li>
+<li>SizeTween</li>
+<li>RectTween</li>
+<li>IntTween</li>
+<li>StepTween</li>
+<li>ConstantTween</li>
+</ul>
+</li>
+<li><code>AnimationStatus</code> 动画状态机，含有四个状态<ul>
+<li>dismissed：动画暂未开始</li>
+<li>forward：动画正向运行</li>
+<li>reverse：动画反向运行</li>
+<li>complete：动画完成状态</li>
+</ul>
+</li>
+<li><code>Simulation</code> 物理模拟器，位于<code>physics</code> 包下，用于模拟物理运动，提供以下信息<ul>
+<li>位置信息 x</li>
+<li>速度d(x)</li>
+<li>是否完成 isDone </li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2、官方例子"><a href="#2-2、官方例子" class="headerlink" title="2.2、官方例子"></a>2.2、官方例子</h3><p>在 Flutter 中可以使用 <code>AnimateWidget</code> or <code>AnimateBuilder</code> 构建一个动画，如下</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogoApp</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</div><div class="line">  _LogoAppState createState() =&gt; _LogoAppState();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">_LogoAppState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">LogoApp</span>&gt; <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</div><div class="line">  Animation&lt;<span class="built_in">double</span>&gt; animation;</div><div class="line">  AnimationController controller;</div><div class="line"></div><div class="line">  <span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> initState() &#123;</div><div class="line">    <span class="keyword">super</span>.initState();</div><div class="line">    controller =</div><div class="line">        AnimationController(duration: <span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">2</span>), vsync: <span class="keyword">this</span>);</div><div class="line">    animation = Tween&lt;<span class="built_in">double</span>&gt;(begin: <span class="number">0</span>, end: <span class="number">300</span>).animate(controller);</div><div class="line">    controller.forward();</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="meta">@override</span>        </div><div class="line">  Widget build(BuildContext context) =&gt; AnimatedLogo(animation: animation);</div><div class="line"></div><div class="line">  <span class="meta">@override</span>            </div><div class="line">  <span class="keyword">void</span> dispose() &#123;            </div><div class="line">    controller.dispose();            </div><div class="line">    <span class="keyword">super</span>.dispose();            </div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnimatedLogo</span> <span class="keyword">extends</span> <span class="title">AnimatedWidget</span> </span>&#123;</div><div class="line">  AnimatedLogo(&#123;Key key, Animation&lt;<span class="built_in">double</span>&gt; animation&#125;)</div><div class="line">      : <span class="keyword">super</span>(key: key, listenable: animation);</div><div class="line"></div><div class="line">  Widget build(BuildContext context) &#123;</div><div class="line">    <span class="keyword">final</span> animation = listenable <span class="keyword">as</span> Animation&lt;<span class="built_in">double</span>&gt;;</div><div class="line">    <span class="keyword">return</span> Center(</div><div class="line">      child: Container(</div><div class="line">        margin: EdgeInsets.symmetric(vertical: <span class="number">10</span>),</div><div class="line">        height: animation.value,</div><div class="line">        width: animation.value,</div><div class="line">        child: FlutterLogo(),</div><div class="line">      ),</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>跟下构建流程。</p>
+<h3 id="2-3、AnimationController"><a href="#2-3、AnimationController" class="headerlink" title="2.3、AnimationController"></a>2.3、AnimationController</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">AnimationController(&#123;</div><div class="line">  <span class="built_in">double</span> value,</div><div class="line">  <span class="keyword">this</span>.duration,<span class="comment">// 动画时长</span></div><div class="line">  <span class="keyword">this</span>.reverseDuration,</div><div class="line">  <span class="keyword">this</span>.debugLabel,</div><div class="line">  <span class="keyword">this</span>.lowerBound = <span class="number">0.0</span>, <span class="comment">// 默认是 0.0 - 1.0</span></div><div class="line">  <span class="keyword">this</span>.upperBound = <span class="number">1.0</span>,</div><div class="line">  <span class="keyword">this</span>.animationBehavior = AnimationBehavior.normal,</div><div class="line">  <span class="comment">// TickerProvider 对象，一般为混入了 SingleTickerProviderStateMixin 的 State 类对象</span></div><div class="line">  <span class="meta">@required</span> TickerProvider vsync,</div><div class="line">&#125;) : <span class="keyword">assert</span>(lowerBound != <span class="keyword">null</span>),</div><div class="line">     <span class="keyword">assert</span>(upperBound != <span class="keyword">null</span>),</div><div class="line">     <span class="keyword">assert</span>(upperBound &gt;= lowerBound),</div><div class="line">     <span class="keyword">assert</span>(vsync != <span class="keyword">null</span>),</div><div class="line">     _direction = _AnimationDirection.forward &#123;</div><div class="line">  <span class="comment">//构建 Ticker 对象</span></div><div class="line">  _ticker = vsync.createTicker(_tick);</div><div class="line">  <span class="comment">// 更新状态和动画值</span></div><div class="line">  _internalSetValue(value ?? lowerBound);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>提供动画时长</li>
+<li>提供 TickerProvider 对象，一般为混入了 SingleTickerProviderStateMixin 的 State 类对象</li>
+<li>构建 Ticker 对象，注册回调方法 <code>_tick()</code></li>
+</ul>
+<p>当调用 <code>AnimationController.forward()</code> 方式</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/animation/animation_controller.dart</span></div><div class="line">	TickerFuture forward(&#123; <span class="built_in">double</span> from &#125;) &#123;</div><div class="line">		...</div><div class="line">    <span class="comment">// 正向运行</span></div><div class="line">    _direction = _AnimationDirection.forward;</div><div class="line">    <span class="keyword">if</span> (from != <span class="keyword">null</span>)</div><div class="line">      value = from;</div><div class="line">    <span class="keyword">return</span> _animateToInternal(upperBound);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  TickerFuture _animateToInternal(<span class="built_in">double</span> target, &#123; <span class="built_in">Duration</span> duration, Curve curve = Curves.linear &#125;) &#123; </div><div class="line">    <span class="comment">// 默认线性曲线</span></div><div class="line">    <span class="built_in">double</span> scale = <span class="number">1.0</span>;</div><div class="line">		...</div><div class="line">    <span class="built_in">Duration</span> simulationDuration = duration;</div><div class="line">    <span class="keyword">if</span> (simulationDuration == <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">final</span> <span class="built_in">double</span> range = upperBound - lowerBound;</div><div class="line">      <span class="keyword">final</span> <span class="built_in">double</span> remainingFraction = range.isFinite ? (target - _value).abs() / range : <span class="number">1.0</span>;</div><div class="line">      <span class="keyword">final</span> <span class="built_in">Duration</span> directionDuration =</div><div class="line">        (_direction == _AnimationDirection.reverse &amp;&amp; reverseDuration != <span class="keyword">null</span>)</div><div class="line">        ? reverseDuration</div><div class="line">        : <span class="keyword">this</span>.duration;</div><div class="line">      simulationDuration = directionDuration * remainingFraction;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (target == value) &#123;</div><div class="line">      <span class="comment">// Already at target, don't animate.</span></div><div class="line">      simulationDuration = <span class="built_in">Duration</span>.zero;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 停止老的动画</span></div><div class="line">    stop();</div><div class="line">    <span class="keyword">if</span> (simulationDuration == <span class="built_in">Duration</span>.zero) &#123;</div><div class="line">      <span class="keyword">if</span> (value != target) &#123;</div><div class="line">        <span class="comment">// 更新值，通知回调</span></div><div class="line">        _value = target.clamp(lowerBound, upperBound) <span class="keyword">as</span> <span class="built_in">double</span>;</div><div class="line">        notifyListeners();</div><div class="line">      &#125;</div><div class="line">      <span class="comment">// 改变状态</span></div><div class="line">      _status = (_direction == _AnimationDirection.forward) ?</div><div class="line">        AnimationStatus.completed :</div><div class="line">        AnimationStatus.dismissed;</div><div class="line">      _checkStatusChanged();</div><div class="line">      <span class="keyword">return</span> TickerFuture.complete();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 构建一个 Simulation 物理模拟器对象，使用线性曲线</span></div><div class="line">    <span class="keyword">return</span> _startSimulation(_InterpolationSimulation(_value, target, simulationDuration, curve, scale));</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>构建一个 <code>Simulation</code> 物理模拟器对象，这里使用线性模拟，内部使用的是 <code>Curves.linear</code> 实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/animation/animation_controller.dart</span></div><div class="line">	TickerFuture _startSimulation(Simulation simulation) &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// 通过模拟器获取值</span></div><div class="line">    _value = simulation.x(<span class="number">0.0</span>).clamp(lowerBound, upperBound) <span class="keyword">as</span> <span class="built_in">double</span>;</div><div class="line">    <span class="comment">// ticker 开始工作</span></div><div class="line">    <span class="keyword">final</span> TickerFuture result = _ticker.start();</div><div class="line">    <span class="comment">// 更新状态</span></div><div class="line">    _status = (_direction == _AnimationDirection.forward) ?</div><div class="line">      AnimationStatus.forward :</div><div class="line">      AnimationStatus.reverse;</div><div class="line">    _checkStatusChanged();</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">  &#125;</div><div class="line">	</div><div class="line">	<span class="comment">// 检查状态变化</span></div><div class="line">  <span class="keyword">void</span> _checkStatusChanged() &#123;</div><div class="line">    <span class="keyword">final</span> AnimationStatus newStatus = status;</div><div class="line">    <span class="keyword">if</span> (_lastReportedStatus != newStatus) &#123;</div><div class="line">      _lastReportedStatus = newStatus;</div><div class="line">      notifyStatusListeners(newStatus);</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="2-4、Ticker"><a href="#2-4、Ticker" class="headerlink" title="2.4、Ticker"></a>2.4、Ticker</h3><p><code>Ticker</code> 开始工作</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/schedule/ticker.dart</span></div><div class="line">	TickerFuture start() &#123;</div><div class="line">    _future = TickerFuture._();</div><div class="line">    <span class="keyword">if</span> (shouldScheduleTick) &#123;</div><div class="line">      <span class="comment">// 触发 tick 事件</span></div><div class="line">      scheduleTick();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (SchedulerBinding.instance.schedulerPhase.index &gt; SchedulerPhase.idle.index &amp;&amp;</div><div class="line">        SchedulerBinding.instance.schedulerPhase.index &lt; SchedulerPhase.postFrameCallbacks.index)</div><div class="line">      <span class="comment">// Scheduler状态在 idle 和 postFrameCallbacks 之间，即在绘制状态中</span></div><div class="line">      _startTime = SchedulerBinding.instance.currentFrameTimeStamp;</div><div class="line">    <span class="keyword">return</span> _future;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@protected</span></div><div class="line">  <span class="keyword">void</span> scheduleTick(&#123; <span class="built_in">bool</span> rescheduling = <span class="keyword">false</span> &#125;) &#123;</div><div class="line">    <span class="comment">// 加入到 _transientCallbacks 队列中，等待回调 _tick 方法</span></div><div class="line">    _animationId = SchedulerBinding.instance.scheduleFrameCallback(_tick, rescheduling: rescheduling);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>加入到 <code>SchedulerBinding._transientCallbacks</code> 队列中，等待回调 <code>_tick</code> 方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/scheduler/binding.dart</span></div><div class="line">	<span class="built_in">int</span> scheduleFrameCallback(FrameCallback callback, &#123; <span class="built_in">bool</span> rescheduling = <span class="keyword">false</span> &#125;) &#123;</div><div class="line">    <span class="comment">// 请求绘制</span></div><div class="line">    scheduleFrame();</div><div class="line">    _nextFrameCallbackId += <span class="number">1</span>;</div><div class="line">    <span class="comment">// 加入 _transientCallbacks 队列</span></div><div class="line">    _transientCallbacks[_nextFrameCallbackId] = _FrameCallbackEntry(callback, rescheduling: rescheduling);</div><div class="line">    <span class="keyword">return</span> _nextFrameCallbackId;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>请求绘制</li>
+<li>加入 _transientCallbacks 队列</li>
+</ul>
+<p><code>Ticker._tick()</code> 方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/schedule/ticker.dart</span></div><div class="line">	<span class="keyword">void</span> _tick(<span class="built_in">Duration</span> timeStamp) &#123;</div><div class="line">    _animationId = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    _startTime ??= timeStamp;</div><div class="line">    <span class="comment">// 回调 AnimationController 注册的回调方法</span></div><div class="line">    _onTick(timeStamp - _startTime);</div><div class="line"></div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (shouldScheduleTick)</div><div class="line">      <span class="comment">// 再次注册 _transientCallbacks 回调</span></div><div class="line">      scheduleTick(rescheduling: <span class="keyword">true</span>);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>回调 <code>AnimationController</code> 构建 <code>Ticker</code> 对象时注册的回调方法 <code>_tick()</code></li>
+<li>再次注册 <code>_transientCallbacks</code> 回调，等待触发再次注册… 直到动画完成或停止</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/animation/animation_controller.dart</span></div><div class="line">	<span class="keyword">void</span> _tick(<span class="built_in">Duration</span> elapsed) &#123;</div><div class="line">    _lastElapsedDuration = elapsed;</div><div class="line">    <span class="keyword">final</span> <span class="built_in">double</span> elapsedInSeconds = elapsed.inMicroseconds.toDouble() / <span class="built_in">Duration</span>.microsecondsPerSecond;</div><div class="line">    <span class="comment">// 更新动画值</span></div><div class="line">    _value = _simulation.x(elapsedInSeconds).clamp(lowerBound, upperBound) <span class="keyword">as</span> <span class="built_in">double</span>;</div><div class="line">    <span class="comment">// 更新动画状态</span></div><div class="line">    <span class="keyword">if</span> (_simulation.isDone(elapsedInSeconds)) &#123;</div><div class="line">      _status = (_direction == _AnimationDirection.forward) ?</div><div class="line">        AnimationStatus.completed :</div><div class="line">        AnimationStatus.dismissed;</div><div class="line">      stop(canceled: <span class="keyword">false</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 通知监听</span></div><div class="line">    notifyListeners();</div><div class="line">    _checkStatusChanged();</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="2-5、刷新界面"><a href="#2-5、刷新界面" class="headerlink" title="2.5、刷新界面"></a>2.5、刷新界面</h3><p>在 <code>AnimatedWidget</code> 或 <code>AnimatedBuilder</code> 对应的 State 中，会对 <code>Animation</code> 注册动画监听</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/widgets/trasitions.dart</span></div><div class="line">	<span class="keyword">void</span> initState() &#123;</div><div class="line">    <span class="keyword">super</span>.initState();</div><div class="line">    widget.listenable.addListener(_handleChange);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> _handleChange() &#123;</div><div class="line">    <span class="comment">// element 标脏，触发绘制</span></div><div class="line">    setState(() &#123;</div><div class="line">      <span class="comment">// The listenable's state is our build state, and it changed already.</span></div><div class="line">    &#125;);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>通过 <code>Animation</code> 的回调方法触发界面刷新</li>
+<li>Widget 通过 <code>Animation</code> 对象获取对应的值</li>
+</ul>
+<p>调用过程：</p>
+<p><code>AnimationController.forward()</code> -&gt; <code>Ticker.start()</code> -&gt; <code>Ticker.scheduleTick()</code> -&gt; <code>Ticker._tick()</code> -&gt; <code>AnimationController._tick()</code> -&gt; <code>Widget.build()</code> -&gt; <code>Ticker.scheduleTick()</code> …</p>
+<h2 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h2><p>Dart Framework 触发 Engine 渲染管线开始绘制流程，回调给 Dart Framework，通过 SchedulerBinding 调度 UI 绘制。</p>
+<p>其中的第一个操作是更新 <code>_transientCallbacks</code> 回调，该回调在动画过程中被使用。</p>
+<p><code>Animation</code> 动画在 <code>SchedulerBinding</code>  和 <code>Ticker</code> 的驱动下，循环往复的不停运转，直到动画完成或被调用停止。</p>
+<p>本文链接： <a href="http://w4lle.com/2020/11/13/flutter-ui-animate/">http://w4lle.com/2020/11/13/flutter-ui-animate/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2020/11/13/flutter-ui-animate/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2020/11/11/flutter-ui-vsync/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2020-11-11T10:33:24.449Z</updated>
+  <updated>2020-11-13T12:47:02.620Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -16,11 +16,154 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Flutter UI 渲染浅析（三）Animation 原理解析</title>
+    <link href="http://w4lle.com/2020/11/13/flutter-ui-animate/"/>
+    <id>http://w4lle.com/2020/11/13/flutter-ui-animate/</id>
+    <published>2020-11-13T10:45:24.000Z</published>
+    <updated>2020-11-13T12:47:02.620Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。</p>
+<p>基于 Android 平台，Flutter v1.20.4。</p>
+<a id="more"></a>
+<p>在上一篇文章最后，我们提到做三件事情：</p>
+<ul>
+<li>执行 Dart Framework <code>dart:ui</code> 包下的 <code>_beginFrame()</code></li>
+<li>执行 microtasks 任务</li>
+<li>执行 Dart Framework <code>dart:ui</code> 包下的  <code>_drawFrame()</code></li>
+</ul>
+<p><code>dart:ui</code> 包下的两个方法的实现在 hooks.dart</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/ui/hooks.dart</span></div><div class="line"><span class="comment">// 没有直接引用，标记防止被 tree shaking干掉</span></div><div class="line"><span class="meta">@pragma</span>(<span class="string">'vm:entry-point'</span>)</div><div class="line"><span class="keyword">void</span> _beginFrame(<span class="built_in">int</span> microseconds) &#123;</div><div class="line">  <span class="comment">// 执行 window.onBeginFrame</span></div><div class="line">  _invoke1&lt;<span class="built_in">Duration</span>&gt;(<span class="built_in">window</span>.onBeginFrame, <span class="built_in">window</span>._onBeginFrameZone, <span class="built_in">Duration</span>(microseconds: microseconds));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@pragma</span>(<span class="string">'vm:entry-point'</span>)</div><div class="line"><span class="keyword">void</span> _drawFrame() &#123;</div><div class="line">  <span class="comment">// 执行 window.onDrawFrame</span></div><div class="line">  _invoke(<span class="built_in">window</span>.onDrawFrame, <span class="built_in">window</span>._onDrawFrameZone);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> _invoke(<span class="keyword">void</span> callback()?, Zone zone) &#123;</div><div class="line">	...</div><div class="line">    <span class="comment">// 运行 zone 未变，直接调用方法</span></div><div class="line">  <span class="keyword">if</span> (identical(zone, Zone.current)) &#123;</div><div class="line">    callback();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    zone.runGuarded(callback);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上篇文章中提到，<code>SchedulerBinding</code> 注册了 <code>window.onBeginFrame()</code> 和 <code>window.onDrawFrame()</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/scheduler/binding.dart</span></div><div class="line">  <span class="keyword">void</span> ensureFrameCallbacksRegistered() &#123;</div><div class="line">    <span class="comment">// 注册 onBeginFrame 、onDrawFrame 回调方法</span></div><div class="line">    <span class="built_in">window</span>.onBeginFrame ??= _handleBeginFrame;</div><div class="line">    <span class="built_in">window</span>.onDrawFrame ??= _handleDrawFrame;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>本篇文章先分析 <code>SchedulerBinding._handleBeginFrame()</code>。</p>
+<p>##1、_handleBeginFrame()</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> _handleBeginFrame(<span class="built_in">Duration</span> rawTimeStamp) &#123;</div><div class="line">  <span class="keyword">if</span> (_warmUpFrame) &#123;</div><div class="line">    <span class="comment">// 如果是启动预热帧，忽略本次调用</span></div><div class="line">    _ignoreNextEngineDrawFrame = <span class="keyword">true</span>;</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line">  handleBeginFrame(rawTimeStamp);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果是启动预热帧，忽略本次调用。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> handleBeginFrame(<span class="built_in">Duration</span> rawTimeStamp) &#123;</div><div class="line">  <span class="comment">// 开始记录 Frame 过程</span></div><div class="line">  Timeline.startSync(<span class="string">'Frame'</span>, arguments: timelineArgumentsIndicatingLandmarkEvent);</div><div class="line">  _firstRawTimeStampInEpoch ??= rawTimeStamp;</div><div class="line">  _currentFrameTimeStamp = _adjustForEpoch(rawTimeStamp ?? _lastRawTimeStamp);</div><div class="line">  <span class="keyword">if</span> (rawTimeStamp != <span class="keyword">null</span>)</div><div class="line">    _lastRawTimeStamp = rawTimeStamp;</div><div class="line"></div><div class="line">  <span class="keyword">assert</span>(() &#123;</div><div class="line">    <span class="comment">// 绘制次数 + 1</span></div><div class="line">    _debugFrameNumber += <span class="number">1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (debugPrintBeginFrameBanner || debugPrintEndFrameBanner) &#123;</div><div class="line">      <span class="keyword">final</span> <span class="built_in">StringBuffer</span> frameTimeStampDescription = <span class="built_in">StringBuffer</span>();</div><div class="line">      <span class="keyword">if</span> (rawTimeStamp != <span class="keyword">null</span>) &#123;</div><div class="line">        _debugDescribeTimeStamp(_currentFrameTimeStamp, frameTimeStampDescription);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        frameTimeStampDescription.write(<span class="string">'(warm-up frame)'</span>);</div><div class="line">      &#125;</div><div class="line">      _debugBanner = <span class="string">'▄▄▄▄▄▄▄▄ Frame <span class="subst">$&#123;_debugFrameNumber.toString().padRight(<span class="number">7</span>)&#125;</span>   <span class="subst">$&#123;frameTimeStampDescription.toString().padLeft(<span class="number">18</span>)&#125;</span> ▄▄▄▄▄▄▄▄'</span>;</div><div class="line">      <span class="keyword">if</span> (debugPrintBeginFrameBanner)</div><div class="line">        debugPrint(_debugBanner);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">  &#125;());</div><div class="line"><span class="comment">//当前处于 SchedulerPhase.idle 状态</span></div><div class="line">  <span class="keyword">assert</span>(schedulerPhase == SchedulerPhase.idle);</div><div class="line">  <span class="comment">// 更新标志位，接收下次 scheduleFrame 请求</span></div><div class="line">  _hasScheduledFrame = <span class="keyword">false</span>;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    <span class="comment">// TRANSIENT FRAME CALLBACKS</span></div><div class="line">    <span class="comment">// 开始记录 Animate 过程</span></div><div class="line">    Timeline.startSync(<span class="string">'Animate'</span>, arguments: timelineArgumentsIndicatingLandmarkEvent);</div><div class="line">    _schedulerPhase = SchedulerPhase.transientCallbacks;</div><div class="line">    <span class="comment">// 执行 transientCallbacks 回调</span></div><div class="line">    <span class="keyword">final</span> <span class="built_in">Map</span>&lt;<span class="built_in">int</span>, _FrameCallbackEntry&gt; callbacks = _transientCallbacks;</div><div class="line">    <span class="comment">// 清空列表</span></div><div class="line">    _transientCallbacks = &lt;<span class="built_in">int</span>, _FrameCallbackEntry&gt;&#123;&#125;;</div><div class="line">    callbacks.forEach((<span class="built_in">int</span> id, _FrameCallbackEntry callbackEntry) &#123;</div><div class="line">      <span class="keyword">if</span> (!_removedIds.contains(id))</div><div class="line">        _invokeFrameCallback(callbackEntry.callback, _currentFrameTimeStamp, callbackEntry.debugStack);</div><div class="line">    &#125;);</div><div class="line">    _removedIds.clear();</div><div class="line">  &#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="comment">//改变状态为 SchedulerPhase.midFrameMicrotasks</span></div><div class="line">    _schedulerPhase = SchedulerPhase.midFrameMicrotasks;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>TimeLine 开始记录 <code>Frame</code> 过程</li>
+<li>如果 debugPrintBeginFrameBanner || debugPrintEndFrameBanner 打印绘制次数及时间</li>
+<li>更新标志位 _hasScheduledFrame = false ，接收下次 scheduleFrame 请求</li>
+<li>开始记录 Animate 过程</li>
+<li>执行 <code>transientCallbacks</code> 瞬时帧回调，并清空回调列表，由 <code>WidgetsBinding.scheduleFrameCallback()</code> 注册</li>
+<li>改变状态为 <code>SchedulerPhase.midFrameMicrotasks</code></li>
+</ul>
+<p>打印如下，打印的时间为距离首帧绘制的时间，<code>warm-up frame</code> 为 <code>runApp()</code> 启动过程中，<code>RenderView</code> 触发的预热帧，非 C ++ Engine 回调</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">I/flutter (<span class="number">14160</span>): ▄▄▄▄▄▄▄▄ Frame <span class="number">1</span>            (warm-up frame) ▄▄▄▄▄▄▄▄</div><div class="line">I/flutter (<span class="number">14160</span>): ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀</div><div class="line">D/PhoneWindow(<span class="number">14160</span>): setNavigationBarColor: ff000000</div><div class="line">I/flutter (<span class="number">14160</span>): ▄▄▄▄▄▄▄▄ Frame <span class="number">2</span>                        <span class="number">0</span>ms ▄▄▄▄▄▄▄▄</div><div class="line">I/flutter (<span class="number">14160</span>): ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀</div><div class="line">I/flutter (<span class="number">14160</span>): [verbose]: Add bucket <span class="keyword">in</span> <span class="keyword">set</span> from <span class="number">0</span></div><div class="line">I/flutter (<span class="number">14160</span>): ▄▄▄▄▄▄▄▄ Frame <span class="number">3</span>                  <span class="number">301.668</span>ms ▄▄▄▄▄▄▄▄</div><div class="line">I/flutter (<span class="number">14160</span>): ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀</div><div class="line">I/flutter (<span class="number">14160</span>): ▄▄▄▄▄▄▄▄ Frame <span class="number">4</span>                  <span class="number">402.225</span>ms ▄▄▄▄▄▄▄▄</div></pre></td></tr></table></figure>
+<p><code>beginFrame()</code>主要是执行 <code>transientCallbacks</code> 瞬时帧回调，是由 <code>WidgetsBinding.scheduleFrameCallback</code> 注册，用来处理帧间动画计算和更新的工作，如果没有动画，则 <code>transientCallbacks</code> 为空。</p>
+<p>先看下动画注册瞬时帧回调的过程。</p>
+<h2 id="2、Flutter-Animation-动画原理"><a href="#2、Flutter-Animation-动画原理" class="headerlink" title="2、Flutter Animation 动画原理"></a>2、Flutter Animation 动画原理</h2><h3 id="2-1、主要类"><a href="#2-1、主要类" class="headerlink" title="2.1、主要类"></a>2.1、主要类</h3><p>Flutter 中的动画主要类结构如下图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_animation.png" alt=""></p>
+<ul>
+<li><code>Animation</code> 动画实现类，通过 <code>Ticker</code> 瞬时帧回调改变当前值，提供值回调和状态回调<ul>
+<li>值回调 addListener(VoidCallback)</li>
+<li>状态回调 addStatusListener(AnimationStatusListener)</li>
+</ul>
+</li>
+<li><code>AnimationController</code> ，动画控制器，用于控制 <code>Animation</code> 运行状态，注册 <code>Ticker</code> 回调方法</li>
+<li><code>Ticker</code> 用于注册 <code>SchedulerBinding.transientCallbacks</code> 回调，执行 <code>AnimationController</code> 注册的回调</li>
+<li><code>TickerProvider</code> &amp; <code>SingleTickerProviderStateMixin</code>，提供默认的 <code>Ticker</code> 对象</li>
+<li><code>AnimateWidget</code> &amp; <code>AnimateState</code> or  <code>AnimateBuilder</code>  动画 UI 展示，注册 <code>Animation</code> 值回调，自动触发 <code>setState()</code> ，混入<code>SingleTickerProviderStateMixin</code> 提供默认的 <code>Ticker</code> 对象，用于构建 <code>AnimationController</code> 动画控制器</li>
+<li><code>Curve</code> 动画曲线可以控制时间的变化情况，类似于 Android 动画的插值器，默认是线性流逝，有以下几种类型，效果参考 <a href="https://api.flutter.dev/flutter/animation/Curves-class.html" target="_blank" rel="external">官网 Curves-class</a><ul>
+<li>linear</li>
+<li>decelerate</li>
+<li>ease</li>
+<li>easeIn</li>
+<li>easeOut</li>
+<li>easeInOut</li>
+<li>fastOutSlowIn</li>
+<li>bounceIn</li>
+<li>bounceOut</li>
+<li>bounceInOut</li>
+<li>elasticIn</li>
+<li>elasticOut</li>
+<li>elasticInOut</li>
+</ul>
+</li>
+<li><code>Tween</code> 动画取值计算出当前时间 <code>t</code> 对应的泛型值，有以下几个子类<ul>
+<li>ReverseTween</li>
+<li>ColorTween</li>
+<li>SizeTween</li>
+<li>RectTween</li>
+<li>IntTween</li>
+<li>StepTween</li>
+<li>ConstantTween</li>
+</ul>
+</li>
+<li><code>AnimationStatus</code> 动画状态机，含有四个状态<ul>
+<li>dismissed：动画暂未开始</li>
+<li>forward：动画正向运行</li>
+<li>reverse：动画反向运行</li>
+<li>complete：动画完成状态</li>
+</ul>
+</li>
+<li><code>Simulation</code> 物理模拟器，位于<code>physics</code> 包下，用于模拟物理运动，提供以下信息<ul>
+<li>位置信息 x</li>
+<li>速度d(x)</li>
+<li>是否完成 isDone </li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2、官方例子"><a href="#2-2、官方例子" class="headerlink" title="2.2、官方例子"></a>2.2、官方例子</h3><p>在 Flutter 中可以使用 <code>AnimateWidget</code> or <code>AnimateBuilder</code> 构建一个动画，如下</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogoApp</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</div><div class="line">  _LogoAppState createState() =&gt; _LogoAppState();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">_LogoAppState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">LogoApp</span>&gt; <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</div><div class="line">  Animation&lt;<span class="built_in">double</span>&gt; animation;</div><div class="line">  AnimationController controller;</div><div class="line"></div><div class="line">  <span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> initState() &#123;</div><div class="line">    <span class="keyword">super</span>.initState();</div><div class="line">    controller =</div><div class="line">        AnimationController(duration: <span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">2</span>), vsync: <span class="keyword">this</span>);</div><div class="line">    animation = Tween&lt;<span class="built_in">double</span>&gt;(begin: <span class="number">0</span>, end: <span class="number">300</span>).animate(controller);</div><div class="line">    controller.forward();</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="meta">@override</span>        </div><div class="line">  Widget build(BuildContext context) =&gt; AnimatedLogo(animation: animation);</div><div class="line"></div><div class="line">  <span class="meta">@override</span>            </div><div class="line">  <span class="keyword">void</span> dispose() &#123;            </div><div class="line">    controller.dispose();            </div><div class="line">    <span class="keyword">super</span>.dispose();            </div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnimatedLogo</span> <span class="keyword">extends</span> <span class="title">AnimatedWidget</span> </span>&#123;</div><div class="line">  AnimatedLogo(&#123;Key key, Animation&lt;<span class="built_in">double</span>&gt; animation&#125;)</div><div class="line">      : <span class="keyword">super</span>(key: key, listenable: animation);</div><div class="line"></div><div class="line">  Widget build(BuildContext context) &#123;</div><div class="line">    <span class="keyword">final</span> animation = listenable <span class="keyword">as</span> Animation&lt;<span class="built_in">double</span>&gt;;</div><div class="line">    <span class="keyword">return</span> Center(</div><div class="line">      child: Container(</div><div class="line">        margin: EdgeInsets.symmetric(vertical: <span class="number">10</span>),</div><div class="line">        height: animation.value,</div><div class="line">        width: animation.value,</div><div class="line">        child: FlutterLogo(),</div><div class="line">      ),</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>跟下构建流程。</p>
+<h3 id="2-3、AnimationController"><a href="#2-3、AnimationController" class="headerlink" title="2.3、AnimationController"></a>2.3、AnimationController</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">AnimationController(&#123;</div><div class="line">  <span class="built_in">double</span> value,</div><div class="line">  <span class="keyword">this</span>.duration,<span class="comment">// 动画时长</span></div><div class="line">  <span class="keyword">this</span>.reverseDuration,</div><div class="line">  <span class="keyword">this</span>.debugLabel,</div><div class="line">  <span class="keyword">this</span>.lowerBound = <span class="number">0.0</span>, <span class="comment">// 默认是 0.0 - 1.0</span></div><div class="line">  <span class="keyword">this</span>.upperBound = <span class="number">1.0</span>,</div><div class="line">  <span class="keyword">this</span>.animationBehavior = AnimationBehavior.normal,</div><div class="line">  <span class="comment">// TickerProvider 对象，一般为混入了 SingleTickerProviderStateMixin 的 State 类对象</span></div><div class="line">  <span class="meta">@required</span> TickerProvider vsync,</div><div class="line">&#125;) : <span class="keyword">assert</span>(lowerBound != <span class="keyword">null</span>),</div><div class="line">     <span class="keyword">assert</span>(upperBound != <span class="keyword">null</span>),</div><div class="line">     <span class="keyword">assert</span>(upperBound &gt;= lowerBound),</div><div class="line">     <span class="keyword">assert</span>(vsync != <span class="keyword">null</span>),</div><div class="line">     _direction = _AnimationDirection.forward &#123;</div><div class="line">  <span class="comment">//构建 Ticker 对象</span></div><div class="line">  _ticker = vsync.createTicker(_tick);</div><div class="line">  <span class="comment">// 更新状态和动画值</span></div><div class="line">  _internalSetValue(value ?? lowerBound);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>提供动画时长</li>
+<li>提供 TickerProvider 对象，一般为混入了 SingleTickerProviderStateMixin 的 State 类对象</li>
+<li>构建 Ticker 对象，注册回调方法 <code>_tick()</code></li>
+</ul>
+<p>当调用 <code>AnimationController.forward()</code> 方式</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/animation/animation_controller.dart</span></div><div class="line">	TickerFuture forward(&#123; <span class="built_in">double</span> from &#125;) &#123;</div><div class="line">		...</div><div class="line">    <span class="comment">// 正向运行</span></div><div class="line">    _direction = _AnimationDirection.forward;</div><div class="line">    <span class="keyword">if</span> (from != <span class="keyword">null</span>)</div><div class="line">      value = from;</div><div class="line">    <span class="keyword">return</span> _animateToInternal(upperBound);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  TickerFuture _animateToInternal(<span class="built_in">double</span> target, &#123; <span class="built_in">Duration</span> duration, Curve curve = Curves.linear &#125;) &#123; </div><div class="line">    <span class="comment">// 默认线性曲线</span></div><div class="line">    <span class="built_in">double</span> scale = <span class="number">1.0</span>;</div><div class="line">		...</div><div class="line">    <span class="built_in">Duration</span> simulationDuration = duration;</div><div class="line">    <span class="keyword">if</span> (simulationDuration == <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">final</span> <span class="built_in">double</span> range = upperBound - lowerBound;</div><div class="line">      <span class="keyword">final</span> <span class="built_in">double</span> remainingFraction = range.isFinite ? (target - _value).abs() / range : <span class="number">1.0</span>;</div><div class="line">      <span class="keyword">final</span> <span class="built_in">Duration</span> directionDuration =</div><div class="line">        (_direction == _AnimationDirection.reverse &amp;&amp; reverseDuration != <span class="keyword">null</span>)</div><div class="line">        ? reverseDuration</div><div class="line">        : <span class="keyword">this</span>.duration;</div><div class="line">      simulationDuration = directionDuration * remainingFraction;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (target == value) &#123;</div><div class="line">      <span class="comment">// Already at target, don't animate.</span></div><div class="line">      simulationDuration = <span class="built_in">Duration</span>.zero;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 停止老的动画</span></div><div class="line">    stop();</div><div class="line">    <span class="keyword">if</span> (simulationDuration == <span class="built_in">Duration</span>.zero) &#123;</div><div class="line">      <span class="keyword">if</span> (value != target) &#123;</div><div class="line">        <span class="comment">// 更新值，通知回调</span></div><div class="line">        _value = target.clamp(lowerBound, upperBound) <span class="keyword">as</span> <span class="built_in">double</span>;</div><div class="line">        notifyListeners();</div><div class="line">      &#125;</div><div class="line">      <span class="comment">// 改变状态</span></div><div class="line">      _status = (_direction == _AnimationDirection.forward) ?</div><div class="line">        AnimationStatus.completed :</div><div class="line">        AnimationStatus.dismissed;</div><div class="line">      _checkStatusChanged();</div><div class="line">      <span class="keyword">return</span> TickerFuture.complete();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 构建一个 Simulation 物理模拟器对象，使用线性曲线</span></div><div class="line">    <span class="keyword">return</span> _startSimulation(_InterpolationSimulation(_value, target, simulationDuration, curve, scale));</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>构建一个 <code>Simulation</code> 物理模拟器对象，这里使用线性模拟，内部使用的是 <code>Curves.linear</code> 实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/animation/animation_controller.dart</span></div><div class="line">	TickerFuture _startSimulation(Simulation simulation) &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// 通过模拟器获取值</span></div><div class="line">    _value = simulation.x(<span class="number">0.0</span>).clamp(lowerBound, upperBound) <span class="keyword">as</span> <span class="built_in">double</span>;</div><div class="line">    <span class="comment">// ticker 开始工作</span></div><div class="line">    <span class="keyword">final</span> TickerFuture result = _ticker.start();</div><div class="line">    <span class="comment">// 更新状态</span></div><div class="line">    _status = (_direction == _AnimationDirection.forward) ?</div><div class="line">      AnimationStatus.forward :</div><div class="line">      AnimationStatus.reverse;</div><div class="line">    _checkStatusChanged();</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">  &#125;</div><div class="line">	</div><div class="line">	<span class="comment">// 检查状态变化</span></div><div class="line">  <span class="keyword">void</span> _checkStatusChanged() &#123;</div><div class="line">    <span class="keyword">final</span> AnimationStatus newStatus = status;</div><div class="line">    <span class="keyword">if</span> (_lastReportedStatus != newStatus) &#123;</div><div class="line">      _lastReportedStatus = newStatus;</div><div class="line">      notifyStatusListeners(newStatus);</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="2-4、Ticker"><a href="#2-4、Ticker" class="headerlink" title="2.4、Ticker"></a>2.4、Ticker</h3><p><code>Ticker</code> 开始工作</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/schedule/ticker.dart</span></div><div class="line">	TickerFuture start() &#123;</div><div class="line">    _future = TickerFuture._();</div><div class="line">    <span class="keyword">if</span> (shouldScheduleTick) &#123;</div><div class="line">      <span class="comment">// 触发 tick 事件</span></div><div class="line">      scheduleTick();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (SchedulerBinding.instance.schedulerPhase.index &gt; SchedulerPhase.idle.index &amp;&amp;</div><div class="line">        SchedulerBinding.instance.schedulerPhase.index &lt; SchedulerPhase.postFrameCallbacks.index)</div><div class="line">      <span class="comment">// Scheduler状态在 idle 和 postFrameCallbacks 之间，即在绘制状态中</span></div><div class="line">      _startTime = SchedulerBinding.instance.currentFrameTimeStamp;</div><div class="line">    <span class="keyword">return</span> _future;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@protected</span></div><div class="line">  <span class="keyword">void</span> scheduleTick(&#123; <span class="built_in">bool</span> rescheduling = <span class="keyword">false</span> &#125;) &#123;</div><div class="line">    <span class="comment">// 加入到 _transientCallbacks 队列中，等待回调 _tick 方法</span></div><div class="line">    _animationId = SchedulerBinding.instance.scheduleFrameCallback(_tick, rescheduling: rescheduling);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>加入到 <code>SchedulerBinding._transientCallbacks</code> 队列中，等待回调 <code>_tick</code> 方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/scheduler/binding.dart</span></div><div class="line">	<span class="built_in">int</span> scheduleFrameCallback(FrameCallback callback, &#123; <span class="built_in">bool</span> rescheduling = <span class="keyword">false</span> &#125;) &#123;</div><div class="line">    <span class="comment">// 请求绘制</span></div><div class="line">    scheduleFrame();</div><div class="line">    _nextFrameCallbackId += <span class="number">1</span>;</div><div class="line">    <span class="comment">// 加入 _transientCallbacks 队列</span></div><div class="line">    _transientCallbacks[_nextFrameCallbackId] = _FrameCallbackEntry(callback, rescheduling: rescheduling);</div><div class="line">    <span class="keyword">return</span> _nextFrameCallbackId;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>请求绘制</li>
+<li>加入 _transientCallbacks 队列</li>
+</ul>
+<p><code>Ticker._tick()</code> 方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/schedule/ticker.dart</span></div><div class="line">	<span class="keyword">void</span> _tick(<span class="built_in">Duration</span> timeStamp) &#123;</div><div class="line">    _animationId = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    _startTime ??= timeStamp;</div><div class="line">    <span class="comment">// 回调 AnimationController 注册的回调方法</span></div><div class="line">    _onTick(timeStamp - _startTime);</div><div class="line"></div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (shouldScheduleTick)</div><div class="line">      <span class="comment">// 再次注册 _transientCallbacks 回调</span></div><div class="line">      scheduleTick(rescheduling: <span class="keyword">true</span>);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>回调 <code>AnimationController</code> 构建 <code>Ticker</code> 对象时注册的回调方法 <code>_tick()</code></li>
+<li>再次注册 <code>_transientCallbacks</code> 回调，等待触发再次注册… 直到动画完成或停止</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/animation/animation_controller.dart</span></div><div class="line">	<span class="keyword">void</span> _tick(<span class="built_in">Duration</span> elapsed) &#123;</div><div class="line">    _lastElapsedDuration = elapsed;</div><div class="line">    <span class="keyword">final</span> <span class="built_in">double</span> elapsedInSeconds = elapsed.inMicroseconds.toDouble() / <span class="built_in">Duration</span>.microsecondsPerSecond;</div><div class="line">    <span class="comment">// 更新动画值</span></div><div class="line">    _value = _simulation.x(elapsedInSeconds).clamp(lowerBound, upperBound) <span class="keyword">as</span> <span class="built_in">double</span>;</div><div class="line">    <span class="comment">// 更新动画状态</span></div><div class="line">    <span class="keyword">if</span> (_simulation.isDone(elapsedInSeconds)) &#123;</div><div class="line">      _status = (_direction == _AnimationDirection.forward) ?</div><div class="line">        AnimationStatus.completed :</div><div class="line">        AnimationStatus.dismissed;</div><div class="line">      stop(canceled: <span class="keyword">false</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 通知监听</span></div><div class="line">    notifyListeners();</div><div class="line">    _checkStatusChanged();</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="2-5、刷新界面"><a href="#2-5、刷新界面" class="headerlink" title="2.5、刷新界面"></a>2.5、刷新界面</h3><p>在 <code>AnimatedWidget</code> 或 <code>AnimatedBuilder</code> 对应的 State 中，会对 <code>Animation</code> 注册动画监听</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/widgets/trasitions.dart</span></div><div class="line">	<span class="keyword">void</span> initState() &#123;</div><div class="line">    <span class="keyword">super</span>.initState();</div><div class="line">    widget.listenable.addListener(_handleChange);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> _handleChange() &#123;</div><div class="line">    <span class="comment">// element 标脏，触发绘制</span></div><div class="line">    setState(() &#123;</div><div class="line">      <span class="comment">// The listenable's state is our build state, and it changed already.</span></div><div class="line">    &#125;);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>通过 <code>Animation</code> 的回调方法触发界面刷新</li>
+<li>Widget 通过 <code>Animation</code> 对象获取对应的值</li>
+</ul>
+<p>调用过程：</p>
+<p><code>AnimationController.forward()</code> -&gt; <code>Ticker.start()</code> -&gt; <code>Ticker.scheduleTick()</code> -&gt; <code>Ticker._tick()</code> -&gt; <code>AnimationController._tick()</code> -&gt; <code>Widget.build()</code> -&gt; <code>Ticker.scheduleTick()</code> …</p>
+<h2 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h2><p>Dart Framework 触发 Engine 渲染管线开始绘制流程，回调给 Dart Framework，通过 SchedulerBinding 调度 UI 绘制。</p>
+<p>其中的第一个操作是更新 <code>_transientCallbacks</code> 回调，该回调在动画过程中被使用。</p>
+<p><code>Animation</code> 动画在 <code>SchedulerBinding</code>  和 <code>Ticker</code> 的驱动下，循环往复的不停运转，直到动画完成或被调用停止。</p>
+<p>本文链接： <a href="http://w4lle.com/2020/11/13/flutter-ui-animate/">http://w4lle.com/2020/11/13/flutter-ui-animate/</a> </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。&lt;/p&gt;
+&lt;p&gt;基于 Android 平台，Flutter v1.20.4。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Flutter" scheme="http://w4lle.com/tags/Flutter/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Flutter UI 渲染浅析（二）VSync 注册</title>
     <link href="http://w4lle.com/2020/11/11/flutter-ui-vsync/"/>
     <id>http://w4lle.com/2020/11/11/flutter-ui-vsync/</id>
     <published>2020-11-11T10:31:21.000Z</published>
-    <updated>2020-11-11T10:33:24.449Z</updated>
+    <updated>2020-11-13T12:47:00.554Z</updated>
     
     <content type="html"><![CDATA[<p>在 Flutter App 启动过程或者 State 刷新过程中，会请求注册 VSync 信号。</p>
 <p>本篇文章主要分析下 VSync 信号注册以及回调过程。</p>
@@ -142,8 +285,15 @@
 <p>通过两个信号量来管理管线的调度，这种调度机制可以确保 RasterThread 不至于过载（2个任务），同时也可以避免 UIThread 不必要的资源消耗。</p>
 <p>所以不论在 UIThread 还是在 RasterThread 耗时太久，都可能会导致 Flutter 应用卡顿，因为会导致延迟接受 VSync 信号，导致掉帧。</p>
 <h3 id="5-2、OnAnimatorBeginFrame"><a href="#5-2、OnAnimatorBeginFrame" class="headerlink" title="5.2、OnAnimatorBeginFrame"></a>5.2、OnAnimatorBeginFrame</h3><p>继续调用 <code>delegate_.OnAnimatorBeginFrame(frame_target_time)</code>方法</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// shell/common/shell.cc</span></div><div class="line"><span class="comment">// |Animator::Delegate|</span></div><div class="line"><span class="keyword">void</span> Shell::OnAnimatorBeginFrame(fml::TimePoint frame_target_time) &#123;</div><div class="line">  FML_DCHECK(is_setup_);</div><div class="line">  FML_DCHECK(task_runners_.GetUITaskRunner()-&gt;RunsTasksOnCurrentThread());</div><div class="line"></div><div class="line">  <span class="comment">// record the target time for use by rasterizer.</span></div><div class="line">  &#123;</div><div class="line">    <span class="built_in">std</span>::<span class="function">scoped_lock <span class="title">time_recorder_lock</span><span class="params">(time_recorder_mutex_)</span></span>;</div><div class="line">    <span class="comment">// 记录frame_target_time</span></div><div class="line">    latest_frame_target_time_.emplace(frame_target_time);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (engine_) &#123;</div><div class="line">    engine_-&gt;BeginFrame(frame_target_time);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// shell/common/engine.cc</span></div><div class="line"><span class="keyword">void</span> Engine::BeginFrame(fml::TimePoint frame_time) &#123;</div><div class="line">  TRACE_EVENT0(<span class="string">"flutter"</span>, <span class="string">"Engine::BeginFrame"</span>);</div><div class="line">  runtime_controller_-&gt;BeginFrame(frame_time);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// runtime/runtime_controller.cc</span></div><div class="line"><span class="keyword">bool</span> RuntimeController::BeginFrame(fml::TimePoint frame_time) &#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">auto</span>* window = GetWindowIfAvailable()) &#123;</div><div class="line">    window-&gt;BeginFrame(frame_time);</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// lib/ui/window/window.cc</span></div><div class="line"><span class="keyword">void</span> Window::BeginFrame(fml::TimePoint frameTime) &#123;</div><div class="line">  tonic::DartState::<span class="function">Scope <span class="title">scope</span><span class="params">(dart_state)</span></span>;</div><div class="line"></div><div class="line">  <span class="keyword">int64_t</span> microseconds = (frameTime - fml::TimePoint()).ToMicroseconds();</div><div class="line">	<span class="comment">// 通过 fii 回调 Dart Framework window._beginFrame()</span></div><div class="line">  tonic::LogIfError(tonic::DartInvokeField(library_.value(), <span class="string">"_beginFrame"</span>,</div><div class="line">                                           &#123;</div><div class="line">                                               Dart_NewInteger(microseconds),</div><div class="line">                                           &#125;));</div><div class="line"></div><div class="line">  UIDartState::Current()-&gt;FlushMicrotasksNow();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>通过 Shell::OnAnimatorBeginFrame -&gt; Engine::BeginFrame -&gt; RuntimeController::BeginFrame -&gt; Window::BeginFrame 层层调用，通过 fii 回调 Dart Framework <code>window._beginFrame()</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// shell/common/shell.cc</span></div><div class="line"><span class="comment">// |Animator::Delegate|</span></div><div class="line"><span class="keyword">void</span> Shell::OnAnimatorBeginFrame(fml::TimePoint frame_target_time) &#123;</div><div class="line">  FML_DCHECK(is_setup_);</div><div class="line">  FML_DCHECK(task_runners_.GetUITaskRunner()-&gt;RunsTasksOnCurrentThread());</div><div class="line"></div><div class="line">  <span class="comment">// record the target time for use by rasterizer.</span></div><div class="line">  &#123;</div><div class="line">    <span class="built_in">std</span>::<span class="function">scoped_lock <span class="title">time_recorder_lock</span><span class="params">(time_recorder_mutex_)</span></span>;</div><div class="line">    <span class="comment">// 记录frame_target_time</span></div><div class="line">    latest_frame_target_time_.emplace(frame_target_time);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (engine_) &#123;</div><div class="line">    engine_-&gt;BeginFrame(frame_target_time);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// shell/common/engine.cc</span></div><div class="line"><span class="keyword">void</span> Engine::BeginFrame(fml::TimePoint frame_time) &#123;</div><div class="line">  TRACE_EVENT0(<span class="string">"flutter"</span>, <span class="string">"Engine::BeginFrame"</span>);</div><div class="line">  runtime_controller_-&gt;BeginFrame(frame_time);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// runtime/runtime_controller.cc</span></div><div class="line"><span class="keyword">bool</span> RuntimeController::BeginFrame(fml::TimePoint frame_time) &#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">auto</span>* window = GetWindowIfAvailable()) &#123;</div><div class="line">    window-&gt;BeginFrame(frame_time);</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// lib/ui/window/window.cc</span></div><div class="line"><span class="keyword">void</span> Window::DidCreateIsolate() &#123;</div><div class="line">  library_.Set(tonic::DartState::Current(),</div><div class="line">               Dart_LookupLibrary(tonic::ToDart(<span class="string">"dart:ui"</span>)));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> Window::BeginFrame(fml::TimePoint frameTime) &#123;</div><div class="line">  tonic::DartState::<span class="function">Scope <span class="title">scope</span><span class="params">(dart_state)</span></span>;</div><div class="line"></div><div class="line">  <span class="keyword">int64_t</span> microseconds = (frameTime - fml::TimePoint()).ToMicroseconds();</div><div class="line">	<span class="comment">// 通过 fii 回调 Dart Framework window._beginFrame()</span></div><div class="line">  tonic::LogIfError(tonic::DartInvokeField(library_.value(), <span class="string">"_beginFrame"</span>,</div><div class="line">                                           &#123;</div><div class="line">                                               Dart_NewInteger(microseconds),</div><div class="line">                                           &#125;));</div><div class="line">	<span class="comment">// 执行 microtasks</span></div><div class="line">  UIDartState::Current()-&gt;FlushMicrotasksNow();</div><div class="line">  <span class="comment">// 通过 ffi 回调 Dart Framework window._drawFrame()</span></div><div class="line">  tonic::LogIfError(tonic::DartInvokeField(library_.value(), <span class="string">"_drawFrame"</span>, &#123;&#125;));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过 Shell::OnAnimatorBeginFrame -&gt; Engine::BeginFrame -&gt; RuntimeController::BeginFrame -&gt; Window::BeginFrame 层层调用，通过 ffi 回调 Dart Framework 继续绘制流程。</p>
+<p>做三件事情：</p>
+<ul>
+<li>执行 Dart Framework <code>dart:ui</code> 包下的 <code>_beginFrame()</code></li>
+<li>执行 microtasks 任务</li>
+<li>执行 Dart Framework <code>dart:ui</code> 包下的  <code>_drawFrame()</code></li>
+</ul>
+<p>这个流程和文章开头提到的 <code>SchedulerBinding</code> 的状态机 <code>SchedulerPhase</code> 中声明的状态一一对应，接下来回调到 Dart Framework 后，由 <code>SchedulerBinding</code> 进行绘制调度。</p>
 <p>到这里，VSync 注册流程结束，接下来回到 Dart Framework 中继续进行。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://book.flutterchina.club/chapter14/flutter_app_startup.html" target="_blank" rel="external">14.4 Flutter运行机制-从启动到显示</a></p>
 <p>[Flutter渲染机制—UI线程](</p>
@@ -2349,107 +2499,6 @@
       <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
       <category term="热补丁" scheme="http://w4lle.com/tags/%E7%83%AD%E8%A1%A5%E4%B8%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AndroidStudio 常用快捷键</title>
-    <link href="http://w4lle.com/2016/12/14/AndroidStudio-shotcurts-md/"/>
-    <id>http://w4lle.com/2016/12/14/AndroidStudio-shotcurts-md/</id>
-    <published>2016-12-14T10:47:01.000Z</published>
-    <updated>2017-01-06T01:51:38.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><p>整理了下常用的快捷键<br>因为我用AndroidStudio的vim插件，所以在编辑这块没有整理太多。<br>需要的同学可以自己学些下。</p>
-<p>熟记这些快捷键 + vim = 基本不用鼠标 = 提升效率50%</p>
-<a id="more"></a>
-<h1 id="AS-常用快捷键"><a href="#AS-常用快捷键" class="headerlink" title="AS 常用快捷键"></a>AS 常用快捷键</h1><h2 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h2><ul>
-<li>cmd + o                  打开class文件</li>
-<li>cmd + shift + o          打开任意文件</li>
-<li>cmd + alt + o            打开变量所在文件</li>
-<li>shift + shift            打开任意位置文件</li>
-<li>cmd + e                  最近使用文件</li>
-<li>cmd + shift + e          最近修改文件</li>
-<li>cmd + u                  打开父类</li>
-</ul>
-<h2 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h2><ul>
-<li>cmd + number             打开工具面板</li>
-<li>shift + esc              关闭当前工具面板</li>
-<li>cmd + shift + F12        关闭所有面板</li>
-<li>esc                      焦点切换回编辑器</li>
-<li>F12                      重新打开上次所在工具面板</li>
-<li>alt + F12                打开terminal</li>
-<li>ctrl + tab               在最近打开tab间切换</li>
-<li>ctrl + h                 继承结构</li>
-<li>ctrl + alt + h           方法调用路径</li>
-</ul>
-<h3 id="导航（二）"><a href="#导航（二）" class="headerlink" title="导航（二）"></a>导航（二）</h3><ul>
-<li>cmd + shift + h          方法结构            </li>
-<li>alt + F1                 在Finder中打开</li>
-<li>cmd + []                 光标历史跳转</li>
-<li>cmd + ,                  打开设置</li>
-<li>cmd + down               打开项目设置</li>
-<li>cmd + l                  跳转到指定行</li>
-<li>F2                       跳转到下一个报错的位置</li>
-</ul>
-<h2 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h2><ul>
-<li>cmd + shift + enter      语句补全</li>
-<li>alt + enter              智能纠错</li>
-<li>tab/enter                代码补全</li>
-<li>!                        取反补全</li>
-<li>cmd + j                  模板方法</li>
-<li>.                        后缀补全</li>
-<li>cmd + p                  查看方法参数</li>
-<li>cmd + shift + up/down    上下移动代码</li>
-<li>cmd + /                  注释一行</li>
-<li>cmd + alt + /            注释多行</li>
-</ul>
-<h3 id="编辑（二）"><a href="#编辑（二）" class="headerlink" title="编辑（二）"></a>编辑（二）</h3><ul>
-<li>cmd + alt + t            Surround with</li>
-<li>shift + j                合并下一行代码为一行</li>
-<li>cmd + alt + l            格式化代码</li>
-<li>cmd + n                  生成代码</li>
-<li>ctrl + space             唤出自动补全</li>
-<li>cmd + F12                当前类内容结构</li>
-<li>hold alt                 块操作</li>
-<li>cmd + y                  方法预览</li>
-<li>ctrl + shift + q         上下文信息</li>
-</ul>
-<h2 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h2><ul>
-<li>ctrl + o                 重写方法</li>
-<li>ctrl + i                 实现方法</li>
-<li>cmd + alt + m            抽取方法</li>
-</ul>
-<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><ul>
-<li>shift + F10                 run</li>
-<li>cmd + F9                    make</li>
-</ul>
-<h2 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h2><ul>
-<li>F8                          下一步</li>
-<li>F7                          进入</li>
-</ul>
-<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><ul>
-<li>cmd + f                       </li>
-<li>cmd + shift + f               全局搜索</li>
-<li>cmd + alt + F7                预览方法调用</li>
-<li>alt + F7                      方法调用</li>
-</ul>
-<h2 id="万能键"><a href="#万能键" class="headerlink" title="万能键"></a>万能键</h2><ul>
-<li>cmd + shift + a </li>
-</ul>
-<p>ppt:</p>
-<p><a href="http://w4lle.github.io/sliders/androidstudio-shortcurts/index.html" target="_blank" rel="external">http://w4lle.github.io/sliders/androidstudio-shortcurts/index.html</a></p>
-<p>本文链接： <a href="http://w4lle.com/2016/12/14/AndroidStudio-shotcurts-md/">http://w4lle.com/2016/12/14/AndroidStudio-shotcurts-md/</a> </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;快捷键&quot;&gt;&lt;a href=&quot;#快捷键&quot; class=&quot;headerlink&quot; title=&quot;快捷键&quot;&gt;&lt;/a&gt;快捷键&lt;/h1&gt;&lt;p&gt;整理了下常用的快捷键&lt;br&gt;因为我用AndroidStudio的vim插件，所以在编辑这块没有整理太多。&lt;br&gt;需要的同学可以自己学些下。&lt;/p&gt;
-&lt;p&gt;熟记这些快捷键 + vim = 基本不用鼠标 = 提升效率50%&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://w4lle.com/tags/Android/"/>
     
   </entry>
   
