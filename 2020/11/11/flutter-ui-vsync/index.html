@@ -252,7 +252,7 @@
 
     
         <meta property="article:published_time" content="Wed Nov 11 2020 18:31:21 GMT+0800" />
-        <meta property="article:modified_time" content="Fri Nov 13 2020 20:47:00 GMT+0800" />
+        <meta property="article:modified_time" content="Tue Nov 17 2020 14:46:48 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
@@ -281,7 +281,7 @@
     "mainEntityOfPage": "http://w4lle.com/2020/11/11/flutter-ui-vsync/index.html",
     "headline": "Flutter UI 渲染浅析（二）VSync 注册",
     "datePublished": "Wed Nov 11 2020 18:31:21 GMT+0800",
-    "dateModified": "Fri Nov 13 2020 20:47:00 GMT+0800",
+    "dateModified": "Tue Nov 17 2020 14:46:48 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "w4lle",
@@ -511,6 +511,7 @@
 <li>GestureBinding，注册 <code>window.onPointerDataPacket</code> 回调，绑定Framework手势子系统，是Framework事件模型与底层事件的绑定入口</li>
 <li>SemanticsBinding，语义化层与Flutter engine的桥梁，主要是辅助功能的底层支持</li>
 </ul>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesinternals_bindings.png" alt=""></p>
 <p>重点关注 <code>SchedulerBinding</code>、<code>WidgetsBinding</code>、<code>RendererBinding</code> 及他们注册的回调方法。</p>
 <h2 id="2、scheduleFrame"><a href="#2、scheduleFrame" class="headerlink" title="2、scheduleFrame"></a>2、scheduleFrame</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/widgets/binding.dart</span></div><div class="line"><span class="keyword">void</span> runApp(Widget app) &#123;</div><div class="line">  WidgetsFlutterBinding.ensureInitialized()</div><div class="line">    ..scheduleAttachRootWidget(app)</div><div class="line">    ..scheduleWarmUpFrame();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在 <code>runApp()</code> 启动方法中</p>

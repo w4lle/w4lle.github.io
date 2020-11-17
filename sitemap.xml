@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://w4lle.com/2020/11/16/flutter-ui-build/</loc>
+    
+    <lastmod>2020-11-17T12:49:33.072Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://w4lle.com/2020/11/11/flutter-ui-vsync/</loc>
+    
+    <lastmod>2020-11-17T06:46:48.454Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://w4lle.com/2020/11/13/flutter-ui-animate/</loc>
     
-    <lastmod>2020-11-13T13:56:00.237Z</lastmod>
+    <lastmod>2020-11-16T06:48:15.232Z</lastmod>
     
   </url>
   
@@ -12,13 +26,6 @@
     <loc>http://w4lle.com/timeline/index.html</loc>
     
     <lastmod>2020-11-13T13:15:17.661Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://w4lle.com/2020/11/11/flutter-ui-vsync/</loc>
-    
-    <lastmod>2020-11-13T12:47:00.554Z</lastmod>
     
   </url>
   
@@ -317,14 +324,14 @@
   </url>
   
   <url>
-    <loc>http://w4lle.com/google242d671fbb406072.html</loc>
+    <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>
     
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>
+    <loc>http://w4lle.com/google242d671fbb406072.html</loc>
     
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     

@@ -50,7 +50,7 @@
     <meta name="author" content="w4lle">
     <!-- fix weibo pic -->
     <meta name="referrer" content="no-referrer" />
-    <meta name="description" itemprop="description" content="本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。
+    <meta name="description" itemprop="description" content="系列文章的第三篇，本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程及动画实现原理。
 基于 Android 平台，Flutter v1.20.4。">
     <meta name="keywords" content="Android,Flutter">
 
@@ -244,18 +244,18 @@
     <meta property="og:type" content="blog">
     <meta property="og:title" content="Flutter UI 渲染浅析（三）Animation 原理 | w4lle&#39;s Notes">
     <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
-    <meta property="og:description" content="本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。
+    <meta property="og:description" content="系列文章的第三篇，本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程及动画实现原理。
 基于 Android 平台，Flutter v1.20.4。">
     <meta property="og:article:tag" content="Flutter"> 
 
     
         <meta property="article:published_time" content="Fri Nov 13 2020 18:45:24 GMT+0800" />
-        <meta property="article:modified_time" content="Fri Nov 13 2020 21:56:00 GMT+0800" />
+        <meta property="article:modified_time" content="Mon Nov 16 2020 14:48:15 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
     <meta name="twitter:title" content="Flutter UI 渲染浅析（三）Animation 原理 | w4lle&#39;s Notes">
-    <meta name="twitter:description" content="本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。
+    <meta name="twitter:description" content="系列文章的第三篇，本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程及动画实现原理。
 基于 Android 平台，Flutter v1.20.4。">
     <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
     <meta name="twitter:card" content="summary_large_image" />
@@ -278,7 +278,7 @@
     "mainEntityOfPage": "http://w4lle.com/2020/11/13/flutter-ui-animate/index.html",
     "headline": "Flutter UI 渲染浅析（三）Animation 原理",
     "datePublished": "Fri Nov 13 2020 18:45:24 GMT+0800",
-    "dateModified": "Fri Nov 13 2020 21:56:00 GMT+0800",
+    "dateModified": "Mon Nov 16 2020 14:48:15 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "w4lle",
@@ -297,7 +297,7 @@
         }
     },
     "keywords": ",FlutterAndroid",
-    "description": "本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。
+    "description": "系列文章的第三篇，本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程及动画实现原理。
 基于 Android 平台，Flutter v1.20.4。",
 }
 </script>
@@ -485,7 +485,7 @@
             <p class="post-title">
                 Flutter UI 渲染浅析（三）Animation 原理
             </p>
-            <p>本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程。</p>
+            <p>系列文章的第三篇，本篇文章主要分析下收到 VSync 信号回调后 Dart Framework 触发动画的过程及动画实现原理。</p>
 <p>基于 Android 平台，Flutter v1.20.4。</p>
 <a id="more"></a>
 <p>在上一篇文章最后，我们提到做三件事情：</p>
@@ -495,7 +495,7 @@
 <li>执行 Dart Framework <code>dart:ui</code> 包下的  <code>_drawFrame()</code></li>
 </ul>
 <p><code>dart:ui</code> 包下的两个方法的实现在 hooks.dart</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/ui/hooks.dart</span></div><div class="line"><span class="comment">// 没有直接引用，标记防止被 tree shaking干掉</span></div><div class="line"><span class="meta">@pragma</span>(<span class="string">'vm:entry-point'</span>)</div><div class="line"><span class="keyword">void</span> _beginFrame(<span class="built_in">int</span> microseconds) &#123;</div><div class="line">  <span class="comment">// 执行 window.onBeginFrame</span></div><div class="line">  _invoke1&lt;<span class="built_in">Duration</span>&gt;(<span class="built_in">window</span>.onBeginFrame, <span class="built_in">window</span>._onBeginFrameZone, <span class="built_in">Duration</span>(microseconds: microseconds));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@pragma</span>(<span class="string">'vm:entry-point'</span>)</div><div class="line"><span class="keyword">void</span> _drawFrame() &#123;</div><div class="line">  <span class="comment">// 执行 window.onDrawFrame</span></div><div class="line">  _invoke(<span class="built_in">window</span>.onDrawFrame, <span class="built_in">window</span>._onDrawFrameZone);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> _invoke(<span class="keyword">void</span> callback()?, Zone zone) &#123;</div><div class="line">	...</div><div class="line">    <span class="comment">// 运行 zone 未变，直接调用方法</span></div><div class="line">  <span class="keyword">if</span> (identical(zone, Zone.current)) &#123;</div><div class="line">    callback();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    zone.runGuarded(callback);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/ui/hooks.dart</span></div><div class="line"><span class="comment">// 没有直接引用，注解标记防止被 tree shaking干掉</span></div><div class="line"><span class="meta">@pragma</span>(<span class="string">'vm:entry-point'</span>)</div><div class="line"><span class="keyword">void</span> _beginFrame(<span class="built_in">int</span> microseconds) &#123;</div><div class="line">  <span class="comment">// 执行 window.onBeginFrame</span></div><div class="line">  _invoke1&lt;<span class="built_in">Duration</span>&gt;(<span class="built_in">window</span>.onBeginFrame, <span class="built_in">window</span>._onBeginFrameZone, <span class="built_in">Duration</span>(microseconds: microseconds));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@pragma</span>(<span class="string">'vm:entry-point'</span>)</div><div class="line"><span class="keyword">void</span> _drawFrame() &#123;</div><div class="line">  <span class="comment">// 执行 window.onDrawFrame</span></div><div class="line">  _invoke(<span class="built_in">window</span>.onDrawFrame, <span class="built_in">window</span>._onDrawFrameZone);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> _invoke(<span class="keyword">void</span> callback()?, Zone zone) &#123;</div><div class="line">	...</div><div class="line">    <span class="comment">// 运行 zone 未变，直接调用方法</span></div><div class="line">  <span class="keyword">if</span> (identical(zone, Zone.current)) &#123;</div><div class="line">    callback();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    zone.runGuarded(callback);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>上篇文章中提到，<code>SchedulerBinding</code> 注册了 <code>window.onBeginFrame()</code> 和 <code>window.onDrawFrame()</code>。</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/scheduler/binding.dart</span></div><div class="line">  <span class="keyword">void</span> ensureFrameCallbacksRegistered() &#123;</div><div class="line">    <span class="comment">// 注册 onBeginFrame 、onDrawFrame 回调方法</span></div><div class="line">    <span class="built_in">window</span>.onBeginFrame ??= _handleBeginFrame;</div><div class="line">    <span class="built_in">window</span>.onDrawFrame ??= _handleDrawFrame;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
 <p>本篇文章先分析 <code>SchedulerBinding._handleBeginFrame()</code>。</p>
@@ -599,12 +599,15 @@
 <ul>
 <li>通过 <code>Animation</code> 的回调方法触发界面刷新</li>
 <li>Widget 通过 <code>Animation</code> 对象获取对应的值</li>
+<li><code>setState()</code> 标脏 element，下一次 VSync 信号到来触发 rebuild()</li>
 </ul>
 <p>调用过程：</p>
 <p><code>AnimationController.forward()</code> -&gt; <code>Ticker.start()</code> -&gt; <code>Ticker.scheduleTick()</code> -&gt; <code>Ticker._tick()</code> -&gt; <code>AnimationController._tick()</code> -&gt; <code>Widget.build()</code> -&gt; <code>Ticker.scheduleTick()</code> …</p>
-<h2 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h2><p>Dart Framework 触发 Engine 渲染管线开始绘制流程，回调给 Dart Framework，通过 SchedulerBinding 调度 UI 绘制。</p>
+<p>不断的触发刷新 -&gt; 更新动画值 -&gt; element.rebuild() -&gt; 触发刷新… 直到动画完成或停止。</p>
+<h2 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h2><p>Dart Framework 触发 Engine 渲染管线开始绘制流程，回调给 Dart Framework，通过 <code>SchedulerBinding</code> 调度 UI 绘制。</p>
 <p>其中的第一个操作是更新 <code>_transientCallbacks</code> 回调，该回调在动画过程中被使用。</p>
 <p><code>Animation</code> 动画在 <code>SchedulerBinding</code>  和 <code>Ticker</code> 的驱动下，循环往复的不停运转，直到动画完成或被调用停止。</p>
+<p>下一篇文章分析 element.rebuild() 的过程。</p>
 <p>本文链接： <a href="http://w4lle.com/2020/11/13/flutter-ui-animate/">http://w4lle.com/2020/11/13/flutter-ui-animate/</a> </p>
 
             
@@ -663,6 +666,14 @@
             <!-- Post Prev & Next Nav -->
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
+    
+        <a href="/2020/11/16/flutter-ui-build/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
     
 
     <!-- Section Spacer -->
