@@ -250,7 +250,7 @@
 
     
         <meta property="article:published_time" content="Mon Nov 16 2020 14:30:12 GMT+0800" />
-        <meta property="article:modified_time" content="Tue Nov 17 2020 20:49:33 GMT+0800" />
+        <meta property="article:modified_time" content="Fri Dec 11 2020 18:26:04 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
@@ -278,7 +278,7 @@
     "mainEntityOfPage": "http://w4lle.com/2020/11/16/flutter-ui-build/index.html",
     "headline": "Flutter UI 渲染浅析（四）Build",
     "datePublished": "Mon Nov 16 2020 14:30:12 GMT+0800",
-    "dateModified": "Tue Nov 17 2020 20:49:33 GMT+0800",
+    "dateModified": "Fri Dec 11 2020 18:26:04 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "w4lle",
@@ -662,8 +662,8 @@
 <h2 id="3-6、RenderObjectElement-attachRenderObject"><a href="#3-6、RenderObjectElement-attachRenderObject" class="headerlink" title="3.6、RenderObjectElement.attachRenderObject()"></a>3.6、RenderObjectElement.attachRenderObject()</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RenderObjectElement</span> <span class="keyword">extends</span> <span class="title">Element</span> </span>&#123;  </div><div class="line">	<span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> attachRenderObject(<span class="keyword">dynamic</span> newSlot) &#123;</div><div class="line">    _slot = newSlot;</div><div class="line">    <span class="comment">// Element Tree 向上遍历祖先节点，找到第一个 RenderObject 节点</span></div><div class="line">    _ancestorRenderObjectElement = _findAncestorRenderObjectElement();</div><div class="line">    <span class="comment">// 根据规则插入到 Render Tree 中，需要子类实现</span></div><div class="line">    _ancestorRenderObjectElement?.insertChildRenderObject(renderObject, newSlot);</div><div class="line">    <span class="comment">// Element Tree 向上遍历祖先节点，找到第一个 ParentDataElement 节点</span></div><div class="line">    <span class="keyword">final</span> ParentDataElement&lt;ParentData&gt; parentDataElement = _findAncestorParentDataElement();</div><div class="line">    <span class="keyword">if</span> (parentDataElement != <span class="keyword">null</span>)</div><div class="line">      _updateParentData(parentDataElement.widget);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="keyword">void</span> _updateParentData(ParentDataWidget&lt;ParentData&gt; parentDataWidget) &#123;</div><div class="line">    ...</div><div class="line">    parentDataWidget.applyParentData(renderObject);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
 <li>Element Tree 向上遍历祖先节点，找到第一个 RenderObject 节点</li>
-<li>根据规则插入到 Render Tree 中，需要子类实现</li>
-<li>Element Tree 向上遍历祖先节点，找到第一个 ParentDataElement 节点，ParentDataElement 节点中记录着布局位置信息，如果没有找到返回空</li>
+<li>根据规则插入到 Render Tree 中，需要子类实现，这里就<strong>构建出了 Render Tree</strong>，为下面 Layout、Paint 等过程做准备，下篇文章会详细分析</li>
+<li>Element Tree 向上遍历祖先节点，找到第一个 ParentDataElement 节点，ParentDataElement 节点中记录着布局位置等信息，如果没有找到返回空</li>
 <li>根据 ParentDataElement 找到对应的 ParentDataWidget，调用 <code>applyParentData()</code></li>
 </ul>
 <p>其中，<code>ParentDataElement</code> 根据参数绑定了 <code>ParentDataWidget</code> 类型，并通过泛型绑定了 ParentData 类型。</p>
@@ -675,8 +675,8 @@
 <li>更新布局属性信息</li>
 <li>RenderObject 节点 Layout 标脏，记录在 <code>BuildOwner._nodesNeedingLayout</code> 列表中，等待下一步 Layout 处理</li>
 </ul>
-<h1 id="4、总结"><a href="#4、总结" class="headerlink" title="4、总结"></a>4、总结</h1><p>本篇文章介绍了 <code>WidgetsBinding.drawFrame()</code> 的过程，以及 Widget、Element、RenderObject 及三棵树的关系，梳理了<code>build()</code> 过程在三棵树之间的流转关系，通过 Element Tree 和 Widget Tree 构建了 Render Tree，最终触发 RenderObject.markNeedsLayout()  Layout 标脏操作，记录在 <code>BuildOwner._nodesNeedingLayout</code> 列表中，等待下一步 Layout 处理。</p>
-<p>下一篇文章将继续分析 <code>RendererBinding.drawFrame()</code> 中 Layout 过程。</p>
+<h1 id="4、总结"><a href="#4、总结" class="headerlink" title="4、总结"></a>4、总结</h1><p>本篇文章介绍了 <code>WidgetsBinding.drawFrame()</code> 的过程，以及 Widget、Element、RenderObject 及三棵树的关系，梳理了<code>build()</code> 过程在三棵树之间的流转关系，通过 Element Tree 和 Widget Tree 构建 Render Tree，最终触发 RenderObject.markNeedsLayout()  Layout 标脏操作，记录在 <code>BuildOwner._nodesNeedingLayout</code> 列表中，等待下一步 Layout 处理。</p>
+<p>下一篇文章将继续分析 Render Tree 的构建过程及 <code>RendererBinding.drawFrame()</code> 中 Layout 过程。</p>
 <p>参考 </p>
 <ul>
 <li><p><a href="https://www.didierboelens.com/2019/09/flutter-internals/" target="_blank" rel="external">Flutter Internals</a></p>
@@ -744,6 +744,14 @@
             <!-- Post Prev & Next Nav -->
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
+    
+        <a href="/2021/01/15/flutter-ui-layout/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
     
 
     <!-- Section Spacer -->

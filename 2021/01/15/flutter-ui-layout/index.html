@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            Flutter UI 渲染浅析（五）Layout | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="系列文章的第五篇，本篇文章主要分析下 Render Tree 的构建及 Layout 过程。">
+    <meta name="keywords" content="Android,Flutter">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?tcz64tzAgXHydzHShhly3g==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Flutter UI 渲染浅析（五）Layout | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="系列文章的第五篇，本篇文章主要分析下 Render Tree 的构建及 Layout 过程。">
+    <meta property="og:article:tag" content="Flutter"> 
+
+    
+        <meta property="article:published_time" content="Fri Jan 15 2021 09:59:52 GMT+0800" />
+        <meta property="article:modified_time" content="Fri Jan 15 2021 18:47:05 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="Flutter UI 渲染浅析（五）Layout | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="系列文章的第五篇，本篇文章主要分析下 Render Tree 的构建及 Layout 过程。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2021/01/15/flutter-ui-layout/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2021/01/15/flutter-ui-layout/index.html",
+    "headline": "Flutter UI 渲染浅析（五）Layout",
+    "datePublished": "Fri Jan 15 2021 09:59:52 GMT+0800",
+    "dateModified": "Fri Jan 15 2021 18:47:05 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",FlutterAndroid",
+    "description": "系列文章的第五篇，本篇文章主要分析下 Render Tree 的构建及 Layout 过程。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+                <span class="header-nav-item">
+                    <a href="/timeline" title="时间轴">
+                        <span>时间轴</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                Flutter UI 渲染浅析（五）Layout
+            </p>
+            <p>系列文章的第五篇，本篇文章主要分析下 Render Tree 的构建及 Layout 过程。</p>
+<a id="more"></a>
+<p>在上篇文章结尾，提到 <code>RenderObjectElement.attachRenderObject()</code> 方法中调用 <code>RenderObjectElement.insertChildRenderObject(renderObject, newSlot)</code> 将 RenderObject 插入 Render Tree中，继续分析下 Render Tree 的构建过程及 <code>RendererBinding.drawFrame()</code> 过程。</p>
+<p>在开始之前，先看下 RenderObject 和 RenderTree。</p>
+<h1 id="1、RenderObject"><a href="#1、RenderObject" class="headerlink" title="1、RenderObject"></a>1、RenderObject</h1><p>RenderObject 是 Render Tree 的构成节点，主要负责布局和绘制。</p>
+<p>前面提到过，并不是所有的 Element 都会持有 RenderObject 的引用，只有 RenderObjectWidget 及其对应 RenderObjectElement 才会创建 RenderObject。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20210115184016.png" alt=""></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RenderObject</span> <span class="keyword">extends</span> <span class="title">AbstractNode</span> <span class="title">with</span> <span class="title">DiagnosticableTreeMixin</span> <span class="keyword">implements</span> <span class="title">HitTestTarget</span> </span>&#123;</div></pre></td></tr></table></figure>
+<p>RenderObject 继承自 <code>AbstractNode</code> ，<code>AbstractNode</code> 是树形节点定义，持有 <code>parent</code> 引用，提供了挂载 <code>adoptChild()</code>、卸载 <code>dropChild()</code>、计算深度 <code>redepthChildren()</code> 等方法。</p>
+<p>同时持有 <code>ParentData</code> 对象，可以存放子节点的一些特定信息，比如布局信息等。</p>
+<p>下篇文章要分析的 <code>Layer</code> 也是 <code>AbstractNode</code> 的子类。</p>
+<p>RenderObject 混入了 <code>HitTestTarget</code>，<code>HitTestTarget</code> 提供了处理事件的能力。</p>
+<p>RenderObject 定义了通用的布局和绘制协议。</p>
+<p>但是没有定义坐标系统，例如子节点是布局在笛卡尔坐标系，还是极坐标系。</p>
+<p>也没有指定具体的布局协议，例如是通过宽高，还是通过约束和大小，或者父节点在子节点的布局前后设置位置和大小。</p>
+<p>或者子节点是否允许方法其自身的 <code>ParentDara</code> 对象信息。</p>
+<p>也没有定义子树模型，比如其是否支持挂载子节点，允许挂载几个子节点等，这些能力由RenderObject 子类 mixin 提供。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20201119112445.png" alt=""></p>
+<p>RenderObject 的子类中</p>
+<ul>
+<li><code>mixin RenderObjectWithChildMixin&lt;ChildType extends RenderObject&gt;</code> 定义了允许挂载<strong>一个子节点</strong>的实现</li>
+<li><code>mixin ContainerRenderObjectMixin&lt;ChildType extends RenderObject, ParentDataType extends ContainerParentDataMixin&lt;ChildType&gt;&gt;</code> 定义了允许挂载<strong>多个子节点</strong>的实现</li>
+<li>RenderView 是根节点，用于App启动初始化Widget、Element、RenderObject、Layer，绘制完成后将Layer Tree 提交给 Engine</li>
+<li>RenderBox 是最重要的一个子类，其实现了基于 2D 笛卡尔坐标系的布局方式，其中的 Offset 定义距父布局的偏移量 x、y，Size 定义了该控件的大小。这种布局方式是和 Android、iOS 原生布局一致的。约束模型对应 BoxConstraints 盒约束</li>
+<li>RenderSlive 实现了支持滑动效果的布局方式，可以通过 ViewViewPort 内嵌到 RenderBox 中，约束模型对应于 SliverConstraints 分片约束</li>
+</ul>
+<p>RenderObject类型、Constraints类型和ParentData类型对应关系如下：</p>
+<table>
+<thead>
+<tr>
+<th>RenderObject  类型</th>
+<th>Constraints类型</th>
+<th>ParentData类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RenderBox</td>
+<td>BoxConstraints</td>
+<td>BoxParentData</td>
+</tr>
+<tr>
+<td>RenderSlive</td>
+<td>SliverConstraints</td>
+<td>SliverLogicalParentData</td>
+</tr>
+</tbody>
+</table>
+<h1 id="2、RenderTree-构建"><a href="#2、RenderTree-构建" class="headerlink" title="2、RenderTree 构建"></a>2、RenderTree 构建</h1><p>继续分析上篇文章的结尾部分 <code>RenderObjectElement.insertChildRenderObject()</code> 。</p>
+<p>在Flutter v1.21 及以上版本上，该方法被废弃，使用 <code>RenderObjectElement.insertRenderObjectChild(renderObject, newSlot);</code> 代替。</p>
+<p>该方法是个空方法，需要子类实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RenderObjectElement</span> <span class="keyword">extends</span> <span class="title">Element</span> </span>&#123;  </div><div class="line">  <span class="meta">@protected</span></div><div class="line">  <span class="keyword">void</span> insertRenderObjectChild(covariant RenderObject child, covariant <span class="keyword">dynamic</span> slot) &#123;</div><div class="line">    insertChildRenderObject(child, slot);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以单子节点和多子节点Element为例，看下构建流程。</p>
+<h2 id="2-1、单子节点"><a href="#2-1、单子节点" class="headerlink" title="2.1、单子节点"></a>2.1、单子节点</h2><p>单子节点实现：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SingleChildRenderObjectElement</span> <span class="keyword">extends</span> <span class="title">RenderObjectElement</span> </span>&#123;</div><div class="line">  <span class="meta">@override</span></div><div class="line">  SingleChildRenderObjectWidget <span class="keyword">get</span> widget =&gt; <span class="keyword">super</span>.widget <span class="keyword">as</span> SingleChildRenderObjectWidget;</div><div class="line">  </div><div class="line">  ...</div><div class="line">    </div><div class="line">	<span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> insertRenderObjectChild(RenderObject child, <span class="keyword">dynamic</span> slot) &#123;</div><div class="line">    <span class="keyword">final</span> RenderObjectWithChildMixin&lt;RenderObject&gt; renderObject = <span class="keyword">this</span>.renderObject <span class="keyword">as</span> RenderObjectWithChildMixin&lt;RenderObject&gt;;</div><div class="line">    renderObject.child = child;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>获取 Element.mount() 过程中通过 <code>Widget.createRenderObject()</code> 已经构建好的 RenderObject</li>
+<li>将 RenderObject 挂载到 Render Tree</li>
+</ul>
+<p>SingleChildRenderObjectElement 通过 <code>SingleChildRenderObjectWidget.createElement()</code>创建。</p>
+<p>SingleChildRenderObjectWidget 的子类包括：</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20201218175314.png" alt=""></p>
+<p>对应的RenderObject 通过 <code>SingleChildRenderObjectWidget.createRenderObject()</code> 创建，创建出的 RenderObject 混入了 RenderObjectWithChildMixin。</p>
+<p>上面提到 RenderObjectWithChildMixin 定义了允许挂载<strong>一个子节点</strong>的实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">mixin RenderObjectWithChildMixin&lt;ChildType <span class="keyword">extends</span> RenderObject&gt; on RenderObject &#123;</div><div class="line">	<span class="keyword">set</span> child(ChildType? value) &#123;</div><div class="line">    <span class="keyword">if</span> (_child != <span class="keyword">null</span>)</div><div class="line">      <span class="comment">// 卸载老节点</span></div><div class="line">      dropChild(_child!);</div><div class="line">    <span class="comment">// 更新子节点引用</span></div><div class="line">    _child = value;</div><div class="line">    <span class="keyword">if</span> (_child != <span class="keyword">null</span>)</div><div class="line">      <span class="comment">// 挂载新节点</span></div><div class="line">      adoptChild(_child!);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RenderObject</span> <span class="keyword">extends</span> <span class="title">AbstractNode</span> <span class="title">with</span> <span class="title">DiagnosticableTreeMixin</span> <span class="keyword">implements</span> <span class="title">HitTestTarget</span> </span>&#123;</div><div class="line">  <span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> adoptChild(RenderObject child) &#123;</div><div class="line">    <span class="comment">// 初始化 ParentData</span></div><div class="line">    setupParentData(child);</div><div class="line">    <span class="comment">// Layout标脏</span></div><div class="line">    markNeedsLayout();</div><div class="line">    <span class="comment">// 合成位标脏</span></div><div class="line">    markNeedsCompositingBitsUpdate();</div><div class="line">    <span class="comment">// 辅助信息Semantic标脏</span></div><div class="line">    markNeedsSemanticsUpdate();</div><div class="line">    <span class="comment">// 调用AbstractNode.adoptChild()，挂载到 Render Tree，将child.parent指向自己，更新树的深度</span></div><div class="line">    <span class="keyword">super</span>.adoptChild(child);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>卸载老节点</li>
+<li>更新子节点引用</li>
+<li>调用 <code>RenderObject.adoptChild()</code> 挂载新节点<ul>
+<li>初始化 ParentData</li>
+<li>markNeedsLayout Layout标脏</li>
+<li>markNeedsCompositingBitsUpdate 合成位标脏</li>
+<li>markNeedsSemanticsUpdate 辅助信息Semantic标脏</li>
+<li>调用AbstractNode.adoptChild()，挂载到 Render Tree，将child.parent指向自己，更新树的深度</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-2、多子节点实现"><a href="#2-2、多子节点实现" class="headerlink" title="2.2、多子节点实现"></a>2.2、多子节点实现</h2><p>以 MultiChildRenderObject 为例，看下多子节点实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MultiChildRenderObjectElement</span> <span class="keyword">extends</span> <span class="title">RenderObjectElement</span> </span>&#123;</div><div class="line">	<span class="meta">@override</span></div><div class="line">  MultiChildRenderObjectWidget <span class="keyword">get</span> widget =&gt; <span class="keyword">super</span>.widget <span class="keyword">as</span> MultiChildRenderObjectWidget;</div><div class="line"></div><div class="line">  <span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> insertRenderObjectChild(RenderObject child, IndexedSlot&lt;<span class="built_in">Element</span>&gt; slot) &#123;</div><div class="line">    <span class="keyword">final</span> ContainerRenderObjectMixin&lt;RenderObject, ContainerParentDataMixin&lt;RenderObject&gt;&gt; renderObject =</div><div class="line">      <span class="keyword">this</span>.renderObject <span class="keyword">as</span> ContainerRenderObjectMixin&lt;RenderObject, ContainerParentDataMixin&lt;RenderObject&gt;&gt;;</div><div class="line">    renderObject.insert(child, after: slot?.value?.renderObject);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>获取 Element.mount() 过程中通过 <code>Widget.createRenderObject()</code> 已经构建好的 RenderObject</li>
+<li>将 RenderObject 挂载到 Render Tree</li>
+</ul>
+<p>MultiChildRenderObjectElement 通过 <code>MultiChildRenderObjectWidget.createElement()</code>创建。MultiChildRenderObjectWidget 的子类包含：</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20201218174819.png" alt=""></p>
+<p>定义了多子节点实现，最终调用 ContainerParentDataMixin 将 RenderObject 挂载到 Render Tree 上。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">mixin ContainerRenderObjectMixin&lt;ChildType <span class="keyword">extends</span> RenderObject, ParentDataType <span class="keyword">extends</span> ContainerParentDataMixin&lt;ChildType&gt;&gt; on RenderObject &#123;</div><div class="line"></div><div class="line">	<span class="keyword">void</span> insert(ChildType child, &#123; ChildType? after &#125;) &#123;</div><div class="line">    adoptChild(child);</div><div class="line">    _insertIntoChildList(child, after: after);</div><div class="line">  &#125;</div><div class="line">  ...</div><div class="line">  <span class="keyword">void</span> _insertIntoChildList(ChildType child, &#123; ChildType? after &#125;) &#123;</div><div class="line">    <span class="keyword">final</span> ParentDataType childParentData = child.parentData <span class="keyword">as</span> ParentDataType;</div><div class="line">    _childCount += <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span> (after == <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="comment">// 依附的兄弟节点为空，插入在第一个子节点</span></div><div class="line">      childParentData.nextSibling = _firstChild;</div><div class="line">      <span class="keyword">if</span> (_firstChild != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">final</span> ParentDataType _firstChildParentData = _firstChild!.parentData <span class="keyword">as</span> ParentDataType;</div><div class="line">        _firstChildParentData.previousSibling = child;</div><div class="line">      &#125;</div><div class="line">      _firstChild = child;</div><div class="line">      _lastChild ??= child;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">final</span> ParentDataType afterParentData = after.parentData <span class="keyword">as</span> ParentDataType;</div><div class="line">      <span class="keyword">if</span> (afterParentData.nextSibling == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// 依附的兄弟节点没有相关联的下一个兄弟节点，插入在兄弟节点队尾</span></div><div class="line">        childParentData.previousSibling = after;</div><div class="line">        afterParentData.nextSibling = child;</div><div class="line">        _lastChild = child;</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// 依附的兄弟节点有相关联的下一个兄弟节点，插入在兄弟节点中间</span></div><div class="line">        childParentData.nextSibling = afterParentData.nextSibling;</div><div class="line">        childParentData.previousSibling = after;</div><div class="line">        <span class="comment">// set up links from siblings to child</span></div><div class="line">        <span class="keyword">final</span> ParentDataType childPreviousSiblingParentData = childParentData.previousSibling!.parentData <span class="keyword">as</span> ParentDataType;</div><div class="line">        <span class="keyword">final</span> ParentDataType childNextSiblingParentData = childParentData.nextSibling!.parentData <span class="keyword">as</span> ParentDataType;</div><div class="line">        childPreviousSiblingParentData.nextSibling = child;</div><div class="line">        childNextSiblingParentData.previousSibling = child;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>调用 <code>RenderObject.adoptChild()</code> 挂载新节点<ul>
+<li>初始化 ParentData</li>
+<li>markNeedsLayout Layout标脏</li>
+<li>markNeedsCompositingBitsUpdate 合成位标脏</li>
+<li>markNeedsSemanticsUpdate 辅助信息Semantic标脏</li>
+<li>调用AbstractNode.adoptChild()，挂载到 Render Tree，将child.parent指向自己，更新树的深度</li>
+</ul>
+</li>
+<li>提供一个兄弟节点，将其关联到兄弟链上，用于后续流程兄弟节点之间遍历，分几种情况<ul>
+<li>依附的兄弟节点为空，插入在第一个子节点</li>
+<li>依附的兄弟节点没有相关联的下一个兄弟节点，插入在兄弟节点队尾</li>
+<li>依附的兄弟节点有相关联的下一个兄弟节点，插入在兄弟节点中间</li>
+</ul>
+</li>
+</ul>
+<p>至此，Render Tree 构建完毕，基于 Render Tree 接下来分析下 Layout 的过程。</p>
+<h1 id="3、markNeedsLayout-标脏"><a href="#3、markNeedsLayout-标脏" class="headerlink" title="3、markNeedsLayout 标脏"></a>3、markNeedsLayout 标脏</h1><p>上面提到，在 RenderObject 节点挂载到 Render Tree 过程中，会触发 <code>markNeedsLayout</code> Layout 标脏操作。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RenderObject</span> <span class="keyword">extends</span> <span class="title">AbstractNode</span> <span class="title">with</span> <span class="title">DiagnosticableTreeMixin</span> <span class="keyword">implements</span> <span class="title">HitTestTarget</span> </span>&#123;  </div><div class="line">	<span class="keyword">void</span> markNeedsLayout() &#123;</div><div class="line">    <span class="comment">// 如果已经标脏，避免重复标脏</span></div><div class="line">    <span class="keyword">if</span> (_needsLayout) &#123;</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (_relayoutBoundary != <span class="keyword">this</span>) &#123;</div><div class="line">      <span class="comment">// 如果 _relayoutBoundary 布局边界不是本节点，那么向上遍历</span></div><div class="line">      markParentNeedsLayout();</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">// 如果 _relayoutBoundary 布局边界是自本节点，将本节点加入 owner._nodesNeedingLayout 列表，等待 layout 流程处理</span></div><div class="line">      _needsLayout = <span class="keyword">true</span>;</div><div class="line">      <span class="keyword">if</span> (owner != <span class="keyword">null</span>) &#123;</div><div class="line">        owner!._nodesNeedingLayout.add(<span class="keyword">this</span>);</div><div class="line">        owner!.requestVisualUpdate();</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="meta">@protected</span></div><div class="line">  <span class="keyword">void</span> markParentNeedsLayout() &#123;</div><div class="line">    ...</div><div class="line">    _needsLayout = <span class="keyword">true</span>;</div><div class="line">    <span class="keyword">final</span> RenderObject parent = <span class="keyword">this</span>.parent! <span class="keyword">as</span> RenderObject;</div><div class="line">    parent.markNeedsLayout();</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>如果已经标脏，避免重复标脏</li>
+<li>如果 <code>_relayoutBoundary</code> 布局边界是自本节点，将本节点加入 <code>PipelineOwner</code>渲染管线中的<code>_nodesNeedingLayout</code> 脏列表，触发 <code>scheduleFrame()</code> 流程，等待 layout 流程处理</li>
+<li>如果 <code>_relayoutBoundary</code> 布局边界不是本节点，那么向上遍历，直到找到布局边界，将布局边界节点加入 <code>PipelineOwner</code>渲染管线中的<code>_nodesNeedingLayout</code> 脏列表，触发 <code>scheduleFrame()</code> 流程，等待 layout 流程处理</li>
+</ul>
+<p><code>_relayoutBoundary</code> 布局边界用于优化测量和布局效率，缩小计算范围，通过和 <code>PipelineOwner</code>渲染管线中的<code>_nodesNeedingLayout</code> 脏列表配合，仅对标脏节点和布局边界子树进行测量和布局，达到布局<strong>次线性</strong>复杂度。</p>
+<p><code>_relayoutBoundary</code> 有两个地方赋值：</p>
+<ol>
+<li>RenderView 根节点，在 App 启动过程中调用 RenderObject.scheduleInitialLayout() 方法，<code>_relayoutBoundary = this;</code> 赋值</li>
+<li>RenderObject Layout 阶段，在特定条件下，一些节点会被标记为_relayoutBoundary，这个我们后面详细分析</li>
+</ol>
+<p>所以，在App启动后第一次布局绘制时，只有根节点 RenderView 是_relayoutBoundary，其余符合条件的节点，只有在首次布局测量时，在Layout阶段触发 layout() 方法进行标注，在下一次布局阶段生效。</p>
+<h1 id="4、RendererBinding-drawFrame"><a href="#4、RendererBinding-drawFrame" class="headerlink" title="4、RendererBinding.drawFrame()"></a>4、RendererBinding.drawFrame()</h1><p>上一篇文章结尾，我们提到 <code>WidgetsBinding.drawFrame()</code> 流程触发 rebuild()，接着触发 <code>RendererBinding.drawFrame()</code> 流程，看下方法实现。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/binding.dart</span></div><div class="line">	<span class="meta">@protected</span></div><div class="line">  <span class="keyword">void</span> drawFrame() &#123;</div><div class="line">    <span class="keyword">assert</span>(renderView != <span class="keyword">null</span>);</div><div class="line">    pipelineOwner.flushLayout();</div><div class="line">    pipelineOwner.flushCompositingBits();</div><div class="line">    pipelineOwner.flushPaint();</div><div class="line">    <span class="keyword">if</span> (sendFramesToEngine) &#123;</div><div class="line">      renderView.compositeFrame(); <span class="comment">// this sends the bits to the GPU</span></div><div class="line">      pipelineOwner.flushSemantics(); <span class="comment">// this also sends the semantics to the OS.</span></div><div class="line">      _firstFrameSent = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>通过<code>PipelineOwner</code>渲染管线和Flutter Engine进行交互，执行以下过程：</p>
+<ul>
+<li>pipelineOwner.flushLayout() 布局阶段，遍历Layout被标脏的 RenderObject，调用 performLayout() 完成测量和布局工作</li>
+<li>pipelineOwner.flushCompositingBits() 标记合成阶段，遍历合成位标脏被标脏的RenderObject，标记那些repaintBoundary==true 的节点及其子节点为需要合成(Compisiting)，为下一步合成layer做准备</li>
+<li>pipelineOwner.flushPaint() 绘制阶段，遍历绘制被标脏的RenderObject，执行绘制操作，并通过PaintingContext记录到PictureLayer，最终生成一颗LayerTree</li>
+<li>renderView.compositeFrame()合成阶段，遍历Dart Framework LayerTree，构建Engine LayerTree &amp; Scene，将绘制数据通过Flutter Engine发送给GPU</li>
+<li>pipelineOwner.flushSemantics() 语义阶段，遍历辅助信息被标脏的RenderObject，执行_updateSemantics()更新语义</li>
+</ul>
+<p>在Element.rebuild、布局、绘制、合成、语义这几个阶段，有很通用的处理流程</p>
+<ol>
+<li>RenderObject 节点先被标脏，记录在脏列表中</li>
+<li>接着脏列表中的节点，在 RendererBinding.drawFrame() 中被分别处理</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20210115183142.png" alt=""></p>
+<p>通过遍历脏列表，再加上中布局节点和绘制阶段，分别通过 <code>_relayoutBoundary</code> 和 <code>_repaintBoundary</code>进行优化，最终达到整个整个流程都是次线性的，这也就是为什么说 Flutter 绘制高效的根本原因。</p>
+<p>#5、flushLayout() </p>
+<p>看下方法实现</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/binding.dart</span></div><div class="line">  <span class="keyword">void</span> flushLayout() &#123;</div><div class="line">    <span class="keyword">if</span> (!kReleaseMode) &#123;</div><div class="line">      <span class="comment">//记录Layout过程</span></div><div class="line">      Timeline.startSync(<span class="string">'Layout'</span>, arguments: timelineArgumentsIndicatingLandmarkEvent);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      <span class="keyword">while</span> (_nodesNeedingLayout.isNotEmpty) &#123;</div><div class="line">        <span class="keyword">final</span> <span class="built_in">List</span>&lt;RenderObject&gt; dirtyNodes = _nodesNeedingLayout;</div><div class="line">        _nodesNeedingLayout = &lt;RenderObject&gt;[];</div><div class="line">        <span class="comment">//广度优先</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">final</span> RenderObject node <span class="keyword">in</span> dirtyNodes..sort((RenderObject a, RenderObject b) =&gt; a.depth - b.depth)) &#123;</div><div class="line">          <span class="keyword">if</span> (node._needsLayout &amp;&amp; node.owner == <span class="keyword">this</span>)</div><div class="line">            node._layoutWithoutResize();</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">      ...</div><div class="line">      <span class="keyword">if</span> (!kReleaseMode) &#123;</div><div class="line">        <span class="comment">//结束 Layout 过程记录</span></div><div class="line">        Timeline.finishSync();</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>遍历<code>PipelineOwner</code>渲染管线中的<code>_nodesNeedingLayout</code> 脏列表中的 ，广度优先原则调用<code>_layoutWithoutResize()</code>方法。</p>
+<p>该阶段被记录在Timeline的Layout过程，在UI线程执行。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart</span></div><div class="line">  <span class="keyword">void</span> _layoutWithoutResize() &#123;</div><div class="line">    <span class="comment">// 只有 _relayoutBoundary 节点才会被加入脏列表</span></div><div class="line">    <span class="keyword">assert</span>(_relayoutBoundary == <span class="keyword">this</span>);</div><div class="line">		...</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      <span class="comment">//具体的布局操作</span></div><div class="line">      performLayout();</div><div class="line">      <span class="comment">// 辅助信息标脏</span></div><div class="line">      markNeedsSemanticsUpdate();</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">    _needsLayout = <span class="keyword">false</span>;</div><div class="line">    <span class="comment">//_needsPaint标脏，并记录在_nodesNeedingPaint列表中</span></div><div class="line">    markNeedsPaint();</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>只有 _relayoutBoundary 节点才会被加入脏列表</li>
+<li>测量和布局，performLayout() 是空方法，需要子类实现</li>
+<li>辅助信息标脏</li>
+<li>needsPaint标脏，并记录在_nodesNeedingPaint列表中</li>
+</ul>
+<p>由于是广度优先遍历，并且根节点是RenderView，先看下RenderView.performLayout()的实现</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/view.dart</span></div><div class="line">	<span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> performLayout() &#123;</div><div class="line">    _size = configuration.size;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (child != <span class="keyword">null</span>)</div><div class="line">      child.layout(BoxConstraints.tight(_size));</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>根据屏幕最大宽高，生成一个BoxConstraints盒约束，传递给子节点，子节点layout() 用于测量和布局。</p>
+<p>看下 RenderObject 的 layout 方法实现：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> layout(Constraints constraints, &#123; <span class="built_in">bool</span> parentUsesSize = <span class="keyword">false</span> &#125;) &#123;</div><div class="line">  RenderObject? relayoutBoundary;</div><div class="line">  <span class="keyword">if</span> (!parentUsesSize || sizedByParent || constraints.isTight || parent <span class="keyword">is</span>! RenderObject) &#123;</div><div class="line">    relayoutBoundary = <span class="keyword">this</span>;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    relayoutBoundary = (parent <span class="keyword">as</span> RenderObject)._relayoutBoundary;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!_needsLayout &amp;&amp; constraints == _constraints &amp;&amp; relayoutBoundary == _relayoutBoundary) &#123;</div><div class="line">    <span class="comment">// 不需要重新布局，直接返回</span></div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line">  _constraints = constraints;</div><div class="line">  <span class="keyword">if</span> (_relayoutBoundary != <span class="keyword">null</span> &amp;&amp; relayoutBoundary != _relayoutBoundary) &#123;</div><div class="line">    <span class="comment">// _relayoutBoundary 边界改变，清理所有子节点的边界信息</span></div><div class="line">    visitChildren(_cleanChildRelayoutBoundary);</div><div class="line">  &#125;</div><div class="line">  _relayoutBoundary = relayoutBoundary;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (sizedByParent) &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// 依赖父节点传递的约束信息，测量布局大小Size，sizedByParent为true的子节点，需要重写	performResize()</span></div><div class="line">    performResize();</div><div class="line">  &#125;</div><div class="line">  RenderObject? debugPreviousActiveLayout;</div><div class="line"></div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    <span class="comment">// 触发布局</span></div><div class="line">    performLayout();</div><div class="line">    markNeedsSemanticsUpdate();</div><div class="line">  &#125; <span class="keyword">catch</span> (e, stack) &#123;</div><div class="line">    _debugReportException(<span class="string">'performLayout'</span>, e, stack);</div><div class="line">  &#125;</div><div class="line"><span class="comment">// 清楚标记</span></div><div class="line">  _needsLayout = <span class="keyword">false</span>;</div><div class="line">  <span class="comment">// 绘制标脏</span></div><div class="line">  markNeedsPaint();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="5-1、RelayoutBoundary-布局边界"><a href="#5-1、RelayoutBoundary-布局边界" class="headerlink" title="5.1、RelayoutBoundary 布局边界"></a>5.1、RelayoutBoundary 布局边界</h3><p>这里有三个概念比较重要：</p>
+<ul>
+<li>parentUsesSize  ：父节点是否依赖子节点的测量布局信息，才能够确定其自身的测量布局信息；默认为 false，为 true 时，当子节点layout标脏时，父节点也要标脏</li>
+<li>sizedByParent：根据父节点传递过来的约束条件 constraints，就可以唯一确定该节点的 Size 大小，不需要依赖其自身和子节点的属性就可以确定大小。</li>
+<li>isTight: 当盒约束 BoxConstraint 的 minWidth = maxWidth &amp;&amp; minHeight == maxHeight 时，isTight 为true</li>
+</ul>
+<p>根据这三个变量，可以确定该节点是否是 relayoutBoundary 布局边界，根本原因是布局边界的触发条件是，本节点不依赖父节点的改变而改变。</p>
+<p>布局边界相当于在RenderTree中，插入了一层布局屏障，外界改变不会引起布局边界内子树的改变；同样的，当布局边界子树内部发生布局大小变化，也不会影响父节点重新布局。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20210115174505.png" alt=""></p>
+<p>布局边界机制可以提高布局性能。</p>
+<h3 id="5-2-Layout-布局"><a href="#5-2-Layout-布局" class="headerlink" title="5.2 Layout 布局"></a>5.2 Layout 布局</h3><p>performResize() 用于测量大小，子节点需要重写该方法，根据父节点传递的constraints约束计算大小，结果记录在 _size 中。仅当sizedByParent为true时，会触发该方法。</p>
+<p>performLayout() 用于布局，子类需要重写该方法，布局信息存储在当前节点parentData中，后面在绘制阶段会由父节点使用。</p>
+<p>在RenderTree中 递归调用 <strong>layout()-&gt;performLayout()/performResize()-&gt;child.layout()-&gt;…</strong>完成测量和布局。</p>
+<p>布局原则：</p>
+<p><strong>Constraints go down. </strong></p>
+<p><strong>Sizes go up. </strong></p>
+<p><strong>Parent sets position.</strong></p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20210115184056.png" alt=""></p>
+<p>可以理解为约束从高向下传递，子节点根据约束和自身情况确定大小，并向上告知父节点，最终布局情况由父节点确定。</p>
+<p>整个布局过程是次线性的。</p>
+<p>本篇文章分析了RenderObject及RenderTree的构建，以及RenderTree Layout 布局过程。</p>
+<p>下篇文章继续分析下Paint绘制过程。</p>
+<p>本文链接： <a href="http://w4lle.com/2021/01/15/flutter-ui-layout/">http://w4lle.com/2021/01/15/flutter-ui-layout/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2021/01/15/flutter-ui-layout/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2020/11/16/flutter-ui-build/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
