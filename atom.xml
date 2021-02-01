@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://w4lle.com/"/>
-  <updated>2021-02-01T09:38:54.449Z</updated>
+  <updated>2021-02-01T10:02:44.172Z</updated>
   <id>http://w4lle.com/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Flutter UI 渲染浅析（五）Paint</title>
+    <title>Flutter UI 渲染浅析（六）Paint</title>
     <link href="http://w4lle.com/2021/02/01/flutter-ui-paint/"/>
     <id>http://w4lle.com/2021/02/01/flutter-ui-paint/</id>
     <published>2021-02-01T07:02:20.000Z</published>
-    <updated>2021-02-01T09:38:54.449Z</updated>
+    <updated>2021-02-01T10:02:44.172Z</updated>
     
     <content type="html"><![CDATA[<p>系列文章的第六篇，本篇文章继续分析下Paint绘制过程及Layer Tree。</p>
 <a id="more"></a>
