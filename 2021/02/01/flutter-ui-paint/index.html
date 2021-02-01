@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            Flutter UI 渲染浅析（五）Paint | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="系列文章的第六篇，本篇文章继续分析下Paint绘制过程及Layer Tree。">
+    <meta name="keywords" content="Android,Flutter">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?tcz64tzAgXHydzHShhly3g==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Flutter UI 渲染浅析（五）Paint | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="系列文章的第六篇，本篇文章继续分析下Paint绘制过程及Layer Tree。">
+    <meta property="og:article:tag" content="Flutter"> 
+
+    
+        <meta property="article:published_time" content="Mon Feb 01 2021 15:02:20 GMT+0800" />
+        <meta property="article:modified_time" content="Mon Feb 01 2021 17:38:54 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="Flutter UI 渲染浅析（五）Paint | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="系列文章的第六篇，本篇文章继续分析下Paint绘制过程及Layer Tree。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2021/02/01/flutter-ui-paint/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2021/02/01/flutter-ui-paint/index.html",
+    "headline": "Flutter UI 渲染浅析（五）Paint",
+    "datePublished": "Mon Feb 01 2021 15:02:20 GMT+0800",
+    "dateModified": "Mon Feb 01 2021 17:38:54 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",FlutterAndroid",
+    "description": "系列文章的第六篇，本篇文章继续分析下Paint绘制过程及Layer Tree。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+                <span class="header-nav-item">
+                    <a href="/timeline" title="时间轴">
+                        <span>时间轴</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                Flutter UI 渲染浅析（五）Paint
+            </p>
+            <p>系列文章的第六篇，本篇文章继续分析下Paint绘制过程及Layer Tree。</p>
+<a id="more"></a>
+<p>前面的文章分析完了<code>flushLayout</code>，继续分析下 <code>RendererBinding.drawFrame()</code> 剩余部分。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/binding.dart</span></div><div class="line">	<span class="meta">@protected</span></div><div class="line">  <span class="keyword">void</span> drawFrame() &#123;</div><div class="line">    <span class="keyword">assert</span>(renderView != <span class="keyword">null</span>);</div><div class="line">    pipelineOwner.flushLayout();</div><div class="line">    pipelineOwner.flushCompositingBits();</div><div class="line">    pipelineOwner.flushPaint();</div><div class="line">    <span class="keyword">if</span> (sendFramesToEngine) &#123;</div><div class="line">      renderView.compositeFrame(); <span class="comment">// this sends the bits to the GPU</span></div><div class="line">      pipelineOwner.flushSemantics(); <span class="comment">// this also sends the semantics to the OS.</span></div><div class="line">      _firstFrameSent = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h1 id="1、flushCompositingBits-标记合成阶段"><a href="#1、flushCompositingBits-标记合成阶段" class="headerlink" title="1、flushCompositingBits 标记合成阶段"></a>1、flushCompositingBits 标记合成阶段</h1><p>照例分为两部分，标脏&amp;数据处理。</p>
+<h2 id="1-1、markNeedsCompositingBitsUpdate-标脏"><a href="#1-1、markNeedsCompositingBitsUpdate-标脏" class="headerlink" title="1.1、markNeedsCompositingBitsUpdate 标脏"></a>1.1、markNeedsCompositingBitsUpdate 标脏</h2><p>当RenderObject获取新的子节点或重新挂载时时，会触发adoptChild</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart</span></div><div class="line">	<span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> adoptChild(RenderObject child) &#123;</div><div class="line">    <span class="keyword">assert</span>(_debugCanPerformMutations);</div><div class="line">    <span class="keyword">assert</span>(child != <span class="keyword">null</span>);</div><div class="line">    setupParentData(child);</div><div class="line">    markNeedsLayout();</div><div class="line">    markNeedsCompositingBitsUpdate();</div><div class="line">    markNeedsSemanticsUpdate();</div><div class="line">    <span class="keyword">super</span>.adoptChild(child);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>其中的markNeedsCompositingBitsUpdate</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart</span></div><div class="line">  <span class="keyword">void</span> markNeedsCompositingBitsUpdate() &#123;</div><div class="line">    <span class="keyword">if</span> (_needsCompositingBitsUpdate)</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    _needsCompositingBitsUpdate = <span class="keyword">true</span>;</div><div class="line">    <span class="keyword">if</span> (parent <span class="keyword">is</span> RenderObject) &#123;</div><div class="line">      <span class="keyword">final</span> RenderObject parent = <span class="keyword">this</span>.parent <span class="keyword">as</span> RenderObject;</div><div class="line">      <span class="keyword">if</span> (parent._needsCompositingBitsUpdate)</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">      <span class="comment">//向上寻找第一个isRepaintBoundary为true的节点</span></div><div class="line">      <span class="keyword">if</span> (!isRepaintBoundary &amp;&amp; !parent.isRepaintBoundary) &#123;</div><div class="line">        parent.markNeedsCompositingBitsUpdate();</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">    <span class="keyword">if</span> (owner != <span class="keyword">null</span>)</div><div class="line">      owner._nodesNeedingCompositingBitsUpdate.add(<span class="keyword">this</span>);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>做了几件事情：</p>
+<ul>
+<li>标记_needsCompositingBitsUpdate为true</li>
+<li>加入到pipelineOwner的_nodesNeedingCompositingBitsUpdate列表中</li>
+<li>向上寻找第一个isRepaintBoundary为true的节点，递归结束</li>
+</ul>
+<p>所以就是把所有不是isRepaintBoundary的RenderObject都加入到了_nodesNeedingCompositingBitsUpdate列表中。</p>
+<h2 id="1-2、flushCompositingBits"><a href="#1-2、flushCompositingBits" class="headerlink" title="1.2、flushCompositingBits"></a>1.2、flushCompositingBits</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/binding.dart</span></div><div class="line">  <span class="keyword">void</span> flushCompositingBits() &#123;</div><div class="line">    <span class="keyword">if</span> (!kReleaseMode) &#123;</div><div class="line">      <span class="comment">//记录 Compositing bits</span></div><div class="line">      Timeline.startSync(<span class="string">'Compositing bits'</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//广度优先</span></div><div class="line">    _nodesNeedingCompositingBitsUpdate.sort((RenderObject a, RenderObject b) =&gt; a.depth - b.depth);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">final</span> RenderObject node <span class="keyword">in</span> _nodesNeedingCompositingBitsUpdate) &#123;</div><div class="line">      <span class="keyword">if</span> (node._needsCompositingBitsUpdate &amp;&amp; node.owner == <span class="keyword">this</span>)</div><div class="line">        node._updateCompositingBits();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//清除列表</span></div><div class="line">    _nodesNeedingCompositingBitsUpdate.clear();</div><div class="line">    <span class="keyword">if</span> (!kReleaseMode) &#123;</div><div class="line">      <span class="comment">//结束记录</span></div><div class="line">      Timeline.finishSync();</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>顺序遍历 _nodesNeedingCompositingBitsUpdate列表，即先遍历父节点，调用RenderObject的 _updateCompositingBits 方法。</p>
+<p>过程记录在TimeLine的Compositing bits阶段，运行在UI线程。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart</span></div><div class="line">  <span class="keyword">void</span> _updateCompositingBits() &#123;</div><div class="line">    <span class="keyword">if</span> (!_needsCompositingBitsUpdate)</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">final</span> <span class="built_in">bool</span> oldNeedsCompositing = _needsCompositing;</div><div class="line">    _needsCompositing = <span class="keyword">false</span>;</div><div class="line">  	<span class="comment">//递归子节点  </span></div><div class="line">    visitChildren((RenderObject child) &#123;</div><div class="line">      child._updateCompositingBits();</div><div class="line">      <span class="keyword">if</span> (child.needsCompositing)</div><div class="line">        _needsCompositing = <span class="keyword">true</span>;</div><div class="line">    &#125;);</div><div class="line">    <span class="comment">//如果是isRepaintBoundary，标记_needsCompositing为true</span></div><div class="line">    <span class="keyword">if</span> (isRepaintBoundary || alwaysNeedsCompositing)</div><div class="line">      _needsCompositing = <span class="keyword">true</span>;</div><div class="line">    <span class="keyword">if</span> (oldNeedsCompositing != _needsCompositing)</div><div class="line">      markNeedsPaint();</div><div class="line">    _needsCompositingBitsUpdate = <span class="keyword">false</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>递归遍历子节点：</p>
+<ul>
+<li>找到isRepaintBoundary为true的节点，标记_needsCompositing为true</li>
+<li>isRepaintBoundary为true节点的所有父节点，都标记_needsCompositing为true</li>
+</ul>
+<p>这些标记在flushPaint过程中会用到。</p>
+<h1 id="2、isRepaintBoundary"><a href="#2、isRepaintBoundary" class="headerlink" title="2、isRepaintBoundary"></a>2、isRepaintBoundary</h1><p>那么isRepaintBoundary是哪里来的？</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RenderObject</span> <span class="keyword">extends</span> <span class="title">AbstractNode</span> <span class="title">with</span> <span class="title">DiagnosticableTreeMixin</span> <span class="keyword">implements</span> <span class="title">HitTestTarget</span> </span>&#123;</div><div class="line">  <span class="comment">/// Initializes internal fields for subclasses.</span></div><div class="line">  RenderObject() &#123;</div><div class="line">    _needsCompositing = isRepaintBoundary || alwaysNeedsCompositing;</div><div class="line">  &#125;</div><div class="line">	...</div><div class="line">  <span class="comment">//默认false</span></div><div class="line">	<span class="built_in">bool</span> <span class="keyword">get</span> isRepaintBoundary =&gt; <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>isRepaintBoundary可以被重写，Dart Framework有以下这些RenderObject重写了该值并返回了true，其中包含根节点RenderView和RenderRepaintBoundary。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20210201153630.png" alt=""></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RenderRepaintBoundary</span> <span class="keyword">extends</span> <span class="title">RenderProxyBox</span> </span>&#123;</div><div class="line">  <span class="comment">/// Creates a repaint boundary around [child].</span></div><div class="line">  RenderRepaintBoundary(&#123; RenderBox child &#125;) : <span class="keyword">super</span>(child);</div><div class="line"></div><div class="line">  <span class="meta">@override</span></div><div class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> isRepaintBoundary =&gt; <span class="keyword">true</span>;</div><div class="line">  ..</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RenderView</span> <span class="keyword">extends</span> <span class="title">RenderObject</span> <span class="title">with</span> <span class="title">RenderObjectWithChildMixin</span>&lt;<span class="title">RenderBox</span>&gt; </span>&#123;</div><div class="line">  RenderView(&#123;</div><div class="line">    RenderBox child,</div><div class="line">    <span class="meta">@required</span> ViewConfiguration configuration,</div><div class="line">    <span class="meta">@required</span> ui.Window <span class="built_in">window</span>,</div><div class="line">  &#125;) : <span class="keyword">assert</span>(configuration != <span class="keyword">null</span>),</div><div class="line">       _configuration = configuration,</div><div class="line">       _window = <span class="built_in">window</span> &#123;</div><div class="line">    <span class="keyword">this</span>.child = child;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="meta">@override</span></div><div class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> isRepaintBoundary =&gt; <span class="keyword">true</span>;</div><div class="line">  </div><div class="line">  <span class="comment">//RendererBinding的initInstances方法调用该初始化方法</span></div><div class="line">  <span class="keyword">void</span> prepareInitialFrame() &#123;</div><div class="line">    scheduleInitialLayout();</div><div class="line">    scheduleInitialPaint(_updateMatricesAndCreateNewRootLayer());</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  TransformLayer _updateMatricesAndCreateNewRootLayer() &#123;</div><div class="line">    _rootTransform = configuration.toMatrix();</div><div class="line">    <span class="comment">//RenderView的Layer类型为TransformLayer，它是OffsetLayer的子类</span></div><div class="line">    <span class="keyword">final</span> TransformLayer rootLayer = TransformLayer(transform: _rootTransform);</div><div class="line">    rootLayer.attach(<span class="keyword">this</span>);</div><div class="line">    <span class="keyword">return</span> rootLayer;</div><div class="line">  &#125;</div><div class="line">  ..</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以除了根节点RenderView外，所有位置在上图中之上的RenderObject节点，都会被标记为_needsCompositing需要合成。</p>
+<p>另外，RenderRepaintBoundary对应的Widget是RepaintBoundary，该Widget允许开发者指定图层的绘制层级，也就是绘制边界，用于提高绘制性能。</p>
+<h1 id="3、flushPaint-绘制阶段"><a href="#3、flushPaint-绘制阶段" class="headerlink" title="3、flushPaint 绘制阶段"></a>3、flushPaint 绘制阶段</h1><p>该阶段主要处理RenderObject的绘制过程。</p>
+<p>照例分为两步，标脏&amp;数据处理。</p>
+<p>先看一下上文中频繁被调用的markNeedsPaint方法</p>
+<h2 id="3-1、markNeedsPaint-标记"><a href="#3-1、markNeedsPaint-标记" class="headerlink" title="3.1、markNeedsPaint 标记"></a>3.1、markNeedsPaint 标记</h2><p>上面layout阶段用到了markNeedsPaint()方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart</span></div><div class="line">	<span class="keyword">void</span> markNeedsPaint() &#123;</div><div class="line">    <span class="keyword">if</span> (_needsPaint)</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    _needsPaint = <span class="keyword">true</span>;</div><div class="line">    <span class="comment">//如果是isRepaintBoundary，加入到_nodesNeedingPaint列表中</span></div><div class="line">    <span class="keyword">if</span> (isRepaintBoundary) &#123;</div><div class="line">      ...</div><div class="line">      <span class="keyword">if</span> (owner != <span class="keyword">null</span>) &#123;</div><div class="line">        owner._nodesNeedingPaint.add(<span class="keyword">this</span>);</div><div class="line">        <span class="comment">//发起更新请求</span></div><div class="line">        owner.requestVisualUpdate();</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (parent <span class="keyword">is</span> RenderObject) &#123;</div><div class="line">      <span class="keyword">final</span> RenderObject parent = <span class="keyword">this</span>.parent <span class="keyword">as</span> RenderObject;</div><div class="line">      parent.markNeedsPaint();</div><div class="line">      <span class="keyword">assert</span>(parent == <span class="keyword">this</span>.parent);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      ...</div><div class="line">      <span class="keyword">if</span> (owner != <span class="keyword">null</span>)</div><div class="line">        owner.requestVisualUpdate();</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>做了几件事情：</p>
+<ul>
+<li>如果是isRepaintBoundary，加入到pipelineOwner的_nodesNeedingPaint列表中，并且发起绘制请求，注册VSYNC信号回调，结束流程</li>
+<li>否则向上遍历</li>
+<li>如果都不满足，那么只绘制自己，触发绘制frame</li>
+</ul>
+<p>isRepaintBoundary可以理解为是否需要独立绘制，如果为true，那么就独立绘制，false就和父节点一起绘制。</p>
+<p>下文会详细说明。</p>
+<p>通过上面的分析，也就是说只有isRepaintBoundary为true的RenderObject才会被加入到pipelineOwner的_nodesNeedingPaint列表中。</p>
+<p>当向上找到isRepaintBoundary时，触发该节点的子树独立绘制流程，流程结束。</p>
+<h2 id="3-2、flushPaint"><a href="#3-2、flushPaint" class="headerlink" title="3.2、flushPaint"></a>3.2、flushPaint</h2><p>处理_nodesNeedingPaint脏节点。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> flushPaint() &#123;</div><div class="line">  <span class="keyword">if</span> (!kReleaseMode) &#123;</div><div class="line">    <span class="comment">//记录Paint过程</span></div><div class="line">    Timeline.startSync(<span class="string">'Paint'</span>, arguments: timelineArgumentsIndicatingLandmarkEvent);</div><div class="line">  &#125;</div><div class="line">...</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;RenderObject&gt; dirtyNodes = _nodesNeedingPaint;</div><div class="line">    <span class="comment">//清空列表</span></div><div class="line">    _nodesNeedingPaint = &lt;RenderObject&gt;[];</div><div class="line">    <span class="comment">// 深度优先逆序遍历节点</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">final</span> RenderObject node <span class="keyword">in</span> dirtyNodes..sort((RenderObject a, RenderObject b) =&gt; b.depth - a.depth)) &#123;</div><div class="line">      <span class="keyword">if</span> (node._needsPaint &amp;&amp; node.owner == <span class="keyword">this</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (node._layer.attached) &#123;</div><div class="line">          PaintingContext.repaintCompositedChild(node);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">          node._skippedPaintingOnLayer();</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="keyword">if</span> (!kReleaseMode) &#123;</div><div class="line">      <span class="comment">//结束记录</span></div><div class="line">      Timeline.finishSync();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行在UI线程，TimeLine记录Paint过程。</p>
+<p>从叶子节点逆序遍历 _nodesNeedingPaint列表。</p>
+<p>注意这里只有isRepaintBoundary为true的RenderObject才会被加入到pipelineOwner的 _nodesNeedingPaint列表中。</p>
+<p><strong>也就是说从下到上寻找绘制边界，然后从绘制边界向下绘制。</strong></p>
+<p>继续这个过程直到_nodesNeedingPaint列表为空。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PaintingContext</span> <span class="keyword">extends</span> <span class="title">ClipContext</span> </span>&#123;</div><div class="line">  <span class="comment">//通常只会被 PaintingContext.repaintCompositedChild 和pushLayer 调用</span></div><div class="line">  <span class="meta">@protected</span></div><div class="line">  PaintingContext(<span class="keyword">this</span>._containerLayer, <span class="keyword">this</span>.estimatedBounds)</div><div class="line"></div><div class="line">	<span class="keyword">static</span> <span class="keyword">void</span> repaintCompositedChild(RenderObject child, &#123; <span class="built_in">bool</span> debugAlsoPaintedParent = <span class="keyword">false</span> &#125;) &#123;</div><div class="line">    _repaintCompositedChild(</div><div class="line">      child,</div><div class="line">      debugAlsoPaintedParent: debugAlsoPaintedParent,</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">static</span> <span class="keyword">void</span> _repaintCompositedChild(</div><div class="line">    RenderObject child, &#123;</div><div class="line">    <span class="built_in">bool</span> debugAlsoPaintedParent = <span class="keyword">false</span>,</div><div class="line">    PaintingContext childContext,</div><div class="line">  &#125;) &#123;</div><div class="line">    OffsetLayer childLayer = child._layer <span class="keyword">as</span> OffsetLayer;</div><div class="line">    <span class="keyword">if</span> (childLayer == <span class="keyword">null</span>) &#123;</div><div class="line">     	<span class="comment">//RenderObject的默认Layer类型是OffsetLayer，记录坐标相对偏移值</span></div><div class="line">      child._layer = childLayer = OffsetLayer();</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      childLayer.removeAllChildren();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//构建一个新的PaintingContext</span></div><div class="line">    childContext ??= PaintingContext(child._layer, child.paintBounds);</div><div class="line">    <span class="comment">//开始绘制，默认Offset偏移量是0</span></div><div class="line">    child._paintWithContext(childContext, Offset.zero);</div><div class="line">    <span class="comment">//</span></div><div class="line">    childContext.stopRecordingIfNeeded();</div><div class="line">  &#125;</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PaintingContext作为canvas的持有者，作为参数传递给RenderObject，这样RenderObject对象通过context.canvas可以取到Canvas对象，可以调用canvas相关API实现绘制操作。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart RenderObject</span></div><div class="line">	<span class="keyword">void</span> _paintWithContext(PaintingContext context, Offset offset) &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">//_needsPaint置为false，当遍历到更高节点向下绘制时起到隔离作用</span></div><div class="line">    _needsPaint = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      paint(context, offset);</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> paint(PaintingContext context, Offset offset) &#123; &#125;</div></pre></td></tr></table></figure>
+<p>首先把<code>_needsPaint</code>置为false，当遍历到更高节点向下绘制时起到隔离作用，后面详细讲。</p>
+<p>RenderObject的paint()方法是一个抽象方法，需要子类去实现。</p>
+<p>如果一个RenderObject含有子节点，那么除了自身可能需要绘制外，还需要遍历子节点进行绘制。</p>
+<p>以RenderStack为例看下实现：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/stack.dart RenderStack</span></div><div class="line">  <span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> paint(PaintingContext context, Offset offset) &#123;</div><div class="line">    ...</div><div class="line">    paintStack(context, offset);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@protected</span></div><div class="line">  <span class="keyword">void</span> paintStack(PaintingContext context, Offset offset) &#123;</div><div class="line">    defaultPaint(context, offset);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> defaultPaint(PaintingContext context, Offset offset) &#123;</div><div class="line">    ChildType child = firstChild;</div><div class="line">    <span class="keyword">while</span> (child != <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">final</span> ParentDataType childParentData = child.parentData <span class="keyword">as</span> ParentDataType;</div><div class="line">      context.paintChild(child, childParentData.offset + offset);</div><div class="line">      child = childParentData.nextSibling;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>由于RenderStack本身没有内容需要绘制，所以直接遍历子节点调用context.paintChild方法绘制子节点。</p>
+<p>同时将Layout阶段子节点存储的位置和大小信息parentData取出来，加上自身偏移传递给子节点，parentData是layout阶段计算出的位置信息。</p>
+<p>所以通过 <code>paint()-&gt; paintChild() -&gt; paint() -&gt;stopRecordingIfNeeded()</code> …调用栈完成<strong>局部树</strong>的刷新。</p>
+<p>为什么说是<strong>局部树</strong> ？因为有<code>isRepaintBoundary</code>的存在，每个局部树代表一个<strong>图层</strong>，下面详细分析。</p>
+<h1 id="4、LayerTree"><a href="#4、LayerTree" class="headerlink" title="4、LayerTree"></a>4、LayerTree</h1><h2 id="4-1、RepaintBoundary-绘制边界"><a href="#4-1、RepaintBoundary-绘制边界" class="headerlink" title="4.1、RepaintBoundary 绘制边界"></a>4.1、RepaintBoundary 绘制边界</h2><p>当_nodesNeedingPaint列表中，深度优先的节点绘制完成后，调用childContext.stopRecordingIfNeeded()方法完成当前局部树的绘制，并记录在Flutter Engine对应Layer的Picture对象中（这块后面再分析）。</p>
+<p>然后继续遍历_nodesNeedingPaint中的节点。</p>
+<p>由于是深度优先，所以后续被遍历到的节点，可能是已完成绘制节点的祖先节点，那么再去paintChild，会不会再次触发已完成绘制节点的绘制动作？</p>
+<p>答案是不会，因为有<code>isRepaintBoundary</code>的存在。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart PaintingContext</span></div><div class="line">	<span class="keyword">void</span> paintChild(RenderObject child, Offset offset) &#123;</div><div class="line">    <span class="keyword">if</span> (child.isRepaintBoundary) &#123;</div><div class="line">      <span class="comment">//结束绘制，记录到Picture</span></div><div class="line">      stopRecordingIfNeeded();</div><div class="line">      <span class="comment">//合成子Layer</span></div><div class="line">      _compositeChild(child, offset);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">//使用相同PaintingContext绘制子节点</span></div><div class="line">      child._paintWithContext(<span class="keyword">this</span>, offset);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> _compositeChild(RenderObject child, Offset offset) &#123;</div><div class="line">    <span class="comment">// 如果需要绘制，为子节点新建一个layer并绘制</span></div><div class="line">    <span class="keyword">if</span> (child._needsPaint) &#123;</div><div class="line">      repaintCompositedChild(child, debugAlsoPaintedParent: <span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">final</span> OffsetLayer childOffsetLayer = child._layer <span class="keyword">as</span> OffsetLayer;</div><div class="line">    childOffsetLayer.offset = offset;</div><div class="line">    appendLayer(child._layer);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>当<code>isRepaintBoundary</code>为false时，正常遍历子节点绘制。</p>
+<p>比如首次绘制第一帧时，从根节点RenderView开始从上到下遍历绘制。</p>
+<p>当子节点记录为<code>isRepaintBoundary</code>（即之前已经绘制完成的子节点）时，调用<code>_compositeChild</code>方法。</p>
+<p>此时<code>child._needsPaint</code>实际上已经为false。</p>
+<p>所以直接调用<code>appendLayer()</code>方法合并子节点所在的Layer图层，添加到当前节点所在Layer的子节点，生成一颗<code>LayerTree</code>，同时触发 <code>markNeedsAddToScene()</code>标脏方法，用于合成阶段的标脏操作，下篇文章会详细介绍。</p>
+<p>所以，markNeedsPaint() 从叶子节点向上遍历寻找绘制边界，触发局部绘制。</p>
+<p><strong>flushPaint()深度优先逆序遍历，找到绘制边界把当前节点作为祖先节点，从上到下绘制局部树。</strong>最后绘制RenderView根节点（如果需要）。</p>
+<p>每个<code>isRepaintBoundary</code>为true的RendeObject，都会生成一个新的图层，其所有的子节点都会被绘制在这个新的图层中。</p>
+<p>Flutter 使用Layer图层来记录一个层次上所有的RenderObject的绘制过程，每个图层独立刷新，互不影响。</p>
+<p>Layer 是上篇文章中提到的<code>AbstractNode</code>的子类，它是实现Tree的基类，RenderObject也是其子类。</p>
+<p>Layer和RenderObject存在 1:N的对应关系。</p>
+<p>所以，也就是说RepaintBoundary Widget可以控制刷新范围，这也是为什么使用RepaintBoundary Widget可以提高绘制性能的真正原因。</p>
+<h2 id="4-2、PaintingContext-amp-Canvas-绘制"><a href="#4-2、PaintingContext-amp-Canvas-绘制" class="headerlink" title="4.2、PaintingContext &amp; Canvas 绘制"></a>4.2、PaintingContext &amp; Canvas 绘制</h2><p>具体绘制时，通过PaintingContext获取Canvas，调用Canvas的API接口执行具体的绘制操作，看下Canvas对象的获取逻辑</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart PaintingContext</span></div><div class="line"> <span class="meta">@override</span></div><div class="line">	<span class="comment">//初始化</span></div><div class="line">  Canvas <span class="keyword">get</span> canvas &#123;</div><div class="line">    <span class="keyword">if</span> (_canvas == <span class="keyword">null</span>)</div><div class="line">      _startRecording();</div><div class="line">    <span class="keyword">return</span> _canvas;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">	<span class="comment">//开始绘制</span></div><div class="line">  <span class="keyword">void</span> _startRecording() &#123;</div><div class="line">    <span class="comment">//isRecording的判断标准是canvas是否为空</span></div><div class="line">    <span class="keyword">assert</span>(!_isRecording);</div><div class="line">    <span class="comment">//构造一个PictureLayer对象，绑定绘制区域</span></div><div class="line">    _currentLayer = PictureLayer(estimatedBounds);</div><div class="line">    <span class="comment">//构造一个PictureRecorder对象，用于记录绘制指令</span></div><div class="line">    _recorder = ui.PictureRecorder();</div><div class="line">    <span class="comment">//构造一个Canvas，依赖PictureRecorder对象</span></div><div class="line">    _canvas = Canvas(_recorder);</div><div class="line">    <span class="comment">//将PictureLayer添加到当前图层的LayerTree中</span></div><div class="line">    _containerLayer.append(_currentLayer);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@protected</span></div><div class="line">  <span class="meta">@mustCallSuper</span></div><div class="line">	<span class="comment">//结束绘制</span></div><div class="line">  <span class="keyword">void</span> stopRecordingIfNeeded() &#123;</div><div class="line">    <span class="keyword">if</span> (!_isRecording)</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">assert</span>(() &#123;</div><div class="line">      <span class="comment">//使用debugRepaintRainbowEnabled显示重绘区域</span></div><div class="line">      <span class="keyword">if</span> (debugRepaintRainbowEnabled) &#123;</div><div class="line">        <span class="keyword">final</span> Paint paint = Paint()</div><div class="line">          ..style = PaintingStyle.stroke</div><div class="line">          ..strokeWidth = <span class="number">6.0</span></div><div class="line">          ..color = debugCurrentRepaintColor.toColor();</div><div class="line">        canvas.drawRect(estimatedBounds.deflate(<span class="number">3.0</span>), paint);</div><div class="line">      &#125;</div><div class="line">      <span class="comment">//使用debugPaintLayerBordersEnabled显示当前Layer边界</span></div><div class="line">      <span class="keyword">if</span> (debugPaintLayerBordersEnabled) &#123;</div><div class="line">        <span class="keyword">final</span> Paint paint = Paint()</div><div class="line">          ..style = PaintingStyle.stroke</div><div class="line">          ..strokeWidth = <span class="number">1.0</span></div><div class="line">          ..color = <span class="keyword">const</span> Color(<span class="number">0xFFFF9800</span>);</div><div class="line">        canvas.drawRect(estimatedBounds, paint);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;());</div><div class="line">    <span class="comment">//绘制指令记录在picture对象</span></div><div class="line">    _currentLayer.picture = _recorder.endRecording();</div><div class="line">    <span class="comment">//释放PictureLayer对象</span></div><div class="line">    _currentLayer = <span class="keyword">null</span>;</div><div class="line">    <span class="comment">//释放PictureRecorder对象</span></div><div class="line">    _recorder = <span class="keyword">null</span>;</div><div class="line">    <span class="comment">//释放Canvas对象</span></div><div class="line">    _canvas = <span class="keyword">null</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>做了几件事情：</p>
+<ol>
+<li>初始化</li>
+</ol>
+<p>当Layer图层中的RenderObject要使用Canvas对象进行绘制时，初始化一个PictureLayer对象，添加到当前LayerTree中。</p>
+<p>初始化一个PictureRecorder对象，绑定到Canvas对象上。</p>
+<p>PicutreRecorder实际上是Flutter Engine中的PictureRecorder对象的代理。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//lib/ui/painting/picture_recorder.cc</span></div><div class="line"><span class="comment">//构造入口</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">void</span> PictureRecorder_constructor(Dart_NativeArguments args) &#123;</div><div class="line">  UIDartState::ThrowIfUIOperationsProhibited();</div><div class="line">  DartCallConstructor(&amp;PictureRecorder::Create, args);</div><div class="line">&#125;</div><div class="line"></div><div class="line">IMPLEMENT_WRAPPERTYPEINFO(ui, PictureRecorder);</div><div class="line"></div><div class="line">#define FOR_EACH_BINDING(V)       \</div><div class="line">  V(PictureRecorder, isRecording) \</div><div class="line">  V(PictureRecorder, endRecording)</div><div class="line"><span class="comment">//注册Native方法</span></div><div class="line">FOR_EACH_BINDING(DART_NATIVE_CALLBACK)</div><div class="line"><span class="comment">//注册构造方法</span></div><div class="line"><span class="keyword">void</span> PictureRecorder::RegisterNatives(tonic::DartLibraryNatives* natives) &#123;</div><div class="line">  natives-&gt;Register(</div><div class="line">      &#123;&#123;<span class="string">"PictureRecorder_constructor"</span>, PictureRecorder_constructor, <span class="number">1</span>, <span class="keyword">true</span>&#125;,</div><div class="line">       FOR_EACH_BINDING(DART_REGISTER_NATIVE)&#125;);</div><div class="line">&#125;</div><div class="line"><span class="comment">//构造方法</span></div><div class="line">fml::RefPtr&lt;PictureRecorder&gt; PictureRecorder::Create() &#123;</div><div class="line">  <span class="keyword">return</span> fml::MakeRefCounted&lt;PictureRecorder&gt;();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">bool</span> PictureRecorder::isRecording() &#123;</div><div class="line">  <span class="keyword">return</span> canvas_ &amp;&amp; canvas_-&gt;IsRecording();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//通过SkPictureRecorder构造SkCanvas，picture_recorder_是SkPictureRecorder对象</span></div><div class="line">SkCanvas* PictureRecorder::BeginRecording(SkRect bounds) &#123;</div><div class="line">  <span class="keyword">return</span> picture_recorder_.beginRecording(bounds, &amp;rtree_factory_);</div><div class="line">&#125;</div><div class="line"></div><div class="line">fml::RefPtr&lt;Picture&gt; PictureRecorder::endRecording(Dart_Handle dart_picture) &#123;</div><div class="line">  <span class="comment">//构造SkPicture对象</span></div><div class="line">  fml::RefPtr&lt;Picture&gt; picture =</div><div class="line">      Picture::Create(dart_picture,</div><div class="line">                      UIDartState::CreateGPUObject(</div><div class="line">                          picture_recorder_.finishRecordingAsPicture()),</div><div class="line">                      canvas_-&gt;external_allocation_size());</div><div class="line">	<span class="comment">//清理工作</span></div><div class="line">  canvas_-&gt;Clear();</div><div class="line">  canvas_-&gt;ClearDartWrapper();</div><div class="line">  canvas_ = nullptr;</div><div class="line">  ClearDartWrapper();</div><div class="line">  <span class="keyword">return</span> picture;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>同样的，Dart Framework的Canvas对象实际上是Flutter Engine中Canvas对象的代理。</p>
+<p>Flutter Engine中的Canvas：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/ui/painting/canvas.cc</span></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Canvas_constructor</span><span class="params">(Dart_NativeArguments args)</span> </span>&#123;</div><div class="line">  UIDartState::ThrowIfUIOperationsProhibited();</div><div class="line">  DartCallConstructor(&amp;Canvas::Create, args);</div><div class="line">&#125;</div><div class="line"></div><div class="line">IMPLEMENT_WRAPPERTYPEINFO(ui, Canvas);</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR_EACH_BINDING(V)         \</span></div><div class="line">  V(Canvas, save)                   \</div><div class="line">  V(Canvas, saveLayerWithoutBounds) \</div><div class="line">  V(Canvas, saveLayer)              \</div><div class="line">  V(Canvas, restore)                \</div><div class="line">  V(Canvas, getSaveCount)           \</div><div class="line">  V(Canvas, translate)              \</div><div class="line">  V(Canvas, scale)                  \</div><div class="line">  V(Canvas, rotate)                 \</div><div class="line">  V(Canvas, skew)                   \</div><div class="line">  V(Canvas, transform)              \</div><div class="line">  V(Canvas, clipRect)               \</div><div class="line">  V(Canvas, clipRRect)              \</div><div class="line">  V(Canvas, clipPath)               \</div><div class="line">  V(Canvas, drawColor)              \</div><div class="line">  V(Canvas, drawLine)               \</div><div class="line">  V(Canvas, drawPaint)              \</div><div class="line">  V(Canvas, drawRect)               \</div><div class="line">  V(Canvas, drawRRect)              \</div><div class="line">  V(Canvas, drawDRRect)             \</div><div class="line">  V(Canvas, drawOval)               \</div><div class="line">  V(Canvas, drawCircle)             \</div><div class="line">  V(Canvas, drawArc)                \</div><div class="line">  V(Canvas, drawPath)               \</div><div class="line">  V(Canvas, drawImage)              \</div><div class="line">  V(Canvas, drawImageRect)          \</div><div class="line">  V(Canvas, drawImageNine)          \</div><div class="line">  V(Canvas, drawPicture)            \</div><div class="line">  V(Canvas, drawPoints)             \</div><div class="line">  V(Canvas, drawVertices)           \</div><div class="line">  V(Canvas, drawAtlas)              \</div><div class="line">  V(Canvas, drawShadow)</div><div class="line">  ...</div><div class="line"></div><div class="line"><span class="comment">//注册Canvas API方法</span></div><div class="line">FOR_EACH_BINDING(DART_NATIVE_CALLBACK)</div><div class="line"></div><div class="line"><span class="comment">//注册Native构造方法</span></div><div class="line"><span class="keyword">void</span> Canvas::RegisterNatives(tonic::DartLibraryNatives* natives) &#123;</div><div class="line">  natives-&gt;Register(&#123;&#123;<span class="string">"Canvas_constructor"</span>, Canvas_constructor, <span class="number">6</span>, <span class="literal">true</span>&#125;,</div><div class="line">                     FOR_EACH_BINDING(DART_REGISTER_NATIVE)&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">fml::RefPtr&lt;Canvas&gt; Canvas::Create(PictureRecorder* recorder,</div><div class="line">                                   <span class="keyword">double</span> left,</div><div class="line">                                   <span class="keyword">double</span> top,</div><div class="line">                                   <span class="keyword">double</span> right,</div><div class="line">                                   <span class="keyword">double</span> bottom) &#123;</div><div class="line">  ...</div><div class="line">  <span class="comment">//通过PictureRecoder的begin方法，构造SkCanvas对象</span></div><div class="line">  fml::RefPtr&lt;Canvas&gt; canvas = fml::MakeRefCounted&lt;Canvas&gt;(</div><div class="line">      recorder-&gt;BeginRecording(SkRect::MakeLTRB(left, top, right, bottom)));</div><div class="line">  recorder-&gt;set_canvas(canvas);</div><div class="line">  <span class="keyword">return</span> canvas;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Canvas::Canvas(SkCanvas* canvas) : canvas_(canvas) &#123;&#125;</div></pre></td></tr></table></figure>
+<p>实际上Flutter Engine中的对象都是Skia引擎的代理对象，最终实现绘制的是Skia引擎中的SkCanvas对象。</p>
+<p>所有的Dart Framework层的Canvas绘制操作，都会通过Flutter Engine层的Canvas代理类，最终调用到SkCanvas去实际绘制。</p>
+<ol>
+<li>绘制</li>
+</ol>
+<p>当使用Canvas对象绘制时，绘制的指令都会被记录在Flutter Engine 的SkPictureRecorder对象中。</p>
+<ol>
+<li>结束绘制</li>
+</ol>
+<p>当结束当前Layer图层的绘制流程时，调用_recorder.endRecording()获取一个SkPicture对象，SkPicture对象包含了所有的绘制指令，并写入PictureLayer中。</p>
+<p>至此所有的Layer图层绘制完成，形成一颗含有所有绘制操作记录的LayerTree。</p>
+<p>并且，在当前LayerTree中，每个用到Canvas绘制的Layer图层的同层级中，总是有<strong>一个或多个</strong>PictureLayer，用来记录绘制信息。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/layer.dart PictureLayer</span></div><div class="line">	<span class="keyword">set</span> picture(ui.Picture picture) &#123;</div><div class="line">    markNeedsAddToScene();</div><div class="line">    _picture = picture;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>最后调用markNeedsAddToScene()标记该Layer的_needsAddToScene为true，为接下来的renderView.compositeFrame()做准备。</p>
+<h2 id="4-3、-needsCompositing-的作用"><a href="#4-3、-needsCompositing-的作用" class="headerlink" title="4.3、_needsCompositing 的作用"></a>4.3、_needsCompositing 的作用</h2><p>在markNeedsCompositingBitsUpdate()标记阶段，记录了RenderObject的_needsCompositing是否需要合成的标志位。</p>
+<p>其原理是，当一个RenderObject节点是isRepaintBoundary || alwaysNeedsCompositing，那么它及其所有的祖先节点都会被标记为_needsCompositing。</p>
+<p>这个标志位的作用在PaintingContext中的pushXXX特殊绘制相关方法中会用到，用于标识是否需要新建一个Layer图层来实现一些特定的图形效果，比如裁剪，变换等。</p>
+<p>以pushClipRect裁剪方法为例：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/object.dart PaintingContext</span></div><div class="line">	ClipRectLayer pushClipRect(<span class="built_in">bool</span> needsCompositing, Offset offset, Rect clipRect, PaintingContextCallback painter, &#123; Clip clipBehavior = Clip.hardEdge, ClipRectLayer oldLayer &#125;) &#123;</div><div class="line">    <span class="keyword">final</span> Rect offsetClipRect = clipRect.shift(offset);</div><div class="line">    <span class="comment">//需要合成</span></div><div class="line">    <span class="keyword">if</span> (needsCompositing) &#123;</div><div class="line">      <span class="comment">//新建一个ClipRectLayer图层，会被重复使用</span></div><div class="line">      <span class="keyword">final</span> ClipRectLayer layer = oldLayer ?? ClipRectLayer();</div><div class="line">      <span class="comment">//Layer裁剪范围和裁剪信息</span></div><div class="line">      layer</div><div class="line">        ..clipRect = offsetClipRect</div><div class="line">        ..clipBehavior = clipBehavior;</div><div class="line">      <span class="comment">//将新建的Layer 添加到LayerTree，并在其上进行绘制</span></div><div class="line">      pushLayer(layer, painter, offset, childPaintBounds: offsetClipRect);</div><div class="line">      <span class="keyword">return</span> layer;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">//直接在原有Canvas上裁剪、绘制</span></div><div class="line">      clipRectAndPaint(offsetClipRect, clipBehavior, offsetClipRect, () =&gt; painter(<span class="keyword">this</span>, offset));</div><div class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> pushLayer(ContainerLayer childLayer, PaintingContextCallback painter, Offset offset, &#123; Rect childPaintBounds &#125;) &#123;</div><div class="line">    <span class="comment">//图层如果被复用，清空</span></div><div class="line">    <span class="keyword">if</span> (childLayer.hasChildren) &#123;</div><div class="line">      childLayer.removeAllChildren();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//结束当前PaintingContext绘制，记录到PictureLayer中的SkPicture</span></div><div class="line">    stopRecordingIfNeeded();</div><div class="line">    <span class="comment">//将新Layer添加到LLayerTree    appendLayer(childLayer);</span></div><div class="line">    <span class="comment">//为childLayer新建PaintingContext，持有独立Canvas</span></div><div class="line">    <span class="keyword">final</span> PaintingContext childContext = createChildContext(childLayer, childPaintBounds ?? estimatedBounds);</div><div class="line">    <span class="comment">//开始绘制</span></div><div class="line">    painter(childContext, offset);</div><div class="line">    <span class="comment">//绘制完成，childLayer绘制操作记录到PictureLayer中的SkPicture</span></div><div class="line">    childContext.stopRecordingIfNeeded();</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>如果被标记为合成，那么就新建一个Layer，设置裁剪信息，并绑定到新的PaintingContext上，持有独立的Canvas，进行特殊效果绘制。</p>
+<p>使用方是RenderClipRect.paint()</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/proxy_box.dart RenderClipRect</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RenderClipRect</span> <span class="keyword">extends</span> <span class="title">_RenderCustomClip</span>&lt;<span class="title">Rect</span>&gt; </span>&#123;</div><div class="line">  <span class="comment">/// Creates a rectangular clip.</span></div><div class="line">  <span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> paint(PaintingContext context, Offset offset) &#123;</div><div class="line">    <span class="keyword">if</span> (child != <span class="keyword">null</span>) &#123;</div><div class="line">      _updateClip();</div><div class="line">      <span class="comment">//调用pushClipRect方法</span></div><div class="line">      layer = context.pushClipRect(</div><div class="line">        needsCompositing,<span class="comment">//在markNeedsCompositingBitsUpdate被标记</span></div><div class="line">        offset,</div><div class="line">        _clip,</div><div class="line">        <span class="keyword">super</span>.paint,</div><div class="line">        clipBehavior: clipBehavior,</div><div class="line">        oldLayer: layer <span class="keyword">as</span> ClipRectLayer,</div><div class="line">      );</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      layer = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p><strong>思考一下为什么子节点在独立图层上绘制，这些特殊绘制操作也需要在独立图层上绘制？</strong></p>
+<p>先看下不独立绘制，直接在原有Canvas上裁剪、绘制的实现</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/clip.dart ClipContext</span></div><div class="line">	<span class="keyword">void</span> clipRectAndPaint(Rect rect, Clip clipBehavior, Rect bounds, <span class="keyword">void</span> painter()) &#123;</div><div class="line">    _clipAndPaint((<span class="built_in">bool</span> doAntiAias) =&gt; canvas.clipRect(rect, doAntiAlias: doAntiAias), clipBehavior, bounds, painter);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> _clipAndPaint(<span class="keyword">void</span> canvasClipCall(<span class="built_in">bool</span> doAntiAlias), Clip clipBehavior, Rect bounds, <span class="keyword">void</span> painter()) &#123;</div><div class="line">    ...</div><div class="line">    </div><div class="line">    <span class="keyword">case</span> hardEdge:</div><div class="line">    		<span class="comment">//保存状态</span></div><div class="line">    		canvas.save();</div><div class="line">    		<span class="comment">//裁剪操作</span></div><div class="line">    		canvasClipCall(<span class="keyword">false</span>);</div><div class="line">    		<span class="keyword">break</span>;</div><div class="line">    <span class="keyword">case</span> Clip.antiAliasWithSaveLayer:</div><div class="line">        canvasClipCall(<span class="keyword">true</span>);</div><div class="line">        canvas.saveLayer(bounds, Paint());</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">    ...</div><div class="line">    <span class="comment">//绘制</span></div><div class="line">    painter();</div><div class="line">    <span class="comment">//恢复状态</span></div><div class="line">    canvas.restore();</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>这里就明白了，在子节点没有独立绘制情况下，裁剪操作需要做到在不影响子节点绘制的情况下，借助canvas的<code>save()</code>和<code>restore()</code>方法来实现。</p>
+<p>并且在一些场景下会触发<strong>saveLayer，也就是离屏渲染，这个操作对性能影响巨大</strong>。</p>
+<p>而在子节点在独立图层绘制的情况下，特殊效果绘制也就在新建的独立图层上绘制就好了，不用再<code>save()</code>和<code>restore()</code>了，更不用saveLayer了，对性能更友好。</p>
+<p>并且由于裁剪等特殊绘制在独立图层的存在，可以把绘制范围切分的更细粒度，而在Flutter Engine里对于图层是有缓存的，也可以提高绘制性能。</p>
+<h2 id="4-4、Layer-种类"><a href="#4-4、Layer-种类" class="headerlink" title="4.4、Layer 种类"></a>4.4、Layer 种类</h2><p>Layer 大体上分为两种类型，ContainerLayer 和非ContainerLayer：</p>
+<ul>
+<li>非ContainerLayer，用于绘制，一般为LayerTree每一层的尾节点，也有可能在中间节点，比如stopRecording后，再appendLayer<ul>
+<li>PictureLayer，用于记录一般绘制操作，大部分RenderObject都是绘制在这上面</li>
+<li>TextureLayer，主要用于外接纹理绘制，对应的RenderObject是TextureBox，Widget 是 Texture</li>
+<li>PlatformViewLayer，用于嵌入平台 (Android、iOS) 纹理绘制，对应的RenderObject是PlatformViewRenderBox，Widget 是 PlatformViewSurface</li>
+</ul>
+</li>
+<li>ContainerLayer，本身不具备绘制能力，一般用于添加非ContainerLayer，形成LayerTree<ul>
+<li>ClipRectLayer、ClipRRectLayer、ClipPathLayer，裁剪层，可以指定裁剪和矩形行为参数。共有4种裁剪行为，none、hardEdge、antiAlias、antiAliashWithSaveLayer（会触发SaveLayer）</li>
+<li>OffsetLayer，偏移层，可以指定坐标偏移量</li>
+<li>TransformLayer，变换图层，可以指定变换矩阵参数</li>
+<li>OpacityLayer，透明层，可以指定透明度</li>
+<li>PhysicalModelLayer，透明层，可以指定透明度</li>
+<li>ColorFilterLayer，颜色过滤层，可以指定颜色和混合模式参数</li>
+<li>BackdropFilterLayer：背景过滤层，可以指定背景图参数</li>
+</ul>
+</li>
+</ul>
+<h1 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h1><p>本文主要分析了合成标记、paint绘制、LayerTree等相关内容，下篇文章继续分析具体的合成阶段。</p>
+<p>本文链接： <a href="http://w4lle.com/2021/02/01/flutter-ui-paint/">http://w4lle.com/2021/02/01/flutter-ui-paint/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2021/02/01/flutter-ui-paint/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2021/01/15/flutter-ui-layout/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
