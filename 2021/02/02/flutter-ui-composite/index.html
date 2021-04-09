@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            Flutter UI 渲染浅析（七）Composite | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="系列文章的第七篇，本篇文章继续分析下Composite合成过程。">
+    <meta name="keywords" content="Android,Flutter">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?tcz64tzAgXHydzHShhly3g==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Flutter UI 渲染浅析（七）Composite | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="系列文章的第七篇，本篇文章继续分析下Composite合成过程。">
+    <meta property="og:article:tag" content="Flutter"> 
+
+    
+        <meta property="article:published_time" content="Tue Feb 02 2021 14:13:18 GMT+0800" />
+        <meta property="article:modified_time" content="Tue Feb 02 2021 18:50:43 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="Flutter UI 渲染浅析（七）Composite | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="系列文章的第七篇，本篇文章继续分析下Composite合成过程。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2021/02/02/flutter-ui-composite/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2021/02/02/flutter-ui-composite/index.html",
+    "headline": "Flutter UI 渲染浅析（七）Composite",
+    "datePublished": "Tue Feb 02 2021 14:13:18 GMT+0800",
+    "dateModified": "Tue Feb 02 2021 18:50:43 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",FlutterAndroid",
+    "description": "系列文章的第七篇，本篇文章继续分析下Composite合成过程。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+                <span class="header-nav-item">
+                    <a href="/timeline" title="时间轴">
+                        <span>时间轴</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                Flutter UI 渲染浅析（七）Composite
+            </p>
+            <p>系列文章的第七篇，本篇文章继续分析下Composite合成过程。</p>
+<a id="more"></a>
+<p>其实叫合成不太准备，应该叫做提交合成。</p>
+<p>前面的文章分析完了<code>flushLayout</code>，继续分析下 <code>RendererBinding.drawFrame()</code> 剩余部分。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/binding.dart</span></div><div class="line">	<span class="meta">@protected</span></div><div class="line">  <span class="keyword">void</span> drawFrame() &#123;</div><div class="line">    <span class="keyword">assert</span>(renderView != <span class="keyword">null</span>);</div><div class="line">    pipelineOwner.flushLayout();</div><div class="line">    pipelineOwner.flushCompositingBits();</div><div class="line">    pipelineOwner.flushPaint();</div><div class="line">    <span class="keyword">if</span> (sendFramesToEngine) &#123;</div><div class="line">      renderView.compositeFrame(); <span class="comment">// this sends the bits to the GPU</span></div><div class="line">      pipelineOwner.flushSemantics(); <span class="comment">// this also sends the semantics to the OS.</span></div><div class="line">      _firstFrameSent = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h1 id="1、compositeFrame-合成阶段"><a href="#1、compositeFrame-合成阶段" class="headerlink" title="1、compositeFrame 合成阶段"></a>1、compositeFrame 合成阶段</h1><p>照例还是分为两部分，标脏&amp;数据处理。</p>
+<h2 id="1-1、markNeedsAddToScene-标脏"><a href="#1-1、markNeedsAddToScene-标脏" class="headerlink" title="1.1、markNeedsAddToScene 标脏"></a>1.1、markNeedsAddToScene 标脏</h2><p>在上篇文章中，LayerTree构建过程中以及stopRecording时，会触发标脏方法<code>markNeedsAddToScene();</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/layer.dart</span></div><div class="line">	<span class="keyword">void</span> markNeedsAddToScene() &#123;</div><div class="line">    <span class="comment">// Already marked. Short-circuit.</span></div><div class="line">    <span class="keyword">if</span> (_needsAddToScene) &#123;</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    _needsAddToScene = <span class="keyword">true</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>该方法用来标脏该Layer状态已经发生改变，需要调用addToScene将其发送到Flutter Engine。</p>
+<h2 id="1-2、compositeFrame"><a href="#1-2、compositeFrame" class="headerlink" title="1.2、compositeFrame"></a>1.2、compositeFrame</h2><p>drawFrame方法接着调用renderView.compositeFrame方法，看下实现。</p>
+<p>其中的RenderView对象作为RenderObject的根节点，其layer类型为TransformLayer。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/view.dart RenderView</span></div><div class="line">	<span class="keyword">void</span> compositeFrame() &#123;</div><div class="line">    <span class="comment">//记录 Compositing</span></div><div class="line">    Timeline.startSync(<span class="string">'Compositing'</span>, arguments: timelineArgumentsIndicatingLandmarkEvent);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      <span class="keyword">final</span> ui.SceneBuilder builder = ui.SceneBuilder();</div><div class="line">      <span class="keyword">final</span> ui.Scene scene = layer.buildScene(builder);</div><div class="line">      <span class="keyword">if</span> (automaticSystemUiAdjustment)</div><div class="line">        _updateSystemChrome();</div><div class="line">      _window.render(scene);</div><div class="line">      <span class="comment">//清理</span></div><div class="line">      scene.dispose();</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">      <span class="comment">//结束记录</span></div><div class="line">      Timeline.finishSync();</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>构建SceneBuilder对象，它的实现在Flutter Engine</li>
+<li>依赖Layer和SceneBuilder对象，通过layer.buildScene得到Scene对象</li>
+<li>将Scene对象通过window对象发送给Flutter Engine</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">ui.Scene buildScene(ui.SceneBuilder builder) &#123;</div><div class="line">  <span class="comment">// 深度优先遍历，更新子树标脏</span></div><div class="line">  updateSubtreeNeedsAddToScene();</div><div class="line">  <span class="comment">// 遍历LayerTree，构建 EngineLayerTree </span></div><div class="line">  addToScene(builder);</div><div class="line">  <span class="comment">// 清除标脏</span></div><div class="line">  _needsAddToScene = <span class="keyword">false</span>;</div><div class="line">  <span class="comment">//生成 Scene</span></div><div class="line">  <span class="keyword">final</span> ui.Scene scene = builder.build();</div><div class="line">  <span class="keyword">return</span> scene;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先深度优先遍历，更新子树标脏，逻辑是当前节点Layer被标脏为 <code>_needsAddToScene</code>，那么其祖先节点都会被标脏为<code>_needsAddToScene</code>。</p>
+<p>然后调用<code>addToScene(builder)</code> 遍历LayerTree，构建 EngineLayerTree </p>
+<h1 id="2、构建Engine-LayerTree-amp-Scene"><a href="#2、构建Engine-LayerTree-amp-Scene" class="headerlink" title="2、构建Engine LayerTree &amp; Scene"></a>2、构建Engine LayerTree &amp; Scene</h1><p>按照深度优先遍历LayerTree，构建出Flutter Engine 层的EngineLayerTree</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/src/rendering/layer.dart  ContainerLayer</span></div><div class="line">	<span class="meta">@override</span></div><div class="line">  <span class="keyword">void</span> addToScene(ui.SceneBuilder builder, [ Offset layerOffset = Offset.zero ]) &#123;</div><div class="line">    addChildrenToScene(builder, layerOffset);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> addChildrenToScene(ui.SceneBuilder builder, [ Offset childOffset = Offset.zero ]) &#123;</div><div class="line">    Layer child = firstChild;</div><div class="line">    <span class="keyword">while</span> (child != <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">if</span> (childOffset == Offset.zero) &#123;</div><div class="line">        <span class="comment">//偏移值没变，尝试复用缓存</span></div><div class="line">        child._addToSceneWithRetainedRendering(builder);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">//上传Layer到Flutter Engine，生成EngineLayer，需要具体Layer重写该方法</span></div><div class="line">        child.addToScene(builder, childOffset);</div><div class="line">      &#125;</div><div class="line">      child = child.nextSibling;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">void</span> _addToSceneWithRetainedRendering(ui.SceneBuilder builder) &#123;</div><div class="line">    <span class="keyword">if</span> (!_needsAddToScene &amp;&amp; _engineLayer != <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="comment">// _needsAddToScene为false，并且上次生成的_engineLayer不空</span></div><div class="line">      <span class="comment">// 复用_engineLayer，不再重新上传</span></div><div class="line">      builder.addRetained(_engineLayer);</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    addToScene(builder);</div><div class="line">    _needsAddToScene = <span class="keyword">false</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>如果偏移值没变，尝试复用缓存</li>
+<li>上传Layer到Flutter Engine，生成EngineLayer，需要具体Layer重写该方法</li>
+</ul>
+<p>还是以ClipRectLayer为例</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@override</span></div><div class="line"><span class="keyword">void</span> addToScene(ui.SceneBuilder builder, [ Offset layerOffset = Offset.zero ]) &#123;</div><div class="line">  <span class="keyword">final</span> Rect shiftedClipRect = layerOffset == Offset.zero ? clipRect : 					clipRect.shift(layerOffset);</div><div class="line">  <span class="comment">//通过SceneBuilder上传ClipLayer，构建出EngineLayer，并把EngineLayer缓存下来</span></div><div class="line">  engineLayer = builder.pushClipRect(</div><div class="line">    shiftedClipRect,</div><div class="line">    clipBehavior: clipBehavior,</div><div class="line">    oldLayer: _engineLayer <span class="keyword">as</span> ui.ClipRectEngineLayer,</div><div class="line">  );</div><div class="line">...</div><div class="line">  <span class="comment">//继续遍历子树</span></div><div class="line">  addChildrenToScene(builder, layerOffset);</div><div class="line">  <span class="comment">// 结束裁剪效果</span></div><div class="line">  builder.pop();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过SceneBuilder上传ClipLayer，构建出EngineLayer，并把EngineLayer缓存下来，在下次调用addToScene时，尝试复用EngineLayer，通过 builder.addRetained(_engineLayer) 实现复用。</p>
+<p>SceneBuilder、Scene、EngineLayer的实现都在Flutter Engine层。</p>
+<p>先看下SceneBuilder的实现</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/ui/compositing/scene_builder.cc</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR_EACH_BINDING(V)                         \</span></div><div class="line">  V(SceneBuilder, pushOffset)                       \</div><div class="line">  V(SceneBuilder, pushTransform)                    \</div><div class="line">  V(SceneBuilder, pushClipRect)                     \</div><div class="line">  V(SceneBuilder, pushClipRRect)                    \</div><div class="line">  V(SceneBuilder, pushClipPath)                     \</div><div class="line">  V(SceneBuilder, pushOpacity)                      \</div><div class="line">  V(SceneBuilder, pushColorFilter)                  \</div><div class="line">  V(SceneBuilder, pushImageFilter)                  \</div><div class="line">  V(SceneBuilder, pushBackdropFilter)               \</div><div class="line">  V(SceneBuilder, pushShaderMask)                   \</div><div class="line">  V(SceneBuilder, pushPhysicalShape)                \</div><div class="line">  V(SceneBuilder, pop)                              \</div><div class="line">  V(SceneBuilder, addPlatformView)                  \</div><div class="line">  V(SceneBuilder, addRetained)                      \</div><div class="line">  V(SceneBuilder, addPicture)                       \</div><div class="line">  V(SceneBuilder, addTexture)                       \</div><div class="line">  V(SceneBuilder, addPerformanceOverlay)            \</div><div class="line">  V(SceneBuilder, setRasterizerTracingThreshold)    \</div><div class="line">  V(SceneBuilder, setCheckerboardOffscreenLayers)   \</div><div class="line">  V(SceneBuilder, setCheckerboardRasterCacheImages) \</div><div class="line">  V(SceneBuilder, build)</div><div class="line"><span class="comment">//通过ffi绑定Dart方法</span></div><div class="line">FOR_EACH_BINDING(DART_NATIVE_CALLBACK)</div><div class="line">SceneBuilder::SceneBuilder() &#123;</div><div class="line">  <span class="comment">// 添加一个根节点</span></div><div class="line">  PushLayer(<span class="built_in">std</span>::make_shared&lt;flutter::ContainerLayer&gt;());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过ffi绑定Dart方法，并且添加一个根节点。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/ui/compositing/scene_builder.cc</span></div><div class="line"><span class="keyword">void</span> SceneBuilder::pushClipRect(Dart_Handle layer_handle,</div><div class="line">                                <span class="keyword">double</span> left,</div><div class="line">                                <span class="keyword">double</span> right,</div><div class="line">                                <span class="keyword">double</span> top,</div><div class="line">                                <span class="keyword">double</span> bottom,</div><div class="line">                                <span class="keyword">int</span> clipBehavior) &#123;</div><div class="line">  <span class="comment">//构造SkRect对象</span></div><div class="line">  SkRect clipRect = SkRect::MakeLTRB(left, top, right, bottom);</div><div class="line">  <span class="comment">//裁剪类型</span></div><div class="line">  flutter::Clip clip_behavior = <span class="keyword">static_cast</span>&lt;flutter::Clip&gt;(clipBehavior);</div><div class="line">  <span class="comment">// 构造ClipRectLayer</span></div><div class="line">  <span class="keyword">auto</span> layer =</div><div class="line">      <span class="built_in">std</span>::make_shared&lt;flutter::ClipRectLayer&gt;(clipRect, clip_behavior);</div><div class="line">  <span class="comment">//</span></div><div class="line">  PushLayer(layer);</div><div class="line">  <span class="comment">//包装成EngineLayer，返回给Dart缓存</span></div><div class="line">  EngineLayer::MakeRetained(layer_handle, layer);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> SceneBuilder::PushLayer(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;ContainerLayer&gt; layer) &#123;</div><div class="line">  AddLayer(layer);</div><div class="line">  <span class="comment">//vector 队列维护layer层级，用于生成LayerTree</span></div><div class="line">  layer_stack_.push_back(<span class="built_in">std</span>::move(layer));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> SceneBuilder::AddLayer(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Layer&gt; layer) &#123;</div><div class="line">  <span class="keyword">if</span> (!layer_stack_.empty()) &#123;</div><div class="line">    <span class="comment">//拿到最后一个ContainerLayer引用，将layer添加到它的后面，形成LayerTree    </span></div><div class="line">    layer_stack_.back()-&gt;Add(<span class="built_in">std</span>::move(layer));</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> SceneBuilder::PopLayer() &#123;</div><div class="line">  <span class="keyword">if</span> (layer_stack_.size() &gt; <span class="number">1</span>) &#123;</div><div class="line">    <span class="comment">//当前layer的子树全部添加到LayerTree中，出队列</span></div><div class="line">    layer_stack_.pop_back();</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> SceneBuilder::build(Dart_Handle scene_handle) &#123;]</div><div class="line">	<span class="comment">//通过LayerTree，构造Scene对象，返回给Dart</span></div><div class="line">  Scene::create(scene_handle, layer_stack_[<span class="number">0</span>], rasterizer_tracing_threshold_,</div><div class="line">                checkerboard_raster_cache_images_,</div><div class="line">                checkerboard_offscreen_layers_);</div><div class="line">  ClearDartWrapper();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Dart Framework中的Layer 类型和C++ Engine中的flow::Layer类型是一一对应的，在这里做了从Dart Framework LayerTree到C++ Engine LayerTree 的转换。</p>
+<p>通过Scene，将Dart Framework中的LayerTree依次遍历，映射生成C++ Engine Layer，并构建Engine LayerTree，存储在Scene对象中。</p>
+<p>其中通过vector队列维护layer层级，来达到Engine LayerTree与Framework LayerTree层级一一对应。</p>
+<p>Flow模块是一个基于Skia的简单合成器，运行在Raster(GPU)线程，并向Skia上传绘制指令信息。这里不展开。</p>
+<h1 id="3、Window-render"><a href="#3、Window-render" class="headerlink" title="3、Window.render"></a>3、Window.render</h1><p>接着调用_window.render(scene)，实现在Flutter Engine，通过Window、Engine，最终调用到<code>Animator::Render</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// flutter/shell/common/animator.cc</span></div><div class="line"><span class="keyword">void</span> Animator::Render(<span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;flutter::LayerTree&gt; layer_tree) &#123;</div><div class="line">  last_layer_tree_size_ = layer_tree-&gt;frame_size();</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (layer_tree) &#123;</div><div class="line">    <span class="comment">// 开始时间、目标时间记录在LayerTree</span></div><div class="line">    <span class="comment">// LayerTree是Scene中的对象，包含Engine LayerTree</span></div><div class="line">    layer_tree-&gt;RecordBuildTime(last_frame_begin_time_,</div><div class="line">                                last_frame_target_time_);</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 当前任务完成，LayerTree结果写入LayerTreePipeline，</span></div><div class="line">  <span class="keyword">bool</span> result = producer_continuation_.Complete(<span class="built_in">std</span>::move(layer_tree));</div><div class="line">  <span class="comment">//Raster线程，光栅化和合成</span></div><div class="line">  delegate_.OnAnimatorDraw(layer_tree_pipeline_, last_frame_target_time_);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>记录build时间，CPU 过程从VYSNC触发的时间点，即doFrame的触发时间点开始，到Animator::Render结束</li>
+<li>当前任务完成，LayerTree结果写入LayerTreePipeline，继续接收<code>ScheduleFrame</code> -&gt; <code>Animator::RequestFrame()</code> 触发开始绘制，具体细节参考《Flutter UI 渲染浅析（二）VSync 注册》</li>
+<li>转到Raster线程，进行光栅化和合成操作</li>
+</ul>
+<p>LayerTreePipeline是Engine层的渲染管线，用来调度渲染任务。</p>
+<p>LayerTreePipeline构建深度为 2 的 <code>Pipeline</code> 对象，可以持有 <code>flutter::LayerTree</code> 对象。</p>
+<p>Pipeline 持有两个信号量 <code>empty_</code> 和 <code>available_</code>，用来控制管线任务调度。</p>
+<p>整个 Pipeline 管线的流程为：</p>
+<ul>
+<li><code>Animator::RequestFrame()</code>方法触发绘制开始<code>_empty</code> -1，开始生成 <code>flutter::LayerTree</code>，运行在 UIThread</li>
+<li>当 UIThread 准备好 Engine <code>flutter::LayerTree</code>， <code>available_</code> +1</li>
+<li>当 <code>available_</code> &gt; 0 时，触发 Raster Thread 工作，拿到 <code>flutter:LayerTree</code> 进行光栅化合成</li>
+<li>当 RasterThread 处理完成， <code>_empty</code> + 1，下次 <code>Animator::RequestFrame()</code> 可以正常开始处理生成 <code>flutter::LayerTree</code> 工作</li>
+<li>当 <code>_empty</code> 为 0 时，管线任务已满，忽略本次 <code>Animator::RequestFrame()</code> 请求，直到下一次 VSync 信号到来</li>
+</ul>
+<p>通过两个信号量来管理管线的调度，这种调度机制可以确保 RasterThread 不至于过载（2个任务），同时也可以避免 UIThread 不必要的资源消耗。</p>
+<p>所以，也就明白了文章开头提到的为什么叫提交合成，而不叫合成。Composite 只是将Dart Framework LayerTree通过C++ Engine，映射成 Engine LayerTree，提交给Raster Thread处理，而<strong>并非真正的合成</strong>。</p>
+<p>然后执行Semantic语义更新，pipelineOwnerflushSemantics()，跟渲染关系不大，这里略过。</p>
+<p>到这里 <code>RendererBinding.drawFrame()</code>方法全部执行完成，接下来转到Raster线程，进行光栅化和合成上屏的操作。</p>
+<p>Raster线程也是跑在CPU上的，为了避免歧义，官方将其名称从 GPU Thread 更改为了 Raster Thread。</p>
+<p>执行完 <code>RendererBinding.drawFrame()</code>方法后，继续回到 <code>WidgetsBinding.drawFrame()</code> 中。详见《Flutter UI 渲染浅析（四）Build》</p>
+<p>最后执行<code>WidgetsBinding.drawFrame()</code>方法中的buildOwner.finalizeTree()方法，卸载未激活状态的 Element 节点（未激活状态的节点在一个绘制帧周期内，是有可能被重新激活的——在Element.rebuild阶段，如果没有重新激活，那么就卸载掉）。</p>
+<h1 id="4、总结"><a href="#4、总结" class="headerlink" title="4、总结"></a>4、总结</h1><p>至此，<code>_persistentCallbacks</code> 回调执行结束，整个绘制流程也就结束了。</p>
+<p>本系列文章从Flutter App启动作为入口，了解了7 个主要的 Binding 类及其作用。</p>
+<p>从Widget setState()为切入点，分析了Dart Framework和C++ Engine之间的交互过程。</p>
+<p>从ScheduleFrame触发绘制注册Vsync信号，到Vsync信号到来回调Dart Framework，进而触发Animate、Build、Layout、Paint一系列绘制操作。</p>
+<p>最终在Dart Framework生成含有层级关系以及绘制指令的Layer Tree，将其映射到C++ Engine生成Engine LayerTree。</p>
+<p>最后提交给Raster 线程合成上屏。</p>
+<p>整个过程由Engine LayerTreePipeline渲染管线调度管控，周而复始地将Widget内容绘制到屏幕上。</p>
+<p>本系列文章事无巨细的分析了上述的关键流程及其实现代码，涵盖Dart Framework和C++ Engine。</p>
+<p>总结下来，Dart Framework中的Widget、Element、RenderObject、Binding这些东西的存在，都是为了最后生成Layer Tree用，如果没有这些，能不能直接进行绘制呢？</p>
+<p>当然是可以的，官方就提供了这样的demo</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="string">'dart:math'</span> <span class="keyword">as</span> math;</div><div class="line"><span class="keyword">import</span> <span class="string">'dart:typed_data'</span>;</div><div class="line"><span class="keyword">import</span> <span class="string">'dart:ui'</span> <span class="keyword">as</span> ui;</div><div class="line"></div><div class="line">ui.Picture paint(ui.Rect paintBounds) &#123;</div><div class="line">  <span class="comment">// First we create a PictureRecorder to record the commands we're going to</span></div><div class="line">  <span class="comment">// feed in the canvas. The PictureRecorder will eventually produce a Picture,</span></div><div class="line">  <span class="comment">// which is an immutable record of those commands.</span></div><div class="line">  <span class="keyword">final</span> ui.PictureRecorder recorder = ui.PictureRecorder();</div><div class="line"></div><div class="line">  <span class="comment">// Next, we create a canvas from the recorder. The canvas is an interface</span></div><div class="line">  <span class="comment">// which can receive drawing commands. The canvas interface is modeled after</span></div><div class="line">  <span class="comment">// the SkCanvas interface from Skia. The paintBounds establishes a "cull rect"</span></div><div class="line">  <span class="comment">// for the canvas, which lets the implementation discard any commands that</span></div><div class="line">  <span class="comment">// are entirely outside this rectangle.</span></div><div class="line">  <span class="keyword">final</span> ui.Canvas canvas = ui.Canvas(recorder, paintBounds);</div><div class="line"></div><div class="line">  <span class="keyword">final</span> ui.Paint paint = ui.Paint();</div><div class="line">  canvas.drawPaint(ui.Paint()..color = <span class="keyword">const</span> ui.Color(<span class="number">0xFFFFFFFF</span>));</div><div class="line"></div><div class="line">  <span class="keyword">final</span> ui.Size size = paintBounds.size;</div><div class="line">  <span class="keyword">final</span> ui.Offset mid = size.center(ui.Offset.zero);</div><div class="line">  <span class="keyword">final</span> <span class="built_in">double</span> radius = size.shortestSide / <span class="number">2.0</span>;</div><div class="line"></div><div class="line">  <span class="keyword">final</span> <span class="built_in">double</span> devicePixelRatio = ui.<span class="built_in">window</span>.devicePixelRatio;</div><div class="line">  <span class="keyword">final</span> ui.Size logicalSize = ui.<span class="built_in">window</span>.physicalSize / devicePixelRatio;</div><div class="line"></div><div class="line">  <span class="comment">// Saves a copy of current transform onto the save stack</span></div><div class="line">  canvas.save();</div><div class="line"></div><div class="line">  <span class="comment">// Note that transforms that occur after this point apply only to the</span></div><div class="line">  <span class="comment">// yellow-bluish rectangle</span></div><div class="line"></div><div class="line">  <span class="comment">// This line will cause the transform to shift entirely outside the paint</span></div><div class="line">  <span class="comment">// boundaries, which will cause the canvas interface to discard its</span></div><div class="line">  <span class="comment">// commands. Comment it out to see it on screen.</span></div><div class="line">  canvas.translate(-mid.dx / <span class="number">2.0</span>, logicalSize.height * <span class="number">2.0</span>);</div><div class="line"></div><div class="line">  <span class="comment">// Clips the current transform</span></div><div class="line">  canvas.clipRect(</div><div class="line">    ui.Rect.fromLTRB(<span class="number">0</span>, radius + <span class="number">50</span>, logicalSize.width, logicalSize.height),</div><div class="line">    clipOp: ui.ClipOp.difference,</div><div class="line">  );</div><div class="line"></div><div class="line">  <span class="comment">// Shifts the coordinate space of and rotates the current transform</span></div><div class="line">  canvas.translate(mid.dx, mid.dy);</div><div class="line">  canvas.rotate(math.pi/<span class="number">4</span>);</div><div class="line"></div><div class="line">  <span class="keyword">final</span> ui.Gradient yellowBlue = ui.Gradient.linear(</div><div class="line">    ui.Offset(-radius, -radius),</div><div class="line">    <span class="keyword">const</span> ui.Offset(<span class="number">0.0</span>, <span class="number">0.0</span>),</div><div class="line">    &lt;ui.Color&gt;[<span class="keyword">const</span> ui.Color(<span class="number">0xFFFFFF00</span>), <span class="keyword">const</span> ui.Color(<span class="number">0xFF0000FF</span>)],</div><div class="line">  );</div><div class="line"></div><div class="line">  <span class="comment">// Draws a yellow-bluish rectangle</span></div><div class="line">  canvas.drawRect(</div><div class="line">    ui.Rect.fromLTRB(-radius, -radius, radius, radius),</div><div class="line">    ui.Paint()..shader = yellowBlue,</div><div class="line">  );</div><div class="line"></div><div class="line">  <span class="comment">// Note that transforms that occur after this point apply only to the</span></div><div class="line">  <span class="comment">// yellow circle</span></div><div class="line"></div><div class="line">  <span class="comment">// Scale x and y by 0.5.</span></div><div class="line">  <span class="keyword">final</span> Float64List scaleMatrix = Float64List.fromList(&lt;<span class="built_in">double</span>&gt;[</div><div class="line">      <span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>,</div><div class="line">      <span class="number">0.0</span>, <span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">0.0</span>,</div><div class="line">      <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>,</div><div class="line">      <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,</div><div class="line">  ]);</div><div class="line">  canvas.transform(scaleMatrix);</div><div class="line"></div><div class="line">  <span class="comment">// Sets paint to transparent yellow</span></div><div class="line">  paint.color = <span class="keyword">const</span> ui.Color.fromARGB(<span class="number">128</span>, <span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>);</div><div class="line"></div><div class="line">  <span class="comment">// Draws a transparent yellow circle</span></div><div class="line">  canvas.drawCircle(ui.Offset.zero, radius, paint);</div><div class="line"></div><div class="line">  <span class="comment">// Restores the transform from before `save` was called</span></div><div class="line">  canvas.restore();</div><div class="line"></div><div class="line">  <span class="comment">// Sets paint to transparent red</span></div><div class="line">  paint.color = <span class="keyword">const</span> ui.Color.fromARGB(<span class="number">128</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line"></div><div class="line">  <span class="comment">// Note that this circle is drawn on top of the previous layer that contains</span></div><div class="line">  <span class="comment">// the rectangle and smaller circle</span></div><div class="line">  canvas.drawCircle(<span class="keyword">const</span> ui.Offset(<span class="number">150.0</span>, <span class="number">300.0</span>), radius, paint);</div><div class="line"></div><div class="line">  <span class="comment">// When we're done issuing painting commands, we end the recording an receive</span></div><div class="line">  <span class="comment">// a Picture, which is an immutable record of the commands we've issued. You</span></div><div class="line">  <span class="comment">// can draw a Picture into another canvas or include it as part of a</span></div><div class="line">  <span class="comment">// composited scene.</span></div><div class="line">  <span class="keyword">return</span> recorder.endRecording();</div><div class="line">&#125;</div><div class="line"></div><div class="line">ui.Scene composite(ui.Picture picture, ui.Rect paintBounds) &#123;</div><div class="line">  <span class="keyword">final</span> <span class="built_in">double</span> devicePixelRatio = ui.<span class="built_in">window</span>.devicePixelRatio;</div><div class="line">  <span class="keyword">final</span> Float64List deviceTransform = Float64List(<span class="number">16</span>)</div><div class="line">    ..[<span class="number">0</span>] = devicePixelRatio</div><div class="line">    ..[<span class="number">5</span>] = devicePixelRatio</div><div class="line">    ..[<span class="number">10</span>] = <span class="number">1.0</span></div><div class="line">    ..[<span class="number">15</span>] = <span class="number">1.0</span>;</div><div class="line">  <span class="keyword">final</span> ui.SceneBuilder sceneBuilder = ui.SceneBuilder()</div><div class="line">    ..pushTransform(deviceTransform)</div><div class="line">    ..addPicture(ui.Offset.zero, picture)</div><div class="line">    ..pop();</div><div class="line">  <span class="keyword">return</span> sceneBuilder.build();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> beginFrame(<span class="built_in">Duration</span> timeStamp) &#123;</div><div class="line">  <span class="keyword">final</span> ui.Rect paintBounds = ui.Offset.zero &amp; (ui.<span class="built_in">window</span>.physicalSize / ui.<span class="built_in">window</span>.devicePixelRatio);</div><div class="line">  <span class="keyword">final</span> ui.Picture picture = paint(paintBounds);</div><div class="line">  <span class="keyword">final</span> ui.Scene scene = composite(picture, paintBounds);</div><div class="line">  ui.<span class="built_in">window</span>.render(scene);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> main() &#123;</div><div class="line">  ui.<span class="built_in">window</span>.onBeginFrame = beginFrame;</div><div class="line">  ui.<span class="built_in">window</span>.scheduleFrame();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述代码，直接在dart:ui.window对象中注册了onBeginFrame() 回调，抛弃了Dart Framework中Widget、Element、RenderObject、Binding这些东西，直接构建Canvas对象进行绘制，绘制完成后生成Layer Tree，提交给C++ Engine。</p>
+<p><a href="https://codepen.io/w4lle/pen/ZEOPZEe" target="_blank" rel="external">代码运行结果可以在这里看到。</a></p>
+<p> Dart Framework的将这些绘制操作进行封装，可以达到更高的开发效率和渲染性能。</p>
+<p>通过Canvas&amp;Scene，开发者不需要关系LayerTree如何提交给Engine；</p>
+<p>通过LayerTree&amp;Engine LayerTree，在Composite阶段可以进行缓存复用，没变化的Layer层级可以不用多次提交；</p>
+<p>通过RenderTree，开发者可以自由扩展控件的布局和绘制；</p>
+<p>通过ElementTree，开发者可以不需要关心如何刷新界面，数据可以直接驱动UI刷新，这一层也是实现hot reload的基础；</p>
+<p>通过WidgetTree，开发者可以开发更现代化的声明式UI应用。</p>
+<p>最后引用本系列文章开篇中的一张图做个总结。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_rendering_pipeline.png" alt=""></p>
+<p>本文链接： <a href="http://w4lle.com/2021/02/02/flutter-ui-composite/">http://w4lle.com/2021/02/02/flutter-ui-composite/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2021/02/02/flutter-ui-composite/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2021/02/01/flutter-ui-paint/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
