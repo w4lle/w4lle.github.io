@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            快手-开眼快创 Flutter 实践 | 
+        
+        w4lle&#39;s Notes
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="w4lle">
+    <!-- fix weibo pic -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" itemprop="description" content="本文主要介绍快手开眼快创 App 在 Flutter 上的一些实践。">
+    <meta name="keywords" content="Android,Flutter">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="w4lle&#39;s Notes">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?tcz64tzAgXHydzHShhly3g==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+        
+            <link rel="stylesheet" href="/css/fontawesome.min.css">
+        
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://w4lle.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="快手-开眼快创 Flutter 实践 | w4lle&#39;s Notes">
+    <meta property="og:image" content="http://w4lle.com/img/favicon.png" />
+    <meta property="og:description" content="本文主要介绍快手开眼快创 App 在 Flutter 上的一些实践。">
+    <meta property="og:article:tag" content="Flutter"> 
+
+    
+        <meta property="article:published_time" content="Mon Apr 12 2021 14:51:20 GMT+0800" />
+        <meta property="article:modified_time" content="Mon Apr 12 2021 14:54:01 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="快手-开眼快创 Flutter 实践 | w4lle&#39;s Notes">
+    <meta name="twitter:description" content="本文主要介绍快手开眼快创 App 在 Flutter 上的一些实践。">
+    <meta name="twitter:image" content="http://w4lle.com/img/favicon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://w4lle.com" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://w4lle.com/2021/04/12/kidea-flutter/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://w4lle.com/2021/04/12/kidea-flutter/index.html",
+    "headline": "快手-开眼快创 Flutter 实践",
+    "datePublished": "Mon Apr 12 2021 14:51:20 GMT+0800",
+    "dateModified": "Mon Apr 12 2021 14:54:01 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "w4lle",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "人生如逆旅，我亦是行人。"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "w4lle&#39;s Notes",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",FlutterAndroid",
+    "description": "本文主要介绍快手开眼快创 App 在 Flutter 上的一些实践。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Isolation" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+                    <!-- Isolation Header -->
+                    <header class="header">
+    <div class="header-wrapper">
+        <!-- Header Copyright -->
+        <div class="header-copyright">
+            <div class="header-site">
+                ©&nbsp;
+                <script type="text/javascript">
+                    var fd = new Date();
+                    document.write(fd.getFullYear());
+                </script>
+                &nbsp;w4lle's Notes
+            </div>
+            <!--
+            I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+            It will not impact the appearance and can give developers a lot of support :)
+
+            很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+            它不会影响美观并可以给开发者很大的支持。 :)
+            -->
+            <div>
+                Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a>
+                <br>
+                Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a>
+            </div>
+        </div>
+
+        <!-- Header Title -->
+        <span class="header-title header-item">
+            <a href="/" title="w4lle&#39;s Notes">
+                w4lle&#39;s Notes
+            </a>
+        </span>
+
+        <p class="header-slogan header-item">
+        
+            
+                人生如逆旅，我亦是行人。
+            
+        
+        </p>
+
+        <!-- Header Nav -->
+        <nav class="header-nav header-item">
+            <span class="header-nav-item">
+                <a href="/" title="Home">
+                    <span>主页</span>
+                </a>
+            </span>
+
+            <!-- Pages  -->
+            
+                <span class="header-nav-item">
+                    <a href="/tags" title="标签">
+                        <span>标签</span>
+                    </a>
+                </span>
+            
+                <span class="header-nav-item">
+                    <a href="/timeline" title="时间轴">
+                        <span>时间轴</span>
+                    </a>
+                </span>
+            
+            
+        </nav>
+
+        <!-- Header SNS -->
+        <div class="header-item header-sns_list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/2274417881" target="_blank">
+            <i class="fa fa-weibo fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/w4lle" target="_blank">
+            <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+        </a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+    </div>
+</header>
+
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+
+                    <!-- Post TOC -->
+
+    
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+
+
+    <!-- Isolation Post Header -->
+    <!-- Post thumbnail -->
+    
+        <!-- Post Header Info -->
+        <div class="post-header_info with-thumbnail">
+            <!-- Author Avatar & Name -->
+            <img src="/img/avatar.png" class="avatar-img" width="44px" height="44px" alt="w4lle's avatar">
+            <span class="name-span">w4lle</span>
+        </div>
+
+        <!-- Custom thumbnail -->
+        <div class="post_thumbnail-custom">
+            <img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter.png">
+    
+        </div>
+
+
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+
+    
+        <div class="post-content_wrapper">
+            <p class="post-title">
+                快手-开眼快创 Flutter 实践
+            </p>
+            <p>本文主要介绍快手开眼快创 App 在 Flutter 上的一些实践。</p>
+<a id="more"></a>
+<p><a href="https://cc.e.kuaishou.com/" target="_blank" rel="external">开眼快创</a>是围绕商业化广告创意构建的一款产品，目标人群涵盖供应商、代理商、广告主、商家号、视频行业从业者等，产品目标是提供智能化生产素材相关产品能力，达到降低商业属性用户的生产（创意制作）门槛，提升广告创意质量，提高素材消耗。</p>
+<p>主要功能包含：</p>
+<ol>
+<li>创作：模板视频、视频编辑、一键大片</li>
+<li>创意灵感：精选案例、快手热门、优质广告</li>
+<li>创意学院：创意课程、课程直播等</li>
+<li>数据分析：广告素材投放数据报表等</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images%E5%BC%80%E7%9C%BC%E5%8A%9F%E8%83%BD.jpg" alt=""></p>
+<p>开眼快创的 UI 展示部分使用<strong>纯 Flutter</strong> 开发。</p>
+<p>除了普通页面比如列表页外，基于 Flutter，我们实现了在数据分析场景下的各种图表绘制。</p>
+<p>同时在更重的音视频领域，也落地了一些功能场景，比如 <strong>视频直播、视频编辑、模板视频</strong> 等。</p>
+<p>本文主要分享下开眼快创团队在 Flutter 上的一些实践。</p>
+<h1 id="一、整体架构"><a href="#一、整体架构" class="headerlink" title="一、整体架构"></a>一、整体架构</h1><p>开眼是纯 Flutter 项目，整体采用组件化分层架构，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imageskidea_arch.jpeg" alt=""></p>
+<p>最底层是平台嵌入层，目前只有 Android &amp; iOS。在 Flutter 2 发布后，平台嵌入层这里可以有更多想象空间。</p>
+<p>通信层提供了平台层和 Flutter App 之间的通信能力，除了比较熟悉的 Platform Channel 和外接纹理外，我们在图片处理和视频编辑这块使用了性能更高效的 Dart FFI，这块后面详细介绍。</p>
+<p>在 Flutter 应用最顶层是 App 工程，也就是开眼快创 App。</p>
+<p>中间层是业务层，目前业务层还没有抽取独立库，未来可能会考虑把视频编辑抽取成独立业务库。</p>
+<p>下面是基础组件层，封装了独立通用库向上提供基础能力，通过 Pub 远程依赖，降低项目耦合度，同时也可以反哺我司 Flutter 平台建设，降低其余 Flutter 项目开发成本。</p>
+<p>目前已经沉淀 10+ 个通用组件，并发布 4 个组件到移动开发者中心。</p>
+<p>Flutter 本身可以独立处理网络请求、文件读写、UI绘制等主要功能，除了音视频这块需要原生参与，大部分业务场景均由 Flutter 独立完成，整个 App 的业务代码 <strong>90%</strong> 以上由 Flutter 来实现，原生基本不需要参与业务开发。</p>
+<p>纯 Flutter 开发可以保证：</p>
+<ol>
+<li>UI 统一</li>
+<li>功能统一</li>
+<li>逻辑统一</li>
+</ol>
+<p>这几点统一，对于业务开发，特别是在复杂业务场景下（比如视频编辑），可以做到双端基本完全一致，这就省去了双端逻辑对齐和 UI 对齐的成本。</p>
+<p>同时也不用管理混合栈，所有页面都在 Flutter 端，搞过 Flutter 开发的同学应该都了解维护混合栈管理是件很麻烦的事情，市面上已有的混合栈管理方案也都存在需要持续适配新版本 Flutter 的问题。</p>
+<p>所以使用纯 Flutter 开发不论是在开发阶段，还是在后期维护阶段，开发成本都比纯原生开发小的多得多。</p>
+<p>总体的开发效率提升了一个档次。</p>
+<p>另外使用纯 Flutter 开发对性能更友好，原生部分不会占用太多的内存，开眼在大量音视频模块的应用场景下也并没有遇到内存瓶颈，对性能更有保障。</p>
+<h1 id="二、状态管理"><a href="#二、状态管理" class="headerlink" title="二、状态管理"></a>二、状态管理</h1><p>我们知道 Flutter 的UI是声明式的，根据当前状态唯一确定当前UI样式。</p>
+<p><img src="https://flutter.dev/assets/development/data-and-backend/state-mgmt/ui-equals-function-of-state-54b01b000694caf9da439bd3f774ef22b00e92a62d3b2ade4f2e95c8555b8ca7.png" alt=""></p>
+<p>在 Flutter 应用中，通过组合 Widget 构建UI视图，Widget 是面向开发者的接口，它是对UI的描述性表达，即是用于描述 Element 的配置的。</p>
+<p>Widget 是声明式的 UI 结构，开发者通过组合 Widget 构建出想要的UI效果。</p>
+<p>Widget 是不可变的（immutable），这就意味着每次刷新，都会重新构建出新的Widget对象，创建的开销很小，成本较低。</p>
+<p>我们通常将 Widget 组合构建出的 UI 层级结构称为 Widget Tree，但相比 Element Tree，实际上并不存在 Widget Tree，由于 Widget 节点挂载在 Element 节点上，所以我们可以抽象为 Widget Tree。</p>
+<p>当 State 变化时引起 Widget Tree重新构建，进而将 State 状态数据通过 Element Tree刷新到 RenderTree 中对应的 RenderObject 中，最终改变布局和渲染效果。</p>
+<p>关于Flutter渲染更多细节，可以参考<a href="https://kstack.corp.kuaishou.com/tech/web/article/info/1900" target="_blank" rel="external">《Flutter UI 渲染浅析》系列文章</a>，这里不做过多描述。</p>
+<p>相较于原生开发的命令式构建 UI 视图，声明式的 Flutter 只需管理好App的 State 状态，就可以构建出想要的UI视图。</p>
+<p>注意，声明式 UI 和数据绑定更新视图，有本质上的区别，不要搞混。</p>
+<p>状态基本可分为两种，一种是<strong>页面内的状态</strong>，一种是<strong>跨页面共享的状态</strong>。</p>
+<h2 id="2-1、页面内状态"><a href="#2-1、页面内状态" class="headerlink" title="2.1、页面内状态"></a>2.1、页面内状态</h2><p>对于页面内的状态，由于其不需要跨页面共享数据，只需要关心数据流向及业务逻辑。</p>
+<p>开眼选择了 BLoC 作为页面内状态管理，BLoC 模式的核心在于定义了数据流向，分离了业务逻辑与视图逻辑。如下图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20210308180827.png" alt=""></p>
+<p>BLoC 实现了从 Produder 到 Consumer 的数据流向，在 BLoC 内部封装了业务逻辑，通过 Stream 触发 State 变化，进而更新 UI 样式。</p>
+<p>配合 RxDart 使用可以简化 BLoC 模式的构建过程，也提供了更丰富的能力。</p>
+<p>使用 BLoC 并不是绝对的，有时在一些简单的页面或者不依赖外部服务的页面中，使用 BLoC 又会显得比较笨重，就可以考虑其他更轻量的方案，如 ValueNotifier 等。</p>
+<p>同时，BLoC 模式的拓展性较差，不太适合页面间状态管理。</p>
+<h2 id="2-1、页面间状态"><a href="#2-1、页面间状态" class="headerlink" title="2.1、页面间状态"></a>2.1、页面间状态</h2><p>对于简单的跨页面共享数据状态，可以简单选择 InheritedWidget 或者 Provider，Provider 实际上也是对 InheritedWidget 做了封装。</p>
+<p>对于复杂业务来说，比如视频编辑，这些状态管理工具就有点力不从心了。</p>
+<p>所以我们选择了 Redux，Redux 是前端领域的应用状态管理框架，其有三个核心原则：</p>
+<p>1、 单一数据源 Store</p>
+<p>2、State是只读的（immutable）</p>
+<p>3、数据改动须是纯函数（这些纯函数叫 Reducer，定义了如何修改 Store，由 Action 触发）</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20210309161941.png" alt=""></p>
+<p>使用 Redux 可以很好的对业务模块进行解耦，对功能逻辑和业务视图进行分离，整体更加清晰。</p>
+<p>Redux 可以保证数据流是单项的，通过 Middleware 中间层，可以对数据流做中间逻辑处理，这就保证了数据源是可追踪的。</p>
+<p>整个视频编辑模块都是基于 Redux 来实现的，通过分离逻辑和视图，整体开发效率更高，架构更清晰。</p>
+<p><a href="https://pub.dev/packages/flutter_redux" target="_blank" rel="external">flutter_redux</a> 是 Flutter 平台的 Redux 实现。</p>
+<p>由于 js 和 Dart 语言本身的特性差异，造成了 Flutter Redux 实现上的一些问题。</p>
+<p>第一个问题：</p>
+<p>由于 js 是动态的，在 react-redux 中，全局的 State 只是一个 Object，对业务无耦合，各业务通过各自的Reducer 往 State 里面塞数据就好；</p>
+<p>而 flutter-redux 中，这个 State 必须是个强类型，也就要显式地定义所有的字段，这里产生了跟业务的强耦合。</p>
+<p>第二个问题：</p>
+<p>它的数据流是单向的，只能通过 Action→ Producer 修改数据，这就保证了数据源可控，保证大型项目的健壮性。</p>
+<p>redux 中，Action 触发数据更新，需要对老的 model 进行拷贝，以判断是否需要触发更新操作，在 js 中可以很容易通过 解构操作符 … 浅拷贝一个对象，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">newState = &#123;</div><div class="line">    ...oldState,</div><div class="line">    <span class="attr">someKey</span>:newValue</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但在 Dart 中，没有这样的语法操作，所以就需要手动赋值，对数据变量较少的 model 没有太大影响，但如果是很多变量的复杂 model 就需要挨个字段手动赋值，很繁琐并且容易出错。</p>
+<p>有几种解决方案：</p>
+<p>1、 使用copyWith()，例如</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppState</span> </span>&#123;</div><div class="line">  <span class="keyword">final</span> <span class="built_in">int</span> counter;</div><div class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</div><div class="line"></div><div class="line">  AppState(&#123;<span class="keyword">this</span>.counter = <span class="number">0</span>, <span class="keyword">this</span>.name = <span class="string">"John"</span>&#125;);</div><div class="line"></div><div class="line">  AppState copyWith(&#123;counter, name&#125;) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> AppState(</div><div class="line">        counter: counter ?? <span class="keyword">this</span>.counter,</div><div class="line">        name: name ?? <span class="keyword">this</span>.name</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实际上，还是需要手写copyWith方法，当变量变多了之后，仍然很麻烦。</p>
+<p>2、使用toJson生成工具生成copyWith方法，例如 <a href="https://app.quicktype.io/?share=qoIhiSuc2uRmQ1aThdNG" target="_blank" rel="external">https://app.quicktype.io/?share=qoIhiSuc2uRmQ1aThdNG</a><br>。右侧选择 Generate CopyWith method。</p>
+<p>但是这里没有实现 == 和hashCode 方法，需要手动补上。</p>
+<p>3、基于built_value生成模板代码，会生成类似于 copyWith 的 rebuild 方法，例如</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@override</span></div><div class="line">AppState rebuild(<span class="keyword">void</span> <span class="built_in">Function</span>(AppStateBuilder) updates) =&gt;</div><div class="line">    (toBuilder()..update(updates)).build();</div></pre></td></tr></table></figure>
+<p>同时，也生成了 equals 方法，用于比较数据，可以控制是否刷新，用于提高性能。</p>
+<p><a href="https://pub.dev/packages/built_redux" target="_blank" rel="external">built_redux</a> 基于built_value 做了更进一步的优化，将action、Reducer、Middleware 的绑定也做了模板化生成，他们之前的绑定关系由框架来生成。</p>
+<p>开发者只需要关系数据变化，而<strong>不用关心Reducer如何根据Action生成不同的State</strong>。</p>
+<p>另外，绑定关系也确保数据类型安全，这也间接的解决了第一个问题，类型绑定的问题。</p>
+<p>所以，built_redux 可以理解为两层意思：</p>
+<p>1、绑定 redux 中 State、Model、Action、Reducer</p>
+<p>2、生成built_value model（非必须），这一步主要是为了解决上面提到的问题，对于已有的model，也可以直接用在built_redux中</p>
+<p>基于以上考量，使用 built_redux 作为 Flutter Redux 的实现。</p>
+<p>built_redux 需要手写一些模板代码，比如BuiltClass、EnumClass等，如何提效？</p>
+<p>可以使用 AndroidStudio Live Template 模板代码，找到对应的设置目录，添加新的 Template，把对应的模板代码贴进去，设置对应的快捷键和描述即可。</p>
+<p>总结一下，不管是页面内状态管理，或者页面间状态管理，如果使用不当容易引发性能问题，所以<strong>尽可能更细粒度的拆分视图，缩小刷新范围</strong>，避免不必要的rebuild。</p>
+<h1 id="三、通信"><a href="#三、通信" class="headerlink" title="三、通信"></a>三、通信</h1><p>通信包含两个方面，一个是数据通信，一个是页面通信。</p>
+<p>数据通信在 Flutter 层表现为状态管理，在跨 Flutter 层和 Platform 层级间的表现为跨语言的数据交互及方法调用。</p>
+<p>页面通信就是路由跳转。</p>
+<h2 id="3-1、数据通信"><a href="#3-1、数据通信" class="headerlink" title="3.1、数据通信"></a>3.1、数据通信</h2><p>官方提供的基础 Platform Channel 存在几个问题：</p>
+<ol>
+<li>Channel 方法的注册和分发过程是分散的，无法很好的管控分发过程</li>
+<li>三端的模板代码是硬编码需要手写，非常容易出错</li>
+<li>数据类型不是安全的，三端无法在编译时保证数据类型的一致性</li>
+<li>一般我们选择 json 作为序列化方案，但在一些复杂数据交互场景下，编解码方式不能很好的支撑业务，如视频编辑</li>
+</ol>
+<p>关于第一点，我们的一般做法是集中式注册&amp;集中分发调用，比较常见的如 webview 中 JSBridge 的实现。</p>
+<p>一般采用分总分的结构：组件内部分别注册，编译时生成汇总代码、运行时集中式管理，调用时处理逻辑分发。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20210329181326.png" alt=""></p>
+<p>事实上，我们也实现了通用的Bridge实现，可以使用在与h5的通信、与Flutter的通信等通信场景下。</p>
+<p>但在一些应用场景下，通用 Bridge 不能满足业务需求，所以开眼使用了基于 gRPC&amp;ProtoBuf 的通信方案。</p>
+<p>ProtoBuf 是谷歌推出的二进制序列化协议，相较于 json， PB 的性能更好。</p>
+<p>proto 文件定义了统一的 IDL 接口，可以根据接口定义生成三端代码(Dart、Java、OC)。这可以确保它的方法签名参数及Model的数据类型是安全的，并且可以很好的支持二进制数据与 Model 定义之间的相互转换。</p>
+<p>gRPC 是一款高性能的通用RPC框架，它定义了基于 C/S 架构的进程间通信的实现，gRPC 通过 PB 提供的 Plugin 机制来实现原生桩代码生成。</p>
+<p>总结一下就是 PB 定义了数据的序列化方式，gRPC 定义了方法调用的管理方式。</p>
+<p>使用 PB&amp;gRPC 可以很好的解决上面提到的这些问题。</p>
+<p>首先，数据类型是安全的，因为代码是根据 IDL 定义在编译时动态生成的，三端数据类型保持一致，并且不需要开发者手写模板代码，这也就省略了手写硬编码的中间过程，避免最容易出错的环节。</p>
+<p>其次，它可以支持多语言，并且很好的支持二进制数据，这就磨平了平台差异。在跨多语言通信时可以保证二进制数据在各个语言环境下的相互转换，本文后面会以视频编辑为例详细说明。</p>
+<p>然后它的分发过程是集中管理的，可以在这里做一些统一错误处理和拦截操作，比如打印日志、埋点等操作。</p>
+<p>另外，它是C/S架构的，基于此开眼开发了 GrpcX 通信方案。</p>
+<p>该方案实现了全双工的 C/S 通信模式，解决了两个问题：</p>
+<ol>
+<li>同步调用，异步返回</li>
+<li>全双工通信，实现了 Flutter 作为服务提供者、Native 作为客户端请求者，在一些场景下需要 Native 去调用Flutter 方法的功能，比如获取 App 状态数据等</li>
+</ol>
+<p>整体数据流向如图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/images20210329180252.png" alt=""></p>
+<p>后续我们会将 GrpcX 开源回馈社区，目前已经在走开源流程，敬请期待。</p>
+<h2 id="3-2、页面跳转"><a href="#3-2、页面跳转" class="headerlink" title="3.2、页面跳转"></a>3.2、页面跳转</h2><p>Flutter 官方提供的 Navigator 存在一些问题，我们的 App 又是纯 Flutter 开发，所以我们参考了原生路由，实现了一套基于 url 的路由库KRoute。</p>
+<p>它配置灵活方便、功能强大，通过注解配置在编译期基于 build_runner 生成路由表和拦截器。</p>
+<p>这就保证了它的跳转参数是类型安全的。</p>
+<p>同时，我们在其中规范统一了 Flutter 页面跳转的转场动画、页面别名、拦截器方法等，以保证我们在业务场景下的表现统一。</p>
+<p>另外支持http(s) schema，页面跳转支持降级跳转 h5 功能。</p>
+<h1 id="四、音视频实践"><a href="#四、音视频实践" class="headerlink" title="四、音视频实践"></a>四、音视频实践</h1><p>开眼快创的业务场景有很重的音视频功能，包括视频播放、直播、模板视频、视频编辑等，后续可能还会增加拍摄功能。</p>
+<p>其中最复杂的是视频编辑模块，主要有以下几个特点：</p>
+<ol>
+<li>功能复杂，包含导入、导出，剪辑：分割、删除、变速、复制、排序，音乐：原声、音乐、音效、录音，字幕，滤镜、特效，多轨道，撤销，草稿等等功能</li>
+<li>状态复杂，太多视频编辑的状态，和当前页面用户操作的中间状态等等</li>
+<li>技术复杂，涉及多个技术领域，需要跨多部门合作开发</li>
+<li>逻辑复杂，这里主要涉及到一个变速，变速的需求将时间对齐这件简单事情的复杂度提升了一个次元</li>
+<li>UI复杂，这里主要复杂在时间轴部分，视频轴，音乐轴，音效轴等等</li>
+<li>性能要求高，频繁的数据通信和视频预览对性能影响较大，后续的优化其实主要也是针对这一点</li>
+</ol>
+<p>当时市面上应该还没有使用 Flutter 来实现视频编辑的团队，我们初期也想过使用原生来实现，但是最终还是选择了 Flutter，保持纯 Flutter 开发，保证 UI 统一、功能统一、逻辑统一。</p>
+<p>整体开发效率和双端质量可以得到保障。</p>
+<h2 id="4-1、外接纹理"><a href="#4-1、外接纹理" class="headerlink" title="4.1、外接纹理"></a>4.1、外接纹理</h2><p>在视频播放、编辑预览等场景使用外接纹理的方案来实现。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesFlutter_Texture.png" alt=""></p>
+<p>外接纹理的基本流程：</p>
+<ol>
+<li>Flutter 通知 Native 创建 Texture，并生成 TextureId，返回给 Flutter</li>
+<li>Flutter 声明 Texture Widget，通过 TextureId 将 Native Texture 绑定到 Texture Widget</li>
+<li>Texture Widget 对应 TextureLayer，Native 通过 Texture 将 Native 侧的纹理数据映射给 Flutter 侧，TextureLayer 将具体绘制内容提交给 Flutter Engine，最后交给 Skia 合成上屏</li>
+</ol>
+<p>Native 最左边表示原始图像流的生成方式：Video(本地/网络视频流)、Camera(摄像头拍摄的视频流)、Software/Hardware Render(使用 Skia/GL 绘制的图像流)。</p>
+<p>Native Texture 在 Android 平台上是 SurfaceTexture，在 iOS 平台上对应 FlutterTexture。</p>
+<p>Android 中的 SurfaceTexture 是比较核心的渲染组件，用于提供输出到 OpenGL ES 纹理的 Surface。</p>
+<p>SurfaceTexture 是典型的生产者-消费者模型，其中维护了一个 BufferQueue 队列，Surface 是它的生产者，GLConsumer 是它的消费者。</p>
+<p>GLConsumer 拿到了 Surface 的原始图像流，最终转化为GL texture 纹理，texture 纹理可以提供 SurfaceView、TextureView 等使用，也可以贡献给类型为 GL_TEXTURE_EXTERNAL_OES 的纹理使用。</p>
+<p>SurfaceTexture 内部主要是通过 EGLImageKHR 来实现的，通过 EGLImageKHR 将 GraphicBuffer 图像数据绑定到 GL_TEXTURE_EXTERNAL_OES 型纹理上。</p>
+<p>EGLImageKHR 的设计目的就是为了共享 2D 纹理数据的，它实现了在 CPU 和 GPU 对同一资源的访问时，可以做到无需拷贝的数据共享。</p>
+<p>这实际上是通过<strong>共享内存</strong>的方式，以实现<strong>共享纹理</strong>。</p>
+<p>在 iOS 中的 Texture 组件为 FlutterTexture，其核心是实现了<code>copyPixelBuffer()</code>方法。</p>
+<p>FlutterEngine 调用 <code>copyPixelBuffer()</code> 方法拿到纹理数据 CVPixelBuffer，然后使用 <code>CVOpenGLESTextureCacheCreateTextureFromImage()</code> 从 CVPixelBuffer 对象构建出OpenGL Texture 纹理。</p>
+<p>相当于将 CVPixelBuffer 对象与 Texture 纹理做了绑定，将数据发生变化时，Texture 会触发绘制。</p>
+<p>CVPixelBuffer 本身也是可以同时被 CPU 和 GPU 访问的，并且绑定 CVPixelBuffer 和 Texture 纹理的过程可以是双向的，所以在 iOS 也可以实现通过共享内存的方式，来达到共享纹理的目的。</p>
+<p>即将 Native GL 环境绑定到 CVPixelBuffer 内存上，而 CVPixelBuffer 本身又是和 Flutter GL 纹理绑定的，这样就相当于 Native GL 和 Flutter GL 通过 CVPixelBuffer 这块内存做到了数据共享。</p>
+<p>我们和平台组合作，在视频编辑缩略图显示优化过程中，就用到过类似的共享纹理方案 ks_image 来提升性能。</p>
+<h2 id="4-2、数据通信"><a href="#4-2、数据通信" class="headerlink" title="4.2、数据通信"></a>4.2、数据通信</h2><p>在 Flutter 业务内部，我们使用 redux 来管理各种状态。上面已经介绍过了，这里不做过多描述。</p>
+<p>在模板视频和视频编辑模块等较重的音视频模块，涉及到大量的 Flutter 业务层和编辑 sdk 服务层之间的数据通信。</p>
+<p>在较早的模板视频功能实现过程中，开眼参考了快影的实现方式，Flutter 提供 action 和原始数据，比如更换素材、调整画幅等，然后通过 Channel 通知 Android/iOS 实现具体的方法，组装 VideoEditorProject 最后调用编辑sdk。</p>
+<p>这种方案在复杂度不高的场景下使用没有太大问题，但在复杂度高的业务情况下就会暴露明显的弊端，每个功能点（比如替换素材）都需要三端实现（Android、iOS、Flutter），开发成本很高，每次新加功能需要原生深度参与开发。</p>
+<p>由于视频编辑中的功能点巨多，业务逻辑超级复杂，如果在视频编辑中也按照这种方案来处理，那么开发成本会比原生开更高，使用 Flutter 就是可以提高开发效率，如果比原声开发效率更低，这是不可接受的。</p>
+<p>所以我们提出了更优的通信方案，即所有逻辑操作都放在 Flutter 端实现，Flutter 端直接组装VideoEditorProject，通过 channel 传递给编辑sdk，Native 只做为通道，不做实际的业务开发和逻辑开发。如下图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_editor.png" alt=""></p>
+<p>新方案的其中一个问题是如何保证 Model 在传输过程中保持统一，音视频编辑的很多数据都是二进制的，基本上面提到的 ProtoBuf 可以很好的解决这个问题。</p>
+<p>首先编辑sdk的数据类型都是 PB 定义的，那么我们只需要根据编辑sdk 定义的 PB 文件，再加上业务需要定义的PB文件，生成三端代码，Flutter 以二进制的形式进行发送请求，Native 端根据二进制数据反序列化为 Model 定义，Native 拿到 VideoEditorProject 到直接刷新给编辑sdk。整个过程在 PB 的基础上传输。</p>
+<p>更进一步的，我们可以通过 Dart FFI 省略掉 Native 中间的传输过程，由 Flutter 直接对接 C++ 的编辑sdk，原本由 Channel 来传输的缩略图也切换到了 FFI 实现，下面会详细介绍。</p>
+<p>这样所有的 UI 全部在 Flutter 实现，除了预览和导出功能外，所有的业务逻辑也全部在 Flutter 实现。</p>
+<p>采用新方案后，视频编辑功能在人力少（4-5人）、任务重的条件下，通过四个版本的迭代，完成了视频编辑主流功能（导入、导出，剪辑：分割、删除、变速、复制、排序，音乐：原声、音乐、音效、录音，字幕，滤镜、特效，多轨道，撤销，草稿等）的实现并双端上线。</p>
+<p>可以做到 UI 统一、逻辑统一，对于写具体业务的同学而言，写一套 Flutter 逻辑和视图双端即可运行，基本相当于客户端原生开发双倍的开发效率。在后期功能维护上，投入的成本也远远小于原生开发。</p>
+<h1 id="五、优化实践"><a href="#五、优化实践" class="headerlink" title="五、优化实践"></a>五、优化实践</h1><p>为了提升用户体验，开眼做了大量的性能优化工作，Flutter 确实也存在一些性能方面的问题，但是随着版本的持续迭代，性能也在稳步提升。</p>
+<p>特别是在 Flutter v1.17 版本，iOS A7 处理器及iOS 10及以上设备默认使用 Metal 替代 OpenGL 进行渲染，整体 APP 性能肉眼可见的提升。比如之前页面跳转明显的卡顿问题，升级之后基本得到解决。</p>
+<p>开眼一直保持使用 Flutter 官方 Engine，没有使用定制的 Flutter Engine，每次 Flutter 发布新版本，我们都可以很快的升级上去，随着版本升级，总体性能也会比之前稳步提升。所以我们的优化方向并没有去修改 Engine。</p>
+<h2 id="5-1、FFI"><a href="#5-1、FFI" class="headerlink" title="5.1、FFI"></a>5.1、FFI</h2><p>音视频的底层能力都是 C 层的音视频sdk提供的，在 Android 和 iOS 平台上各自包装了一层wrapper供业务方使用，在上面提到的音视频通信方案中，Flutter 组装好了数据发送给原生端，原生端再转发给音视频sdk，有没有一种类似 JNI 的方式，绕过平台层由 Dart 直接调用 C 层的音视频服务？</p>
+<p>Flutter 官方提供了 <a href="https://flutter.dev/docs/development/platform-integration/c-interop" target="_blank" rel="external">dart:ffi</a> 用于 Dart 调用 C/C++ 的库代码，在Flutter Engine 和 Flutter Framework 的交互过程中，大量使用了 FFI 来进行通信。</p>
+<p>在 Flutter 2 之后，FFI 发布了稳定版本，并且提供了一套类型绑定生成工具 <a href="https://pub.dev/packages/ffigen" target="_blank" rel="external">ffigen</a>，可以自动生成 Dart Wrapper。</p>
+<p>我们和音视频同学合作对流程做了改造，整体改造后如图</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesffi.png" alt=""></p>
+<p>组装数据的过程不需要原生参与，由 Flutter 和 C 层的音视频服务通过 FFI 直接通信，省略掉了中间原生部分参与的过程。</p>
+<p>四端(音视频sdk、Flutter、Android、iOS)使用同一份 PB 定义，生成四端代码。</p>
+<p>整个数据传输过程基于 PB 进行序列化和反序列化，同步的方法调用基本和本地调用是一样的。</p>
+<p>之前很多通过 Channel 写的 await 方法，在改造后也可以变为同步调用，对于 Flutter 业务开发来说开发体验更佳。</p>
+<p>改造后性能提升数据如下，性能提升较为明显：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>openAllAssets</strong></th>
+<th><strong>syncSDKVideoProject</strong></th>
+<th><strong>newVideoProject</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Android</td>
+<td>27.9%</td>
+<td>13.5%</td>
+<td>33.4%</td>
+</tr>
+<tr>
+<td>iOS</td>
+<td>8.4%</td>
+<td>45.6%</td>
+<td>8%</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-2、缩略图获取优化"><a href="#5-2、缩略图获取优化" class="headerlink" title="5.2、缩略图获取优化"></a>5.2、缩略图获取优化</h2><p>最初我们在视频编辑模块的获取缩略图这块，和音视频同学合作引入验证 FFI 方案的可行性。</p>
+<p>由于 Dart 是单线程语言，异步调用需要在 Isolate 之间通信，在 Flutter v1.17 以前，FFI 只提供了同步调用，异步调用接口没有暴露。</p>
+<p>在Flutter v1.17版本之后，官方放开了异步调用关键函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Posts a message on some port. The message will contain the Dart_CObject</div><div class="line"> * object graph rooted in 'message'.</div><div class="line"> *</div><div class="line"> * While the message is being sent the state of the graph of Dart_CObject</div><div class="line"> * structures rooted in 'message' should not be accessed, as the message</div><div class="line"> * generation will make temporary modifications to the data. When the message</div><div class="line"> * has been sent the graph will be fully restored.</div><div class="line"> */</div><div class="line"><span class="function">DART_EXPORT <span class="keyword">bool</span> <span class="title">Dart_PostCObject</span><span class="params">(Dart_Port port_id, Dart_CObject* message)</span></span>;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * Creates a new native port.  When messages are received on this</div><div class="line"> * native port, then they will be dispatched to the provided native</div><div class="line"> * message handler.</div><div class="line"> *</div><div class="line"> * \param name The name of this port in debugging messages.</div><div class="line"> * \param handler The C handler to run when messages arrive on the port.</div><div class="line"> * \param handle_concurrently Is it okay to process requests on this</div><div class="line"> *                            native port concurrently?</div><div class="line"> */</div><div class="line"><span class="function">DART_EXPORT Dart_Port <span class="title">Dart_NewNativePort</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* name,</span></span></div><div class="line">                                         Dart_NativeMessageHandler handler,</div><div class="line">                                         <span class="keyword">bool</span> handle_concurrently);</div><div class="line"></div><div class="line"><span class="function">DART_EXPORT <span class="keyword">bool</span> <span class="title">Dart_CloseNativePort</span><span class="params">(Dart_Port native_port_id)</span></span>;</div></pre></td></tr></table></figure>
+<p>C 层异步获取完数据，将 C 层的数据通过 <code>Dart_PostCObject()</code> 发送给中间 Service Isolate 进行数据转发，由 Service Isolate 和主 Isolate 进行通信，主 Isolate 收到数据后发送给 C 层反解，最终调用 Dart 层注册的回调函数完成异步调用过程。</p>
+<p>Flutter v1.17 版本我们开始尝试接入 FFI 方案，Android 平台接入后性能数据也有所提升。</p>
+<p>首次加载缩略图速度提升2% ~ 16%，在涉及大量图片传输场景下数据提升明显，数据传输耗时占比较高，FFI 替换 Channel 后传输耗时降低。</p>
+<p>在需要多次解码的场景下，大部分耗时是在解码阶段，数据传输这块不是瓶颈，所以数据提升不明显。</p>
+<p>整体来说该方案比较符合大量小图传输的使用场景。</p>
+<p>对于 iOS 来说，平台本身提供的获取缩略图 API 的速度更快，所以没有切换FFI方案。</p>
+<p>在缩略图这块我们也尝试了外接纹理的 ks_image 方案，该方案在涉及大图显示时提升较为明显。</p>
+<p>另外，对于缩略图这块我们也从业务角度进行了优化，性能数据收益也不错。</p>
+<p>FFI 和缩略图一起优化后，视频编辑页在 iOS 上视频预览状态下帧率在58左右，快速滑动状态在帧率在45左右，整体页面在线上平均帧率在 50+。</p>
+<p>Android 平台视频编辑页的线上平均帧率也在45+。</p>
+<h2 id="5-3、帧率优化"><a href="#5-3、帧率优化" class="headerlink" title="5.3、帧率优化"></a>5.3、帧率优化</h2><p>Flutter 是单线程模型，整个渲染流程由渲染管线调度管理</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesflutter_graphics_pipeline1.png" alt=""></p>
+<p>UIThread 负责生产 <code>flutter::Layer Tree</code>，RasterThread 负责消费 <code>flutter::Layer Tree</code>。</p>
+<p>这种调度机制可以确保 RasterThread 不至于过载（2个任务），同时也可以避免 UIThread 不必要的资源消耗。</p>
+<p>所以不论在 UIThread 还是在 RasterThread 耗时太久，都可能会导致 Flutter 应用卡顿，因为会导致延迟接受 VSync 信号，导致掉帧。</p>
+<p>所以整体上业务代码优化的两个方向，一个避免是 UIThread 耗时太久，另外一个是避免 RasterThread 耗时太久。</p>
+<p>UIThread 是重点的优化方向，手段主要包括：</p>
+<ul>
+<li>避免 build 方法中调用耗时方法或视图无关的方法</li>
+<li>控制 redux 刷新范围和频率，拆分更细粒度的 Model 和 UI 之间的关系</li>
+<li>降低刷新频率，避免重复 rebuild</li>
+<li>控制刷新范围，下沉 setState 避免大范围 rebuild</li>
+<li>注意 InheritWidget 的影响范围，避免不必要的 context 上下文依赖</li>
+<li>重用 key 和 type，在需要的场景复用 Element</li>
+<li>使用 const 修饰不需要变更的 Widget</li>
+<li>列表控件中控制 cacheExtend 数量，找到首次加载和缓存复用的平衡</li>
+<li>合理组织控件层次，减少不必要的嵌套层次</li>
+<li>提高组件内聚，尽可能少的与外部组件联动</li>
+</ul>
+<p>后续会对列表做一些性能优化的工作。</p>
+<p>RasterThread 卡顿的问题一般不太能遇到，主要注意下面几个：</p>
+<ul>
+<li>尽量避免使用需要 SaveLayer 离屏渲染的API，如 Opacity、ShaderMask、ColorFilter 等</li>
+<li>使用 RepaintBoundary 包裹需要频繁刷新的控件，创建单独的 Layer 渲染</li>
+</ul>
+<p>总体上对于业务来说，Flutter 确实可以提高开发效率，但是对于新手或写代码不注意就会造成性能问题。</p>
+<p>一般的问题都可以通过优化业务代码来优化性能，但整体上业务代码能干预的不多，当碰到一些 Framework 或Engine 的性能问题时，只能想办法绕过去，相比原生开发，Flutter 业务层对系统的掌控力度更小。</p>
+<p>如果想要更深层次的优化，只能定制 Flutter Engine。</p>
+<p>在早期 Flutter 版本更新速度较快，一些性能问题官方可以很快的修复，甚至在更底层进行性能优化。</p>
+<p>定制 Flutter Engine 和官方 Engine 之间的合并成本较高，如果不能快速升级，就享受不到官方 Engine 升级带来的提升。这也是目前我们没有选择定制 Engine 的主要原因。</p>
+<p>但是，目前来看 Flutter 版本更新频率放缓，整体趋于稳定，后续要不要使用定制 Engine 在深层次提升 App 性能，这也是我们需要考虑的事情。</p>
+<h1 id="六、研发支撑"><a href="#六、研发支撑" class="headerlink" title="六、研发支撑"></a>六、研发支撑</h1><p>整个研发流程依托于 keep 平台，包括持续集成、应用发布、渠道管理、线上监控等。</p>
+<p>针对 Flutter 开发，我们和平台组同学合作，在研发阶段落地了 Pub 私服管理、fvm Flutter 版本管理、内存泄露检测等功能；在线上落地了 APM 性能监控、Crash 监控等功能。</p>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imageskeep.png" alt=""></p>
+<p>除此之外我们也自研了调试工具 <a href="https://pub.dev/packages/k_debug_tools" target="_blank" rel="external">KDebugTools</a>，<a href="https://pub.dev/packages/k_debug_tools" target="_blank" rel="external">KDebugTools</a> 是一套适用于 Flutter 平台的移动端应用研发辅助工具，包括 App 端和 web 端。</p>
+<p>除了在 App 内使用外，通过内置的Web服务，可在电脑浏览器实现以下功能：</p>
+<ul>
+<li>App和设备信息查询</li>
+<li>设备文件管理、传输和预览</li>
+<li>SharedPreference、SQLite直接查询和修改</li>
+<li>Flutter网络抓包拦截及限流配置</li>
+<li>Flutter日志查看</li>
+<li>Flutter Widget属性检查</li>
+<li>Flutter路由跳转</li>
+<li>设备剪切板同步</li>
+<li>设备投屏及录制(Android)</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/w4lle/developnote/images/imagesdebugtool_web.jpg" alt=""></p>
+<p>整套功能全部使用 Dart 实现。App 端使用 Flutter App 实现，Web 端使用 Flutter Web开发，App 端使用 Dart 开发的后台服务，通过 websocket 和 web 端建立连接。</p>
+<p>所有功能无需ROOT，无需USB连接。</p>
+<p>关于web投屏实现有另外一篇文章详细介绍。</p>
+<p><a href="https://pub.dev/packages/k_debug_tools" target="_blank" rel="external">KDebugTools</a> 也已开源，欢迎大家使用提issue。</p>
+<h1 id="七、总结"><a href="#七、总结" class="headerlink" title="七、总结"></a>七、总结</h1><p>本文主要介绍了开眼快创在 Flutter 上的一些实践，希望能对读者提供一些参考价值。</p>
+<p>其中涉及到复杂性较高的音视频功能，从技术上来说 Flutter 可以胜任，开发效率上基本是原生开发的两倍，性能也达到了一般标准。</p>
+<p>当然目前 Flutter 还存在一些问题，比如图片加载问题、列表卡顿问题、字体对齐问题等等，但我们认为 Flutter 在中小型新起项目中使用是没有问题的，新项目没有历史包袱，可以不用考虑内嵌 Flutter，直接使用纯 Flutter 进行开发。</p>
+<p>Flutter 的性能虽然不能达到原生一样流畅，很多大的 App 已经弃用Flutter。</p>
+<p>但在需要快速迭代的项目中，Flutter 可以在保持一定性能的情况下帮助项目快速迭代。</p>
+<p>在 Flutter 2发布之后，我们相信 Flutter 在跨平台领域会越走越好。</p>
+<p>最后，感谢平台组和音视频同学的大力支持和帮助，感谢快影团队在Flutter音视频实践中奠定的基础。</p>
+<p>本文链接： <a href="http://w4lle.com/2021/04/12/kidea-flutter/">http://w4lle.com/2021/04/12/kidea-flutter/</a> </p>
+
+            
+                <blockquote>
+                    <p>
+                         
+                            版权声明：本文为 w4lle 原创文章，可以随意转载，但必须在明确位置注明出处！
+                        
+                        <br>
+                        本文链接： http://w4lle.com/2021/04/12/kidea-flutter/
+                    </p>
+                </blockquote>
+            
+        </div>
+    
+</div>
+
+
+                
+                    <!-- Paradox Post Info -->
+                    
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 gitcoment -->
+<div id="gitment-comment">
+    <!-- Gitment 评论框 -->
+<div id="container"></div>
+</div>
+<style>
+    #gitment-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        //id: '页面 ID', // 可选。默认为 location.href
+        owner: 'w4lle',
+        repo: 'w4lle.github.io',
+        oauth: {
+            client_id: '88a4cc6214c9567625a7',
+            client_secret: '2b98c3304a15727a3cbd13f20bb05f521c748061',
+        },
+    })
+    gitment.render('container')
+</script>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2021/02/02/flutter-ui-composite/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- Gitment -->
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

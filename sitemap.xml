@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://w4lle.com/2021/04/12/kidea-flutter/</loc>
+    
+    <lastmod>2021-04-12T06:54:01.065Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://w4lle.com/2021/02/02/flutter-ui-composite/</loc>
     
     <lastmod>2021-02-02T10:50:43.382Z</lastmod>
@@ -352,14 +359,14 @@
   </url>
   
   <url>
-    <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>
+    <loc>http://w4lle.com/2016/01/28/hello-world/</loc>
     
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://w4lle.com/2016/01/28/hello-world/</loc>
+    <loc>http://w4lle.com/2016/05/22/Android-Color/</loc>
     
     <lastmod>2016-06-06T10:13:15.000Z</lastmod>
     
